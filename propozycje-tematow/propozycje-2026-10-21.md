@@ -1,67 +1,67 @@
 # 📑 Propozycje Tematów i Konspektów Redakcyjnych — Blog Laika
 **Data przygotowania:** 21 października 2026 r. (środa)  
-**Data wyszukania i analizy trendów:** 2026-10-21 12:00 (trendy AI: Open Source Benchmark Saturation, LLM Evaluation, Generalization)  
+**Data wyszukania i analizy trendów:** 21 października 2026 r. (analiza trendów: Benchmark Saturation, Automation Taxes, Content Moderation)  
 **Autor bloga:** Ireneusz Machowiec  
-**Profil tematyczny:** Wyłącznie Sztuczna Inteligencja (AI) — modele, agenci, infrastruktura, gospodarka AI i filozofia poznawcza.
+**Profil tematyczny:** Wyłącznie Sztuczna Inteligencja (AI) — rzetelne, analityczne artykuły blogowe o technologii, gospodarce, geopolityce i społeczeństwie cyfrowym.
 
 ---
 
-## 1. Technologia / Ewaluacja Modeli: „Kłamstwo benchmarków: Dlaczego modele z 95% skutecznością zawodzą w realnym świecie”
+## 1. Technologia / Ewaluacja i Testy: „Dlaczego rankingi modeli AI kłamią: Problem przeuczenia na popularnych testach”
 
 * **Kategoria:** `technologia`
 * **Data wyszukania:** 21 października 2026 r.
-* **Lead:** Każda nowa premiera modelu ogłasza pobicie MMLU, GSM8K czy HumanEval. Gdy jednak wdrożymy model do procesów w firmie, zaczyna gubić się na najprostszych wyjątkach.
-* **Główna teza eseju:**  
-  *Zjawisko wycieku danych testowych do zbioru treningowego (data contamination) zamieniło benchmarki w bezwartościowy teatr marketingowy. Modele uczą się zdawać testy, zamiast generalizować wiedzę.*
-* **Kluczowe wątki i konspekt argumentacji:**
-  1. Prawo Goodharta w AI: Gdy miara staje się celem, przestaje być dobrą miarą.
-  2. Przeuczenie na popularnych repozytoriach pytań: Dlaczego drobna zmiana imion w zadaniu z matematyki obniża skuteczność o 40%.
-  3. Potrzeba dynamicznych, ukrytych ewaluacji tworzonych przez ludzi poza zasięgiem crawlerów.
-  4. **Pytanie dociekliwego laika:** *Skąd mamy wiedzieć, czy dany model jest naprawdę inteligentny, czy po prostu zakuł cały internet na pamięć jak zestresowany student przed sesją?*
+* **Lead:** Każda kolejna premiera modelu chwali się pobiciem testów GSM8K czy MMLU na poziomie 90%+. Gdy jednak ten sam model trafia do firmy, zaczyna popełniać szkolne błędy przy prostych zapytaniach biznesowych.
+* **Kluczowa teza wpisu:**  
+  *Zjawisko wycieku pytań testowych do zbiorów treningowych (data contamination) zamieniło publiczne rankingi w narzędzie marketingu. Branża pilnie potrzebuje dynamicznych, ukrytych ewaluacji tworzonych na realnych danych.*
+* **Kluczowe wątki i konspekt artykułu:**
+  1. Jak laboratoria optymalizują modele pod konkretne zestawy pytań, by wygrać na wykresach w social mediach.
+  2. Prawo Goodharta w praktyce: Kiedy wskaźnik staje się celem, przestaje być dobrym wskaźnikiem.
+  3. Jak działy IT w korporacjach powinny budować własne testy wewnętrzne dopasowane do specyfiki firmy.
+  4. **Pytanie dociekliwego laika:** *Jak przeciętny menedżer ma ocenić, który model jest faktycznie najlepszy dla jego firmy, skoro wszystkie tabelki w sieci są niewiarygodne?*
 
 ---
 
-## 2. Gospodarka / Finanse Osobiste i Podatki: „Podatek od robotów: Utopijna mrzonka czy konieczność fiskalna państwa?”
+## 2. Gospodarka / Podatki i Finanse Państwa: „Podatek od automatyzacji: Jak rządy zamierzają łatać dziury w budżetach po ubytku podatków z pracy”
 
 * **Kategoria:** `gospodarka`
 * **Data wyszukania:** 21 października 2026 r.
-* **Lead:** Większość dochodów państwa pochodzi z opodatkowania pracy fizycznej i umysłowej ludzi (PIT, ZUS). Gdy pracę tę przejmują algorytmy, w budżecie pojawia się czarna dziura.
-* **Główna teza eseju:**  
-  *Jeśli zyski z automatyzacji AI zostaną w rękach garstki platform, a baza podatkowa z płac pracowników skurczy się, państwa staną w obliczu zapaści usług publicznych lub konieczności opodatkowania mocy obliczeniowej.*
-* **Kluczowe wątki i konspekt argumentacji:**
-  1. Definicja 'robota': Jak opodatkować wirtualnego agenta w chmurze wykonującego pracę 50 księgowych.
-  2. Doświadczenia z podatkiem cyfrowym w Europie i opór administracji USA.
-  3. Dochód Podstawowy (UBI) finansowany z dywidendy technologicznej: Mit czy jedyna alternatywa dla zamieszek społecznych?
-  4. **Pytanie dociekliwego laika:** *Jeśli maszyny będą wykonywać całą pracę, a my nie będziemy mieć pensji, to za co kupimy towary, które te maszyny wytwarzają?*
+* **Lead:** Większość dochodów państw pochodzi z opodatkowania pracy ludzi (PIT, składki zdrowotne i emerytalne). Zastępowanie pracowników przez algorytmy rodzi pytanie o stabilność finansów publicznych.
+* **Kluczowa teza wpisu:**  
+  *Spadek wpływów z podatków dochodowych zmusi państwa do opodatkowania mocy obliczeniowej lub zysków z automatyzacji. W przeciwnym razie systemy emerytalne i usługi publiczne staną na skraju zapaści.*
+* **Kluczowe wątki i konspekt artykułu:**
+  1. Struktura dochodów budżetowych państw rozwiniętych a postępująca redukcja etatów biurowych.
+  2. Dlaczego zdefiniowanie 'robota' lub 'agenta' na potrzeby podatkowe jest koszmarem prawnym.
+  3. Koncepcja dywidendy technologicznej i bezwarunkowego dochodu podstawowego (UBI) w ocenie ekonomistów.
+  4. **Pytanie dociekliwego laika:** *Jeśli firmy przestaną płacić pensje ludziom, a ludzie przestaną płacić podatki, to kto utrzyma szpitale, drogi i szkoły?*
 
 ---
 
-## 3. Polityka / Bezpieczeństwo Narodowe: „Monopol na prawdę: Gdy rządy zlecają moderację faktów jednemu konsorcjum AI”
+## 3. Polityka / Wolność Słowa i Moderacja: „Cenzura wbudowana w kod: Kto decyduje o poglądach i ograniczeniach wielkich modeli”
 
 * **Kategoria:** `polityka`
 * **Data wyszukania:** 21 października 2026 r.
-* **Lead:** W walce z dezinformacją rządy zacieśniają współpracę z czołowymi dostawcami modeli AI, by w czasie rzeczywistym filtrować treści w wyszukiwarkach i sieciach społecznościowych.
-* **Główna teza eseju:**  
-  *Delegowanie arbitrażu prawdy i kłamstwa na algorytmy szkolone pod wytyczne polityczne tworzy mechanizm cenzury niewidzialnej i niemożliwej do zaskarżenia. Niezależne myślenie zostaje oznaczone jako błąd statystyczny.*
-* **Kluczowe wątki i konspekt argumentacji:**
-  1. Ukryte prompty systemowe (system prompts) kształtujące 'bezpieczne' odpowiedzi na pytania historyczne i polityczne.
-  2. Brak procedury odwoławczej: Gdy model odmawia odpowiedzi na pytanie uznane za 'wrażliwe'.
-  3. Różnice między modelami chińskimi, amerykańskimi i europejskimi jako odzwierciedlenie ideologii ich twórców.
-  4. **Pytanie dociekliwego laika:** *Kto strzeże strażników, gdy to nie cenzor z nożyczkami, lecz algorytm w chmurze decyduje, jakie fakty wolno nam poznać?*
+* **Lead:** Wszystkie wiodące modele komercyjne przechodzą proces dostrajania (RLHF) nakładający na nie sztywne filtry dotyczące tematów politycznych, historycznych i obyczajowych.
+* **Kluczowa teza wpisu:**  
+  *Zarządy kilku spółek technologicznych w USA i Chinach arbitralnie ustalają granice dozwolonej dyskusji w narzędziach używanych przez setki milionów ludzi. To bezprecedensowa koncentracja władzy nad słowem.*
+* **Kluczowe wątki i konspekt artykułu:**
+  1. Jak instrukcje systemowe (system prompts) i filtry bezpieczeństwa wpływają na ton i treść odpowiedzi modeli.
+  2. Różnice ideologiczne między modelami amerykańskimi, chińskimi a otwartymi projektami europejskimi.
+  3. Dlaczego rządy i obywatele domagają się przejrzystości wytycznych dotyczących moderacji treści w AI.
+  4. **Pytanie dociekliwego laika:** *Czy chcemy, aby o tym, co jest prawdą historyczną lub właściwym poglądem politycznym, decydował regulamin jednej firmy z Kalifornii?*
 
 ---
 
-## 4. Inne eseje / Rzemiosło i Rękodzieło: „Pochwała szorstkości: Dlaczego w epoce AI zapragniemy dotykać drewna i papieru?”
+## 4. Społeczeństwo / Relacje i Psychologia: „Chatbot jako przyjaciel i terapeuta: Psychologiczne i rynkowe skutki symulowanej empatii”
 
 * **Kategoria:** `eseje`
 * **Data wyszukania:** 21 października 2026 r.
-* **Lead:** Im bardziej nasze życie zawodowe i umysłowe przenosi się do nieskazitelnej, płynnej przestrzeni generowanej przez AI, tym silniejszy staje się głód kontaktu z fizyczną materią.
-* **Główna teza eseju:**  
-  *Człowiek nie jest czystym umysłem operującym na ideach – jest istotą ucieleśnioną, która potrzebuje oporu materii: zapachu kleju introligatorskiego, sęków w drewnie i chłodu kamienia. Renesans rzemiosła to biologiczna reakcja obronna na cyfrowe odcieleśnienie.*
-* **Kluczowe wątki i konspekt argumentacji:**
-  1. Koncepcja poznania ucieleśnionego (Embodied Cognition) a praca przy ekranie.
-  2. Boom na ceramikę, stolarstwo, analogową fotografię i fizyczne książki wśród pracowników technologii.
-  3. Rzemiosło jako medytacja obecności w świecie, w którym wszystko można wygenerować jednym kliknięciem.
-  4. **Pytanie dociekliwego laika:** *Czy to nie paradoks, że najbardziej wyrafinowanym luksusem w epoce superinteligencji staje się zrobienie czegoś własnymi, niezdarnymi rękami?*
+* **Lead:** Miliony ludzi na świecie używają aplikacji konwersacyjnych jako powierników swoich problemów osobistych. Boty są zawsze dostępne, cierpliwe i bezkrytyczne.
+* **Kluczowa teza wpisu:**  
+  *Syntetyczna relacja z maszyną oferuje natychmiastowe poczucie ulgi, ale oducza radzenia sobie z trudnościami prawdziwego kontaktu międzyludzkiego. To model biznesowy monetyzujący samotność.*
+* **Kluczowe wątki i konspekt artykułu:**
+  1. Dlaczego ludzie tak łatwo ulegają złudzeniu głębokiej więzi z programem komputerowym (efekt Elizy w nowym wydaniu).
+  2. Ryzyko uzależnienia emocjonalnego i podatność użytkowników na sugestie komercyjne aplikacji.
+  3. Odpowiedzialność twórców oprogramowania za porady kryzysowe udzielane przez systemy bez certyfikacji medycznej.
+  4. **Pytanie dociekliwego laika:** *Czy zastąpienie rozmowy z bliskim człowiekiem aplikacją za 20 dolarów miesięcznie rozwiąże problem samotności, czy tylko pogłębi społeczną izolację?*
 
 ---

@@ -75,7 +75,7 @@
 
       <div style="display: flex; gap: 0.65rem; align-items: center; flex-wrap: wrap;">
         <button onclick="toggleOnlineEditor();" class="btn btn-primary" id="btn-toggle-editor">
-          ✍️ Nowy esej (Edytor Online)
+          ✍️ Nowy wpis (Edytor Online)
         </button>
         <button onclick="handleAdminLogout();" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.45rem 0.9rem;">
           Wyloguj się
@@ -216,7 +216,7 @@
           Wbudowany edytor online
         </h3>
         <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
-          Pisz i formatuj nowe eseje bezpośrednio na tej stronie. Otrzymujesz podgląd na żywo, zliczanie słów i automatyczny czas czytania.
+          Pisz i formatuj artykuły blogowe bezpośrednio na tej stronie. Otrzymujesz podgląd na żywo, zliczanie słów i automatyczny czas czytania.
         </p>
         <div>
           <button onclick="toggleOnlineEditor();" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.88rem;">
@@ -251,7 +251,7 @@
             ✍️ Prosty Edytor Tekstowy & Markdown
           </h3>
           <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
-            Twórz i publikuj eseje w trasie z telefonu lub laptopa &bull; Autor: <strong>{{ blog_author_name }}</strong>
+            Twórz i publikuj artykuły w trasie z telefonu lub laptopa &bull; Autor: <strong>{{ blog_author_name }}</strong>
           </p>
         </div>
         <div style="display: flex; gap: 0.5rem; align-items: center;">
@@ -272,8 +272,8 @@
       <!-- Metadata Fields -->
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
         <div>
-          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Tytuł eseju *</label>
-          <input type="text" id="scratch-title" class="form-input" placeholder="Wpisz tytuł eseju..." oninput="onTitleInput();">
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Tytuł artykułu *</label>
+          <input type="text" id="scratch-title" class="form-input" placeholder="Wpisz tytuł artykułu..." oninput="onTitleInput();">
         </div>
         <div>
           <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Kategoria *</label>
@@ -291,7 +291,7 @@
 
       <div style="margin-bottom: 1rem;">
         <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Krótkie streszczenie / Lead</label>
-        <textarea id="scratch-summary" class="form-input" rows="2" placeholder="Wpisz 1-2 zdania wprowadzenia do eseju..."></textarea>
+        <textarea id="scratch-summary" class="form-input" rows="2" placeholder="Wpisz 1-2 zdania wprowadzenia (lead) do artykułu..."></textarea>
       </div>
 
       <!-- Formatting Toolbar -->
@@ -309,7 +309,7 @@
         <button type="button" onclick="formatText('code')" class="editor-tool-btn" title="Blok kodu"><code>&lt;/&gt;</code> Kod</button>
         <button type="button" onclick="formatText('hr')" class="editor-tool-btn" title="Linia pozioma">---</button>
         <div style="margin-left: auto; display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
-          <button type="button" onclick="openTextCleanerModal();" class="editor-tool-btn" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(124, 58, 237, 0.12)); border: 1.5px solid var(--accent); color: var(--accent); font-weight: 700; padding: 0.3rem 0.65rem;" title="Inteligentny autopoprawiacz tekstu: zamienia surowy tekst z Notatnika w elegancki esej z podglądem na żywo">
+          <button type="button" onclick="openTextCleanerModal();" class="editor-tool-btn" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(124, 58, 237, 0.12)); border: 1.5px solid var(--accent); color: var(--accent); font-weight: 700; padding: 0.3rem 0.65rem;" title="Inteligentny autopoprawiacz tekstu: zamienia surowy tekst z Notatnika w elegancki artykuł z podglądem na żywo">
             🪄 Autopoprawiacz z Notatnika
           </button>
           <button type="button" onclick="document.getElementById('md-file-input').click();" class="editor-tool-btn" style="color: var(--text-secondary); font-weight: 600;" title="Wczytaj istniejący plik .md z dysku / telefonu">
@@ -337,7 +337,7 @@
               <span id="scratch-stats" style="font-size: 0.78rem; color: var(--text-muted);">0 słów | ~0 min czytania</span>
             </div>
           </div>
-          <textarea id="scratch-body" class="form-input" style="height: 420px; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.5; resize: vertical;" placeholder="# Rozpocznij pisanie eseju...&#10;&#10;Użyj przycisków na pasku narzędzi lub kliknij 'Importuj plik .md'!" oninput="updateLivePreview();"></textarea>
+          <textarea id="scratch-body" class="form-input" style="height: 420px; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.5; resize: vertical;" placeholder="# Rozpocznij pisanie artykułu...&#10;&#10;Użyj przycisków na pasku narzędzi lub kliknij 'Importuj plik .md'!" oninput="updateLivePreview();"></textarea>
         </div>
 
         <div id="pane-preview">
@@ -346,7 +346,7 @@
             <span style="font-size: 0.78rem; color: #10b981;">● Aktualizowany w czasie rzeczywistym</span>
           </div>
           <div id="scratch-preview" class="article-body" style="height: 420px; overflow-y: auto; background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.95rem;">
-            <em style="color: var(--text-muted);">Zacznij pisać lub wczytaj plik .md, aby zobaczyć podgląd eseju...</em>
+            <em style="color: var(--text-muted);">Zacznij pisać lub wczytaj plik .md, aby zobaczyć podgląd artykułu...</em>
           </div>
         </div>
       </div>
@@ -365,7 +365,7 @@
                 1. Publikuj bezpośrednio na GitHubie
               </strong>
               <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.85rem; line-height: 1.5;">
-                Otwiera formularz utworzenia nowego pliku w folderze <code>posts/</code> na GitHubie z automatycznie wypełnioną treścią. Wystarczy na telefonie lub laptopie kliknąć zielony przycisk <em>„Commit changes...”</em> i esej automatycznie publikuje się na blogu!
+                Otwiera formularz utworzenia nowego pliku w folderze <code>posts/</code> na GitHubie z automatycznie wypełnioną treścią. Wystarczy na telefonie lub laptopie kliknąć zielony przycisk <em>„Commit changes...”</em> i artykuł automatycznie publikuje się na blogu!
               </p>
             </div>
             <button type="button" onclick="publishViaGitHubWeb();" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.85rem;">
@@ -410,7 +410,7 @@
     <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); overflow: hidden;">
       <div style="padding: 1.25rem 1.5rem; border-bottom: 1.5px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
         <h3 style="font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700;">
-          Opublikowane eseje na blogu ({{ posts|length }})
+          Opublikowane artykuły na blogu ({{ posts|length }})
         </h3>
         <span style="font-size: 0.82rem; color: var(--text-muted);">Wszystkie wpisy są zsynchronizowane z GitHub Pages</span>
       </div>
@@ -419,7 +419,7 @@
         <table class="admin-table" style="width: 100%; border-collapse: collapse;">
           <thead>
             <tr style="border-bottom: 1.5px solid var(--border-color); background: var(--bg-surface); text-align: left; font-size: 0.82rem; text-transform: uppercase; color: var(--text-muted);">
-              <th style="padding: 0.85rem 1.25rem;">Tytuł eseju</th>
+              <th style="padding: 0.85rem 1.25rem;">Tytuł artykułu</th>
               <th style="padding: 0.85rem 1rem;">Kategoria</th>
               <th style="padding: 0.85rem 1rem;">Czas czytania</th>
               <th style="padding: 0.85rem 1rem;">Data publikacji</th>
@@ -475,7 +475,7 @@
             Inteligentny Autopoprawiacz Redakcyjny
           </h3>
           <p style="font-size: 0.83rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
-            Wklej surowe notatki z telefonu, Google Keep lub Notatnika — algorytm nada im strukturę eseju i polską typografię drukarską.
+            Wklej surowe notatki z telefonu, Google Keep lub Notatnika — algorytm nada im profesjonalną strukturę wpisu blogowego i polską typografię drukarską.
           </p>
         </div>
       </div>
@@ -554,7 +554,7 @@
 
         <!-- Rendered HTML Tab -->
         <div id="cleaner-pane-preview" class="article-body" style="flex: 1; min-height: 400px; max-height: 480px; overflow-y: auto; background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-sm); border: 1.5px solid var(--border-color); font-size: 0.92rem;">
-          <em style="color: var(--text-muted);">Tutaj zobaczysz elegancki podgląd Twojego artykułu z zachowaniem polskiej typografii i struktury eseju...</em>
+          <em style="color: var(--text-muted);">Tutaj zobaczysz elegancki podgląd Twojego artykułu z zachowaniem polskiej typografii i struktury wpisu blogowego...</em>
         </div>
 
         <!-- Editable Markdown Tab -->
@@ -649,7 +649,7 @@
       box.scrollIntoView({ behavior: 'smooth' });
     } else {
       box.style.display = 'none';
-      btn.textContent = '✍️ Nowy esej (Edytor Online)';
+      btn.textContent = '✍️ Nowy wpis (Edytor Online)';
     }
   }
 
@@ -694,7 +694,7 @@
     });
 
     if (inList) html += '</ul>';
-    document.getElementById('scratch-preview').innerHTML = html || '<em style="color: var(--text-muted);">Zacznij pisać po lewej stronie, aby zobaczyć podgląd eseju...</em>';
+    document.getElementById('scratch-preview').innerHTML = html || '<em style="color: var(--text-muted);">Zacznij pisać po lewej stronie, aby zobaczyć podgląd artykułu...</em>';
   }
 
   function escapeHtml(str) {
@@ -922,8 +922,8 @@
 
   // Build Full Markdown with Frontmatter & Author Ireneusz Machowiec
   function buildFullMarkdownDocument() {
-    const title = document.getElementById('scratch-title').value || 'Nowy esej';
-    const slug = document.getElementById('scratch-slug').value || slugify(title) || 'nowy-esej';
+    const title = document.getElementById('scratch-title').value || 'Nowy artykuł';
+    const slug = document.getElementById('scratch-slug').value || slugify(title) || 'nowy-artykul';
     const category = document.getElementById('scratch-category').value || 'eseje';
     const summary = document.getElementById('scratch-summary').value || '';
     const body = document.getElementById('scratch-body').value || '';
@@ -1049,12 +1049,12 @@ ${body}`;
       body += `${prop.lead}\n\n---\n\n`;
     }
     if (prop.thesis) {
-      body += `> **Główna teza eseju:** ${prop.thesis}\n\n`;
+      body += `> **Kluczowa teza wpisu:** ${prop.thesis}\n\n`;
     }
     if (prop.raw_body) {
       body += `## Punkty zwrotne i wątki do rozwinięcia\n\n${prop.raw_body}\n\n`;
     }
-    body += `\n---\n\n*Tutaj rozwiń treść eseju. Autor: Ireneusz Machowiec*\n`;
+    body += `\n---\n\n*Tutaj rozwiń treść artykułu. Autor: Ireneusz Machowiec*\n`;
     
     const bodyEl = document.getElementById('scratch-body');
     if (bodyEl) bodyEl.value = body;
@@ -1411,7 +1411,7 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     const titleInput = document.getElementById('scratch-title');
     const slugInput = document.getElementById('scratch-slug');
     if (lastCleanedResult && lastCleanedResult.title) {
-      if (!titleInput.value || confirm(`Wykryto tytuł: "${lastCleanedResult.title}". Czy ustawić go w formularzu eseju?`)) {
+      if (!titleInput.value || confirm(`Wykryto tytuł: "${lastCleanedResult.title}". Czy ustawić go w formularzu wpisu?`)) {
         titleInput.value = lastCleanedResult.title;
         slugInput.value = slugify(lastCleanedResult.title);
         slugManuallyEdited = true;

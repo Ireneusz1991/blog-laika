@@ -1,67 +1,67 @@
 # 📑 Propozycje Tematów i Konspektów Redakcyjnych — Blog Laika
 **Data przygotowania:** 24 października 2026 r. (sobota)  
-**Data wyszukania i analizy trendów:** 2026-10-24 14:20 (trendy AI: Autonomous Coding, Zero-Day Exploits, Cyberdefense)  
+**Data wyszukania i analizy trendów:** 24 października 2026 r. (analiza trendów: Automated Cyberattacks, TSMC Geopolitics, AI Medical Liability)  
 **Autor bloga:** Ireneusz Machowiec  
-**Profil tematyczny:** Wyłącznie Sztuczna Inteligencja (AI) — modele, agenci, infrastruktura, gospodarka AI i filozofia poznawcza.
+**Profil tematyczny:** Wyłącznie Sztuczna Inteligencja (AI) — rzetelne, analityczne artykuły blogowe o technologii, gospodarce, geopolityce i społeczeństwie cyfrowym.
 
 ---
 
-## 1. Technologia / Cyberbezpieczeństwo AI: „Autonomiczny exploit: Kiedy hakerem staje się agent bezsenny”
+## 1. Technologia / Cyberbezpieczeństwo: „Autonomiczne ataki hakerskie: Jak AI zmienia pole walki w cyberprzestrzeni”
 
 * **Kategoria:** `technologia`
 * **Data wyszukania:** 24 października 2026 r.
-* **Lead:** Bezpieczeństwo kodu wkracza w fazę automatycznej wojny maszyn. Agenci AI potrafią analizować binarne pliki w poszukiwaniu luk typu zero-day w ułamki sekund.
-* **Główna teza eseju:**  
-  *Wojna w cyberprzestrzeni przestaje być pojedynkiem ludzi. Zwycięży ten, czyj autonomiczny system obronny szybciej wdroży mikro-łaty w kodzie, zanim wrogi agent znajdzie wektor ataku.*
-* **Kluczowe wątki i konspekt argumentacji:**
-  1. Przejście od skanerów podatności do agentów penetracyjnych działających w pętli myślowej.
-  2. Halucynacja bezpieczeństwa: Ryzyko ukrywania złośliwego kodu przez zmanipulowane biblioteki syntetyczne (hallucinated package attacks).
-  3. Czy otwarty kod w repozytoriach publicznych jest jeszcze bezpieczny, gdy każdy może zautomatyzować polowanie na luki?
-  4. **Pytanie dociekliwego laika:** *Czy wkrótce będziemy musieli zaufać sztucznej inteligencji w obronie infrastruktury krytycznej, bo żaden człowiek nie zrozumie tempa ataku?*
+* **Lead:** Narzędzia oparte na modelach językowych potrafią analizować kod w poszukiwaniu podatności dnia zerowego (Zero-Day) i automatycznie generować spersonalizowane ataki phishingowe w ułamkach sekund.
+* **Kluczowa teza wpisu:**  
+  *Tradycyjne mechanizmy obronne oparte na statycznych regułach i okresowych audytach stają się bezużyteczne. Bezpieczeństwo IT wymusza wdrożenie systemów obronnych działających z prędkością maszyn.*
+* **Kluczowe wątki i konspekt artykułu:**
+  1. Jak atakujący wykorzystują modele do tworzenia polimorficznego złośliwego oprogramowania.
+  2. Zagrożenie w łańcuchu dostaw open source: Automatyczne podmienianie bibliotek i ataki na repozytoria kodu.
+  3. Rola zautomatyzowanych systemów obronnych: Samonaprawiający się kod i automatyczne wdrażanie mikro-łat.
+  4. **Pytanie dociekliwego laika:** *Czy za parę lat obrona banków i elektrowni będzie musiała być w 100% zautomatyzowana, bo człowiek po prostu nie nadąży z reakcją?*
 
 ---
 
-## 2. Gospodarka / Sektor Medyczny AI: „Algorytm zamiast lekarza: Kto bierze odpowiedzialność za błędną diagnozę?”
+## 2. Gospodarka / Ochrona Zdrowia: „Sztuczna inteligencja w diagnostyce medycznej: Kto odpowiada za błąd algorytmu?”
 
 * **Kategoria:** `gospodarka`
 * **Data wyszukania:** 24 października 2026 r.
-* **Lead:** Systemy wizyjne wykrywają wczesne stadia nowotworów ze skutecznością przewyższającą radiologów. Jednak w przypadku pomyłki ubezpieczyciele i szpitale przerzucają się winą.
-* **Główna teza eseju:**  
-  *Wdrożenie AI w medycynie nie rozbija się o technologię, lecz o sztywny system prawno-ubezpieczeniowy. Dopóki twórcy modeli zastrzegają 'wyłącznie do celów edukacyjnych', lekarz ponosi 100% ryzyka za sugestie czarnej skrzynki.*
-* **Kluczowe wątki i konspekt argumentacji:**
-  1. Czarna skrzynka w onkologii: Dlaczego lekarz nie potrafi wyjaśnić pacjentowi, dlaczego algorytm wskazał na wycięcie tkanki.
-  2. Ubezpieczenia od błędów algorytmicznych: Powstanie nowego segmentu rynku finansowego.
-  3. Medycyna dwóch prędkości: Ekskluzywne konsultacje z żywym profesorem dla bogatych, bezduszny kiosk diagnostyczny AI dla reszty.
-  4. **Pytanie dociekliwego laika:** *Czy odważylibyśmy się poddać operacji zasugerowanej przez program komputerowy, którego toku rozumowania nie rozumie żaden żyjący lekarz?*
+* **Lead:** Systemy wizyjne wspomagają radiologów i onkologów w wykrywaniu wczesnych zmian chorobowych z ogromną precyzją. Prawdziwym problemem pozostaje jednak odpowiedzialność prawna i ubezpieczeniowa.
+* **Kluczowa teza wpisu:**  
+  *Wdrażanie AI w szpitalach nie zależy dziś od technologii, lecz od uregulowania odpowiedzialności cywilnej. Przerzucanie całego ryzyka na lekarza hamuje innowacje ratujące życie.*
+* **Kluczowe wątki i konspekt artykułu:**
+  1. Problem 'czarnej skrzynki' w diagnostyce: Dlaczego system nie potrafi wytłumaczyć, na podstawie jakich cech obrazu podjął decyzję.
+  2. Modele ubezpieczeń OC dla producentów oprogramowania medycznego i placówek ochrony zdrowia.
+  3. Standardy certyfikacji wyrobów medycznych opartych na sieciach neuronowych w Unii Europejskiej.
+  4. **Pytanie dociekliwego laika:** *Czy lekarz ma prawo zignorować sugestię algorytmu o 99-procentowej skuteczności, jeśli jego intuicja mówi coś innego?*
 
 ---
 
-## 3. Polityka / Geopolityka Półprzewodników: „Cieśnina Krzemowa: Dlaczego pokój na świecie zależy od 100 kilometrów wokół Tajwanu”
+## 3. Polityka / Geopolityka Półprzewodników: „Łańcuch dostaw chipów: Dlaczego cała branża AI wisi na jednej fabryce na Tajwanie”
 
 * **Kategoria:** `polityka`
 * **Data wyszukania:** 24 października 2026 r.
-* **Lead:** Najbardziej zaawansowane układy AI nie mogą powstać bez fabryk TSMC w Hsinchu i maszyn litograficznych ASML z Holandii. Cała cyfrowa gospodarka świata wisi na cienkiej nitce geopolitycznej.
-* **Główna teza eseju:**  
-  *Sztuczna inteligencja zmaterializowała się w najbardziej skoncentrowanym łańcuchu dostaw w dziejach przemysłu. Blokada cieśniny tajwańskiej cofnęłaby rozwój AI na świecie o co najmniej dekadę.*
-* **Kluczowe wątki i konspekt argumentacji:**
-  1. Monopol maszyn EUV i High-NA ASML: Dlaczego budowa alternatywnej fabryki wymaga dziesięcioleci pracy inżynierów precyzyjnych.
-  2. Amerykańskie sankcje technologiczne wobec Chin a rozwój chińskich alternatyw na starszych węzłach.
-  3. Porażka programu budowy fabryk w USA i Europie: Koszty, brak wykwalifikowanej kadry i kultura pracy.
-  4. **Pytanie dociekliwego laika:** *Czy ludzkość zdaje sobie sprawę, że cały szum wokół AGI może zgasnąć w ciągu jednego weekendu z powodu regionalnego konfliktu morskiego?*
+* **Lead:** Wszystkie wiodące akceleratory AI na świecie produkowane są w technologii poniżej 4 nanometrów przez TSMC. Ewentualny kryzys w Cieśninie Tajwańskiej oznaczałby natychmiastowe zatrzymanie globalnego postępu.
+* **Kluczowa teza wpisu:**  
+  *Mimo miliardowych dotacji na fabryki w USA i Niemczech, pełna dywersyfikacja produkcji zaawansowanych półprzewodników potrwa co najmniej dekadę. Zależność świata od Tajwanu pozostaje krytycznym punktem zapalnym.*
+* **Kluczowe wątki i konspekt artykułu:**
+  1. Monopol maszyn litograficznych ASML (Holandia) i fabryk TSMC: Dlaczego nie da się ich szybko skopiować.
+  2. Postępy i opóźnienia programów CHIPS Act w Stanach Zjednoczonych i Europie.
+  3. Odpowiedź Chin: Rozwój technologii na starszych węzłach i próby obejścia zachodnich sankcji.
+  4. **Pytanie dociekliwego laika:** *Co właściwie stałoby się z rynkiem technologii i naszym codziennym sprzętem, gdyby fabryki na Tajwanie przestały działać choćby na miesiąc?*
 
 ---
 
-## 4. Inne eseje / Sztuka i Autentyczność: „Kicz perfekcji: Dlaczego sztuka generatywna nudzi szybciej niż jakakolwiek inna?”
+## 4. Społeczeństwo / Rynek Pracy i Edukacja: „Zawody odporne na automatyzację: Czego warto się uczyć w epoce maszyn”
 
 * **Kategoria:** `eseje`
 * **Data wyszukania:** 24 października 2026 r.
-* **Lead:** Wygenerowane obrazy i wiersze są nienaganne technicznie, bogate w szczegóły i idealnie skomponowane. A jednak po kilku sekundach scrollowania czujemy przesyt i obojętność.
-* **Główna teza eseju:**  
-  *Piękno w sztuce nie wynika z bezbłędności, lecz ze śladu ludzkiej kruchości, lęku, ograniczeń fizycznych i zmagania z materią. Sztuka bez ryzyka i bez biografii staje się jedynie tapetą emocjonalną.*
-* **Kluczowe wątki i konspekt argumentacji:**
-  1. Pojęcie aury według Waltera Benjamina w epoce Midjourney i Suno.
-  2. Ekonomia obfitości: Gdy wyprodukowanie obrazu kosztuje 0 sekund, jego wartość percepcyjna spada do zera.
-  3. Renesans rzemiosła, błędu i taśmy analogowej jako odpowiedź na algorytmiczną gładkość.
-  4. **Pytanie dociekliwego laika:** *Czy to możliwe, że w epoce maszyn najbardziej zachwycać nas będzie krzywa kreska i niezdarne słowo, tylko dlatego, że napisał je ktoś, kto umrze?*
+* **Lead:** Rewolucja AI najmocniej uderza w pracowników umysłowych wykonujących powtarzalne analizy i tworzących standardowe dokumenty. Równolegle zyskują specjaliści pracujący w świecie fizycznym oraz eksperci od rozwiązywania nietypowych problemów.
+* **Kluczowa teza wpisu:**  
+  *Przekonanie, że praca biurowa jest zawsze bezpieczniejsza od technicznej lub rzemieślniczej, definitywnie odchodzi do przeszłości. Najbardziej stabilne zawody łączą wiedzę merytoryczną z pracą w terenie i empatią.*
+* **Kluczowe wątki i konspekt artykułu:**
+  1. Które role w korporacjach są najbardziej zagrożone redukcją etatów w ciągu najbliższych 3-5 lat.
+  2. Renesans zawodów technicznych, inżynieryjnych, medycznych i instalatorskich.
+  3. Kompetencje hybrydowe: Jak łączyć wiedzę branżową z umiejętnością nadzorowania narzędzi AI.
+  4. **Pytanie dociekliwego laika:** *Czy za dekadę dobry elektryk lub hydraulik nie będzie zarabiał więcej i spał spokojniej niż analityk w warszawskim biurowcu?*
 
 ---

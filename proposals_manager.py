@@ -84,8 +84,8 @@ def parse_proposals_file(filepath: str) -> list:
                 search_date = line_str.replace("* **Data wyszukania:**", "").strip()
             elif line_str.startswith("* **Lead:**"):
                 lead = line_str.replace("* **Lead:**", "").strip()
-            elif line_str.startswith("* **Główna teza") or (line_str.startswith("*") and not line_str.startswith("* **")):
-                clean_thesis = line_str.replace("* **Główna teza eseju:**", "").replace("* **Główna teza:**", "").strip().strip('*')
+            elif line_str.startswith("* **Kluczowa teza") or line_str.startswith("* **Główna teza") or (line_str.startswith("*") and not line_str.startswith("* **")):
+                clean_thesis = re.sub(r'^\*\s*\*\*(?:Kluczowa|Główna)\s+teza(?:\s+(?:wpisu|eseju))?:\*\*', '', line_str).strip().strip('*')
                 if clean_thesis and not thesis:
                     thesis = clean_thesis
                 else:
