@@ -273,8 +273,11 @@
         <button type="button" onclick="formatText('image')" class="editor-tool-btn" title="Wstaw grafikę">🖼️ Obraz</button>
         <button type="button" onclick="formatText('code')" class="editor-tool-btn" title="Blok kodu"><code>&lt;/&gt;</code> Kod</button>
         <button type="button" onclick="formatText('hr')" class="editor-tool-btn" title="Linia pozioma">---</button>
-        <div style="margin-left: auto; display: flex; gap: 0.4rem; align-items: center;">
-          <button type="button" onclick="document.getElementById('md-file-input').click();" class="editor-tool-btn" style="color: var(--accent); font-weight: 700;" title="Wczytaj istniejący plik .md z dysku / telefonu">
+        <div style="margin-left: auto; display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+          <button type="button" onclick="openTextCleanerModal();" class="editor-tool-btn" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(124, 58, 237, 0.12)); border: 1.5px solid var(--accent); color: var(--accent); font-weight: 700; padding: 0.3rem 0.65rem;" title="Inteligentny autopoprawiacz tekstu: zamienia surowy tekst z Notatnika w elegancki esej z podglądem na żywo">
+            🪄 Autopoprawiacz z Notatnika
+          </button>
+          <button type="button" onclick="document.getElementById('md-file-input').click();" class="editor-tool-btn" style="color: var(--text-secondary); font-weight: 600;" title="Wczytaj istniejący plik .md z dysku / telefonu">
             📂 Importuj .md
           </button>
         </div>
@@ -290,9 +293,14 @@
       <!-- Dual Pane Container -->
       <div id="editor-workspace" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
         <div id="pane-write">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 0.4rem;">
             <label style="font-size: 0.85rem; font-weight: 600;">Treść artykułu (Markdown / Tekst)</label>
-            <span id="scratch-stats" style="font-size: 0.78rem; color: var(--text-muted);">0 słów | ~0 min czytania</span>
+            <div style="display: flex; gap: 0.6rem; align-items: center;">
+              <button type="button" onclick="openTextCleanerModal();" style="background: none; border: none; color: var(--accent); font-size: 0.78rem; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0;">
+                🪄 Sformatuj z Notatnika &rarr;
+              </button>
+              <span id="scratch-stats" style="font-size: 0.78rem; color: var(--text-muted);">0 słów | ~0 min czytania</span>
+            </div>
           </div>
           <textarea id="scratch-body" class="form-input" style="height: 420px; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.5; resize: vertical;" placeholder="# Rozpocznij pisanie eseju...&#10;&#10;Użyj przycisków na pasku narzędzi lub kliknij 'Importuj plik .md'!" oninput="updateLivePreview();"></textarea>
         </div>
@@ -417,6 +425,135 @@
 
   </div>
 
+</div>
+
+<!-- Interactive Text Auto-Corrector Modal -->
+<div id="cleaner-modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px); z-index: 20000; overflow-y: auto; padding: 1.25rem 1rem;">
+  <div style="max-width: 1100px; margin: 1.5rem auto; background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; display: flex; flex-direction: column;">
+    
+    <!-- Modal Header -->
+    <div style="padding: 1.25rem 1.5rem; border-bottom: 1.5px solid var(--border-color); background: var(--bg-surface); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 0.85rem;">
+        <span style="font-size: 1.8rem; line-height: 1;">🪄</span>
+        <div>
+          <h3 style="font-family: var(--font-serif); font-size: 1.3rem; font-weight: 800; margin: 0; color: var(--text-primary);">
+            Inteligentny Autopoprawiacz Redakcyjny
+          </h3>
+          <p style="font-size: 0.83rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+            Wklej surowe notatki z telefonu, Google Keep lub Notatnika — algorytm nada im strukturę eseju i polską typografię drukarską.
+          </p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <button type="button" onclick="closeTextCleanerModal();" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">✕ Zamknij</button>
+      </div>
+    </div>
+
+    <!-- Options & Settings Bar -->
+    <div style="padding: 0.85rem 1.5rem; background: var(--bg-card); border-bottom: 1px solid var(--border-color); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; font-size: 0.82rem;">
+      <span style="font-weight: 700; color: var(--accent); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.5px;">Reguły edytorskie:</span>
+      <label style="display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+        <input type="checkbox" id="clean-opt-quotes" checked onchange="runLiveClean();">
+        <span>Polskie cudzysłowy (<code>„...”</code>)</span>
+      </label>
+      <label style="display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+        <input type="checkbox" id="clean-opt-dashes" checked onchange="runLiveClean();">
+        <span>Pauzy myślnikowe (<code> — </code>)</span>
+      </label>
+      <label style="display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+        <input type="checkbox" id="clean-opt-orphans" checked onchange="runLiveClean();">
+        <span>Twarde spacje (spójniki <code>a, i, o, u, w, z</code>)</span>
+      </label>
+      <label style="display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+        <input type="checkbox" id="clean-opt-headings" checked onchange="runLiveClean();">
+        <span>Wykrywaj śródtytuły (<code>##</code>)</span>
+      </label>
+      <label style="display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+        <input type="checkbox" id="clean-opt-lists" checked onchange="runLiveClean();">
+        <span>Listy punktowane (<code>-</code>)</span>
+      </label>
+      <label style="display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+        <input type="checkbox" id="clean-opt-title" checked onchange="runLiveClean();">
+        <span>Ustaw 1. linię jako Tytuł / Lead</span>
+      </label>
+      <label style="display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+        <input type="checkbox" id="clean-opt-merge" onchange="runLiveClean();">
+        <span>Łącz pourywane wiersze w akapity</span>
+      </label>
+    </div>
+
+    <!-- Workspace Grid -->
+    <div style="padding: 1.25rem 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;" id="cleaner-workspace-grid">
+      
+      <!-- Left: Raw Input -->
+      <div style="display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.4rem;">
+          <strong style="font-size: 0.86rem; color: var(--text-primary);">📥 1. Surowy tekst (z Notatnika / telefonu):</strong>
+          <div style="display: flex; gap: 0.5rem;">
+            <button type="button" onclick="loadCurrentEditorTextToCleaner();" style="background: none; border: none; font-size: 0.78rem; color: var(--text-secondary); cursor: pointer; text-decoration: underline;">
+              Wczytaj z edytora
+            </button>
+            <button type="button" onclick="loadSampleRawText();" style="background: none; border: none; font-size: 0.78rem; color: var(--accent); cursor: pointer; text-decoration: underline; font-weight: 600;">
+              Przykładowy surowy tekst
+            </button>
+          </div>
+        </div>
+        <textarea id="cleaner-raw-input" class="form-input" style="flex: 1; min-height: 400px; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.5; resize: vertical;" placeholder="Wklej tutaj swój szkic prosto z Notatnika, Google Keep, notatek telefonu lub e-maila...&#10;&#10;Nie musisz używać żadnych znaczników # ani gwiazdek. Autopoprawiacz sam nada tekstowi formę eleganckiego artykułu!" oninput="runLiveClean();"></textarea>
+      </div>
+
+      <!-- Right: Preview and Cleaned Output -->
+      <div style="display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.4rem;">
+          <div style="display: flex; gap: 0.4rem;">
+            <button type="button" id="cleaner-tab-btn-preview" onclick="switchCleanerRightTab('preview');" class="btn btn-primary" style="font-size: 0.78rem; padding: 0.3rem 0.65rem;">
+              👁️ Podgląd czytelnika
+            </button>
+            <button type="button" id="cleaner-tab-btn-markdown" onclick="switchCleanerRightTab('markdown');" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.3rem 0.65rem;">
+              📝 Kod Markdown (do edycji)
+            </button>
+          </div>
+          <span id="cleaner-stats-badge" style="font-size: 0.76rem; color: #10b981; font-weight: 600;">
+            ● Podgląd na żywo
+          </span>
+        </div>
+
+        <!-- Rendered HTML Tab -->
+        <div id="cleaner-pane-preview" class="article-body" style="flex: 1; min-height: 400px; max-height: 480px; overflow-y: auto; background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-sm); border: 1.5px solid var(--border-color); font-size: 0.92rem;">
+          <em style="color: var(--text-muted);">Tutaj zobaczysz elegancki podgląd Twojego artykułu z zachowaniem polskiej typografii i struktury eseju...</em>
+        </div>
+
+        <!-- Editable Markdown Tab -->
+        <div id="cleaner-pane-markdown" style="display: none; flex: 1;">
+          <textarea id="cleaner-markdown-output" class="form-input" style="width: 100%; height: 400px; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.5; resize: vertical;" placeholder="Oczyszczony Markdown... Możesz go tutaj ręcznie dopracować przed zatwierdzeniem." oninput="onCleanedMarkdownManualEdit();"></textarea>
+        </div>
+
+        <!-- Detected Changes Summary -->
+        <div id="cleaner-changes-summary" style="margin-top: 0.5rem; font-size: 0.78rem; color: var(--text-secondary); background: var(--bg-surface); padding: 0.45rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+          Wpisz lub wklej tekst, aby zobaczyć statystykę wykrytych poprawek.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Modal Footer Actions -->
+    <div style="padding: 1rem 1.5rem; border-top: 1.5px solid var(--border-color); background: var(--bg-surface); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+      <div style="font-size: 0.82rem; color: var(--text-secondary);">
+        💡 Kliknięcie <strong>„Zastosuj poprawki do artykułu”</strong> przeniesie sformatowaną treść prosto do edytora CMS.
+      </div>
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <button type="button" onclick="closeTextCleanerModal();" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.45rem 0.9rem;">
+          Anuluj
+        </button>
+        <button type="button" onclick="copyCleanedOutput();" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.45rem 0.9rem;">
+          📋 Kopiuj tekst
+        </button>
+        <button type="button" onclick="applyCleanedTextToEditor();" class="btn btn-primary" style="font-size: 0.88rem; padding: 0.45rem 1.25rem; font-weight: 700;">
+          ✅ Zastosuj poprawki do artykułu &rarr;
+        </button>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <!-- Authentication & Editor Scripts -->
@@ -855,6 +992,378 @@ ${body}`;
       notif.innerHTML = `💡 <strong>Konspekt załadowany:</strong> "${prop.title}". Pola formularza i edytor zostały uzupełnione!`;
       setTimeout(() => { notif.style.display = 'none'; }, 6000);
     }
+  }
+
+  // ==========================================
+  // INTELIGENTNY AUTOPOPRAWIACZ Z NOTATNIKA
+  // ==========================================
+
+  let lastCleanedResult = null;
+
+  function openTextCleanerModal() {
+    const box = document.getElementById('online-editor-box');
+    if (box && box.style.display === 'none') {
+      toggleOnlineEditor();
+    }
+    const modal = document.getElementById('cleaner-modal-backdrop');
+    if (modal) modal.style.display = 'block';
+    
+    const rawInput = document.getElementById('cleaner-raw-input');
+    const editorBody = document.getElementById('scratch-body');
+    if (rawInput && !rawInput.value.trim() && editorBody && editorBody.value.trim()) {
+      rawInput.value = editorBody.value;
+    }
+    runLiveClean();
+  }
+
+  function closeTextCleanerModal() {
+    const modal = document.getElementById('cleaner-modal-backdrop');
+    if (modal) modal.style.display = 'none';
+  }
+
+  function loadCurrentEditorTextToCleaner() {
+    const editorBody = document.getElementById('scratch-body');
+    const rawInput = document.getElementById('cleaner-raw-input');
+    if (editorBody && rawInput) {
+      rawInput.value = editorBody.value;
+      runLiveClean();
+    }
+  }
+
+  function loadSampleRawText() {
+    const sample = `Dlaczego sztuczna inteligencja nie zastapi dociekliwego laika
+
+Wszyscy powtarzaja, ze modele jezykowe wiedza juz wszystko. Ja jednak uwazam zupelnie inaczej - to wlasnie dociekliwy laik ma dzis najwieksza sile.
+
+Zludzenie ostatecznej wiedzy
+Kiedy pytamy model o analize zjawiska, dostajemy "idealna" odpowiedz. Nie ma w niej zadnego zaciecia, bledu i zadnego ryzyka. Wszystko jest wygladzone jak stol bilardowy... Czy to jest prawdziwa madrosc? Nie, to tylko statystyka w przebraniu wyroczni.
+
+Trzy pytania, ktorych algorytm nie zada:
+* Dlaczego korporacje powtarzaja te same slogany co rok temu?
+* Kto naprawde placi za serwery, gdy narzedzie jest "calkowicie darmowe"?
+* Co zrobimy, gdy zabraknie pradu i wody na kolejne farmy kart graficznych?
+
+"Najwazniejsza cnota XXI wieku nie jest posiadanie gotowych odpowiedzi, lecz odwaga do zadawania wlasnych pytan."
+
+Prawdziwy sens Bloga Laika
+Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma prawo powiedziec: "sprawdzam". I dopoki ludzie beda mieli odwage watpic, zadna siec neuronowa nas nie zastapi.`;
+
+    document.getElementById('cleaner-raw-input').value = sample;
+    runLiveClean();
+  }
+
+  function switchCleanerRightTab(tab) {
+    const prevPane = document.getElementById('cleaner-pane-preview');
+    const mdPane = document.getElementById('cleaner-pane-markdown');
+    const tabPrev = document.getElementById('cleaner-tab-btn-preview');
+    const tabMd = document.getElementById('cleaner-tab-btn-markdown');
+
+    if (tab === 'preview') {
+      if (prevPane) prevPane.style.display = 'block';
+      if (mdPane) mdPane.style.display = 'none';
+      if (tabPrev) { tabPrev.classList.add('btn-primary'); tabPrev.classList.remove('btn-secondary'); }
+      if (tabMd) { tabMd.classList.add('btn-secondary'); tabMd.classList.remove('btn-primary'); }
+    } else {
+      if (prevPane) prevPane.style.display = 'none';
+      if (mdPane) mdPane.style.display = 'block';
+      if (tabPrev) { tabPrev.classList.add('btn-secondary'); tabPrev.classList.remove('btn-primary'); }
+      if (tabMd) { tabMd.classList.add('btn-primary'); tabMd.classList.remove('btn-secondary'); }
+    }
+  }
+
+  function onCleanedMarkdownManualEdit() {
+    const mdVal = document.getElementById('cleaner-markdown-output').value;
+    const title = (lastCleanedResult && lastCleanedResult.title) ? lastCleanedResult.title : '';
+    const html = parseMarkdownPreview(title, mdVal);
+    document.getElementById('cleaner-pane-preview').innerHTML = html;
+  }
+
+  // Core Formatting & Typography Engine
+  function cleanRawText(rawText, options) {
+    if (!rawText || !rawText.trim()) {
+      return {
+        title: '',
+        summary: '',
+        cleanedMarkdown: '',
+        stats: { quotes: 0, dashes: 0, orphans: 0, headings: 0, lists: 0 }
+      };
+    }
+
+    let text = rawText.trim();
+    const stats = { quotes: 0, dashes: 0, orphans: 0, headings: 0, lists: 0 };
+    let extractedTitle = '';
+    let extractedSummary = '';
+
+    // 1. Łączenie pourywanych linii (jeśli włączone)
+    if (options.mergeLines) {
+      const rawLines = text.split('\n');
+      const mergedLines = [];
+      for (let i = 0; i < rawLines.length; i++) {
+        const cur = rawLines[i].trim();
+        const nxt = (rawLines[i + 1] || '').trim();
+        if (cur !== '' && nxt !== '') {
+          const isCurSpecial = /^(\s*[-*•#>]|\d+[.)])/.test(cur);
+          const isNxtSpecial = /^(\s*[-*•#>]|\d+[.)])/.test(nxt);
+          const endsWithPunct = /[.?!:;…”"»]\s*$/.test(cur);
+          if (!isCurSpecial && !isNxtSpecial && !endsWithPunct && cur.length > 25) {
+            mergedLines.push(cur + ' ' + nxt);
+            i++;
+            continue;
+          }
+        }
+        mergedLines.push(rawLines[i]);
+      }
+      text = mergedLines.join('\n');
+    }
+
+    // 2. Podział na akapity / bloki tekstu
+    let blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+
+    // 3. Wykrywanie Tytułu i Leadu z pierwszych linijek
+    if (options.extractTitle && blocks.length > 0) {
+      const firstLines = blocks[0].split('\n').map(l => l.trim()).filter(Boolean);
+      if (firstLines.length === 1 && firstLines[0].length <= 110 && !firstLines[0].startsWith('#')) {
+        extractedTitle = firstLines[0].replace(/^[#\-*•\s]+/, '').replace(/[.]$/, '').trim();
+        blocks.shift();
+      }
+      if (blocks.length > 1) {
+        const candidateLead = blocks[0];
+        if (candidateLead.length <= 320 && !candidateLead.includes('\n') && !/^[-*•#>]/.test(candidateLead)) {
+          extractedSummary = candidateLead;
+          blocks.shift();
+        }
+      }
+    }
+
+    // 4. Przetwarzanie bloków
+    const processedBlocks = [];
+    
+    blocks.forEach(block => {
+      let lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+      if (lines.length === 0) return;
+
+      // Wykrycie śródtytułu osadzonego na początku bloku przed akapitem lub listą
+      if (options.headings && lines.length > 1) {
+        const first = lines[0];
+        const isBulletOrQuote = /^[-*•+>]|\d+[.)]/.test(first);
+        if (!first.startsWith('#') && !isBulletOrQuote && first.length >= 3 && first.length <= 75 && !/[.]$/.test(first)) {
+          stats.headings++;
+          processedBlocks.push(`## ${first}`);
+          lines.shift();
+        }
+      }
+
+      // Wykrycie pojedynczego wiersza jako śródtytuł
+      if (options.headings && lines.length === 1) {
+        const line = lines[0];
+        const isBulletOrQuote = /^[-*•+>]|\d+[.)]/.test(line);
+        if (!line.startsWith('#') && !isBulletOrQuote && line.length >= 3 && line.length <= 80 && !/[.]$/.test(line)) {
+          stats.headings++;
+          processedBlocks.push(`## ${line}`);
+          return;
+        }
+      }
+
+      // Wykrycie cytatu blokowego (wiersz w całości w cudzysłowach lub z >)
+      if (lines.length === 1 && (/^["„«].+["”»]$/.test(lines[0]) || lines[0].startsWith('> '))) {
+        let q = lines[0].replace(/^>\s*/, '').replace(/^["„«]|["”»]$/g, '').trim();
+        processedBlocks.push(`> „${q}”`);
+        return;
+      }
+
+      // Normalizacja list punktowanych i numerowanych
+      const processedLines = lines.map(line => {
+        if (options.lists) {
+          if (/^[•*+]\s+/.test(line)) {
+            stats.lists++;
+            return '- ' + line.replace(/^[•*+]\s+/, '');
+          }
+          if (/^(\d+)\)\s+/.test(line)) {
+            stats.lists++;
+            return line.replace(/^(\d+)\)\s+/, '$1. ');
+          }
+        }
+        return line;
+      });
+
+      processedBlocks.push(processedLines.join('\n'));
+    });
+
+    let result = processedBlocks.join('\n\n');
+
+    // 5. Polskie cudzysłowy drukarskie („ ... ”)
+    if (options.quotes) {
+      const qCount = (result.match(/"/g) || []).length;
+      result = result.replace(/(^|[\s(\[{>«])"/g, '$1„');
+      result = result.replace(/"/g, '”');
+      result = result.replace(/“/g, '„');
+      stats.quotes += qCount;
+    }
+
+    // 6. Typograficzne pauzy myślnikowe ( — )
+    if (options.dashes) {
+      const dMatches = (result.match(/([^\n\r])\s+[-–—]{1,2}\s+/g) || []).length;
+      result = result.replace(/([^\n\r])\s+[-–—]{1,2}\s+/g, '$1 — ');
+      stats.dashes += dMatches;
+    }
+
+    // 7. Wielokropki
+    result = result.replace(/\.{3,}/g, '…');
+
+    // 8. Twarde spacje przy wiszących spójnikach (sierotki typograficzne)
+    if (options.orphans) {
+      const orphanRegex = /(\b[aiouwzAIOUWZ])\s+/g;
+      const oMatches = (result.match(orphanRegex) || []).length;
+      result = result.replace(orphanRegex, '$1\u00A0');
+      stats.orphans += oMatches;
+    }
+
+    return {
+      title: extractedTitle,
+      summary: extractedSummary,
+      cleanedMarkdown: result,
+      stats: stats
+    };
+  }
+
+  // Render safe formatted HTML for previews
+  function parseMarkdownPreview(title, mdText) {
+    let html = '';
+    if (title) {
+      html += `<h1 style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 800; line-height: 1.3; margin-bottom: 1rem; color: var(--text-primary);">${escapeHtml(title)}</h1>`;
+    }
+
+    const lines = (mdText || '').split('\n');
+    let inList = false;
+
+    lines.forEach(rawLine => {
+      let line = escapeHtml(rawLine);
+      if (line.startsWith('# ')) {
+        html += `<h1 style="font-family: var(--font-serif); font-size: 1.4rem; font-weight: 800; margin: 1.25rem 0 0.5rem 0;">${line.substring(2)}</h1>`;
+      } else if (line.startsWith('## ')) {
+        html += `<h2 style="font-family: var(--font-serif); font-size: 1.2rem; font-weight: 700; margin: 1.2rem 0 0.5rem 0; color: var(--accent);">${line.substring(3)}</h2>`;
+      } else if (line.startsWith('### ')) {
+        html += `<h3 style="font-family: var(--font-serif); font-size: 1.05rem; font-weight: 700; margin: 1rem 0 0.4rem 0;">${line.substring(4)}</h3>`;
+      } else if (line.startsWith('&gt; ')) {
+        html += `<blockquote style="border-left: 3.5px solid var(--accent); margin: 1rem 0; padding: 0.5rem 1rem; font-style: italic; background: var(--bg-card); border-radius: 4px; color: var(--text-secondary);">${line.substring(5)}</blockquote>`;
+      } else if (line.startsWith('- ') || line.startsWith('* ')) {
+        if (!inList) { html += '<ul style="padding-left: 1.25rem; margin-bottom: 0.75rem;">'; inList = true; }
+        html += `<li style="margin-bottom: 0.25rem;">${line.substring(2)}</li>`;
+      } else if (line.startsWith('---')) {
+        if (inList) { html += '</ul>'; inList = false; }
+        html += '<hr style="margin: 1.25rem 0; border: none; border-top: 1px solid var(--border-color);">';
+      } else if (line.trim() === '') {
+        if (inList) { html += '</ul>'; inList = false; }
+      } else {
+        if (inList) { html += '</ul>'; inList = false; }
+        // Bold, italic, code, links
+        line = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        line = line.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        line = line.replace(/`(.*?)`/g, '<code style="background: var(--bg-card); padding: 0.15rem 0.35rem; border-radius: 3px; font-size: 0.88em;">$1</code>');
+        line = line.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">$1</a>');
+        html += `<p style="line-height: 1.65; margin-bottom: 0.85rem;">${line}</p>`;
+      }
+    });
+
+    if (inList) html += '</ul>';
+    return html || '<em style="color: var(--text-muted);">Brak tekstu do podglądu...</em>';
+  }
+
+  function runLiveClean() {
+    const rawText = document.getElementById('cleaner-raw-input').value;
+    const options = {
+      quotes: document.getElementById('clean-opt-quotes').checked,
+      dashes: document.getElementById('clean-opt-dashes').checked,
+      orphans: document.getElementById('clean-opt-orphans').checked,
+      headings: document.getElementById('clean-opt-headings').checked,
+      lists: document.getElementById('clean-opt-lists').checked,
+      extractTitle: document.getElementById('clean-opt-title').checked,
+      mergeLines: document.getElementById('clean-opt-merge').checked
+    };
+
+    lastCleanedResult = cleanRawText(rawText, options);
+
+    // Update Editable Markdown Tab
+    const mdOutput = document.getElementById('cleaner-markdown-output');
+    if (mdOutput) mdOutput.value = lastCleanedResult.cleanedMarkdown;
+
+    // Update Visual Preview Tab
+    const previewEl = document.getElementById('cleaner-pane-preview');
+    if (previewEl) {
+      previewEl.innerHTML = parseMarkdownPreview(lastCleanedResult.title, lastCleanedResult.cleanedMarkdown);
+    }
+
+    // Word count & reading time badge
+    const words = lastCleanedResult.cleanedMarkdown.trim() ? lastCleanedResult.cleanedMarkdown.trim().split(/\s+/).length : 0;
+    const mins = Math.max(1, Math.ceil(words / 200));
+    document.getElementById('cleaner-stats-badge').textContent = `● ${words} słów (~${mins} min czytania)`;
+
+    // Detailed summary bar
+    const st = lastCleanedResult.stats;
+    const parts = [];
+    if (lastCleanedResult.title) parts.push(`🎯 Wykryto tytuł: „${lastCleanedResult.title.slice(0, 30)}...”`);
+    if (st.headings > 0) parts.push(`📑 ${st.headings} śródtytułów`);
+    if (st.quotes > 0) parts.push(`„” ${st.quotes} cudzysłowów`);
+    if (st.dashes > 0) parts.push(`— ${st.dashes} pauz`);
+    if (st.orphans > 0) parts.push(`🔗 ${st.orphans} twardych spacji`);
+    if (st.lists > 0) parts.push(`• ${st.lists} punktów listy`);
+
+    const summaryEl = document.getElementById('cleaner-changes-summary');
+    if (parts.length > 0) {
+      summaryEl.innerHTML = `✨ <strong>Wykryto i poprawiono:</strong> ${parts.join(' &bull; ')}`;
+    } else {
+      summaryEl.textContent = 'Wpisz lub wklej tekst, aby zobaczyć statystykę wykrytych poprawek typograficznych.';
+    }
+  }
+
+  function applyCleanedTextToEditor() {
+    if (!lastCleanedResult) {
+      runLiveClean();
+    }
+    const mdVal = document.getElementById('cleaner-markdown-output').value || (lastCleanedResult ? lastCleanedResult.cleanedMarkdown : '');
+    
+    // Fill title if detected and editor title is empty (or user approves)
+    const titleInput = document.getElementById('scratch-title');
+    const slugInput = document.getElementById('scratch-slug');
+    if (lastCleanedResult && lastCleanedResult.title) {
+      if (!titleInput.value || confirm(`Wykryto tytuł: "${lastCleanedResult.title}". Czy ustawić go w formularzu eseju?`)) {
+        titleInput.value = lastCleanedResult.title;
+        slugInput.value = slugify(lastCleanedResult.title);
+        slugManuallyEdited = true;
+      }
+    }
+
+    // Fill summary if detected
+    const sumInput = document.getElementById('scratch-summary');
+    if (lastCleanedResult && lastCleanedResult.summary && !sumInput.value) {
+      sumInput.value = lastCleanedResult.summary;
+    }
+
+    // Set body
+    const bodyInput = document.getElementById('scratch-body');
+    bodyInput.value = mdVal;
+
+    // Update live preview in main CMS
+    updateLivePreview();
+
+    // Close modal
+    closeTextCleanerModal();
+
+    // Show toast notification
+    const notif = document.getElementById('import-notification');
+    if (notif) {
+      notif.style.display = 'block';
+      notif.innerHTML = `🪄 <strong>Autopoprawiacz zakończył pracę!</strong> Tekst został sformatowany, cudzysłowy i pauzy poprawione, a artykuł wstawiony do edytora.`;
+      setTimeout(() => { notif.style.display = 'none'; }, 6000);
+      notif.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  function copyCleanedOutput() {
+    const mdVal = document.getElementById('cleaner-markdown-output').value || (lastCleanedResult ? lastCleanedResult.cleanedMarkdown : '');
+    navigator.clipboard.writeText(mdVal).then(() => {
+      alert('Sformatowany tekst Markdown został skopiowany do schowka!');
+    });
   }
 
   // Check auth state on initial load
