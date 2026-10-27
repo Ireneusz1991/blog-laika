@@ -135,6 +135,15 @@ def build_static(output_dir="dist", base_url=None):
         f.write(search_tmpl.render(**ctx_search))
     print("    [OK] Wygenerowano: szukaj/index.html")
 
+    # 3b. Panel CMS dla administratora (admin/index.html)
+    ctx_admin = get_common_context()
+    ctx_admin["posts"] = posts
+    admin_tmpl = env.get_template("admin/static_admin.html")
+    os.makedirs(os.path.join(output_dir, "admin"), exist_ok=True)
+    with open(os.path.join(output_dir, "admin", "index.html"), "w", encoding="utf-8") as f:
+        f.write(admin_tmpl.render(**ctx_admin))
+    print("    [OK] Wygenerowano: admin/index.html (Panel CMS na GitHubie)")
+
     # 4. Widoki poszczególnych esejów (post/<slug>/index.html)
     post_tmpl = env.get_template("post.html")
     for p in posts:

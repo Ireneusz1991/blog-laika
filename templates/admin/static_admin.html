@@ -1,0 +1,395 @@
+{% extends "base.html" %}
+
+{% block title %}Panel Administratora (CMS) | {{ blog_title }}{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 960px; padding-top: 1.5rem; padding-bottom: 4rem;">
+
+  <!-- Stan: Niezalogowany (Ekran Logowania) -->
+  <div id="admin-login-view" style="max-width: 440px; margin: 2rem auto 0 auto;">
+    <div style="background: var(--bg-card); padding: 2.25rem 2rem; border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-md);">
+      
+      <div style="text-align: center; margin-bottom: 1.75rem;">
+        <div style="width: 56px; height: 56px; border-radius: 16px; background: linear-gradient(135deg, #2563eb, #4338ca); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <h1 style="font-family: var(--font-serif); font-size: 1.6rem; font-weight: 800; margin-bottom: 0.35rem;">
+          Panel Autorski (CMS)
+        </h1>
+        <p style="font-size: 0.88rem; color: var(--text-secondary);">
+          Dostęp administracyjny do Bloga Laika
+        </p>
+      </div>
+
+      <div id="login-error-alert" style="display: none; background: #fee2e2; border: 1.5px solid #f87171; color: #991b1b; padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.88rem;">
+        Niepoprawny login lub hasło. Spróbuj ponownie.
+      </div>
+
+      <form id="admin-login-form" onsubmit="handleStaticLogin(event);">
+        <div class="form-group" style="margin-bottom: 1.1rem;">
+          <label class="form-label" for="admin-user" style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">
+            Nazwa użytkownika
+          </label>
+          <input class="form-input" type="text" id="admin-user" required autofocus placeholder="np. admin" autocomplete="username">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label" for="admin-pass" style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">
+            Hasło dostępu
+          </label>
+          <input class="form-input" type="password" id="admin-pass" required placeholder="Wpisz hasło" autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.75rem; font-weight: 600;">
+          Zaloguj się do panelu &rarr;
+        </button>
+      </form>
+
+      <div style="margin-top: 1.75rem; text-align: center; font-size: 0.82rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 1rem; line-height: 1.6;">
+        Dane dostępowe do konta:<br>
+        Login: <strong style="color: var(--text-primary); font-family: var(--font-mono);">admin</strong> &nbsp;|&nbsp; 
+        Hasło: <strong style="color: var(--text-primary); font-family: var(--font-mono);">laik2026</strong>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- Stan: Zalogowany (Pełny Panel CMS w chmurze / na GitHubie) -->
+  <div id="admin-dashboard-view" style="display: none;">
+    
+    <!-- Top Action Bar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1.5px solid var(--border-color);">
+      <div>
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span>
+          <span style="font-size: 0.82rem; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 0.5px;">Zalogowano jako Administrator</span>
+        </div>
+        <h1 style="font-family: var(--font-serif); font-size: 1.85rem; font-weight: 800;">
+          Kokpit Zarządzania Blogiem
+        </h1>
+      </div>
+
+      <div style="display: flex; gap: 0.65rem; align-items: center; flex-wrap: wrap;">
+        <button onclick="toggleOnlineEditor();" class="btn btn-primary" id="btn-toggle-editor">
+          ✍️ Nowy esej (Edytor Online)
+        </button>
+        <button onclick="handleAdminLogout();" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.45rem 0.9rem;">
+          Wyloguj się
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Status Cards -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+      <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm);">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Wpisy opublikowane</div>
+        <div style="font-size: 2.2rem; font-weight: 800; color: var(--accent); margin-top: 0.25rem;">{{ posts|length }}</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem;">Aktywne w serwisie</div>
+      </div>
+
+      <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm);">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Domena i Hosting</div>
+        <div style="font-size: 1.15rem; font-weight: 700; color: #10b981; margin-top: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+          <span>blog-laika.com</span>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem;">GitHub Pages (HTTPS aktywny)</div>
+      </div>
+
+      <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm);">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Repozytorium GitHub</div>
+        <div style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-top: 0.5rem;">
+          <a href="https://github.com/Ireneusz1991/blog-laika" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">
+            Ireneusz1991/blog-laika
+          </a>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem;">Gałąź kodu: <code>main</code></div>
+      </div>
+    </div>
+
+    <!-- Management Methods Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+      
+      <!-- Option 1: Local Full CMS -->
+      <div style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+        <div style="font-size: 1.4rem; margin-bottom: 0.5rem;">💻</div>
+        <h3 style="font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">
+          Lokalny panel CMS (SQLite)
+        </h3>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
+          Uruchom plik <code style="font-size: 0.85em;">uruchom_blog.bat</code> na swoim komputerze, aby pisać wpisy z automatycznym zapisem do bazy SQLite oraz 1-klikowym publikowaniem.
+        </p>
+        <div>
+          <a href="http://127.0.0.1:8000/admin" target="_blank" class="btn btn-secondary" style="width: 100%; justify-content: center; font-size: 0.88rem;">
+            Otwórz http://127.0.0.1:8000/admin &rarr;
+          </a>
+        </div>
+      </div>
+
+      <!-- Option 2: Cloud GitHub Web Editor -->
+      <div style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+        <div style="font-size: 1.4rem; margin-bottom: 0.5rem;">☁️</div>
+        <h3 style="font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">
+          Edytor Webowy GitHub (github.dev)
+        </h3>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
+          Możesz edytować posty bezpośrednio w przeglądarce za pomocą webowego VS Code na GitHubie. Wystarczy otworzyć edytor w chmurze:
+        </p>
+        <div>
+          <a href="https://github.dev/Ireneusz1991/blog-laika" target="_blank" rel="noopener" class="btn btn-secondary" style="width: 100%; justify-content: center; font-size: 0.88rem; border-color: var(--accent); color: var(--accent);">
+            Otwórz GitHub Web IDE &rarr;
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Live Online Markdown Scratchpad (Collapsible) -->
+    <div id="online-editor-box" style="display: none; background: var(--bg-card); padding: 1.75rem; border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-md); margin-bottom: 2.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+        <h3 style="font-family: var(--font-serif); font-size: 1.3rem; font-weight: 700;">
+          Edytor Markdown na żywo
+        </h3>
+        <button onclick="toggleOnlineEditor();" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.25rem 0.6rem;">
+          ✕ Zamknij edytor
+        </button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+        <div>
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Tytuł eseju</label>
+          <input type="text" id="scratch-title" class="form-input" placeholder="Wpisz tytuł..." oninput="updateLivePreview();">
+        </div>
+        <div>
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Kategoria</label>
+          <select id="scratch-category" class="form-select">
+            <option value="technologia">Technologia</option>
+            <option value="gospodarka">Gospodarka</option>
+            <option value="polityka">Polityka</option>
+            <option value="eseje">Inne eseje</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Krótkie streszczenie / Lead</label>
+        <textarea id="scratch-summary" class="form-input" rows="2" placeholder="Wpisz krótkie wprowadzenie do eseju..."></textarea>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <label style="font-size: 0.85rem; font-weight: 600;">Treść eseju (Markdown)</label>
+            <span id="scratch-stats" style="font-size: 0.78rem; color: var(--text-muted);">0 słów | ~0 min czytania</span>
+          </div>
+          <textarea id="scratch-body" class="form-input" style="height: 380px; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.5; resize: vertical;" placeholder="# Twój esej w Markdown..." oninput="updateLivePreview();"></textarea>
+        </div>
+
+        <div>
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Podgląd na żywo</label>
+          <div id="scratch-preview" class="article-body" style="height: 380px; overflow-y: auto; background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.95rem;">
+            <em style="color: var(--text-muted);">Zacznij pisać po lewej stronie, aby zobaczyć podgląd eseju...</em>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem; flex-wrap: wrap;">
+        <button onclick="copyScratchMarkdown();" class="btn btn-primary" style="font-size: 0.88rem;">
+          📋 Kopiuj treść Markdown
+        </button>
+        <button onclick="downloadScratchFile();" class="btn btn-secondary" style="font-size: 0.88rem;">
+          💾 Pobierz plik .md
+        </button>
+      </div>
+    </div>
+
+    <!-- Table of Current Posts -->
+    <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); overflow: hidden;">
+      <div style="padding: 1.25rem 1.5rem; border-bottom: 1.5px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700;">
+          Opublikowane eseje na blogu ({{ posts|length }})
+        </h3>
+        <span style="font-size: 0.82rem; color: var(--text-muted);">Wszystkie wpisy są zsynchronizowane z GitHub Pages</span>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="admin-table" style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1.5px solid var(--border-color); background: var(--bg-surface); text-align: left; font-size: 0.82rem; text-transform: uppercase; color: var(--text-muted);">
+              <th style="padding: 0.85rem 1.25rem;">Tytuł eseju</th>
+              <th style="padding: 0.85rem 1rem;">Kategoria</th>
+              <th style="padding: 0.85rem 1rem;">Czas czytania</th>
+              <th style="padding: 0.85rem 1rem;">Data publikacji</th>
+              <th style="padding: 0.85rem 1.25rem; text-align: right;">Akcje</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for post in posts %}
+            <tr style="border-bottom: 1px solid var(--border-color); font-size: 0.9rem;">
+              <td style="padding: 1rem 1.25rem; font-weight: 600;">
+                <a href="{{ base_url }}/post/{{ post.slug }}/" target="_blank" style="color: var(--text-primary); text-decoration: none;">
+                  {{ post.title }}
+                </a>
+              </td>
+              <td style="padding: 1rem;">
+                <span class="post-category-tag" style="font-size: 0.8rem;">{{ post.category_name }}</span>
+              </td>
+              <td style="padding: 1rem; color: var(--text-muted);">
+                ⏱️ {{ post.read_time }} min
+              </td>
+              <td style="padding: 1rem; color: var(--text-muted);">
+                {{ post.created_date }}
+              </td>
+              <td style="padding: 1rem 1.25rem; text-align: right; white-space: nowrap;">
+                <a href="{{ base_url }}/post/{{ post.slug }}/" target="_blank" class="btn btn-secondary" style="padding: 0.3rem 0.65rem; font-size: 0.8rem; margin-right: 0.35rem;">
+                  Podgląd ↗
+                </a>
+                <a href="https://github.com/Ireneusz1991/blog-laika/tree/main" target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 0.3rem 0.65rem; font-size: 0.8rem;">
+                  GitHub ↗
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Authentication & Editor Scripts -->
+<script>
+  // SHA-256 for password 'laik2026'
+  const PASS_HASH = '058042e22c8f76cc70953a41bd3ac95f4218985bb3dd607ea1e98090ca3838dc';
+  const VALID_USER = 'admin';
+
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.prototype.map.call(new Uint8Array(buf), x => (('0' + x.toString(16)).slice(-2))).join('');
+  }
+
+  async function handleStaticLogin(e) {
+    e.preventDefault();
+    const user = document.getElementById('admin-user').value.trim();
+    const pass = document.getElementById('admin-pass').value;
+    const errAlert = document.getElementById('login-error-alert');
+
+    const hashed = await sha256(pass);
+
+    if (user === VALID_USER && (hashed === PASS_HASH || pass === 'laik2026')) {
+      sessionStorage.setItem('blog_laika_admin_auth', 'authenticated');
+      errAlert.style.display = 'none';
+      renderView();
+    } else {
+      errAlert.style.display = 'block';
+      document.getElementById('admin-pass').value = '';
+      document.getElementById('admin-pass').focus();
+    }
+  }
+
+  function handleAdminLogout() {
+    sessionStorage.removeItem('blog_laika_admin_auth');
+    renderView();
+  }
+
+  function renderView() {
+    const isAuthed = sessionStorage.getItem('blog_laika_admin_auth') === 'authenticated';
+    const loginView = document.getElementById('admin-login-view');
+    const dashboardView = document.getElementById('admin-dashboard-view');
+
+    if (isAuthed) {
+      loginView.style.display = 'none';
+      dashboardView.style.display = 'block';
+    } else {
+      loginView.style.display = 'block';
+      dashboardView.style.display = 'none';
+    }
+  }
+
+  function toggleOnlineEditor() {
+    const box = document.getElementById('online-editor-box');
+    const btn = document.getElementById('btn-toggle-editor');
+    if (box.style.display === 'none') {
+      box.style.display = 'block';
+      btn.textContent = '✕ Zwiń edytor';
+      box.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      box.style.display = 'none';
+      btn.textContent = '✍️ Nowy esej (Edytor Online)';
+    }
+  }
+
+  function updateLivePreview() {
+    const title = document.getElementById('scratch-title').value;
+    const text = document.getElementById('scratch-body').value;
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const minutes = Math.max(1, Math.ceil(words / 200));
+
+    document.getElementById('scratch-stats').textContent = `${words} słów | ~${minutes} min czytania`;
+
+    // Simple Markdown parsing for preview
+    let html = '';
+    if (title) html += `<h1>${escapeHtml(title)}</h1>`;
+    
+    const lines = text.split('\n');
+    let inList = false;
+
+    lines.forEach(line => {
+      line = escapeHtml(line);
+      if (line.startsWith('# ')) {
+        html += `<h1>${line.substring(2)}</h1>`;
+      } else if (line.startsWith('## ')) {
+        html += `<h2>${line.substring(3)}</h2>`;
+      } else if (line.startsWith('### ')) {
+        html += `<h3>${line.substring(4)}</h3>`;
+      } else if (line.startsWith('&gt; ')) {
+        html += `<blockquote>${line.substring(5)}</blockquote>`;
+      } else if (line.startsWith('- ') || line.startsWith('* ')) {
+        if (!inList) { html += '<ul>'; inList = true; }
+        html += `<li>${line.substring(2)}</li>`;
+      } else if (line.trim() === '') {
+        if (inList) { html += '</ul>'; inList = false; }
+      } else {
+        if (inList) { html += '</ul>'; inList = false; }
+        // Simple bold/italic
+        line = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        line = line.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        line = line.replace(/`(.*?)`/g, '<code>$1</code>');
+        html += `<p>${line}</p>`;
+      }
+    });
+
+    if (inList) html += '</ul>';
+    document.getElementById('scratch-preview').innerHTML = html || '<em style="color: var(--text-muted);">Zacznij pisać po lewej stronie, aby zobaczyć podgląd eseju...</em>';
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function copyScratchMarkdown() {
+    const text = document.getElementById('scratch-body').value;
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Treść Markdown została skopiowana do schowka!');
+    });
+  }
+
+  function downloadScratchFile() {
+    const title = document.getElementById('scratch-title').value || 'nowy-esej';
+    const text = document.getElementById('scratch-body').value;
+    const blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `${title.toLowerCase().replace(/[^a-z0-9]/g, '-')}.md`;
+    a.click();
+  }
+
+  // Check auth state on initial load
+  window.addEventListener('DOMContentLoaded', renderView);
+</script>
+{% endblock %}
