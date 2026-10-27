@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}O blogu & Manifest | {{ blog_title }}{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: var(--max-w-content); padding-top: 1rem;">
+  
+  <header style="text-align: center; margin-bottom: 3rem;">
+    <div style="margin-bottom: 1.5rem;">
+      <img src="/static/images/logo.jpg" alt="Logo Blog Laika" style="max-width: 240px; border-radius: 12px; box-shadow: var(--shadow-md);">
+    </div>
+    <h1 style="font-family: var(--font-serif); font-size: 2.8rem; font-weight: 800; margin-bottom: 0.8rem;">
+      Manifest Bloga Laika
+    </h1>
+    <p style="font-size: 1.25rem; color: var(--text-secondary); font-style: italic;">
+      „W świecie wąskich specjalizacji i hermetycznego żargonu, dociekliwy laik zadaje najważniejsze pytania.”
+    </p>
+  </header>
+
+  <div class="article-body">
+    <p>
+      <strong>Blog Laika</strong> narodził się z przekonania, że najważniejsze zjawiska współczesności – rewolucja sztucznej inteligencji, transformacja energetyczna, wstrząsy makroekonomiczne czy nowy podział geopolityczny – są zbyt ważne, by zostawiać je wyłącznie zamkniętym gildiom specjalistów.
+    </p>
+
+    <h2>Trzy filary refleksji</h2>
+    
+    <ul>
+      <li>
+        <strong>Technologia:</strong> Nie ekscytujemy się gadżetami ani marketingowymi obietnicami. Pytamy o architekturę systemów, koncentrację władzy obliczeniowej i wpływ cyfryzacji na to, jak myślimy i pracujemy.
+      </li>
+      <li>
+        <strong>Gospodarka:</strong> Szukamy przyczyn zamiast skutków. Odchodzimy od codziennego szumu giełdowego na rzecz długich cykli dłużnych, demografii, surowców i polityki monetarnej.
+      </li>
+      <li>
+        <strong>Polityka:</strong> Analizujemy mechanizmy siły, interesów i instytucji. Interesuje nas geopolityka twardych faktów, a nie partyjna retoryka.
+      </li>
+    </ul>
+
+    <h2>Dlaczego „Laik”?</h2>
+    <p>
+      Słowo <em>laik</em> bywa używane protekcjonalnie. Jednak w erze przeładowania informacyjnego to właśnie postawa świeżego, ciekawego świata obserwatora pozwala dostrzegać powiązania niewidoczne dla wąsko wyspecjalizowanych analityków. Nazwa nawiązuje również metaforycznie do pierwszej podróżniczki kosmicznej – gotowości do eksploracji nieznanego.
+    </p>
+
+    <blockquote>
+      „Celem nie jest posiadanie racji za wszelką cenę, lecz lepsze zrozumienie rzeczywistości w procesie rzetelnej analizy.”
+    </blockquote>
+
+    <h2>Kontakt i współpraca</h2>
+    <p>
+      Eseje są otwarte na merytoryczną polemikę. Jeśli chcesz podzielić się uwagami, zaproponować temat lub nawiązać kontakt, napisz: <code>kontakt@bloglaika.pl</code> (lub przez formularz w mediach społecznościowych).
+    </p>
+  </div>
+
+</div>
+{% endblock %}

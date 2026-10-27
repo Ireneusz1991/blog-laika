@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Kategoria: {{ category.name }} | {{ blog_title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+  
+  <div style="margin-bottom: 3rem; text-align: center; padding: 2rem 0; border-bottom: 1px solid var(--border-color);">
+    <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+      <span class="dot dot-{{ category.slug }}" style="width: 12px; height: 12px;"></span>
+      <span style="font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; color: var(--accent);">
+        Kategoria
+      </span>
+    </div>
+    <h1 style="font-family: var(--font-serif); font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem;">
+      {{ category.name }}
+    </h1>
+    <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto; font-size: 1.1rem;">
+      {{ category.desc }}
+    </p>
+  </div>
+
+  {% if posts %}
+  <div class="posts-grid">
+    {% for post in posts %}
+    <article class="post-card">
+      {% if post.cover_image %}
+      <a href="/post/{{ post.slug }}">
+        <img src="{{ post.cover_image }}" alt="{{ post.title }}" class="post-card-thumb" loading="lazy">
+      </a>
+      {% endif %}
+
+      <div class="post-card-body">
+        <div class="post-meta">
+          <span class="post-category-tag">{{ category.name }}</span>
+          <span>•</span>
+          <span>⏱️ {{ post.read_time }} min</span>
+        </div>
+
+        <h3 class="post-card-title">
+          <a href="/post/{{ post.slug }}">{{ post.title }}</a>
+        </h3>
+
+        <p class="post-card-excerpt">
+          {{ post.summary }}
+        </p>
+
+        <div class="post-card-footer">
+          <span>{{ post.created_date }}</span>
+          <a href="/post/{{ post.slug }}" style="text-decoration: none; font-weight: 600; color: var(--accent);">
+            Czytaj &rarr;
+          </a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div style="text-align: center; padding: 4rem 1rem; color: var(--text-muted);">
+    <p style="font-size: 1.2rem; margin-bottom: 1rem;">Brak wpisów w kategorii {{ category.name }}.</p>
+    <a href="/" class="btn btn-secondary">Wróć do strony głównej</a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

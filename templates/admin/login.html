@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Logowanie do CMS | {{ blog_title }}{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 440px; margin-top: 2rem;">
+  <div style="background: var(--bg-card); padding: 2.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-md);">
+    
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <img src="/static/images/logo.svg" alt="Blog Laika" style="height: 48px; margin-bottom: 1rem;">
+      <h2 style="font-size: 1.5rem; font-weight: 700;">Panel Autorski (CMS)</h2>
+      <p style="font-size: 0.9rem; color: var(--text-muted);">Zaloguj się, aby zarządzać esejami</p>
+    </div>
+
+    {% if error %}
+    <div style="background: #fee2e2; border: 1px solid #f87171; color: #b91c1c; padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; font-size: 0.9rem;">
+      {{ error }}
+    </div>
+    {% endif %}
+
+    <form action="/admin/login" method="post">
+      <div class="form-group">
+        <label class="form-label" for="username">Nazwa użytkownika</label>
+        <input class="form-input" type="text" id="username" name="username" required autofocus placeholder="np. admin">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Hasło</label>
+        <input class="form-input" type="password" id="password" name="password" required placeholder="Wpisz hasło">
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.75rem; margin-top: 1rem;">
+        Zaloguj się do panelu
+      </button>
+    </form>
+
+    <div style="margin-top: 1.5rem; text-align: center; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 1rem;">
+      Domyślne dane dostępowe: <br>
+      Login: <code>admin</code> | Hasło: <code>laik2026</code>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

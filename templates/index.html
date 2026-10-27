@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+  {% if featured_post and not current_category %}
+  <!-- Featured Hero Post -->
+  <article class="featured-card">
+    <div class="featured-content">
+      <div class="post-meta">
+        <a href="/kategoria/{{ featured_post.category }}" class="post-category-tag">
+          {{ featured_post.category_name }}
+        </a>
+        <span>•</span>
+        <span>⏱️ {{ featured_post.read_time }} min czytania</span>
+        <span>•</span>
+        <span>{{ featured_post.created_date }}</span>
+      </div>
+
+      <h1 class="featured-title">
+        <a href="/post/{{ featured_post.slug }}">{{ featured_post.title }}</a>
+      </h1>
+
+      <p class="featured-excerpt">
+        {{ featured_post.summary }}
+      </p>
+
+      <div>
+        <a href="/post/{{ featured_post.slug }}" class="btn btn-primary">
+          Czytaj esej &rarr;
+        </a>
+      </div>
+    </div>
+
+    {% if featured_post.cover_image %}
+    <div class="featured-image-wrapper">
+      <img src="{{ featured_post.cover_image }}" alt="{{ featured_post.title }}" class="featured-image">
+    </div>
+    {% endif %}
+  </article>
+  {% endif %}
+
+  <!-- Section Header -->
+  <div class="section-header">
+    <h2 class="section-title">
+      {% if current_category_obj %}
+        Kategoria: {{ current_category_obj.name }}
+      {% else %}
+        Najnowsze publikacje i eseje
+      {% endif %}
+    </h2>
+    <span style="font-size: 0.88rem; color: var(--text-muted);">
+      {{ posts|length }} {% if posts|length == 1 %}esej{% elif posts|length in [2,3,4] %}eseje{% else %}esejów{% endif %}
+    </span>
+  </div>
+
+  {% if posts %}
+  <div class="posts-grid">
+    {% for post in posts %}
+    <article class="post-card">
+      {% if post.cover_image %}
+      <a href="/post/{{ post.slug }}">
+        <img src="{{ post.cover_image }}" alt="{{ post.title }}" class="post-card-thumb" loading="lazy">
+      </a>
+      {% endif %}
+
+      <div class="post-card-body">
+        <div class="post-meta">
+          <a href="/kategoria/{{ post.category }}" class="post-category-tag">
+            {{ post.category_name }}
+          </a>
+          <span>•</span>
+          <span>⏱️ {{ post.read_time }} min</span>
+        </div>
+
+        <h3 class="post-card-title">
+          <a href="/post/{{ post.slug }}">{{ post.title }}</a>
+        </h3>
+
+        <p class="post-card-excerpt">
+          {{ post.summary }}
+        </p>
+
+        <div class="post-card-footer">
+          <span>{{ post.created_date }}</span>
+          <a href="/post/{{ post.slug }}" style="text-decoration: none; font-weight: 600; color: var(--accent);">
+            Czytaj &rarr;
+          </a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div style="text-align: center; padding: 4rem 1rem; color: var(--text-muted);">
+    <p style="font-size: 1.2rem; margin-bottom: 1rem;">Brak opublikowanych wpisów w tej sekcji.</p>
+    <a href="/" class="btn btn-secondary">Wróć do strony głównej</a>
+  </div>
+  {% endif %}
+
+  <!-- Newsletter / Manifesto Banner -->
+  <div style="margin-top: 5rem; padding: 3rem; background: var(--bg-surface); border-radius: var(--radius-lg); text-align: center; border: 1px solid var(--border-color);">
+    <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 0.8rem;">
+      Myśl poza schematami. Dołącz do dociekliwych.
+    </h3>
+    <p style="color: var(--text-secondary); max-width: 580px; margin: 0 auto 1.5rem auto; font-size: 1.05rem;">
+      Blog Laika to przestrzeń bez reklam, clickbaitu i pośpiechu. Zapisz się do powiadomień przez czytnik RSS lub regularnie odwiedzaj stronę.
+    </p>
+    <a href="/rss.xml" target="_blank" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 11a9 9 0 0 1 9 9"></path>
+        <path d="M4 4a16 16 0 0 1 16 16"></path>
+        <circle cx="5" cy="19" r="1"></circle>
+      </svg>
+      Subskrybuj kanał RSS
+    </a>
+  </div>
+
+</div>
+{% endblock %}

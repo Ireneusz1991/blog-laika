@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 80" width="100%" height="100%">
+  <defs>
+    <linearGradient id="laikaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+    <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#ef4444" />
+    </linearGradient>
+  </defs>
+
+  <!-- Emblem Icon -->
+  <g transform="translate(10, 10)">
+    <!-- Hexagonal / Shield Base -->
+    <rect x="0" y="0" width="60" height="60" rx="14" fill="url(#laikaGrad)" />
+    
+    <!-- Stylized Compass / Feather Quill & Orbit -->
+    <!-- Stylized Feather Nib -->
+    <path d="M 30 14 L 38 34 L 30 46 L 22 34 Z" fill="#ffffff" />
+    <line x1="30" y1="22" x2="30" y2="44" stroke="#2563eb" stroke-width="2" stroke-linecap="round" />
+    <circle cx="30" cy="30" r="2.2" fill="#2563eb" />
+    
+    <!-- Inquisitive Star / Satellite -->
+    <circle cx="43" cy="18" r="4" fill="url(#starGrad)" />
+    <!-- Orbit Arc -->
+    <path d="M 17 38 A 16 16 0 0 1 43 25" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-dasharray="2 3" opacity="0.8" />
+  </g>
+
+  <!-- Typography -->
+  <g transform="translate(85, 20)">
+    <!-- Main Title -->
+    <text x="0" y="27" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Merriweather', sans-serif" font-size="28" font-weight="800" letter-spacing="-0.5px" fill="currentColor">
+      BLOG LAIKA
+    </text>
+    
+    <!-- Subtitle / Tagline -->
+    <text x="1" y="46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600" letter-spacing="1.8px" fill="#64748b" text-transform="uppercase">
+      Technologia • Gospodarka • Polityka
+    </text>
+  </g>
+</svg>

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} | {{ blog_title }}{% endblock %}
+{% block description %}{{ post.summary }}{% endblock %}
+
+{% block content %}
+<article class="container">
+  
+  <header class="article-header">
+    <div class="post-meta" style="justify-content: center; margin-bottom: 1.2rem;">
+      <a href="/kategoria/{{ post.category }}" class="post-category-tag">
+        {{ post.category_name }}
+      </a>
+      <span>•</span>
+      <span>⏱️ {{ post.read_time }} minut czytania</span>
+      <span>•</span>
+      <span>{{ post.created_date }}</span>
+      {% if is_logged_in %}
+      <span>•</span>
+      <a href="/admin/edytuj/{{ post.id }}" style="color: var(--accent); font-weight: 600;">[Edytuj wpis]</a>
+      {% endif %}
+    </div>
+
+    <h1 class="article-title">{{ post.title }}</h1>
+
+    {% if post.summary %}
+    <p class="article-lead">{{ post.summary }}</p>
+    {% endif %}
+  </header>
+
+  {% if post.cover_image %}
+  <div class="article-cover">
+    <img src="{{ post.cover_image }}" alt="{{ post.title }}">
+  </div>
+  {% endif %}
+
+  <!-- Body Content -->
+  <div class="article-body">
+    {{ post.content_html|safe }}
+  </div>
+
+  <!-- Post Tags & Share bar -->
+  <div style="max-width: var(--max-w-content); margin: 3.5rem auto 0 auto; padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+      {% if post.tags %}
+        {% for tag in post.tags.split(',') %}
+          {% if tag.strip() %}
+          <span style="font-size: 0.8rem; background: var(--bg-surface); padding: 0.25rem 0.6rem; border-radius: 4px; color: var(--text-muted);">
+            #{{ tag.strip() }}
+          </span>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <div style="display: flex; gap: 0.75rem; align-items: center;">
+      <span style="font-size: 0.85rem; color: var(--text-muted);">Podziel się:</span>
+      <button id="btn-share" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+        Kopiuj link
+      </button>
+      <a href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ request.url|urlencode }}" 
+         target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 0.35rem 0.65rem;" title="Udostępnij na X">
+        𝕏
+      </a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url|urlencode }}" 
+         target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 0.35rem 0.65rem;" title="Udostępnij na LinkedIn">
+        in
+      </a>
+    </div>
+  </div>
+
+  <!-- Author Bio Card -->
+  <div class="author-card">
+    <div class="author-avatar">L</div>
+    <div class="author-info">
+      <h4>Autor: {{ blog_author }}</h4>
+      <p>{{ blog_author_bio }}</p>
+    </div>
+  </div>
+
+  <!-- Back to Home -->
+  <div style="max-width: var(--max-w-content); margin: 2.5rem auto 0 auto; text-align: center;">
+    <a href="/" class="btn btn-secondary">&larr; Powrót do listy esejów</a>
+  </div>
+
+</article>
+{% endblock %}

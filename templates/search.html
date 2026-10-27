@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Wyniki wyszukiwania dla "{{ query }}" | {{ blog_title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+  
+  <div style="margin-bottom: 2.5rem;">
+    <h1 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 0.5rem;">
+      Wyniki wyszukiwania dla: <span style="color: var(--accent);">„{{ query }}”</span>
+    </h1>
+    <p style="color: var(--text-muted);">
+      Znaleziono {{ posts|length }} pasujących wpisów.
+    </p>
+  </div>
+
+  {% if posts %}
+  <div class="posts-grid">
+    {% for post in posts %}
+    <article class="post-card">
+      <div class="post-card-body">
+        <div class="post-meta">
+          <span class="post-category-tag">{{ post.category_name }}</span>
+          <span>•</span>
+          <span>⏱️ {{ post.read_time }} min</span>
+        </div>
+
+        <h3 class="post-card-title">
+          <a href="/post/{{ post.slug }}">{{ post.title }}</a>
+        </h3>
+
+        <p class="post-card-excerpt">
+          {{ post.summary }}
+        </p>
+
+        <div class="post-card-footer">
+          <span>{{ post.created_date }}</span>
+          <a href="/post/{{ post.slug }}" style="text-decoration: none; font-weight: 600; color: var(--accent);">
+            Czytaj esej &rarr;
+          </a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div style="text-align: center; padding: 4rem 1rem; color: var(--text-muted); background: var(--bg-surface); border-radius: var(--radius-md);">
+    <p style="font-size: 1.2rem; margin-bottom: 1rem;">Nie znaleziono esejów pasujących do zapytania „{{ query }}”.</p>
+    <a href="/" class="btn btn-secondary">Zobacz wszystkie eseje</a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Panel CMS — Zarządzanie esejami | {{ blog_title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+  
+  <div class="admin-header">
+    <div>
+      <h1 style="font-size: 1.8rem; font-weight: 800;">Panel Zarządzania (CMS)</h1>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Zarządzaj swoimi esejami, publikacjami i szkicami</p>
+    </div>
+
+    <div style="display: flex; gap: 0.75rem;">
+      <a href="/admin/nowy" class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Napisz nowy esej
+      </a>
+      <a href="/admin/logout" class="btn btn-secondary">
+        Wyloguj
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; margin-bottom: 2.5rem;">
+    <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+      <div style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600;">OPUBLIKOWANE</div>
+      <div style="font-size: 2rem; font-weight: 800; color: var(--accent); margin-top: 0.25rem;">{{ stats.published }}</div>
+    </div>
+    
+    <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+      <div style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600;">SZKICE / ROBOCZE</div>
+      <div style="font-size: 2rem; font-weight: 800; color: #b45309; margin-top: 0.25rem;">{{ stats.drafts }}</div>
+    </div>
+
+    <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+      <div style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600;">ODSŁONY ŁĄCZNIE</div>
+      <div style="font-size: 2rem; font-weight: 800; color: #059669; margin-top: 0.25rem;">{{ stats.total_views }}</div>
+    </div>
+
+    <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+      <div style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600;">KATEGORIE AKTYWNE</div>
+      <div style="font-size: 0.9rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.2rem;">
+        {% for cat in categories %}
+        <span style="font-size: 0.8rem; color: var(--text-secondary);">
+          <strong style="color: var(--text-primary);">{{ cat.name }}:</strong> {{ stats.category_counts.get(cat.slug, 0) }}
+        </span>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Posts Table -->
+  <div style="overflow-x: auto;">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Tytuł eseju</th>
+          <th>Kategoria</th>
+          <th>Status</th>
+          <th>Odsłony</th>
+          <th>Data</th>
+          <th style="text-align: right;">Akcje</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for post in posts %}
+        <tr>
+          <td>
+            <a href="/post/{{ post.slug }}" style="font-weight: 600; color: var(--text-primary); text-decoration: none;" target="_blank">
+              {{ post.title }}
+            </a>
+            {% if post.featured %}
+            <span style="background: #fef3c7; color: #92400e; font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.4rem;">
+              WYRÓŻNIONY
+            </span>
+            {% endif %}
+          </td>
+          <td>
+            <span class="post-category-tag">{{ post.category_name }}</span>
+          </td>
+          <td>
+            {% if post.status == 'published' %}
+            <span class="badge badge-published">Opublikowany</span>
+            {% else %}
+            <span class="badge badge-draft">Szkic</span>
+            {% endif %}
+          </td>
+          <td style="color: var(--text-muted); font-size: 0.9rem;">
+            {{ post.views }}
+          </td>
+          <td style="color: var(--text-muted); font-size: 0.85rem;">
+            {{ post.created_date }}
+          </td>
+          <td style="text-align: right; white-space: nowrap;">
+            <a href="/admin/edytuj/{{ post.id }}" class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">
+              Edytuj
+            </a>
+            <a href="/post/{{ post.slug }}" target="_blank" class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">
+              Podgląd
+            </a>
+            <form action="/admin/usun/{{ post.id }}" method="post" style="display: inline-block;" onsubmit="return confirm('Czy na pewno chcesz usunąć ten esej?');">
+              <button type="submit" class="btn btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">
+                Usuń
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+{% endblock %}
