@@ -1,10 +1,10 @@
 import os
 
 BLOG_TITLE = "Blog Laika"
-BLOG_TAGLINE = "Technologia, Gospodarka, Polityka i inne eseje"
+BLOG_TAGLINE = "Technologia, Gospodarka, Polityka"
 BLOG_DESCRIPTION = "Niezależne spojrzenie dociekliwego laika na mechanizmy rządzące technologią, gospodarką i współczesną polityką."
 BLOG_AUTHOR = "Ireneusz Machowiec"
-BLOG_AUTHOR_BIO = "Autor Bloga Laika. Obserwator procesów technologicznych, rynkowych i geopolitycznych. Prowadzi niezależną publicystykę i analizy bez akademickiego żargonu."
+BLOG_AUTHOR_BIO = "Autor Bloga Laika. Obserwator procesów technologicznych, rynkowych i geopolitycznych. Prowadzi niezależną publicystykę bez akademickiego żargonu."
 BLOG_AUTHOR_NAME = "Ireneusz Machowiec"
 BLOG_AUTHOR_ADDRESS = "Żdżary 57, 21-400 Łuków"
 BLOG_AUTHOR_NIP = "8252128270"
@@ -14,7 +14,7 @@ CATEGORIES = [
     {"slug": "technologia", "name": "Technologia", "color": "#2563eb", "icon": "cpu", "desc": "Sztuczna inteligencja, cyfryzacja, przyszłość sieci i technologii"},
     {"slug": "gospodarka", "name": "Gospodarka", "color": "#059669", "icon": "trending-up", "desc": "Makroekonomia, rynki finansowe, energetyka i trendy globalne"},
     {"slug": "polityka", "name": "Polityka", "color": "#dc2626", "icon": "landmark", "desc": "Geopolityka, mechanizmy władzy, instytucje i przemiany społeczne"},
-    {"slug": "eseje", "name": "Inne eseje", "color": "#7c3aed", "icon": "book-open", "desc": "Filozofia codzienności, kultura, książki i refleksje o świecie"}
+    {"slug": "eseje", "name": "Inne publikacje", "color": "#7c3aed", "icon": "book-open", "desc": "Filozofia codzienności, kultura, książki i refleksje o świecie"}
 ]
 
 ADMIN_USERNAME = os.getenv("BLOG_ADMIN_USER", "admin")

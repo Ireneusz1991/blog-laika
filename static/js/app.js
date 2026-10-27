@@ -205,3 +205,67 @@ window.closeCookieSettingsModal = closeCookieSettingsModal;
 window.saveCookieCustomPreferences = saveCookieCustomPreferences;
 window.openCookieBanner = openCookieBanner;
 
+// --- Post & Teaser Inline Expander (Rozwijanie wpisów i zajawek) ---
+function togglePostExpand(containerId, btn) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const excerpt = container.querySelector('.excerpt-preview');
+  const full = container.querySelector('.full-content');
+  const expandLabel = btn ? btn.querySelector('.btn-label-expand') : null;
+  const collapseLabel = btn ? btn.querySelector('.btn-label-collapse') : null;
+
+  if (!full) return;
+
+  const isExpanded = full.style.display !== 'none';
+  if (isExpanded) {
+    full.style.display = 'none';
+    if (excerpt) excerpt.style.display = 'block';
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+    if (expandLabel) expandLabel.style.display = 'inline';
+    if (collapseLabel) collapseLabel.style.display = 'none';
+    container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } else {
+    full.style.display = 'block';
+    if (excerpt) excerpt.style.display = 'none';
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+    if (expandLabel) expandLabel.style.display = 'none';
+    if (collapseLabel) collapseLabel.style.display = 'inline';
+  }
+}
+
+// --- Catalog Section Expander (Rozwijanie kolejnych wpisów) ---
+function toggleCatalog(btn) {
+  const catalog = document.getElementById('katalog-publikacji');
+  if (!catalog) return;
+  const isExpanded = catalog.style.display !== 'none';
+  const expandLabel = btn ? btn.querySelector('.catalog-btn-expand') : null;
+  const collapseLabel = btn ? btn.querySelector('.catalog-btn-collapse') : null;
+
+  if (isExpanded) {
+    catalog.style.display = 'none';
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+    if (expandLabel) expandLabel.style.display = 'inline';
+    if (collapseLabel) collapseLabel.style.display = 'none';
+  } else {
+    catalog.style.display = 'block';
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+    if (expandLabel) expandLabel.style.display = 'none';
+    if (collapseLabel) collapseLabel.style.display = 'inline';
+    catalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+window.togglePostExpand = togglePostExpand;
+window.toggleCatalog = toggleCatalog;
+
+// Auto-expand catalog if direct anchor in URL
+window.addEventListener('DOMContentLoaded', () => {
+  if (window.location.hash === '#katalog-publikacji') {
+    const cat = document.getElementById('katalog-publikacji');
+    const catBtn = document.getElementById('btn-toggle-catalog');
+    if (cat && catBtn) {
+      toggleCatalog(catBtn);
+    }
+  }
+});
+

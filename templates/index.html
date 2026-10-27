@@ -26,7 +26,7 @@
       </div>
 
       <!-- Lead Article -->
-      <article class="editorial-hero-article">
+      <article class="editorial-hero-article" id="post-lead-{{ lead_post.slug }}">
         <h1 class="editorial-hero-title">
           <a href="{{ base_url }}/post/{{ lead_post.slug }}">{{ lead_post.title }}</a>
         </h1>
@@ -46,13 +46,32 @@
             <span class="byline-read-time">⏱️ {{ lead_post.read_time }} min czytania</span>
           </div>
 
-          <p class="editorial-hero-excerpt">
+          <!-- Teaser / Zajawka -->
+          <p class="editorial-hero-excerpt excerpt-preview">
             {{ lead_post.summary }}
           </p>
 
-          <div class="editorial-hero-action">
-            <a href="{{ base_url }}/post/{{ lead_post.slug }}" class="btn-editorial-read">
-              Czytaj cały esej &rarr;
+          <!-- Rozwinięta treść wpisu -->
+          <div class="full-content" style="display: none;">
+            <div class="editorial-full-prose">
+              {{ lead_post.content_html|safe }}
+            </div>
+            <div style="margin: 1.25rem 0 1rem 0;">
+              <a href="{{ base_url }}/post/{{ lead_post.slug }}" style="font-size: 0.88rem; font-weight: 700; color: var(--accent); text-decoration: none;">
+                Przejdź do pełnej treści artykułu &rarr;
+              </a>
+            </div>
+          </div>
+
+          <div class="editorial-hero-action" style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn-editorial-read btn-toggle-expand"
+                    onclick="togglePostExpand('post-lead-{{ lead_post.slug }}', this)"
+                    aria-expanded="false">
+              <span class="btn-label-expand">Czytaj więcej &darr;</span>
+              <span class="btn-label-collapse" style="display: none;">Zwiń artykuł &uarr;</span>
+            </button>
+            <a href="{{ base_url }}/post/{{ lead_post.slug }}" style="font-size: 0.85rem; color: var(--text-muted); text-decoration: none; font-weight: 600;">
+              Otwórz artykuł &rarr;
             </a>
           </div>
         </div>
@@ -62,11 +81,11 @@
       <!-- Thin Section Rule -->
       <hr class="editorial-section-rule">
 
-      <!-- 2-Column Subgrid of Articles (Directly beneath lead, like Kultura Liberalna) -->
+      <!-- 2-Column Subgrid (Directly beneath lead, like Kultura Liberalna) -->
       {% if sub_posts and sub_posts|length >= 1 %}
       <div class="editorial-subgrid-2col">
         {% for post in sub_posts %}
-        <article class="editorial-sub-card {% if loop.first %}sub-card-left{% else %}sub-card-right{% endif %}">
+        <article class="editorial-sub-card {% if loop.first %}sub-card-left{% else %}sub-card-right{% endif %}" id="post-sub-{{ post.slug }}">
           <div class="editorial-sub-meta">
             <a href="{{ base_url }}/kategoria/{{ post.category }}" class="editorial-cat-tag">
               {{ post.category_name }}
@@ -82,19 +101,45 @@
             <span class="byline-author-name">Ireneusz Machowiec</span>
           </div>
 
-          <p class="editorial-sub-excerpt">
+          <!-- Teaser / Zajawka -->
+          <p class="editorial-sub-excerpt excerpt-preview">
             {{ post.summary }}
           </p>
+
+          <!-- Rozwinięta treść wpisu -->
+          <div class="full-content" style="display: none;">
+            <div class="editorial-full-prose">
+              {{ post.content_html|safe }}
+            </div>
+            <div style="margin: 0.85rem 0 0.5rem 0;">
+              <a href="{{ base_url }}/post/{{ post.slug }}" style="font-size: 0.82rem; font-weight: 700; color: var(--accent); text-decoration: none;">
+                Przejdź do pełnej treści artykułu &rarr;
+              </a>
+            </div>
+          </div>
+
+          <div class="sub-card-actions" style="margin-top: 0.75rem; display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn-sub-expand btn-toggle-expand"
+                    onclick="togglePostExpand('post-sub-{{ post.slug }}', this)"
+                    aria-expanded="false">
+              <span class="btn-label-expand">Czytaj więcej &darr;</span>
+              <span class="btn-label-collapse" style="display: none;">Zwiń artykuł &uarr;</span>
+            </button>
+            <a href="{{ base_url }}/post/{{ post.slug }}" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: none;">
+              Otwórz artykuł &rarr;
+            </a>
+          </div>
         </article>
         {% endfor %}
       </div>
       {% endif %}
 
-      <!-- Outlined Button at Bottom of Left Column -->
+      <!-- Przycisk rozwijania sekcji z artykułami -->
       <div class="editorial-more-bar">
-        <a href="#katalog-publikacji" class="btn-editorial-outline">
-          Wszystkie eseje i analizy &darr;
-        </a>
+        <button id="btn-toggle-catalog" type="button" class="btn-editorial-outline" onclick="toggleCatalog(this)" aria-expanded="false">
+          <span class="catalog-btn-expand">Więcej artykułów &darr;</span>
+          <span class="catalog-btn-collapse" style="display: none;">Zwiń listę artykułów &uarr;</span>
+        </button>
       </div>
 
     </div>
@@ -142,20 +187,6 @@
         {% endfor %}
       </div>
 
-      <!-- Editorial Quote / Mission Box (Kultura Liberalna Style) -->
-      <div class="editorial-mission-card">
-        <div class="mission-card-badge">PERSPEKTYWA LAIKA</div>
-        <h3 class="mission-card-heading">
-          Z perspektywy dociekliwego laika widać to, co umyka ekspertom.
-        </h3>
-        <p class="mission-card-desc">
-          Bez akademickiego żargonu, bez korporacyjnych banałów i bez clickbaitu. Niezależna publicystyka o technologii, gospodarce i współczesnym świecie.
-        </p>
-        <a href="{{ base_url }}/o-blogu" class="mission-card-link">
-          O projekcie i misji &rarr;
-        </a>
-      </div>
-
       <!-- Quick RSS Subscription Card -->
       <div class="sidebar-rss-card">
         <a href="{{ base_url }}/rss.xml" target="_blank" rel="noopener" class="sidebar-rss-link">
@@ -173,50 +204,19 @@
   </div>
 
   <!-- ========================================================
-       SECTION 2: ALL ARTICLES CATALOG
+       SECTION 2: ALL ARTICLES CATALOG (Rozwijana sekcja z artykułami)
        ======================================================== -->
-  <div id="katalog-publikacji" class="editorial-catalog-section">
+  <div id="katalog-publikacji" class="editorial-catalog-section expandable-catalog" style="display: none;">
     <div class="section-header">
-      <h2 class="section-title">Katalog esejów i artykułów</h2>
+      <h2 class="section-title">Katalog artykułów</h2>
       <span class="section-count" style="font-size: 0.88rem; color: var(--text-muted);">
-        Łącznie: {{ (posts|length) + (1 if featured_post else 0) }} eseje
+        Łącznie: {{ posts|length }} artykuły
       </span>
     </div>
 
     <div class="posts-grid">
-      {% if featured_post %}
-      <article class="post-card">
-        {% if featured_post.cover_image %}
-        <a href="{{ base_url }}/post/{{ featured_post.slug }}">
-          <img src="{{ featured_post.cover_image }}" alt="{{ featured_post.title }}" class="post-card-thumb" loading="lazy">
-        </a>
-        {% endif %}
-        <div class="post-card-body">
-          <div class="post-meta">
-            <a href="{{ base_url }}/kategoria/{{ featured_post.category }}" class="post-category-tag">
-              {{ featured_post.category_name }}
-            </a>
-            <span>&bull;</span>
-            <span class="byline-author-name">Ireneusz Machowiec</span>
-            <span>&bull;</span>
-            <span>⏱️ {{ featured_post.read_time }} min</span>
-          </div>
-          <h3 class="post-card-title">
-            <a href="{{ base_url }}/post/{{ featured_post.slug }}">{{ featured_post.title }}</a>
-          </h3>
-          <p class="post-card-excerpt">{{ featured_post.summary }}</p>
-          <div class="post-card-footer">
-            <span>{{ featured_post.created_date }}</span>
-            <a href="{{ base_url }}/post/{{ featured_post.slug }}" style="text-decoration: none; font-weight: 700; color: var(--accent);">
-              Czytaj esej &rarr;
-            </a>
-          </div>
-        </div>
-      </article>
-      {% endif %}
-
       {% for post in posts %}
-      <article class="post-card">
+      <article class="post-card" id="post-card-{{ post.slug }}">
         {% if post.cover_image %}
         <a href="{{ base_url }}/post/{{ post.slug }}">
           <img src="{{ post.cover_image }}" alt="{{ post.title }}" class="post-card-thumb" loading="lazy">
@@ -235,18 +235,44 @@
           <h3 class="post-card-title">
             <a href="{{ base_url }}/post/{{ post.slug }}">{{ post.title }}</a>
           </h3>
-          <p class="post-card-excerpt">{{ post.summary }}</p>
+
+          <!-- Teaser / Zajawka -->
+          <p class="post-card-excerpt excerpt-preview">{{ post.summary }}</p>
+
+          <!-- Rozwinięta treść wpisu -->
+          <div class="full-content" style="display: none;">
+            <div class="editorial-full-prose">
+              {{ post.content_html|safe }}
+            </div>
+          </div>
+
           <div class="post-card-footer">
             <span>{{ post.created_date }}</span>
-            <a href="{{ base_url }}/post/{{ post.slug }}" style="text-decoration: none; font-weight: 700; color: var(--accent);">
-              Czytaj esej &rarr;
-            </a>
+            <div style="display: flex; gap: 0.6rem; align-items: center;">
+              <button type="button" class="btn-card-expand btn-toggle-expand"
+                      onclick="togglePostExpand('post-card-{{ post.slug }}', this)"
+                      aria-expanded="false">
+                <span class="btn-label-expand">Czytaj więcej &darr;</span>
+                <span class="btn-label-collapse" style="display: none;">Zwiń artykuł &uarr;</span>
+              </button>
+              <a href="{{ base_url }}/post/{{ post.slug }}" style="text-decoration: none; font-weight: 700; color: var(--accent); font-size: 0.85rem;">
+                Otwórz artykuł &rarr;
+              </a>
+            </div>
           </div>
         </div>
       </article>
       {% endfor %}
     </div>
   </div>
+
+  <noscript>
+    <style>
+      .expandable-catalog { display: block !important; }
+      .btn-toggle-expand { display: none !important; }
+      #btn-toggle-catalog { display: none !important; }
+    </style>
+  </noscript>
 
 </div>
 {% endblock %}

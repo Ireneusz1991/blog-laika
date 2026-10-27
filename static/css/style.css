@@ -2183,3 +2183,149 @@ input:checked + .slider:before {
     justify-content: center;
   }
 }
+
+/* ========================================================
+   EXPANDABLE POSTS & TEASERS (Rozwijane wpisy i zajawki)
+   ======================================================== */
+.editorial-full-prose {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-primary);
+  margin: 1.25rem 0;
+  padding: 1rem 0;
+  border-top: 1px dashed var(--border-color);
+  border-bottom: 1px dashed var(--border-color);
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.editorial-full-prose h1:first-child {
+  display: none !important;
+}
+
+.editorial-full-prose p {
+  margin-bottom: 1.25rem;
+}
+
+.editorial-full-prose h2 {
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 1.75rem 0 0.75rem 0;
+  color: var(--text-primary);
+  letter-spacing: -0.2px;
+}
+
+.editorial-full-prose h3 {
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem 0;
+}
+
+.editorial-full-prose blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 0.6rem 0 0.6rem 1.25rem;
+  margin: 1.25rem 0;
+  font-style: italic;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border-radius: 0 4px 4px 0;
+}
+
+.editorial-full-prose ul, .editorial-full-prose ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.editorial-full-prose li {
+  margin-bottom: 0.4rem;
+}
+
+.editorial-full-prose pre {
+  background: var(--code-bg);
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 1.25rem 0;
+  border: 1px solid var(--border-color);
+}
+
+.editorial-full-prose code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--code-bg);
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+}
+
+.editorial-sub-card .editorial-full-prose,
+.post-card .editorial-full-prose {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  padding: 0.75rem 0;
+  margin: 0.85rem 0;
+}
+
+/* Expandable buttons */
+.btn-toggle-expand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.btn-editorial-read.btn-toggle-expand {
+  background: var(--accent);
+  color: #fff !important;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: 4px;
+}
+.btn-editorial-read.btn-toggle-expand:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.btn-sub-expand {
+  color: var(--accent);
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-color);
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border-radius: 4px;
+}
+.btn-sub-expand:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--bg-hover);
+}
+
+.btn-card-expand {
+  color: var(--accent);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 4px;
+}
+.btn-card-expand:hover {
+  border-color: var(--accent);
+  background: var(--bg-hover);
+}
+
+.expandable-catalog {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

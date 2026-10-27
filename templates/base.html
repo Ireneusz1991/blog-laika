@@ -79,13 +79,6 @@
             </svg>
             O blogu
           </a>
-          <a href="{{ base_url }}/kontakt">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.75;">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-              <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
-            Kontakt
-          </a>
         </nav>
 
         <!-- Header Actions: Wyszukiwarka, Przełącznik motywu, Hamburger -->
@@ -97,7 +90,7 @@
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
             </span>
-            <input type="text" name="q" class="header-search-input" placeholder="Szukaj eseju..." value="{{ search_query or '' }}">
+            <input type="text" name="q" class="header-search-input" placeholder="Szukaj artykułu..." value="{{ search_query or '' }}">
           </form>
 
           <!-- Przełącznik motywu Jasny / Ciemny -->
@@ -194,7 +187,7 @@
           <p style="font-weight: 800; font-family: var(--font-serif); font-size: 1.25rem; color: var(--text-primary); margin-bottom: 0.35rem;">{{ blog_title }}</p>
           <p style="font-size: 0.85rem; max-width: 480px; color: var(--text-secondary); line-height: 1.5;">{{ blog_tagline }} — {{ blog_description }}</p>
           <p style="font-size: 0.8rem; margin-top: 0.6rem; color: var(--text-muted);">
-            &copy; {{ current_year }} Blog Laika. Niezależna publicystyka i eseje. Wszelkie prawa zastrzeżone.
+            &copy; {{ current_year }} Blog Laika. Niezależna publicystyka. Wszelkie prawa zastrzeżone.
           </p>
         </div>
 
@@ -267,8 +260,8 @@
 
       <div class="cookie-pref-item">
         <div class="cookie-pref-info">
-          <strong>Analityka i statystyki czytelnictwa</strong>
-          <p>Pozwalają autorowi analizować czytelność esejów i liczbę odsłon bez identyfikacji tożsamości czytelnika.</p>
+          <strong>Statystyki czytelnictwa</strong>
+          <p>Pozwalają autorowi sprawdzać czytelność publikacji i liczbę odsłon bez identyfikacji tożsamości czytelnika.</p>
         </div>
         <div class="cookie-pref-switch">
           <label class="switch-toggle" aria-label="Włącz/wyłącz analitykę">
