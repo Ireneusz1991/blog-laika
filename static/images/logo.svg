@@ -1,16 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 80" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 54" width="100%" height="100%">
   <defs>
     <style>
-      .logo-title { fill: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
-      .logo-sub { fill: #64748b; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1.8px; text-transform: uppercase; }
+      .logo-bg-ring { stroke: rgba(0,0,0,0.08); stroke-width: 1.5; }
+      .logo-title { fill: #090d16; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 24px; font-weight: 900; letter-spacing: -0.5px; }
+      .logo-sub { fill: #334155; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; }
       @media (prefers-color-scheme: dark) {
-        .logo-title { fill: #f8fafc; }
-        .logo-sub { fill: #94a3b8; }
+        .logo-bg-ring { stroke: rgba(255,255,255,0.25); }
+        .logo-title { fill: #ffffff; }
+        .logo-sub { fill: #e2e8f0; }
       }
     </style>
     <linearGradient id="laikaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#2563eb" />
-      <stop offset="100%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#4338ca" />
     </linearGradient>
     <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#f59e0b" />
@@ -18,19 +20,22 @@
     </linearGradient>
   </defs>
 
-  <!-- Emblem Icon -->
-  <g transform="translate(10, 10)">
-    <rect x="0" y="0" width="60" height="60" rx="14" fill="url(#laikaGrad)" />
-    <path d="M 30 14 L 38 34 L 30 46 L 22 34 Z" fill="#ffffff" />
-    <line x1="30" y1="22" x2="30" y2="44" stroke="#2563eb" stroke-width="2" stroke-linecap="round" />
-    <circle cx="30" cy="30" r="2.2" fill="#2563eb" />
-    <circle cx="43" cy="18" r="4" fill="url(#starGrad)" />
-    <path d="M 17 38 A 16 16 0 0 1 43 25" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-dasharray="2 3" opacity="0.8" />
+  <!-- Emblem Badge -->
+  <g transform="translate(2, 5)">
+    <rect x="0" y="0" width="44" height="44" rx="11" fill="url(#laikaGrad)" class="logo-bg-ring" />
+    <!-- Feather Quill Nib -->
+    <path d="M 22 10 L 29 25 L 22 34 L 15 25 Z" fill="#ffffff" />
+    <line x1="22" y1="16" x2="22" y2="33" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" />
+    <circle cx="22" cy="22" r="1.8" fill="#2563eb" />
+    <!-- Star Explorer Motif -->
+    <circle cx="33" cy="13" r="3.2" fill="url(#starGrad)" />
+    <!-- Orbit Arc -->
+    <path d="M 11 29 A 12 12 0 0 1 33 18" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-dasharray="2 2.5" opacity="0.9" />
   </g>
 
-  <!-- Typography -->
-  <g transform="translate(85, 20)">
+  <!-- High-Contrast Typography -->
+  <g transform="translate(58, 0)">
     <text x="0" y="27" class="logo-title">BLOG LAIKA</text>
-    <text x="1" y="46" class="logo-sub">Technologia • Gospodarka • Polityka</text>
+    <text x="1" y="44" class="logo-sub">Technologia • Gospodarka • Polityka</text>
   </g>
 </svg>

@@ -141,19 +141,40 @@ header.site-header {
 }
 
 .brand-logo-svg {
-  height: 46px;
+  height: 48px;
   width: auto;
   display: block;
 }
 
+.logo-badge-ring {
+  stroke: rgba(0, 0, 0, 0.12);
+  stroke-width: 1.5px;
+  transition: all 0.25s ease;
+}
+
 .logo-title-text {
-  fill: var(--text-primary);
-  transition: fill 0.3s ease;
+  fill: #090d16 !important;
+  font-weight: 900;
+  transition: fill 0.25s ease;
 }
 
 .logo-subtitle-text {
-  fill: var(--text-muted);
-  transition: fill 0.3s ease;
+  fill: #334155 !important;
+  font-weight: 700;
+  transition: fill 0.25s ease;
+}
+
+[data-theme="dark"] .logo-badge-ring {
+  stroke: rgba(255, 255, 255, 0.35) !important;
+  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.5));
+}
+
+[data-theme="dark"] .logo-title-text {
+  fill: #ffffff !important;
+}
+
+[data-theme="dark"] .logo-subtitle-text {
+  fill: #cbd5e1 !important;
 }
 
 .header-search-wrapper {

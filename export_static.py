@@ -9,12 +9,20 @@ import database
 from sample_data import seed_database
 
 def build_static(output_dir="dist", base_url=None):
+    cname_file = os.path.join(os.path.dirname(__file__), "CNAME")
+    has_custom_domain = os.path.exists(cname_file)
+
     if base_url is None:
-        base_url = os.getenv("BASE_URL", "/blog-laika")
+        if has_custom_domain:
+            base_url = ""
+        else:
+            base_url = os.getenv("BASE_URL", "/blog-laika")
         
     print(f"[+] Budowanie wersji statycznej dla GitHub Pages...")
     print(f"    Folder wyjściowy: {output_dir}")
     print(f"    Base URL: '{base_url}'")
+    if has_custom_domain:
+        print(f"    Własna domena (CNAME) wykryta!")
 
     # Inicjalizacja bazy i przykładowych wpisów jeśli pusta
     database.init_db()
@@ -34,6 +42,11 @@ def build_static(output_dir="dist", base_url=None):
     # Plik .nojekyll dla GitHub Pages
     with open(os.path.join(output_dir, ".nojekyll"), "w") as f:
         pass
+
+    # Kopiowanie CNAME dla własnej domeny, jeśli istnieje
+    if has_custom_domain:
+        shutil.copy(cname_file, os.path.join(output_dir, "CNAME"))
+        print("    [OK] Skopiowano plik CNAME dla własnej domeny")
 
     # Konfiguracja Jinja2
     templates_dir = os.path.join(os.path.dirname(__file__), "templates")
@@ -85,7 +98,12 @@ def build_static(output_dir="dist", base_url=None):
     else:
         feed_posts = posts
 
-    site_domain = "https://ireneusz1991.github.io"
+    if has_custom_domain:
+        with open(cname_file, "r", encoding="utf-8") as f:
+            domain_name = f.read().strip()
+        site_domain = f"https://{domain_name}"
+    else:
+        site_domain = "https://ireneusz1991.github.io"
 
     # 1. Strona główna (index.html)
     ctx = get_common_context()
@@ -164,7 +182,12 @@ def build_static(output_dir="dist", base_url=None):
 
     # 7. Kanał RSS XML (rss.xml)
     items_xml = []
-    site_domain = "https://ireneusz1991.github.io"
+    if has_custom_domain:
+        with open(cname_file, "r", encoding="utf-8") as f:
+            domain_name = f.read().strip()
+        site_domain = f"https://{domain_name}"
+    else:
+        site_domain = "https://ireneusz1991.github.io"
     for p in posts:
         pub_date = datetime.strptime(p["created_at"][:19], "%Y-%m-%d %H:%M:%S").strftime("%a, %d %b %Y %H:%M:%S +0100")
         items_xml.append(f"""
