@@ -7,10 +7,12 @@
 <article class="container">
   
   <header class="article-header">
-    <div class="post-meta" style="justify-content: center; margin-bottom: 1.2rem;">
+    <div class="post-meta" style="justify-content: center; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.5rem;">
       <a href="{{ base_url }}/kategoria/{{ post.category }}" class="post-category-tag">
         {{ post.category_name }}
       </a>
+      <span>•</span>
+      <span>Autor: <strong>{{ blog_author }}</strong></span>
       <span>•</span>
       <span>⏱️ {{ post.read_time }} minut czytania</span>
       <span>•</span>
@@ -71,9 +73,9 @@
 
   <!-- Author Bio Card -->
   <div class="author-card">
-    <div class="author-avatar">L</div>
+    <div class="author-avatar">IM</div>
     <div class="author-info">
-      <h4>Autor: {{ blog_author }}</h4>
+      <h4>Autor eseju: {{ blog_author }}</h4>
       <p>{{ blog_author_bio }}</p>
     </div>
   </div>

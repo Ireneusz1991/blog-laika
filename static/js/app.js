@@ -71,6 +71,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Cookie Consent Banner & Preferences ---
   initCookieConsent();
+
+  // --- Responsive Hamburger Menu Toggle ---
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const mobileDrawer = document.getElementById('mobile-nav-drawer');
+  const mobileBackdrop = document.getElementById('mobile-nav-backdrop');
+
+  function openMobileMenu() {
+    if (!mobileDrawer || !hamburgerBtn) return;
+    hamburgerBtn.classList.add('is-active');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    mobileDrawer.classList.add('is-open');
+    mobileDrawer.setAttribute('aria-hidden', 'false');
+    if (mobileBackdrop) mobileBackdrop.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMobileMenu() {
+    if (!mobileDrawer || !hamburgerBtn) return;
+    hamburgerBtn.classList.remove('is-active');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    mobileDrawer.classList.remove('is-open');
+    mobileDrawer.setAttribute('aria-hidden', 'true');
+    if (mobileBackdrop) mobileBackdrop.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  if (hamburgerBtn && mobileDrawer) {
+    hamburgerBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = mobileDrawer.classList.contains('is-open');
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    });
+
+    if (mobileBackdrop) {
+      mobileBackdrop.addEventListener('click', closeMobileMenu);
+    }
+
+    // Close on clicking any link inside the mobile drawer
+    mobileDrawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileDrawer.classList.contains('is-open')) {
+        closeMobileMenu();
+      }
+    });
+  }
 });
 
 const COOKIE_STORAGE_KEY = 'laika_cookie_consent';

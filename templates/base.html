@@ -70,7 +70,13 @@
           </svg>
         </a>
 
-        <!-- Header Actions: Tylko wyszukiwarka i przełącznik motywu -->
+        <!-- Desktop Nav Links -->
+        <nav class="desktop-nav-links" aria-label="Główne linki">
+          <a href="{{ base_url }}/o-blogu">O blogu</a>
+          <a href="{{ base_url }}/kontakt">Kontakt</a>
+        </nav>
+
+        <!-- Header Actions: Wyszukiwarka, Przełącznik motywu, Hamburger -->
         <div class="header-actions">
           <form action="{{ base_url }}/szukaj" method="get" class="header-search-wrapper">
             <span class="header-search-icon">
@@ -88,10 +94,60 @@
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
             </svg>
           </button>
+
+          <!-- Przycisk menu mobilnego (Hamburger) -->
+          <button id="hamburger-btn" class="btn-icon hamburger-btn" aria-label="Menu nawigacyjne" aria-expanded="false" title="Menu">
+            <span class="hamburger-icon">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
         </div>
       </div>
     </div>
   </header>
+
+  <!-- Rozwijane Menu Mobilne (Hamburger Drawer) -->
+  <div id="mobile-nav-drawer" class="mobile-nav-drawer" aria-hidden="true">
+    <div class="mobile-nav-content">
+      <div class="mobile-nav-section">
+        <div class="mobile-nav-heading">Nawigacja główna</div>
+        <ul class="mobile-nav-menu">
+          <li><a href="{{ base_url }}/" class="mobile-nav-item">🏠 Strona główna</a></li>
+          <li><a href="{{ base_url }}/o-blogu" class="mobile-nav-item">📖 O blogu & Manifest</a></li>
+          <li><a href="{{ base_url }}/kontakt" class="mobile-nav-item">✉️ Kontakt z autorem</a></li>
+          <li><a href="{{ base_url }}/regulamin" class="mobile-nav-item">⚖️ Regulamin serwisu</a></li>
+          <li><a href="{{ base_url }}/polityka-prywatnosci" class="mobile-nav-item">🔒 Polityka prywatności & RODO</a></li>
+          <li><a href="{{ base_url }}/admin/" class="mobile-nav-item mobile-cms-link">🔑 Panel CMS (Redakcja)</a></li>
+          <li><a href="{{ base_url }}/rss.xml" target="_blank" rel="noopener" class="mobile-nav-item">📡 Kanał RSS</a></li>
+        </ul>
+      </div>
+
+      <div class="mobile-nav-section">
+        <div class="mobile-nav-heading">Działy tematyczne</div>
+        <div class="mobile-nav-categories">
+          <a href="{{ base_url }}/" class="category-chip {% if not current_category %}active{% endif %}">
+            Wszystkie
+          </a>
+          {% for cat in categories %}
+          <a href="{{ base_url }}/kategoria/{{ cat.slug }}" class="category-chip {% if current_category == cat.slug %}active{% endif %}">
+            <span class="dot dot-{{ cat.slug }}"></span>
+            {{ cat.name }}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="mobile-nav-footer">
+        <div>Autor & Wydawca: <strong>{{ blog_author_name }}</strong></div>
+        <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">
+          {{ blog_author_address }} &bull; NIP: {{ blog_author_nip }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="mobile-nav-backdrop" class="mobile-nav-backdrop"></div>
 
   <!-- Category Filter Bar -->
   <nav class="category-nav">
@@ -122,7 +178,10 @@
         <div class="footer-brand">
           <p style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">{{ blog_title }}</p>
           <p style="font-size: 0.85rem; max-width: 480px; color: var(--text-secondary);">{{ blog_tagline }} — {{ blog_description }}</p>
-          <p style="font-size: 0.8rem; margin-top: 0.75rem; color: var(--text-muted);">
+          <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.45rem; line-height: 1.5;">
+            Autor i wydawca: <strong>{{ blog_author_name }}</strong> &bull; {{ blog_author_address }} (NIP: {{ blog_author_nip }})
+          </p>
+          <p style="font-size: 0.8rem; margin-top: 0.5rem; color: var(--text-muted);">
             &copy; {{ current_year }} Blog Laika. Niezależna publicystyka i eseje. Wszystkie prawa zastrzeżone.
           </p>
         </div>

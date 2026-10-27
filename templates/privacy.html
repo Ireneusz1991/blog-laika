@@ -27,17 +27,24 @@
 
     <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin-bottom: 2.5rem;">
       <p style="margin-bottom: 0; font-size: 0.95rem; font-family: var(--font-sans); color: var(--text-secondary); line-height: 1.6;">
-        🔒 <strong>Deklaracja Prywatności:</strong> Blog Laika szanuje Twoją prywatność. Serwis nie stosuje inwazyjnych trackerów, pikseli reklamowych podmiotów trzecich ani profilowania behawioralnego. Ograniczamy zbieranie danych do bezwzględnego minimum technicznego wymaganego do prawidłowego działania strony.
+        🔒 <strong>Deklaracja Prywatności & Obowiązek Informacyjny:</strong> Blog Laika w pełni respektuje prawo do prywatności czytelników. Poniższy dokument stanowi realizację obowiązku informacyjnego wynikającego z art. 13 ust. 1 i 2 Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 (RODO). Serwis nie stosuje inwazyjnych trackerów, pikseli reklamowych ani profilowania.
       </p>
     </div>
 
-    <h2>1. Administrator Danych Osobowych</h2>
+    <h2>1. Administrator Danych Osobowych (Obowiązek Informacyjny)</h2>
+    <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-left: 4px solid var(--accent); padding: 1.25rem 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+      <p style="margin-bottom: 0.5rem; font-weight: 700; color: var(--text-primary); font-size: 1rem;">
+        Dane Administratora Danych Osobowych (ADO):
+      </p>
+      <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7;">
+        <li><strong>Imię i nazwisko:</strong> {{ blog_author_name }}</li>
+        <li><strong>Adres:</strong> {{ blog_author_address }}</li>
+        <li><strong>Numer Identyfikacji Podatkowej (NIP):</strong> {{ blog_author_nip }}</li>
+        <li><strong>Adres e-mail do kontaktu:</strong> <a href="mailto:{{ blog_author_email }}" style="color: var(--accent); font-weight: 600;">{{ blog_author_email }}</a></li>
+      </ul>
+    </div>
     <p>
-      Administratorem danych osobowych serwisu <strong>Blog Laika</strong> (dostępnego pod adresem <code>https://blog-laika.com</code>) jest autor bloga (dalej: „Administrator”).
-    </p>
-    <p>
-      Wszelkie zapytania, wnioski oraz wątpliwości dotyczące ochrony prywatności i przetwarzania danych osobowych można kierować drogą elektroniczną na adres e-mail: 
-      <a href="mailto:kontakt@blog-laika.com" style="color: var(--accent); font-weight: 600;">kontakt@blog-laika.com</a>.
+      Wszelkie zapytania, wnioski oraz oświadczenia dotyczące realizacji praw przysługujących na mocy RODO (w tym prawo do wglądu, sprostowania, usunięcia lub ograniczenia przetwarzania) można kierować bezpośrednio na wskazany wyżej adres e-mail lub korespondencyjnie na adres Administratora.
     </p>
 
     <h2>2. Podstawy Prawne i Cele Przetwarzania Danych</h2>

@@ -239,3 +239,73 @@ def get_stats() -> Dict[str, Any]:
         "total_views": total_views,
         "category_counts": category_counts
     }
+
+def sync_markdown_files(posts_dir: str = None):
+    """Skanuje folder posts/ i automatycznie importuje lub aktualizuje wpisy z plików .md"""
+    import os
+    if posts_dir is None:
+        posts_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "posts")
+    if not os.path.exists(posts_dir):
+        return
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    for filename in sorted(os.listdir(posts_dir)):
+        if not (filename.endswith(".md") or filename.endswith(".markdown")):
+            continue
+        filepath = os.path.join(posts_dir, filename)
+        with open(filepath, "r", encoding="utf-8") as f:
+            raw_text = f.read()
+
+        meta = {}
+        body = raw_text
+        if raw_text.startswith("---"):
+            parts = raw_text.split("---", 2)
+            if len(parts) >= 3:
+                front = parts[1].strip()
+                body = parts[2].strip()
+                for line in front.splitlines():
+                    if ":" in line:
+                        k, v = line.split(":", 1)
+                        meta[k.strip().lower()] = v.strip().strip('"\'')
+
+        title = meta.get("title")
+        if not title:
+            for line in body.splitlines():
+                if line.startswith("# "):
+                    title = line.replace("# ", "").strip()
+                    break
+        if not title:
+            title = os.path.splitext(filename)[0].replace("-", " ").capitalize()
+
+        slug = meta.get("slug") or os.path.splitext(filename)[0]
+        category = meta.get("category", "eseje")
+        summary = meta.get("summary", "")
+        if not summary:
+            plain_text = re.sub(r'#+\s+|[\*_`\[\]\(\)]', '', body)
+            summary = plain_text.strip()[:220] + "..."
+        tags = meta.get("tags", "")
+        cover_image = meta.get("cover_image", "")
+        featured = 1 if str(meta.get("featured", "0")).lower() in ("1", "true", "yes") else 0
+        status = meta.get("status", "published")
+
+        cursor.execute("SELECT id FROM posts WHERE slug = ?", (slug,))
+        row = cursor.fetchone()
+        content_html = render_markdown(body)
+        read_time = calculate_read_time(body)
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        if row:
+            cursor.execute("""
+                UPDATE posts SET title = ?, summary = ?, content_markdown = ?, content_html = ?,
+                category = ?, tags = ?, cover_image = ?, status = ?, featured = ?, read_time = ?, updated_at = ?
+                WHERE id = ?
+            """, (title, summary, body, content_html, category, tags, cover_image, status, featured, read_time, now, row["id"]))
+        else:
+            cursor.execute("""
+                INSERT INTO posts (title, slug, summary, content_markdown, content_html, category, tags, cover_image, status, featured, read_time, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (title, slug, summary, body, content_html, category, tags, cover_image, status, featured, read_time, now, now))
+    conn.commit()
+    conn.close()

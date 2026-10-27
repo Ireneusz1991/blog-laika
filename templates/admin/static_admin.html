@@ -147,62 +147,158 @@
 
     </div>
 
-    <!-- Live Online Markdown Scratchpad (Collapsible) -->
+    <!-- Live Online Editor & Travel Publisher (Collapsible) -->
     <div id="online-editor-box" style="display: none; background: var(--bg-card); padding: 1.75rem; border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-md); margin-bottom: 2.5rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
-        <h3 style="font-family: var(--font-serif); font-size: 1.3rem; font-weight: 700;">
-          Edytor Markdown na żywo
-        </h3>
-        <button onclick="toggleOnlineEditor();" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.25rem 0.6rem;">
-          ✕ Zamknij edytor
-        </button>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+          <h3 style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; margin: 0 0 0.25rem 0;">
+            ✍️ Prosty Edytor Tekstowy & Markdown
+          </h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
+            Twórz i publikuj eseje w trasie z telefonu lub laptopa &bull; Autor: <strong>{{ blog_author_name }}</strong>
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <button type="button" onclick="document.getElementById('md-file-input').click();" class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.35rem 0.75rem; border-color: var(--accent); color: var(--accent);">
+            📂 Importuj plik .md
+          </button>
+          <input type="file" id="md-file-input" accept=".md,.markdown,.txt" style="display: none;" onchange="handleFileImport(event);">
+          <button onclick="toggleOnlineEditor();" class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.35rem 0.65rem;">
+            ✕ Zamknij
+          </button>
+        </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+      <!-- Import Success Banner -->
+      <div id="import-notification" style="display: none; background: #ecfdf5; border: 1.5px solid #10b981; color: #065f46; padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.88rem;">
+      </div>
+
+      <!-- Metadata Fields -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
         <div>
-          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Tytuł eseju</label>
-          <input type="text" id="scratch-title" class="form-input" placeholder="Wpisz tytuł..." oninput="updateLivePreview();">
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Tytuł eseju *</label>
+          <input type="text" id="scratch-title" class="form-input" placeholder="Wpisz tytuł eseju..." oninput="onTitleInput();">
         </div>
         <div>
-          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Kategoria</label>
-          <select id="scratch-category" class="form-select">
-            <option value="technologia">Technologia</option>
-            <option value="gospodarka">Gospodarka</option>
-            <option value="polityka">Polityka</option>
-            <option value="eseje">Inne eseje</option>
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Kategoria *</label>
+          <select id="scratch-category" class="form-select" onchange="updateLivePreview();">
+            {% for cat in categories %}
+            <option value="{{ cat.slug }}">{{ cat.name }}</option>
+            {% endfor %}
           </select>
+        </div>
+        <div>
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Adres URL (slug)</label>
+          <input type="text" id="scratch-slug" class="form-input" placeholder="automatyczny-slug">
         </div>
       </div>
 
       <div style="margin-bottom: 1rem;">
         <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Krótkie streszczenie / Lead</label>
-        <textarea id="scratch-summary" class="form-input" rows="2" placeholder="Wpisz krótkie wprowadzenie do eseju..."></textarea>
+        <textarea id="scratch-summary" class="form-input" rows="2" placeholder="Wpisz 1-2 zdania wprowadzenia do eseju..."></textarea>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
-        <div>
+      <!-- Formatting Toolbar -->
+      <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.5rem 0.6rem; margin-bottom: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center;">
+        <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-right: 0.25rem;">Narzędzia:</span>
+        <button type="button" onclick="formatText('bold')" class="editor-tool-btn" title="Pogrubienie (**tekst**)"><strong>B</strong></button>
+        <button type="button" onclick="formatText('italic')" class="editor-tool-btn" title="Kursywa (*tekst*)"><em>I</em></button>
+        <button type="button" onclick="formatText('h2')" class="editor-tool-btn" title="Nagłówek sekcji (H2)">H2</button>
+        <button type="button" onclick="formatText('h3')" class="editor-tool-btn" title="Śródtytuł (H3)">H3</button>
+        <button type="button" onclick="formatText('quote')" class="editor-tool-btn" title="Cytat (> )">❝ Cytat</button>
+        <button type="button" onclick="formatText('ul')" class="editor-tool-btn" title="Lista punktowana">• Lista</button>
+        <button type="button" onclick="formatText('ol')" class="editor-tool-btn" title="Lista numerowana">1. Lista</button>
+        <button type="button" onclick="formatText('link')" class="editor-tool-btn" title="Wstaw link">🔗 Link</button>
+        <button type="button" onclick="formatText('image')" class="editor-tool-btn" title="Wstaw grafikę">🖼️ Obraz</button>
+        <button type="button" onclick="formatText('code')" class="editor-tool-btn" title="Blok kodu"><code>&lt;/&gt;</code> Kod</button>
+        <button type="button" onclick="formatText('hr')" class="editor-tool-btn" title="Linia pozioma">---</button>
+        <div style="margin-left: auto; display: flex; gap: 0.4rem; align-items: center;">
+          <button type="button" onclick="document.getElementById('md-file-input').click();" class="editor-tool-btn" style="color: var(--accent); font-weight: 700;" title="Wczytaj istniejący plik .md z dysku / telefonu">
+            📂 Importuj .md
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Tab Switcher (dla małych ekranów) -->
+      <div class="editor-mobile-tabs" style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+        <button type="button" id="tab-btn-write" class="btn btn-secondary active-tab" onclick="switchEditorTab('write')" style="flex: 1; padding: 0.45rem; font-size: 0.85rem; font-weight: 600;">✏️ Edytor tekstu</button>
+        <button type="button" id="tab-btn-preview" class="btn btn-secondary" onclick="switchEditorTab('preview')" style="flex: 1; padding: 0.45rem; font-size: 0.85rem; font-weight: 600;">👁️ Podgląd na żywo</button>
+        <button type="button" id="tab-btn-publish" class="btn btn-secondary" onclick="switchEditorTab('publish')" style="flex: 1; padding: 0.45rem; font-size: 0.85rem; font-weight: 600;">🚀 Publikacja w trasie</button>
+      </div>
+
+      <!-- Dual Pane Container -->
+      <div id="editor-workspace" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+        <div id="pane-write">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-            <label style="font-size: 0.85rem; font-weight: 600;">Treść eseju (Markdown)</label>
+            <label style="font-size: 0.85rem; font-weight: 600;">Treść artykułu (Markdown / Tekst)</label>
             <span id="scratch-stats" style="font-size: 0.78rem; color: var(--text-muted);">0 słów | ~0 min czytania</span>
           </div>
-          <textarea id="scratch-body" class="form-input" style="height: 380px; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.5; resize: vertical;" placeholder="# Twój esej w Markdown..." oninput="updateLivePreview();"></textarea>
+          <textarea id="scratch-body" class="form-input" style="height: 420px; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.5; resize: vertical;" placeholder="# Rozpocznij pisanie eseju...&#10;&#10;Użyj przycisków na pasku narzędzi lub kliknij 'Importuj plik .md'!" oninput="updateLivePreview();"></textarea>
         </div>
 
-        <div>
-          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Podgląd na żywo</label>
-          <div id="scratch-preview" class="article-body" style="height: 380px; overflow-y: auto; background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.95rem;">
-            <em style="color: var(--text-muted);">Zacznij pisać po lewej stronie, aby zobaczyć podgląd eseju...</em>
+        <div id="pane-preview">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <label style="font-size: 0.85rem; font-weight: 600;">Podgląd na żywo (widok czytelnika)</label>
+            <span style="font-size: 0.78rem; color: #10b981;">● Aktualizowany w czasie rzeczywistym</span>
+          </div>
+          <div id="scratch-preview" class="article-body" style="height: 420px; overflow-y: auto; background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.95rem;">
+            <em style="color: var(--text-muted);">Zacznij pisać lub wczytaj plik .md, aby zobaczyć podgląd eseju...</em>
           </div>
         </div>
       </div>
 
-      <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem; flex-wrap: wrap;">
-        <button onclick="copyScratchMarkdown();" class="btn btn-primary" style="font-size: 0.88rem;">
-          📋 Kopiuj treść Markdown
-        </button>
-        <button onclick="downloadScratchFile();" class="btn btn-secondary" style="font-size: 0.88rem;">
-          💾 Pobierz plik .md
-        </button>
+      <!-- Publication Options Section (Dla pracy w trasie) -->
+      <div id="pane-publish-box" style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color);">
+        <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span>🚀 Publikacja i zapisywanie (W trasie bez instalacji)</span>
+        </h4>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
+          <!-- Opcja 1: GitHub Web One-Click -->
+          <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <strong style="display: block; font-size: 0.95rem; margin-bottom: 0.35rem; color: var(--accent);">
+                1. Publikuj bezpośrednio na GitHubie
+              </strong>
+              <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.85rem; line-height: 1.5;">
+                Otwiera formularz utworzenia nowego pliku w folderze <code>posts/</code> na GitHubie z automatycznie wypełnioną treścią. Wystarczy na telefonie lub laptopie kliknąć zielony przycisk <em>„Commit changes...”</em> i esej automatycznie publikuje się na blogu!
+              </p>
+            </div>
+            <button type="button" onclick="publishViaGitHubWeb();" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.85rem;">
+              🚀 Utwórz plik na GitHubie &rarr;
+            </button>
+          </div>
+
+          <!-- Opcja 2: Pobierz .md -->
+          <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <strong style="display: block; font-size: 0.95rem; margin-bottom: 0.35rem; color: var(--text-primary);">
+                2. Pobierz gotowy plik .md
+              </strong>
+              <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.85rem; line-height: 1.5;">
+                Zapisuje pełny plik Markdown z nagłówkiem frontmatter (tytuł, data, autor: Ireneusz Machowiec) do pamięci telefonu lub dysku komputera.
+              </p>
+            </div>
+            <button type="button" onclick="downloadScratchFile();" class="btn btn-secondary" style="width: 100%; justify-content: center; font-size: 0.85rem;">
+              💾 Pobierz plik .md
+            </button>
+          </div>
+
+          <!-- Opcja 3: Kopiuj treść -->
+          <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <strong style="display: block; font-size: 0.95rem; margin-bottom: 0.35rem; color: var(--text-primary);">
+                3. Kopiuj Markdown do schowka
+              </strong>
+              <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.85rem; line-height: 1.5;">
+                Kopiuje pełny sformatowany tekst Markdown wraz z metadanymi, gotowy do wklejenia w dowolnym edytorze lub notatniku.
+              </p>
+            </div>
+            <button type="button" onclick="copyScratchMarkdown();" class="btn btn-secondary" style="width: 100%; justify-content: center; font-size: 0.85rem;">
+              📋 Kopiuj cały Markdown
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -372,20 +468,269 @@
     return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
+  // Helper: Slug generator
+  function slugify(text) {
+    return text.toString().toLowerCase().trim()
+      .replace(/ą/g, 'a').replace(/ć/g, 'c').replace(/ę/g, 'e').replace(/ł/g, 'l')
+      .replace(/ń/g, 'n').replace(/ó/g, 'o').replace(/ś/g, 's').replace(/ź/g, 'z').replace(/ż/g, 'z')
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '')
+      .replace(/\-\-+/g, '-')
+      .replace(/^-+/, '')
+      .replace(/-+$/, '');
+  }
+
+  let slugManuallyEdited = false;
+  function onTitleInput() {
+    const title = document.getElementById('scratch-title').value;
+    const slugInput = document.getElementById('scratch-slug');
+    if (!slugManuallyEdited && slugInput) {
+      slugInput.value = slugify(title);
+    }
+    updateLivePreview();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const sInput = document.getElementById('scratch-slug');
+    if (sInput) {
+      sInput.addEventListener('input', () => { slugManuallyEdited = true; });
+    }
+  });
+
+  // Formatting Toolbar Helper
+  function formatText(type) {
+    const textarea = document.getElementById('scratch-body');
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = textarea.value.substring(start, end);
+    let replacement = '';
+    let cursorOffset = 0;
+
+    switch (type) {
+      case 'bold':
+        replacement = selected ? `**${selected}**` : '**pogrubiony tekst**';
+        cursorOffset = selected ? replacement.length : 2;
+        break;
+      case 'italic':
+        replacement = selected ? `*${selected}*` : '*pochylony tekst*';
+        cursorOffset = selected ? replacement.length : 1;
+        break;
+      case 'h2':
+        replacement = `\n\n## ${selected || 'Tytuł sekcji'}\n\n`;
+        cursorOffset = replacement.length;
+        break;
+      case 'h3':
+        replacement = `\n\n### ${selected || 'Śródtytuł'}\n\n`;
+        cursorOffset = replacement.length;
+        break;
+      case 'quote':
+        replacement = `\n\n> ${selected || 'Ważny cytat lub myśl przewodnia'}\n\n`;
+        cursorOffset = replacement.length;
+        break;
+      case 'ul':
+        replacement = selected ? selected.split('\n').map(l => `- ${l}`).join('\n') : '\n- Punkt pierwszy\n- Punkt drugi\n';
+        cursorOffset = replacement.length;
+        break;
+      case 'ol':
+        replacement = selected ? selected.split('\n').map((l, i) => `${i+1}. ${l}`).join('\n') : '\n1. Krok pierwszy\n2. Krok drugi\n';
+        cursorOffset = replacement.length;
+        break;
+      case 'link':
+        const url = prompt('Podaj adres URL odnośnika:', 'https://');
+        if (url) {
+          replacement = `[${selected || 'Tekst odnośnika'}](${url})`;
+        } else {
+          return;
+        }
+        cursorOffset = replacement.length;
+        break;
+      case 'image':
+        const imgUrl = prompt('Podaj adres URL grafiki/zdjęcia:', 'https://images.unsplash.com/...');
+        if (imgUrl) {
+          const alt = prompt('Podaj krótki podpis obrazka:', selected || 'Zdjęcie ilustracyjne');
+          replacement = `\n\n![${alt || 'Obraz'}](${imgUrl})\n\n`;
+        } else {
+          return;
+        }
+        cursorOffset = replacement.length;
+        break;
+      case 'code':
+        if (selected.includes('\n')) {
+          replacement = `\n\`\`\`python\n${selected}\n\`\`\`\n`;
+        } else {
+          replacement = `\`${selected || 'kod'}\``;
+        }
+        cursorOffset = replacement.length;
+        break;
+      case 'hr':
+        replacement = '\n\n---\n\n';
+        cursorOffset = replacement.length;
+        break;
+    }
+
+    textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+    textarea.focus();
+    textarea.selectionStart = textarea.selectionEnd = start + cursorOffset;
+    updateLivePreview();
+  }
+
+  // Handle Importing .md file (Nie usuwaj importu .md)
+  function handleFileImport(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const text = evt.target.result;
+      let title = '';
+      let category = 'eseje';
+      let summary = '';
+      let slug = '';
+      let body = text;
+
+      // Check for YAML Frontmatter
+      if (text.startsWith('---')) {
+        const parts = text.split('---');
+        if (parts.length >= 3) {
+          const front = parts[1].trim();
+          body = parts.slice(2).join('---').trim();
+          front.split('\n').forEach(line => {
+            const idx = line.indexOf(':');
+            if (idx > -1) {
+              const k = line.substring(0, idx).trim().toLowerCase();
+              const v = line.substring(idx + 1).trim().replace(/^["']|["']$/g, '');
+              if (k === 'title') title = v;
+              if (k === 'category') category = v;
+              if (k === 'summary') summary = v;
+              if (k === 'slug') slug = v;
+            }
+          });
+        }
+      }
+
+      // If no title from frontmatter, find first markdown header
+      if (!title) {
+        const lines = body.split('\n');
+        for (let l of lines) {
+          if (l.startsWith('# ')) {
+            title = l.replace('# ', '').trim();
+            break;
+          }
+        }
+      }
+
+      if (!title) {
+        title = file.name.replace(/\.(md|markdown|txt)$/i, '').replace(/[-_]/g, ' ');
+        title = title.charAt(0).toUpperCase() + title.slice(1);
+      }
+
+      if (!slug) {
+        slug = slugify(title);
+      }
+
+      document.getElementById('scratch-title').value = title;
+      document.getElementById('scratch-slug').value = slug;
+      slugManuallyEdited = true;
+      if (document.getElementById('scratch-category')) {
+        document.getElementById('scratch-category').value = category;
+      }
+      if (document.getElementById('scratch-summary')) {
+        document.getElementById('scratch-summary').value = summary;
+      }
+      document.getElementById('scratch-body').value = body;
+
+      const words = body.trim() ? body.trim().split(/\s+/).length : 0;
+      const notif = document.getElementById('import-notification');
+      if (notif) {
+        notif.style.display = 'block';
+        notif.innerHTML = `✅ <strong>Pomyślnie wczytano plik:</strong> ${file.name} (${words} słów). Tytuł i treść zostały załadowane do edytora!`;
+        setTimeout(() => { notif.style.display = 'none'; }, 6000);
+      }
+
+      updateLivePreview();
+      // Ensure editor box is visible
+      const box = document.getElementById('online-editor-box');
+      if (box && box.style.display === 'none') {
+        toggleOnlineEditor();
+      }
+    };
+    reader.readAsText(file, 'UTF-8');
+  }
+
+  // Switch mobile tabs
+  function switchEditorTab(tab) {
+    const paneWrite = document.getElementById('pane-write');
+    const panePreview = document.getElementById('pane-preview');
+    const panePublish = document.getElementById('pane-publish-box');
+    const tabWrite = document.getElementById('tab-btn-write');
+    const tabPrev = document.getElementById('tab-btn-preview');
+    const tabPub = document.getElementById('tab-btn-publish');
+
+    [tabWrite, tabPrev, tabPub].forEach(btn => btn && btn.classList.remove('btn-primary'));
+    [tabWrite, tabPrev, tabPub].forEach(btn => btn && btn.classList.add('btn-secondary'));
+
+    if (tab === 'write') {
+      if (paneWrite) paneWrite.style.display = 'block';
+      if (panePreview) panePreview.style.display = (window.innerWidth > 768) ? 'block' : 'none';
+      if (tabWrite) { tabWrite.classList.add('btn-primary'); tabWrite.classList.remove('btn-secondary'); }
+    } else if (tab === 'preview') {
+      if (paneWrite) paneWrite.style.display = (window.innerWidth > 768) ? 'block' : 'none';
+      if (panePreview) panePreview.style.display = 'block';
+      if (tabPrev) { tabPrev.classList.add('btn-primary'); tabPrev.classList.remove('btn-secondary'); }
+    } else if (tab === 'publish') {
+      if (panePublish) {
+        panePublish.scrollIntoView({ behavior: 'smooth' });
+      }
+      if (tabPub) { tabPub.classList.add('btn-primary'); tabPub.classList.remove('btn-secondary'); }
+    }
+  }
+
+  // Build Full Markdown with Frontmatter & Author Ireneusz Machowiec
+  function buildFullMarkdownDocument() {
+    const title = document.getElementById('scratch-title').value || 'Nowy esej';
+    const slug = document.getElementById('scratch-slug').value || slugify(title) || 'nowy-esej';
+    const category = document.getElementById('scratch-category').value || 'eseje';
+    const summary = document.getElementById('scratch-summary').value || '';
+    const body = document.getElementById('scratch-body').value || '';
+    const now = new Date().toISOString().slice(0, 10);
+
+    const doc = `---
+title: "${title.replace(/"/g, '\\"')}"
+slug: "${slug}"
+category: "${category}"
+author: "Ireneusz Machowiec"
+date: "${now}"
+summary: "${summary.replace(/"/g, '\\"')}"
+featured: 0
+---
+
+${body}`;
+    return { doc, title, slug };
+  }
+
+  // One-Click Travel Publish to GitHub Web Editor
+  function publishViaGitHubWeb() {
+    const { doc, slug } = buildFullMarkdownDocument();
+    const encodedContent = encodeURIComponent(doc);
+    const targetUrl = `https://github.com/Ireneusz1991/blog-laika/new/main?filename=posts/${slug}.md&value=${encodedContent}`;
+    window.open(targetUrl, '_blank');
+  }
+
   function copyScratchMarkdown() {
-    const text = document.getElementById('scratch-body').value;
-    navigator.clipboard.writeText(text).then(() => {
-      alert('Treść Markdown została skopiowana do schowka!');
+    const { doc } = buildFullMarkdownDocument();
+    navigator.clipboard.writeText(doc).then(() => {
+      alert('Pełny artykuł Markdown (wraz z metadanymi i autorem: Ireneusz Machowiec) został skopiowany do schowka!');
     });
   }
 
   function downloadScratchFile() {
-    const title = document.getElementById('scratch-title').value || 'nowy-esej';
-    const text = document.getElementById('scratch-body').value;
-    const blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
+    const { doc, slug } = buildFullMarkdownDocument();
+    const blob = new Blob([doc], { type: 'text/markdown;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `${title.toLowerCase().replace(/[^a-z0-9]/g, '-')}.md`;
+    a.download = `${slug}.md`;
     a.click();
   }
 

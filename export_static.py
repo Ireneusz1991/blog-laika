@@ -27,6 +27,7 @@ def build_static(output_dir="dist", base_url=None):
     # Inicjalizacja bazy i przykładowych wpisów jeśli pusta
     database.init_db()
     seed_database()
+    database.sync_markdown_files()
 
     # Czyszczenie i tworzenie folderu dist
     if os.path.exists(output_dir):
@@ -82,6 +83,10 @@ def build_static(output_dir="dist", base_url=None):
             "blog_description": config.BLOG_DESCRIPTION,
             "blog_author": config.BLOG_AUTHOR,
             "blog_author_bio": config.BLOG_AUTHOR_BIO,
+            "blog_author_name": getattr(config, "BLOG_AUTHOR_NAME", "Ireneusz Machowiec"),
+            "blog_author_address": getattr(config, "BLOG_AUTHOR_ADDRESS", "Żdżary 57, 21-400 Łuków"),
+            "blog_author_nip": getattr(config, "BLOG_AUTHOR_NIP", "8252128270"),
+            "blog_author_email": getattr(config, "BLOG_AUTHOR_EMAIL", "kontakt@blog-laika.com"),
             "categories": config.CATEGORIES,
             "current_year": datetime.now().year,
             "is_logged_in": False,

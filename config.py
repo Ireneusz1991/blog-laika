@@ -3,8 +3,12 @@ import os
 BLOG_TITLE = "Blog Laika"
 BLOG_TAGLINE = "Technologia, Gospodarka, Polityka i inne eseje"
 BLOG_DESCRIPTION = "Niezależne spojrzenie dociekliwego laika na mechanizmy rządzące technologią, gospodarką i współczesną polityką."
-BLOG_AUTHOR = "Laik"
-BLOG_AUTHOR_BIO = "Obserwator procesów technologicznych, rynkowych i społecznych. Piszę bez akademickiego żargonu, szukając istoty rzeczy i logiki zdarzeń."
+BLOG_AUTHOR = "Ireneusz Machowiec"
+BLOG_AUTHOR_BIO = "Autor Bloga Laika. Obserwator procesów technologicznych, rynkowych i geopolitycznych. Prowadzi niezależną publicystykę i analizy bez akademickiego żargonu."
+BLOG_AUTHOR_NAME = "Ireneusz Machowiec"
+BLOG_AUTHOR_ADDRESS = "Żdżary 57, 21-400 Łuków"
+BLOG_AUTHOR_NIP = "8252128270"
+BLOG_AUTHOR_EMAIL = "kontakt@blog-laika.com"
 
 CATEGORIES = [
     {"slug": "technologia", "name": "Technologia", "color": "#2563eb", "icon": "cpu", "desc": "Sztuczna inteligencja, cyfryzacja, przyszłość sieci i technologii"},

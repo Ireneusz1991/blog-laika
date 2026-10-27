@@ -85,6 +85,28 @@
       </div>
     </div>
 
+    <!-- Toolbar & Import Button -->
+    <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.5rem 0.75rem; margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;">
+      <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Narzędzia:</span>
+      <button type="button" onclick="formatEditorText('bold')" class="editor-tool-btn" title="Pogrubienie (**tekst**)"><strong>B</strong></button>
+      <button type="button" onclick="formatEditorText('italic')" class="editor-tool-btn" title="Kursywa (*tekst*)"><em>I</em></button>
+      <button type="button" onclick="formatEditorText('h2')" class="editor-tool-btn" title="Nagłówek H2">H2</button>
+      <button type="button" onclick="formatEditorText('h3')" class="editor-tool-btn" title="Śródtytuł H3">H3</button>
+      <button type="button" onclick="formatEditorText('quote')" class="editor-tool-btn" title="Cytat">❝ Cytat</button>
+      <button type="button" onclick="formatEditorText('ul')" class="editor-tool-btn" title="Lista punktowana">• Lista</button>
+      <button type="button" onclick="formatEditorText('ol')" class="editor-tool-btn" title="Lista numerowana">1. Lista</button>
+      <button type="button" onclick="formatEditorText('link')" class="editor-tool-btn" title="Wstaw link">🔗 Link</button>
+      <button type="button" onclick="formatEditorText('image')" class="editor-tool-btn" title="Wstaw obraz">🖼️ Obraz</button>
+      <button type="button" onclick="formatEditorText('code')" class="editor-tool-btn" title="Blok kodu"><code>&lt;/&gt;</code> Kod</button>
+      <button type="button" onclick="formatEditorText('hr')" class="editor-tool-btn" title="Linia pozioma">---</button>
+      <div style="margin-left: auto;">
+        <button type="button" onclick="document.getElementById('editor-md-file').click();" class="editor-tool-btn" style="color: var(--accent); font-weight: 700;" title="Wczytaj treść z pliku .md">
+          📂 Importuj plik .md
+        </button>
+        <input type="file" id="editor-md-file" accept=".md,.markdown,.txt" style="display: none;" onchange="importMdToLocalEditor(event)">
+      </div>
+    </div>
+
     <!-- Dual Pane Writing Environment -->
     <div class="editor-layout">
       <!-- Left Editor Pane -->

@@ -45,9 +45,29 @@
       „Celem nie jest posiadanie racji za wszelką cenę, lecz lepsze zrozumienie rzeczywistości w procesie rzetelnej analizy.”
     </blockquote>
 
+    <h2>O Autorze & Twórcy</h2>
+    <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin: 1.5rem 0;">
+      <div style="display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap;">
+        <div style="width: 54px; height: 54px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #4338ca); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);">
+          IM
+        </div>
+        <div style="flex: 1; min-width: 240px;">
+          <h3 style="margin: 0 0 0.35rem 0; font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">
+            {{ blog_author_name }}
+          </h3>
+          <p style="margin: 0; font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5;">
+            {{ blog_author_bio }}
+          </p>
+        </div>
+      </div>
+      <div style="margin-top: 1rem; padding-top: 0.85rem; border-top: 1px solid var(--border-color); font-size: 0.84rem; color: var(--text-muted); line-height: 1.6;">
+        Wydawca i podmiot odpowiedzialny: <strong>{{ blog_author_name }}</strong> &bull; Adres: {{ blog_author_address }} &bull; NIP: {{ blog_author_nip }}
+      </div>
+    </div>
+
     <h2>Kontakt i współpraca</h2>
     <p>
-      Eseje są otwarte na merytoryczną polemikę. Jeśli chcesz podzielić się uwagami, zaproponować temat lub nawiązać kontakt, napisz: <code>kontakt@bloglaika.pl</code> (lub przez formularz w mediach społecznościowych).
+      Eseje są otwarte na merytoryczną polemikę. Jeśli chcesz podzielić się uwagami, zaproponować temat lub nawiązać kontakt, napisz: <a href="mailto:{{ blog_author_email }}" style="color: var(--accent); font-weight: 600;">{{ blog_author_email }}</a>.
     </p>
   </div>
 

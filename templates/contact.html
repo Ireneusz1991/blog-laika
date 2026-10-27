@@ -71,6 +71,24 @@
       </div>
     </div>
 
+    <!-- Publisher / Author Details Card -->
+    <div style="background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+      <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(99, 102, 241, 0.1); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.4rem;">
+        🏢
+      </div>
+      <h3 style="font-family: var(--font-serif); font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">
+        Dane Autora i Wydawcy
+      </h3>
+      <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
+        Oficjalne dane podmiotu odpowiedzialnego za serwis Blog Laika.
+      </p>
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.85rem 1rem; border-radius: var(--radius-sm); font-size: 0.88rem; line-height: 1.6; color: var(--text-primary);">
+        <strong>{{ blog_author_name }}</strong><br>
+        {{ blog_author_address }}<br>
+        NIP: <span style="font-family: var(--font-mono); font-weight: 600;">{{ blog_author_nip }}</span>
+      </div>
+    </div>
+
   </div>
 
   <div class="article-body">
