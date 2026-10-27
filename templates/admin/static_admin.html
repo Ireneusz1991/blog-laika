@@ -110,6 +110,67 @@
       </div>
     </div>
 
+    <!-- Daily Topic Suggestions from Editorial Scraper -->
+    {% if latest_proposals %}
+    <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); margin-bottom: 2.5rem; overflow: hidden;">
+      <div style="padding: 1.25rem 1.5rem; border-bottom: 1.5px solid var(--border-color); background: var(--bg-surface); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+          <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+            <span style="font-size: 1.1rem;">💡</span>
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.6px;">Codzienny Scraper Redakcyjny</span>
+            {% if latest_proposals_date %}
+            <span class="badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; font-weight: 700;">Zestaw z dnia: {{ latest_proposals_date }}</span>
+            {% endif %}
+          </div>
+          <h2 style="font-family: var(--font-serif); font-size: 1.4rem; font-weight: 800; margin: 0;">
+            Świeże propozycje tematów i konspektów na dziś
+          </h2>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+            Przygotowane automatycznie na podstawie aktualnych trendów technologicznych, gospodarczych i geopolitycznych.
+          </p>
+        </div>
+        <div>
+          {% if latest_proposals_file %}
+          <a href="{{ base_url }}/propozycje-tematow/{{ latest_proposals_file }}" target="_blank" download class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.4rem 0.8rem; border-color: var(--accent); color: var(--accent);">
+            📥 Pobierz plik .md z propozycjami
+          </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div style="padding: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+        {% for prop in latest_proposals %}
+        <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+              <span class="post-category-tag" style="font-size: 0.75rem;">{{ prop.category|upper }}</span>
+              <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Temat #{{ loop.index }}</span>
+            </div>
+            <h3 style="font-size: 1.05rem; font-weight: 700; line-height: 1.4; margin-bottom: 0.65rem; color: var(--text-primary);">
+              {{ prop.title }}
+            </h3>
+            {% if prop.lead %}
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.75rem;">
+              {{ prop.lead }}
+            </p>
+            {% endif %}
+            {% if prop.thesis %}
+            <div style="font-size: 0.8rem; font-style: italic; background: var(--bg-card); border-left: 3px solid var(--accent); padding: 0.5rem 0.75rem; border-radius: 4px; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.4;">
+              „{{ prop.thesis }}”
+            </div>
+            {% endif %}
+          </div>
+          <div>
+            <button type="button" onclick="loadProposalIntoEditor({{ loop.index0 }});" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.82rem; padding: 0.5rem; font-weight: 600;">
+              ✍️ Załaduj konspekt do edytora &rarr;
+            </button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
     <!-- Management Methods Grid -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
       
@@ -732,6 +793,68 @@ ${body}`;
     a.href = URL.createObjectURL(blob);
     a.download = `${slug}.md`;
     a.click();
+  }
+
+  // Load scraped proposal directly into scratch editor
+  const PROPOSALS_DATA = {{ latest_proposals_json|safe if latest_proposals_json else '[]' }};
+
+  function loadProposalIntoEditor(index) {
+    const prop = PROPOSALS_DATA[index];
+    if (!prop) return;
+    
+    // Fill title and generate slug
+    const titleEl = document.getElementById('scratch-title');
+    const slugEl = document.getElementById('scratch-slug');
+    if (titleEl) titleEl.value = prop.title;
+    if (slugEl) slugEl.value = slugify(prop.title);
+    slugManuallyEdited = true;
+
+    // Fill category if element exists
+    const catEl = document.getElementById('scratch-category');
+    if (catEl && prop.category) {
+      catEl.value = prop.category;
+    }
+
+    // Fill summary / lead
+    const sumEl = document.getElementById('scratch-summary');
+    if (sumEl && prop.lead) {
+      sumEl.value = prop.lead;
+    }
+
+    // Build starter markdown content
+    let body = `# ${prop.title}\n\n`;
+    if (prop.lead) {
+      body += `${prop.lead}\n\n---\n\n`;
+    }
+    if (prop.thesis) {
+      body += `> **Główna teza eseju:** ${prop.thesis}\n\n`;
+    }
+    if (prop.raw_body) {
+      body += `## Punkty zwrotne i wątki do rozwinięcia\n\n${prop.raw_body}\n\n`;
+    }
+    body += `\n---\n\n*Tutaj rozwiń treść eseju. Autor: Ireneusz Machowiec*\n`;
+    
+    const bodyEl = document.getElementById('scratch-body');
+    if (bodyEl) bodyEl.value = body;
+
+    // Open editor if collapsed
+    const box = document.getElementById('online-editor-box');
+    if (box && box.style.display === 'none') {
+      toggleOnlineEditor();
+    } else if (box) {
+      box.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Update preview
+    updateLivePreview();
+
+    // Show friendly notification
+    const notif = document.getElementById('import-notification');
+    if (notif) {
+      notif.style.display = 'block';
+      notif.innerHTML = `💡 <strong>Konspekt załadowany:</strong> "${prop.title}". Pola formularza i edytor zostały uzupełnione!`;
+      setTimeout(() => { notif.style.display = 'none'; }, 6000);
+    }
   }
 
   // Check auth state on initial load
