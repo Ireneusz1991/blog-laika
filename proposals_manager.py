@@ -75,6 +75,7 @@ def parse_proposals_file(filepath: str) -> list:
         image_url = ""
         image_concept = ""
         image_prompt = ""
+        samokreacja = "100% Samokreacja (autorska synteza faktów)"
         body_lines = []
 
         for line in lines[1:]:
@@ -85,6 +86,8 @@ def parse_proposals_file(filepath: str) -> list:
                     category = cat_m.group(1)
             elif line_str.startswith("* **Data wyszukania:**"):
                 search_date = line_str.replace("* **Data wyszukania:**", "").strip()
+            elif line_str.startswith("* **Model powstawania:**") or line_str.startswith("* **Format:**"):
+                samokreacja = re.sub(r'^\*\s*\*\*(?:Model powstawania|Format):\*\*', '', line_str).strip()
             elif line_str.startswith("* **Proponowana grafika:**") or line_str.startswith("* **Grafika:**"):
                 image_url = re.sub(r'^\*\s*\*\*(?:Proponowana grafika|Grafika):\*\*', '', line_str).strip().strip('<>')
             elif line_str.startswith("* **Koncepcja wizualna:**"):
@@ -109,6 +112,7 @@ def parse_proposals_file(filepath: str) -> list:
             "image_url": image_url,
             "image_concept": image_concept,
             "image_prompt": image_prompt,
+            "samokreacja": samokreacja,
             "lead": lead,
             "thesis": thesis,
             "raw_body": "\n".join(body_lines).strip()

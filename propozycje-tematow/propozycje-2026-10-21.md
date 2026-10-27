@@ -2,7 +2,8 @@
 **Data przygotowania:** 21 października 2026 r. (środa)  
 **Data wyszukania i analizy trendów:** 21 października 2026 r. (analiza trendów: Benchmark Saturation, Automation Taxes, Content Moderation)  
 **Autor bloga:** Ireneusz Machowiec  
-**Profil tematyczny:** Wyłącznie Sztuczna Inteligencja (AI) — rzetelne, analityczne artykuły blogowe o technologii, gospodarce, geopolityce i społeczeństwie cyfrowym.
+**Profil tematyczny:** Sztuczna inteligencja, technologia, gospodarka i geopolityka — rzetelne, poważne wpisy blogowe.  
+**Standard redakcyjny:** 100% Samokreacja — autorska synteza faktów i trendów z perspektywy dociekliwego laika (całkowity brak zapożyczeń tekstowych).
 
 ---
 
@@ -10,13 +11,14 @@
 
 * **Kategoria:** `technologia`
 * **Data wyszukania:** 21 października 2026 r.
+* **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
 * **Proponowana grafika:** https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80
 * **Koncepcja wizualna:** Wykresy analityczne, wskaźniki słupkowe i tabele z danymi na ekranie monitoringu wydajności.
 * **Prompt AI dla grafiki:** `Performance benchmark metrics and comparative bar charts on clean dark mode analytical screen, machine learning evaluation report, 8k.`
 * **Lead:** Każda kolejna premiera modelu chwali się pobiciem testów GSM8K czy MMLU na poziomie 90%+. Gdy jednak ten sam model trafia do firmy, zaczyna popełniać szkolne błędy przy prostych zapytaniach biznesowych.
 * **Kluczowa teza wpisu:**  
   *Zjawisko wycieku pytań testowych do zbiorów treningowych (data contamination) zamieniło publiczne rankingi w narzędzie marketingu. Branża pilnie potrzebuje dynamicznych, ukrytych ewaluacji tworzonych na realnych danych.*
-* **Kluczowe wątki i konspekt artykułu:**
+* **Kluczowe wątki i konspekt wpisu:**
   1. Jak laboratoria optymalizują modele pod konkretne zestawy pytań, by wygrać na wykresach w social mediach.
   2. Prawo Goodharta w praktyce: Kiedy wskaźnik staje się celem, przestaje być dobrym wskaźnikiem.
   3. Jak działy IT w korporacjach powinny budować własne testy wewnętrzne dopasowane do specyfiki firmy.
@@ -28,13 +30,14 @@
 
 * **Kategoria:** `gospodarka`
 * **Data wyszukania:** 21 października 2026 r.
+* **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
 * **Proponowana grafika:** https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80
 * **Koncepcja wizualna:** Kalkulator finansowy, sprawozdania podatkowe i dokumenty budżetowe na biurku ekonomisty.
 * **Prompt AI dla grafiki:** `Government tax audit ledgers, calculator and financial policy reports on executive mahogany desk, public finance journalism aesthetic, 8k.`
 * **Lead:** Większość dochodów państw pochodzi z opodatkowania pracy ludzi (PIT, składki zdrowotne i emerytalne). Zastępowanie pracowników przez algorytmy rodzi pytanie o stabilność finansów publicznych.
 * **Kluczowa teza wpisu:**  
   *Spadek wpływów z podatków dochodowych zmusi państwa do opodatkowania mocy obliczeniowej lub zysków z automatyzacji. W przeciwnym razie systemy emerytalne i usługi publiczne staną na skraju zapaści.*
-* **Kluczowe wątki i konspekt artykułu:**
+* **Kluczowe wątki i konspekt wpisu:**
   1. Struktura dochodów budżetowych państw rozwiniętych a postępująca redukcja etatów biurowych.
   2. Dlaczego zdefiniowanie 'robota' lub 'agenta' na potrzeby podatkowe jest koszmarem prawnym.
   3. Koncepcja dywidendy technologicznej i bezwarunkowego dochodu podstawowego (UBI) w ocenie ekonomistów.
@@ -46,13 +49,14 @@
 
 * **Kategoria:** `polityka`
 * **Data wyszukania:** 21 października 2026 r.
+* **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
 * **Proponowana grafika:** https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=1200&q=80
 * **Koncepcja wizualna:** Zamknięta cyfrowa kłódka nałożona na zielony kod programu symbolizująca cenzurę i blokady systemowe.
 * **Prompt AI dla grafiki:** `Digital padlock locking glowing source code lines, digital censorship and corporate speech control theme, stark dark cyber aesthetic, 8k.`
 * **Lead:** Wszystkie wiodące modele komercyjne przechodzą proces dostrajania (RLHF) nakładający na nie sztywne filtry dotyczące tematów politycznych, historycznych i obyczajowych.
 * **Kluczowa teza wpisu:**  
   *Zarządy kilku spółek technologicznych w USA i Chinach arbitralnie ustalają granice dozwolonej dyskusji w narzędziach używanych przez setki milionów ludzi. To bezprecedensowa koncentracja władzy nad słowem.*
-* **Kluczowe wątki i konspekt artykułu:**
+* **Kluczowe wątki i konspekt wpisu:**
   1. Jak instrukcje systemowe (system prompts) i filtry bezpieczeństwa wpływają na ton i treść odpowiedzi modeli.
   2. Różnice ideologiczne między modelami amerykańskimi, chińskimi a otwartymi projektami europejskimi.
   3. Dlaczego rządy i obywatele domagają się przejrzystości wytycznych dotyczących moderacji treści w AI.
@@ -64,13 +68,14 @@
 
 * **Kategoria:** `eseje`
 * **Data wyszukania:** 21 października 2026 r.
+* **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
 * **Proponowana grafika:** https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80
 * **Koncepcja wizualna:** Samotna postać w półmroku przed świecącym ekranem smartfona w wielkim mieście nocą.
 * **Prompt AI dla grafiki:** `Solitary person looking at glowing smartphone screen at night by apartment window overlooking metropolitan skyline, intimate emotional technology theme, 8k.`
 * **Lead:** Miliony ludzi na świecie używają aplikacji konwersacyjnych jako powierników swoich problemów osobistych. Boty są zawsze dostępne, cierpliwe i bezkrytyczne.
 * **Kluczowa teza wpisu:**  
   *Syntetyczna relacja z maszyną oferuje natychmiastowe poczucie ulgi, ale oducza radzenia sobie z trudnościami prawdziwego kontaktu międzyludzkiego. To model biznesowy monetyzujący samotność.*
-* **Kluczowe wątki i konspekt artykułu:**
+* **Kluczowe wątki i konspekt wpisu:**
   1. Dlaczego ludzie tak łatwo ulegają złudzeniu głębokiej więzi z programem komputerowym (efekt Elizy w nowym wydaniu).
   2. Ryzyko uzależnienia emocjonalnego i podatność użytkowników na sugestie komercyjne aplikacji.
   3. Odpowiedzialność twórców oprogramowania za porady kryzysowe udzielane przez systemy bez certyfikacji medycznej.

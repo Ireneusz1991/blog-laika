@@ -182,7 +182,12 @@
                 {% endif %}
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.3rem;">
-                  <span class="post-category-tag" style="font-size: 0.75rem;">{{ prop.category|upper }}</span>
+                  <div style="display: flex; gap: 0.4rem; align-items: center;">
+                    <span class="post-category-tag" style="font-size: 0.75rem;">{{ prop.category|upper }}</span>
+                    <span style="background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.25); font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px;" title="{{ prop.samokreacja }}">
+                      🛡️ 100% Samokreacja
+                    </span>
+                  </div>
                   <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">
                     🔍 {{ prop.search_date if prop.search_date else pkg.formatted_date }}
                   </span>
@@ -238,7 +243,7 @@
           Wbudowany edytor online
         </h3>
         <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
-          Pisz i formatuj artykuły blogowe bezpośrednio na tej stronie. Otrzymujesz podgląd na żywo, zliczanie słów i automatyczny czas czytania.
+          Pisz i formatuj wpisy blogowe bezpośrednio na tej stronie. Otrzymujesz podgląd na żywo, zliczanie słów i automatyczny czas czytania.
         </p>
         <div>
           <button onclick="toggleOnlineEditor();" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.88rem;">
@@ -273,7 +278,7 @@
             ✍️ Prosty Edytor Tekstowy & Markdown
           </h3>
           <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
-            Twórz i publikuj artykuły w trasie z telefonu lub laptopa &bull; Autor: <strong>{{ blog_author_name }}</strong>
+            Twórz i publikuj wpisy w trasie z telefonu lub laptopa &bull; Autor: <strong>{{ blog_author_name }}</strong>
           </p>
         </div>
         <div style="display: flex; gap: 0.5rem; align-items: center;">
@@ -287,6 +292,14 @@
         </div>
       </div>
 
+      <!-- Standard Samokreacji Bloga Laika -->
+      <div style="background: rgba(16, 185, 129, 0.08); border: 1.5px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-sm); padding: 0.65rem 0.95rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.65rem; font-size: 0.82rem; color: #065f46;">
+        <span style="font-size: 1.15rem;">🛡️</span>
+        <div>
+          <strong>Standard Samokreacji Bloga Laika:</strong> Każdy wpis i konspekt powstaje jako w 100% autorska synteza faktów rynkowych z perspektywy dociekliwego laika. Bezwzględny zakaz kradzieży lub kopiowania cudzych tekstów.
+        </div>
+      </div>
+
       <!-- Import Success Banner -->
       <div id="import-notification" style="display: none; background: #ecfdf5; border: 1.5px solid #10b981; color: #065f46; padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.88rem;">
       </div>
@@ -294,8 +307,8 @@
       <!-- Metadata Fields -->
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
         <div>
-          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Tytuł artykułu *</label>
-          <input type="text" id="scratch-title" class="form-input" placeholder="Wpisz tytuł artykułu..." oninput="onTitleInput();">
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Tytuł wpisu *</label>
+          <input type="text" id="scratch-title" class="form-input" placeholder="Wpisz tytuł wpisu..." oninput="onTitleInput();">
         </div>
         <div>
           <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Kategoria *</label>
@@ -314,7 +327,7 @@
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
         <div>
           <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Krótkie streszczenie / Lead *</label>
-          <textarea id="scratch-summary" class="form-input" rows="2" placeholder="Wpisz 1-2 zdania wprowadzenia (lead) do artykułu..."></textarea>
+          <textarea id="scratch-summary" class="form-input" rows="2" placeholder="Wpisz 1-2 zdania wprowadzenia (lead) do wpisu..."></textarea>
         </div>
         <div>
           <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Dobrana grafika okładkowa (URL) *</label>
@@ -338,7 +351,7 @@
         <button type="button" onclick="formatText('code')" class="editor-tool-btn" title="Blok kodu"><code>&lt;/&gt;</code> Kod</button>
         <button type="button" onclick="formatText('hr')" class="editor-tool-btn" title="Linia pozioma">---</button>
         <div style="margin-left: auto; display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
-          <button type="button" onclick="openTextCleanerModal();" class="editor-tool-btn" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(124, 58, 237, 0.12)); border: 1.5px solid var(--accent); color: var(--accent); font-weight: 700; padding: 0.3rem 0.65rem;" title="Inteligentny autopoprawiacz tekstu: zamienia surowy tekst z Notatnika w elegancki artykuł z podglądem na żywo">
+          <button type="button" onclick="openTextCleanerModal();" class="editor-tool-btn" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(124, 58, 237, 0.12)); border: 1.5px solid var(--accent); color: var(--accent); font-weight: 700; padding: 0.3rem 0.65rem;" title="Inteligentny autopoprawiacz tekstu: zamienia surowy tekst z Notatnika w elegancki wpis z podglądem na żywo">
             🪄 Autopoprawiacz z Notatnika
           </button>
           <button type="button" onclick="document.getElementById('md-file-input').click();" class="editor-tool-btn" style="color: var(--text-secondary); font-weight: 600;" title="Wczytaj istniejący plik .md z dysku / telefonu">
@@ -358,7 +371,7 @@
       <div id="editor-workspace" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
         <div id="pane-write">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 0.4rem;">
-            <label style="font-size: 0.85rem; font-weight: 600;">Treść artykułu (Markdown / Tekst)</label>
+            <label style="font-size: 0.85rem; font-weight: 600;">Treść wpisu (Markdown / Tekst)</label>
             <div style="display: flex; gap: 0.6rem; align-items: center;">
               <button type="button" onclick="openTextCleanerModal();" style="background: none; border: none; color: var(--accent); font-size: 0.78rem; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0;">
                 🪄 Sformatuj z Notatnika &rarr;
@@ -366,7 +379,7 @@
               <span id="scratch-stats" style="font-size: 0.78rem; color: var(--text-muted);">0 słów | ~0 min czytania</span>
             </div>
           </div>
-          <textarea id="scratch-body" class="form-input" style="height: 420px; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.5; resize: vertical;" placeholder="# Rozpocznij pisanie artykułu...&#10;&#10;Użyj przycisków na pasku narzędzi lub kliknij 'Importuj plik .md'!" oninput="updateLivePreview();"></textarea>
+          <textarea id="scratch-body" class="form-input" style="height: 420px; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.5; resize: vertical;" placeholder="# Rozpocznij pisanie wpisu...&#10;&#10;Użyj przycisków na pasku narzędzi lub kliknij 'Importuj plik .md'!" oninput="updateLivePreview();"></textarea>
         </div>
 
         <div id="pane-preview">
@@ -375,7 +388,7 @@
             <span style="font-size: 0.78rem; color: #10b981;">● Aktualizowany w czasie rzeczywistym</span>
           </div>
           <div id="scratch-preview" class="article-body" style="height: 420px; overflow-y: auto; background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.95rem;">
-            <em style="color: var(--text-muted);">Zacznij pisać lub wczytaj plik .md, aby zobaczyć podgląd artykułu...</em>
+            <em style="color: var(--text-muted);">Zacznij pisać lub wczytaj plik .md, aby zobaczyć podgląd wpisu...</em>
           </div>
         </div>
       </div>
@@ -394,7 +407,7 @@
                 1. Publikuj bezpośrednio na GitHubie
               </strong>
               <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.85rem; line-height: 1.5;">
-                Otwiera formularz utworzenia nowego pliku w folderze <code>posts/</code> na GitHubie z automatycznie wypełnioną treścią. Wystarczy na telefonie lub laptopie kliknąć zielony przycisk <em>„Commit changes...”</em> i artykuł automatycznie publikuje się na blogu!
+                Otwiera formularz utworzenia nowego pliku w folderze <code>posts/</code> na GitHubie z automatycznie wypełnioną treścią. Wystarczy na telefonie lub laptopie kliknąć zielony przycisk <em>„Commit changes...”</em> i wpis automatycznie publikuje się na blogu!
               </p>
             </div>
             <button type="button" onclick="publishViaGitHubWeb();" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.85rem;">
@@ -439,7 +452,7 @@
     <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); overflow: hidden;">
       <div style="padding: 1.25rem 1.5rem; border-bottom: 1.5px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
         <h3 style="font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700;">
-          Opublikowane artykuły na blogu ({{ posts|length }})
+          Opublikowane wpisy na blogu ({{ posts|length }})
         </h3>
         <span style="font-size: 0.82rem; color: var(--text-muted);">Wszystkie wpisy są zsynchronizowane z GitHub Pages</span>
       </div>
@@ -448,7 +461,7 @@
         <table class="admin-table" style="width: 100%; border-collapse: collapse;">
           <thead>
             <tr style="border-bottom: 1.5px solid var(--border-color); background: var(--bg-surface); text-align: left; font-size: 0.82rem; text-transform: uppercase; color: var(--text-muted);">
-              <th style="padding: 0.85rem 1.25rem;">Tytuł artykułu</th>
+              <th style="padding: 0.85rem 1.25rem;">Tytuł wpisu</th>
               <th style="padding: 0.85rem 1rem;">Kategoria</th>
               <th style="padding: 0.85rem 1rem;">Czas czytania</th>
               <th style="padding: 0.85rem 1rem;">Data publikacji</th>
@@ -562,7 +575,7 @@
             </button>
           </div>
         </div>
-        <textarea id="cleaner-raw-input" class="form-input" style="flex: 1; min-height: 400px; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.5; resize: vertical;" placeholder="Wklej tutaj swój szkic prosto z Notatnika, Google Keep, notatek telefonu lub e-maila...&#10;&#10;Nie musisz używać żadnych znaczników # ani gwiazdek. Autopoprawiacz sam nada tekstowi formę eleganckiego artykułu!" oninput="runLiveClean();"></textarea>
+        <textarea id="cleaner-raw-input" class="form-input" style="flex: 1; min-height: 400px; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.5; resize: vertical;" placeholder="Wklej tutaj swój szkic prosto z Notatnika, Google Keep, notatek telefonu lub e-maila...&#10;&#10;Nie musisz używać żadnych znaczników # ani gwiazdek. Autopoprawiacz sam nada tekstowi formę eleganckiego wpisu!" oninput="runLiveClean();"></textarea>
       </div>
 
       <!-- Right: Preview and Cleaned Output -->
@@ -583,7 +596,7 @@
 
         <!-- Rendered HTML Tab -->
         <div id="cleaner-pane-preview" class="article-body" style="flex: 1; min-height: 400px; max-height: 480px; overflow-y: auto; background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-sm); border: 1.5px solid var(--border-color); font-size: 0.92rem;">
-          <em style="color: var(--text-muted);">Tutaj zobaczysz elegancki podgląd Twojego artykułu z zachowaniem polskiej typografii i struktury wpisu blogowego...</em>
+          <em style="color: var(--text-muted);">Tutaj zobaczysz elegancki podgląd Twojego wpisu z zachowaniem polskiej typografii i struktury wpisu blogowego...</em>
         </div>
 
         <!-- Editable Markdown Tab -->
@@ -602,7 +615,7 @@
     <!-- Modal Footer Actions -->
     <div style="padding: 1rem 1.5rem; border-top: 1.5px solid var(--border-color); background: var(--bg-surface); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
       <div style="font-size: 0.82rem; color: var(--text-secondary);">
-        💡 Kliknięcie <strong>„Zastosuj poprawki do artykułu”</strong> przeniesie sformatowaną treść prosto do edytora CMS.
+        💡 Kliknięcie <strong>„Zastosuj poprawki do wpisu”</strong> przeniesie sformatowaną treść prosto do edytora CMS.
       </div>
       <div style="display: flex; gap: 0.5rem; align-items: center;">
         <button type="button" onclick="closeTextCleanerModal();" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.45rem 0.9rem;">
@@ -612,7 +625,7 @@
           📋 Kopiuj tekst
         </button>
         <button type="button" onclick="applyCleanedTextToEditor();" class="btn btn-primary" style="font-size: 0.88rem; padding: 0.45rem 1.25rem; font-weight: 700;">
-          ✅ Zastosuj poprawki do artykułu &rarr;
+          ✅ Zastosuj poprawki do wpisu &rarr;
         </button>
       </div>
     </div>
@@ -694,7 +707,7 @@
     // Simple Markdown parsing for preview
     let html = '';
     if (imgUrl) {
-      html += `<div style="margin-bottom: 1.25rem; border-radius: var(--radius-md); overflow: hidden; max-height: 220px; background: #0f172a;"><img src="${escapeHtml(imgUrl)}" style="width: 100%; height: 220px; object-fit: cover;" alt="Okładka artykułu" onerror="this.style.display='none';"></div>`;
+      html += `<div style="margin-bottom: 1.25rem; border-radius: var(--radius-md); overflow: hidden; max-height: 220px; background: #0f172a;"><img src="${escapeHtml(imgUrl)}" style="width: 100%; height: 220px; object-fit: cover;" alt="Okładka wpisu" onerror="this.style.display='none';"></div>`;
     }
     if (title) html += `<h1>${escapeHtml(title)}</h1>`;
     
@@ -727,7 +740,7 @@
     });
 
     if (inList) html += '</ul>';
-    document.getElementById('scratch-preview').innerHTML = html || '<em style="color: var(--text-muted);">Zacznij pisać po lewej stronie, aby zobaczyć podgląd artykułu...</em>';
+    document.getElementById('scratch-preview').innerHTML = html || '<em style="color: var(--text-muted);">Zacznij pisać po lewej stronie, aby zobaczyć podgląd wpisu...</em>';
   }
 
   function escapeHtml(str) {
@@ -955,8 +968,8 @@
 
   // Build Full Markdown with Frontmatter & Author Ireneusz Machowiec
   function buildFullMarkdownDocument() {
-    const title = document.getElementById('scratch-title').value || 'Nowy artykuł';
-    const slug = document.getElementById('scratch-slug').value || slugify(title) || 'nowy-artykul';
+    const title = document.getElementById('scratch-title').value || 'Nowy wpis';
+    const slug = document.getElementById('scratch-slug').value || slugify(title) || 'nowy-wpis';
     const category = document.getElementById('scratch-category').value || 'eseje';
     const summary = document.getElementById('scratch-summary').value || '';
     const coverImage = document.getElementById('scratch-image')?.value?.trim() || '';
@@ -989,7 +1002,7 @@ ${body}`;
   function copyScratchMarkdown() {
     const { doc } = buildFullMarkdownDocument();
     navigator.clipboard.writeText(doc).then(() => {
-      alert('Pełny artykuł Markdown (wraz z metadanymi i autorem: Ireneusz Machowiec) został skopiowany do schowka!');
+      alert('Pełny wpis Markdown (wraz z metadanymi i autorem: Ireneusz Machowiec) został skopiowany do schowka!');
     });
   }
 
@@ -1083,6 +1096,7 @@ ${body}`;
 
     // Build starter markdown content
     let body = `# ${prop.title}\n\n`;
+    body += `> 🛡️ **Model Samokreacji Bloga Laika:** 100% autorska synteza faktów i trendów rynkowych z perspektywy dociekliwego laika. Zero kopiowania cudzych tekstów.\n\n`;
     if (prop.search_date || pkgDate) {
       body += `*Data wyszukania i analizy tematu: ${prop.search_date || pkgDate}*\n\n`;
     }
@@ -1115,7 +1129,7 @@ ${body}`;
     const notif = document.getElementById('import-notification');
     if (notif) {
       notif.style.display = 'block';
-      notif.innerHTML = `💡 <strong>Konspekt i dobrana grafika załadowane:</strong> "${prop.title}". Tytuł, lead, kategoria oraz grafika okładkowa zostały uzupełnione!`;
+      notif.innerHTML = `🛡️ <strong>Konspekt Samokreacji i grafika załadowane:</strong> "${prop.title}". Tytuł, lead, kategoria oraz grafika okładkowa są gotowe do autorskiego rozwinięcia!`;
       setTimeout(() => { notif.style.display = 'none'; }, 6000);
     }
   }
@@ -1434,6 +1448,15 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     if (st.orphans > 0) parts.push(`🔗 ${st.orphans} twardych spacji`);
     if (st.lists > 0) parts.push(`• ${st.lists} punktów listy`);
 
+    // Audyt Samokreacji i weryfikacja zapożyczeń
+    const wireMarkers = [/\bjak podaje\b/i, /\bjak informuje portal\b/i, /\bw rozmowie z naszym\b/i, /\bźródło:\s*/i, /\bprzedruk\b/i, /\bnotatka prasowa\b/i, /\bagencja reuters\b/i, /\bfot\.\s*materiały\b/i];
+    let hasWire = wireMarkers.some(rx => rx.test(rawText));
+    if (hasWire) {
+      parts.push('<span style="color: #ef4444; font-weight: 700;">⚠️ Wykryto kliszę agencyjną – przeredaguj na autorską samokreację!</span>');
+    } else if (words >= 40) {
+      parts.push('<span style="color: #059669; font-weight: 700;">🛡️ 100% Samokreacja</span>');
+    }
+
     const summaryEl = document.getElementById('cleaner-changes-summary');
     if (parts.length > 0) {
       summaryEl.innerHTML = `✨ <strong>Wykryto i poprawiono:</strong> ${parts.join(' &bull; ')}`;
@@ -1479,7 +1502,7 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     const notif = document.getElementById('import-notification');
     if (notif) {
       notif.style.display = 'block';
-      notif.innerHTML = `🪄 <strong>Autopoprawiacz zakończył pracę!</strong> Tekst został sformatowany, cudzysłowy i pauzy poprawione, a artykuł wstawiony do edytora.`;
+      notif.innerHTML = `🪄 <strong>Autopoprawiacz zakończył pracę!</strong> Tekst został sformatowany, cudzysłowy i pauzy poprawione, a wpis wstawiony do edytora.`;
       setTimeout(() => { notif.style.display = 'none'; }, 6000);
       notif.scrollIntoView({ behavior: 'smooth' });
     }
