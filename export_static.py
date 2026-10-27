@@ -125,6 +125,33 @@ def build_static(output_dir="dist", base_url=None):
         f.write(about_tmpl.render(**ctx_about))
     print("    [OK] Wygenerowano: o-blogu/index.html")
 
+    # 2b. Polityka prywatności i cookies (polityka-prywatnosci/index.html)
+    ctx_privacy = get_common_context()
+    ctx_privacy["active_page"] = "privacy"
+    privacy_tmpl = env.get_template("privacy.html")
+    os.makedirs(os.path.join(output_dir, "polityka-prywatnosci"), exist_ok=True)
+    with open(os.path.join(output_dir, "polityka-prywatnosci", "index.html"), "w", encoding="utf-8") as f:
+        f.write(privacy_tmpl.render(**ctx_privacy))
+    print("    [OK] Wygenerowano: polityka-prywatnosci/index.html")
+
+    # 2c. Regulamin serwisu i nota prawna (regulamin/index.html)
+    ctx_terms = get_common_context()
+    ctx_terms["active_page"] = "terms"
+    terms_tmpl = env.get_template("terms.html")
+    os.makedirs(os.path.join(output_dir, "regulamin"), exist_ok=True)
+    with open(os.path.join(output_dir, "regulamin", "index.html"), "w", encoding="utf-8") as f:
+        f.write(terms_tmpl.render(**ctx_terms))
+    print("    [OK] Wygenerowano: regulamin/index.html")
+
+    # 2d. Kontakt (kontakt/index.html)
+    ctx_contact = get_common_context()
+    ctx_contact["active_page"] = "contact"
+    contact_tmpl = env.get_template("contact.html")
+    os.makedirs(os.path.join(output_dir, "kontakt"), exist_ok=True)
+    with open(os.path.join(output_dir, "kontakt", "index.html"), "w", encoding="utf-8") as f:
+        f.write(contact_tmpl.render(**ctx_contact))
+    print("    [OK] Wygenerowano: kontakt/index.html")
+
     # 3. Wyszukiwarka statyczna (szukaj/index.html)
     ctx_search = get_common_context()
     ctx_search["query"] = ""

@@ -145,6 +145,24 @@ async def about_view(request: Request):
     ctx["active_page"] = "about"
     return render(request, "about.html", ctx)
 
+@app.get("/polityka-prywatnosci", response_class=HTMLResponse)
+async def privacy_view(request: Request):
+    ctx = common_context(request)
+    ctx["active_page"] = "privacy"
+    return render(request, "privacy.html", ctx)
+
+@app.get("/regulamin", response_class=HTMLResponse)
+async def terms_view(request: Request):
+    ctx = common_context(request)
+    ctx["active_page"] = "terms"
+    return render(request, "terms.html", ctx)
+
+@app.get("/kontakt", response_class=HTMLResponse)
+async def contact_view(request: Request):
+    ctx = common_context(request)
+    ctx["active_page"] = "contact"
+    return render(request, "contact.html", ctx)
+
 @app.get("/rss.xml")
 async def rss_feed():
     posts = database.get_posts(limit=25)

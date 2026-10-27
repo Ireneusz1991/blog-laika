@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Regulamin Serwisu & Nota Prawna | {{ blog_title }}{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: var(--max-w-content); padding-top: 1rem; padding-bottom: 4rem;">
+  
+  <header style="text-align: center; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1.5px solid var(--border-color);">
+    <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+      <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #059669;"></span>
+      <span style="font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; color: #059669;">
+        Regulamin & Prawa Autorskie
+      </span>
+    </div>
+    <h1 class="page-hero-title">
+      Regulamin Serwisu i Nota Prawna
+    </h1>
+    <p style="font-size: 0.95rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto;">
+      Zasady korzystania z serwisu Blog Laika, warunki świadczenia usług drogą elektroniczną oraz ochrona własności intelektualnej.
+    </p>
+    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.75rem;">
+      Obowiązuje od: 27 października 2026 r.
+    </div>
+  </header>
+
+  <div class="article-body">
+
+    <h2>§ 1. Postanowienia Ogólne</h2>
+    <p>
+      1. Niniejszy Regulamin określa zasady korzystania z serwisu internetowego <strong>Blog Laika</strong>, działającego pod adresem internetowym <code>https://blog-laika.com</code> (oraz aliasami technicznymi), zwanego dalej „Serwisem”.
+    </p>
+    <p>
+      2. Regulamin stanowi wykonanie obowiązku wynikającego z art. 8 ust. 1 pkt 1 ustawy z dnia 18 lipca 2002 r. o świadczeniu usług drogą elektroniczną (Dz. U. z 2020 r. poz. 344 z późn. zm.).
+    </p>
+    <p>
+      3. Właścicielem oraz administratorem Serwisu jest autor Bloga Laika (kontakt: <code>kontakt@blog-laika.com</code>).
+    </p>
+    <p>
+      4. Korzystanie z Serwisu jest bezpłatne, dobrowolne i nie wymaga zakładania konta czy podawania danych osobowych przez czytelników.
+    </p>
+
+    <h2>§ 2. Rodzaje i Zakres Świadczonych Usług</h2>
+    <p>Usługodawca świadczy za pośrednictwem Serwisu następujące bezpłatne usługi drogą elektroniczną:</p>
+    <ul>
+      <li>Udostępnianie autorskich esejów, artykułów, analiz i komentarzy o tematyce technologicznej, gospodarczej, politycznej i społecznej.</li>
+      <li>Udostępnianie lokalnego mechanizmu wyszukiwania treści i filtrowania według kategorii tematycznych.</li>
+      <li>Udostępnianie kanału informacyjnego w formacie <strong>RSS/XML</strong> pod adresem <code>/rss.xml</code>.</li>
+      <li>Udostępnianie formularza/danych do kontaktu z autorem.</li>
+    </ul>
+
+    <h2>§ 3. Wymagania Techniczne</h2>
+    <p>Dla prawidłowego i stabilnego korzystania z Serwisu niezbędne są:</p>
+    <ul>
+      <li>Urządzenie końcowe (komputer, laptop, tablet, smartfon) z dostępem do sieci Internet.</li>
+      <li>Zaktualizowana przeglądarka internetowa (np. Google Chrome, Mozilla Firefox, Apple Safari, Microsoft Edge, Opera).</li>
+      <li>Włączona obsługa standardów HTML5, arkuszy stylów CSS3 oraz interpretatora JavaScript.</li>
+      <li>Włączona obsługa protokołu TLS/HTTPS.</li>
+    </ul>
+
+    <h2>§ 4. Prawa Autorskie i Własność Intelektualna</h2>
+    <p>
+      1. Wszystkie artykuły, eseje, struktury tekstowe, grafiki, logo oraz kod źródłowy publikowane w Serwisie podlegają ochronie prawnej na podstawie przepisów <strong>Ustawy z dnia 4 lutego 1994 r. o prawie autorskim i prawach pokrewnych</strong> (Dz. U. z 2021 r. poz. 1062 z późn. zm.).
+    </p>
+    <p>
+      2. Użytkownik ma pełne prawo do korzystania z opublikowanych treści w ramach <strong>dozwolonego użytku osobistego</strong>.
+    </p>
+    <p>
+      3. Cytowanie fragmentów esejów w innych serwisach, mediach społecznościowych, publikacjach naukowych lub publicystycznych jest dozwolone w granicach <strong>prawa cytatu (art. 29 prawa autorskiego)</strong>, pod warunkiem:
+    </p>
+    <ul>
+      <li>Wyraźnego wskazania autorstwa: <strong>Blog Laika</strong> (lub imienia i nazwiska autora).</li>
+      <li>Zamieszczenia aktywnego i bezpośredniego hiperłącza (linku do źródłowego artykułu na <code>https://blog-laika.com</code>).</li>
+    </ul>
+    <p>
+      4. Kopiowanie całych artykułów, przedrukowywanie ich bez zgody autora lub automatyczne masowe pobieranie (tzw. web scraping) w celach komercyjnych jest zabronione.
+    </p>
+
+    <h2>§ 5. Wyłączenie Odpowiedzialności (Nota Prawna & Disclaimer)</h2>
+    <div style="background: var(--bg-surface); border-left: 4px solid var(--accent); padding: 1.25rem 1.5rem; margin: 1.5rem 0; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
+      <p style="margin-bottom: 0.5rem; font-weight: 700; color: var(--text-primary);">
+        ⚠️ Ważna Informacja Publicystyczna:
+      </p>
+      <p style="margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+        Publikacje ukazujące się na Blogu Laika stanowią niezależną publicystykę, subiektywny wyraz poglądów autora oraz analizę procesów makroekonomicznych i technologicznych. 
+        <strong>Treści te nie stanowią i nie mogą być traktowane jako rekomendacje inwestycyjne, porady finansowe, doradztwo prawne ani podatkowe.</strong> 
+        Wszelkie decyzje podejmowane przez czytelnika na podstawie lektury podejmowane są wyłącznie na jego własne ryzyko i odpowiedzialność.
+      </p>
+    </div>
+
+    <h2>§ 6. Reklamacje i Zgłoszenia Błędów</h2>
+    <p>
+      1. Wszelkie uwagi dotyczące funkcjonowania Serwisu, zauważonych błędów merytorycznych, literówek lub problemów technicznych można zgłaszać na adres: 
+      <a href="mailto:kontakt@blog-laika.com" style="color: var(--accent); font-weight: 600;">kontakt@blog-laika.com</a>.
+    </p>
+    <p>
+      2. Administrator ustosunkuje się do otrzymanego zgłoszenia w terminie do 14 dni roboczych.
+    </p>
+
+    <h2>§ 7. Postanowienia Końcowe</h2>
+    <p>
+      1. W sprawach nieuregulowanych niniejszym Regulaminem zastosowanie mają odpowiednie przepisy prawa polskiego, w szczególności Kodeksu cywilnego oraz Ustawy o świadczeniu usług drogą elektroniczną.
+    </p>
+    <p>
+      2. Administrator zastrzega sobie prawo do wprowadzania zmian w Regulaminie z ważnych przyczyn (np. zmiana przepisów prawa lub rozbudowa funkcji technicznych serwisu).
+    </p>
+
+  </div>
+
+  <div style="margin-top: 3rem; text-align: center;">
+    <a href="{{ base_url }}/" class="btn btn-secondary">&larr; Powrót do strony głównej</a>
+  </div>
+
+</div>
+{% endblock %}

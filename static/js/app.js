@@ -68,4 +68,87 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // --- Cookie Consent Banner & Preferences ---
+  initCookieConsent();
 });
+
+const COOKIE_STORAGE_KEY = 'laika_cookie_consent';
+
+function getCookieConsent() {
+  try {
+    const val = localStorage.getItem(COOKIE_STORAGE_KEY);
+    return val ? JSON.parse(val) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function setCookieConsent(preferences) {
+  try {
+    localStorage.setItem(COOKIE_STORAGE_KEY, JSON.stringify({
+      ...preferences,
+      timestamp: Date.now()
+    }));
+  } catch (e) {}
+  hideCookieBanner();
+  closeCookieSettingsModal();
+}
+
+function acceptAllCookies() {
+  setCookieConsent({ necessary: true, analytics: true });
+}
+
+function acceptNecessaryCookies() {
+  setCookieConsent({ necessary: true, analytics: false });
+}
+
+function saveCookieCustomPreferences() {
+  const analytics = document.getElementById('pref-analytics')?.checked || false;
+  setCookieConsent({ necessary: true, analytics: analytics });
+}
+
+function hideCookieBanner() {
+  const b = document.getElementById('cookie-banner');
+  if (b) b.style.display = 'none';
+}
+
+function openCookieBanner() {
+  openCookieSettingsModal();
+}
+
+function openCookieSettingsModal() {
+  const modal = document.getElementById('cookie-modal');
+  const backdrop = document.getElementById('cookie-modal-backdrop');
+  const consent = getCookieConsent();
+  const analyticsCb = document.getElementById('pref-analytics');
+  if (analyticsCb) {
+    analyticsCb.checked = consent ? !!consent.analytics : true;
+  }
+  if (modal) modal.style.display = 'block';
+  if (backdrop) backdrop.style.display = 'block';
+}
+
+function closeCookieSettingsModal() {
+  const modal = document.getElementById('cookie-modal');
+  const backdrop = document.getElementById('cookie-modal-backdrop');
+  if (modal) modal.style.display = 'none';
+  if (backdrop) backdrop.style.display = 'none';
+}
+
+function initCookieConsent() {
+  const consent = getCookieConsent();
+  if (!consent) {
+    const b = document.getElementById('cookie-banner');
+    if (b) b.style.display = 'block';
+  }
+}
+
+// Global functions for inline HTML event handlers
+window.acceptAllCookies = acceptAllCookies;
+window.acceptNecessaryCookies = acceptNecessaryCookies;
+window.openCookieSettingsModal = openCookieSettingsModal;
+window.closeCookieSettingsModal = closeCookieSettingsModal;
+window.saveCookieCustomPreferences = saveCookieCustomPreferences;
+window.openCookieBanner = openCookieBanner;
+
