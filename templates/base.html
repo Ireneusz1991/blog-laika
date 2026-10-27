@@ -16,9 +16,6 @@
   
   <!-- CSS -->
   <link rel="stylesheet" href="{{ base_url }}/static/css/style.css">
-  
-  <!-- RSS Feed discovery -->
-  <link rel="alternate" type="application/rss+xml" title="{{ blog_title }} RSS" href="{{ base_url }}/rss.xml">
 
   <!-- Instant Theme Initializer (Default: Light) -->
   <script>
@@ -103,7 +100,6 @@
           <li><a href="{{ base_url }}/kontakt" class="mobile-nav-item">✉️ Kontakt z autorem</a></li>
           <li><a href="{{ base_url }}/regulamin" class="mobile-nav-item">⚖️ Regulamin serwisu</a></li>
           <li><a href="{{ base_url }}/polityka-prywatnosci" class="mobile-nav-item">🔒 Polityka prywatności & RODO</a></li>
-          <li><a href="{{ base_url }}/rss.xml" target="_blank" rel="noopener" class="mobile-nav-item">📡 Kanał RSS</a></li>
         </ul>
       </div>
 
@@ -189,89 +185,11 @@
             <li><a href="{{ base_url }}/regulamin">Regulamin serwisu</a></li>
             <li><a href="{{ base_url }}/polityka-prywatnosci">Polityka prywatności</a></li>
             <li><a href="{{ base_url }}/kontakt">Kontakt</a></li>
-            <li><button onclick="openCookieSettingsModal();" class="footer-cookie-btn">🍪 Ustawienia cookies</button></li>
-            <li><a href="{{ base_url }}/rss.xml" target="_blank" rel="noopener">Kanał RSS</a></li>
           </ul>
         </div>
       </div>
     </div>
   </footer>
-
-  <!-- Cookie Consent Banner (Zgodny z RODO / ePrivacy) -->
-  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-modal="true" aria-labelledby="cookie-title" aria-describedby="cookie-desc" style="display: none;">
-    <div class="cookie-banner-inner">
-      <div class="cookie-banner-content">
-        <div class="cookie-banner-header">
-          <span style="font-size: 1.25rem;">🍪</span>
-          <h3 id="cookie-title" class="cookie-banner-title">Szanujemy Twoją prywatność</h3>
-        </div>
-        <p id="cookie-desc" class="cookie-banner-text">
-          Blog Laika wykorzystuje pamięć lokalną oraz niezbędne pliki cookies w celu zapamiętania preferencji motywu (jasny/ciemny) oraz zapewnienia stabilności serwisu. 
-          Nie stosujemy inwazyjnych trackerów reklamowych. Szczegóły w <a href="{{ base_url }}/polityka-prywatnosci">Polityce Prywatności i Cookies</a>.
-        </p>
-      </div>
-      <div class="cookie-banner-actions">
-        <button onclick="acceptAllCookies();" class="btn btn-primary cookie-btn">
-          Akceptuję wszystkie
-        </button>
-        <button onclick="acceptNecessaryCookies();" class="btn btn-secondary cookie-btn">
-          Tylko niezbędne
-        </button>
-        <button onclick="openCookieSettingsModal();" class="btn btn-secondary cookie-btn-sm" title="Dostosuj szczegóły">
-          ⚙️ Ustawienia
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Cookie Settings Modal -->
-  <div id="cookie-modal-backdrop" class="cookie-modal-backdrop" style="display: none;" onclick="closeCookieSettingsModal();"></div>
-  <div id="cookie-modal" class="cookie-modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
-    <div class="cookie-modal-header">
-      <h3 id="cookie-modal-title" style="font-family: var(--font-serif); font-size: 1.3rem; font-weight: 700;">
-        Ustawienia prywatności i cookies
-      </h3>
-      <button onclick="closeCookieSettingsModal();" class="btn-icon" aria-label="Zamknij" style="width: 32px; height: 32px;">
-        ✕
-      </button>
-    </div>
-    <div class="cookie-modal-body">
-      <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.5;">
-        Możesz samodzielnie określić, jakie dane są zapisywane w Twojej przeglądarce:
-      </p>
-
-      <div class="cookie-pref-item">
-        <div class="cookie-pref-info">
-          <strong>Niezbędne i techniczne (zawsze aktywne)</strong>
-          <p>Zapamiętują wybrany motyw graficzny (jasny/ciemny), decyzję o cookies oraz stan autoryzacji sesji redakcyjnej. Bez nich strona nie działa prawidłowo.</p>
-        </div>
-        <div class="cookie-pref-switch">
-          <span style="font-size: 0.78rem; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px;">Wymagane</span>
-        </div>
-      </div>
-
-      <div class="cookie-pref-item">
-        <div class="cookie-pref-info">
-          <strong>Statystyki czytelnictwa</strong>
-          <p>Pozwalają autorowi sprawdzać czytelność publikacji i liczbę odsłon bez identyfikacji tożsamości czytelnika.</p>
-        </div>
-        <div class="cookie-pref-switch">
-          <label class="switch-toggle" aria-label="Włącz/wyłącz analitykę">
-            <input type="checkbox" id="pref-analytics">
-            <span class="slider"></span>
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="cookie-modal-footer">
-      <button onclick="saveCookieCustomPreferences();" class="btn btn-primary" style="font-size: 0.88rem;">
-        Zapisz wybrane preferencje
-      </button>
-      <button onclick="acceptAllCookies();" class="btn btn-secondary" style="font-size: 0.88rem;">
-        Włącz wszystkie
-      </button>
-    </div>
-  </div>
 
   <!-- Scripts -->
   <script src="{{ base_url }}/static/js/app.js"></script>

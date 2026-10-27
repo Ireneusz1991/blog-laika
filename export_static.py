@@ -251,41 +251,10 @@ def build_static(output_dir="dist", base_url=None):
         json.dump(search_index, f, ensure_ascii=False, indent=2)
     print("    [OK] Wygenerowano: search-index.json")
 
-    # 7. Kanał RSS XML (rss.xml)
-    items_xml = []
-    if has_custom_domain:
-        with open(cname_file, "r", encoding="utf-8") as f:
-            domain_name = f.read().strip()
-        site_domain = f"https://{domain_name}"
-    else:
-        site_domain = "https://ireneusz1991.github.io"
-    for p in posts:
-        pub_date = datetime.strptime(p["created_at"][:19], "%Y-%m-%d %H:%M:%S").strftime("%a, %d %b %Y %H:%M:%S +0100")
-        items_xml.append(f"""
-        <item>
-            <title><![CDATA[{p['title']}]]></title>
-            <link>{site_domain}{base_url}/post/{p['slug']}/</link>
-            <guid>{site_domain}{base_url}/post/{p['slug']}/</guid>
-            <pubDate>{pub_date}</pubDate>
-            <category>{p['category']}</category>
-            <description><![CDATA[{p['summary']}]]></description>
-        </item>
-        """)
-        
-    rss_content = f"""<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0">
-<channel>
-    <title>{config.BLOG_TITLE}</title>
-    <link>{site_domain}{base_url}/</link>
-    <description>{config.BLOG_DESCRIPTION}</description>
-    <language>pl</language>
-    {''.join(items_xml)}
-</channel>
-</rss>
-"""
-    with open(os.path.join(output_dir, "rss.xml"), "w", encoding="utf-8") as f:
-        f.write(rss_content.strip())
-    print("    [OK] Wygenerowano: rss.xml")
+    # Usunięcie rss.xml jeśli pozostał z poprzednich kompilacji
+    old_rss = os.path.join(output_dir, "rss.xml")
+    if os.path.exists(old_rss):
+        os.remove(old_rss)
 
     print("\n[SUKCES] Cała platforma statyczna została pomyślnie skompilowana w folderze 'dist/'!")
 

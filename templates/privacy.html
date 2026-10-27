@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Polityka Prywatności i Plików Cookies | {{ blog_title }}{% endblock %}
+{% block title %}Polityka Prywatności | {{ blog_title }}{% endblock %}
 
 {% block content %}
 <div class="container" style="max-width: var(--max-w-content); padding-top: 1rem; padding-bottom: 4rem;">
@@ -13,10 +13,10 @@
       </span>
     </div>
     <h1 class="page-hero-title">
-      Polityka Prywatności i Plików Cookies
+      Polityka Prywatności
     </h1>
     <p style="font-size: 0.95rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto;">
-      Zasady ochrony danych osobowych, prywatności użytkowników oraz wykorzystywania pamięci lokalnej i plików cookies w serwisie Blog Laika.
+      Zasady ochrony danych osobowych i poszanowania prywatności czytelników w serwisie Blog Laika.
     </p>
     <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.75rem;">
       Data ostatniej aktualizacji: 27 października 2026 r.
@@ -53,7 +53,7 @@
     </p>
     <ul>
       <li>
-        <strong>Świadczenie usług drogą elektroniczną (art. 6 ust. 1 lit. b RODO):</strong> Umożliwienie bezpłatnego przeglądania artykułów, esejów, korzystania z lokalnej wyszukiwarki oraz kanału informacyjnego RSS.
+        <strong>Świadczenie usług drogą elektroniczną (art. 6 ust. 1 lit. b RODO):</strong> Umożliwienie bezpłatnego przeglądania artykułów, esejów oraz korzystania z lokalnej wyszukiwarki.
       </li>
       <li>
         <strong>Kontakt z czytelnikami (art. 6 ust. 1 lit. f RODO):</strong> Przetwarzanie danych przekazanych dobrowolnie w korespondencji e-mail (np. imię, adres e-mail, treść wiadomości) w celu udzielenia odpowiedzi na zapytanie lub podjęcia polemiki merytorycznej.
@@ -61,21 +61,21 @@
       <li>
         <strong>Uzasadniony interes Administratora i bezpieczeństwo (art. 6 ust. 1 lit. f RODO):</strong> Prowadzenie standardowych logów serwerowych (adres IP, data i godzina zapytania, identyfikator przeglądarki) w celu zapewnienia stabilności i ochrony serwisu przed atakami typu DDoS czy nadużyciami.
       </li>
-      <li>
-        <strong>Zgoda użytkownika (art. 6 ust. 1 lit. a RODO):</strong> W odniesieniu do opcjonalnych ustawień preferencji, jeśli użytkownik wyrazi na nie świadomą zgodę.
-      </li>
     </ul>
 
-    <h2>3. Pliki Cookies i Pamięć Lokalna (LocalStorage)</h2>
+    <h2>3. Pamięć Lokalna i Brak Śledzenia (Privacy by Default)</h2>
     <p>
-      Serwis wykorzystuje mechanizmy pamięci przeglądarki użytkownika, w tym pamięć <strong>HTML5 LocalStorage</strong> oraz pliki sesyjne <strong>Cookies</strong>. Narzędzia te dzielą się na następujące kategorie:
+      Serwis <strong>nie wykorzystuje inwazyjnych plików cookies, pikseli śledzących, sieci reklamowych ani narzędzi analitycznych profilujących czytelników</strong>. Szanujemy prywatność użytkowników domyślnie (Privacy by Default), w związku z czym nie jest wymagane wyświetlanie uciążliwych banerów zgody na cookies.
+    </p>
+    <p>
+      Wykorzystywane są wyłącznie minimalne, techniczne mechanizmy pamięci przeglądarki (HTML5 LocalStorage i SessionStorage) o charakterze funkcjonalnym:
     </p>
 
     <div style="overflow-x: auto; margin: 1.5rem 0;">
       <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; font-family: var(--font-sans);">
         <thead>
           <tr style="background: var(--bg-surface); border-bottom: 2px solid var(--border-color); text-align: left;">
-            <th style="padding: 0.75rem 1rem;">Klucz / Plik</th>
+            <th style="padding: 0.75rem 1rem;">Klucz / Pamięć</th>
             <th style="padding: 0.75rem 1rem;">Typ & Miejsce</th>
             <th style="padding: 0.75rem 1rem;">Cel i funkcja</th>
             <th style="padding: 0.75rem 1rem;">Okres ważności</th>
@@ -84,15 +84,9 @@
         <tbody>
           <tr style="border-bottom: 1px solid var(--border-color);">
             <td style="padding: 0.75rem 1rem; font-family: var(--font-mono); font-weight: 600;">blog-theme</td>
-            <td style="padding: 0.75rem 1rem;">Niezbędny (LocalStorage)</td>
-            <td style="padding: 0.75rem 1rem;">Zapamiętuje preferencję motywu wizualnego (jasny / ciemny) wybraną przez czytelnika.</td>
+            <td style="padding: 0.75rem 1rem;">Funkcjonalny (LocalStorage)</td>
+            <td style="padding: 0.75rem 1rem;">Zapamiętuje preferencję motywu wizualnego (jasny / ciemny) wybraną przez czytelnika przyciskiem w nagłówku.</td>
             <td style="padding: 0.75rem 1rem;">Trwały (do wyczyszczenia)</td>
-          </tr>
-          <tr style="border-bottom: 1px solid var(--border-color);">
-            <td style="padding: 0.75rem 1rem; font-family: var(--font-mono); font-weight: 600;">laika_cookie_consent</td>
-            <td style="padding: 0.75rem 1rem;">Niezbędny (LocalStorage)</td>
-            <td style="padding: 0.75rem 1rem;">Zapisuje decyzję użytkownika dotyczącą akceptacji polityki cookies, aby baner nie pojawiał się ponownie.</td>
-            <td style="padding: 0.75rem 1rem;">12 miesięcy</td>
           </tr>
           <tr style="border-bottom: 1px solid var(--border-color);">
             <td style="padding: 0.75rem 1rem; font-family: var(--font-mono); font-weight: 600;">blog_laika_admin_auth</td>
@@ -105,14 +99,8 @@
     </div>
 
     <p>
-      Pliki i klucze niezbędne są wymagane do prawidłowego renderowania strony i nie wymagają uprzedniej zgody zgodnie z art. 173 ust. 3 ustawy Prawo telekomunikacyjne. Użytkownik ma pełne prawo w dowolnym momencie zmienić swoje preferencje lub wyczyścić dane pamięci w swojej przeglądarce.
+      Klucze te są niezbędne do prawidłowego renderowania strony i nie wymagają uprzedniej zgody zgodnie z art. 173 ust. 3 ustawy Prawo telekomunikacyjne. Użytkownik ma pełne prawo w dowolnym momencie wyczyścić dane pamięci podręcznej w ustawieniach swojej przeglądarki.
     </p>
-
-    <div style="margin: 1.5rem 0; text-align: center;">
-      <button onclick="openCookieBanner();" class="btn btn-secondary" style="font-size: 0.9rem;">
-        ⚙️ Zmień swoje preferencje cookies
-      </button>
-    </div>
 
     <h2>4. Odbiorcy Danych i Hosting</h2>
     <p>
