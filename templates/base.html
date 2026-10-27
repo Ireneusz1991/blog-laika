@@ -126,9 +126,7 @@
         <ul class="footer-nav">
           <li><a href="{{ base_url }}/rss.xml" target="_blank">Kanał RSS</a></li>
           <li><a href="{{ base_url }}/o-blogu">O autorze</a></li>
-          {% if is_logged_in %}
-          <li><a href="/admin" style="color: var(--accent);">Panel CMS</a></li>
-          {% endif %}
+          <li><a href="http://127.0.0.1:8000/admin" style="opacity: 0.7; font-size: 0.85rem;" title="Lokalny panel edytorski CMS">🔑 Redakcja (CMS)</a></li>
         </ul>
       </div>
     </div>
