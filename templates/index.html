@@ -3,117 +3,247 @@
 {% block content %}
 <div class="container">
 
-  {% if featured_post and not current_category %}
-  <!-- Featured Hero Post -->
-  <article class="featured-card">
-    <div class="featured-content">
-      <div class="post-meta">
-        <a href="{{ base_url }}/kategoria/{{ featured_post.category }}" class="post-category-tag">
-          {{ featured_post.category_name }}
-        </a>
-        <span>•</span>
-        <span>⏱️ {{ featured_post.read_time }} min czytania</span>
-        <span>•</span>
-        <span>{{ featured_post.created_date }}</span>
-      </div>
-
-      <h1 class="featured-title">
-        <a href="{{ base_url }}/post/{{ featured_post.slug }}">{{ featured_post.title }}</a>
-      </h1>
-
-      <p class="featured-excerpt">
-        {{ featured_post.summary }}
-      </p>
-
-      <div>
-        <a href="{{ base_url }}/post/{{ featured_post.slug }}" class="btn btn-primary">
-          Czytaj esej &rarr;
-        </a>
-      </div>
-    </div>
-
-    {% if featured_post.cover_image %}
-    <div class="featured-image-wrapper">
-      <img src="{{ featured_post.cover_image }}" alt="{{ featured_post.title }}" class="featured-image">
-    </div>
-    {% endif %}
-  </article>
-  {% endif %}
-
-  <!-- Section Header -->
-  <div class="section-header">
-    <h2 class="section-title">
-      {% if current_category_obj %}
-        Kategoria: {{ current_category_obj.name }}
-      {% else %}
-        Najnowsze publikacje i eseje
-      {% endif %}
-    </h2>
-    <span style="font-size: 0.88rem; color: var(--text-muted);">
-      {{ posts|length }} {% if posts|length == 1 %}esej{% elif posts|length in [2,3,4] %}eseje{% else %}esejów{% endif %}
-    </span>
-  </div>
-
-  {% if posts %}
-  <div class="posts-grid">
-    {% for post in posts %}
-    <article class="post-card">
-      {% if post.cover_image %}
-      <a href="{{ base_url }}/post/{{ post.slug }}">
-        <img src="{{ post.cover_image }}" alt="{{ post.title }}" class="post-card-thumb" loading="lazy">
-      </a>
-      {% endif %}
-
-      <div class="post-card-body">
-        <div class="post-meta">
-          <a href="{{ base_url }}/kategoria/{{ post.category }}" class="post-category-tag">
-            {{ post.category_name }}
-          </a>
-          <span>•</span>
-          <span>⏱️ {{ post.read_time }} min</span>
+  <!-- ========================================================
+       KULTURA LIBERALNA EDITORIAL MAGAZINE FRONT-PAGE LAYOUT
+       ======================================================== -->
+  <div class="editorial-magazine-grid">
+    
+    <!-- LEFT MAIN COLUMN: Hero Essay & 2-Col Subgrid -->
+    <div class="editorial-main-col">
+      
+      {% if featured_post %}
+      <!-- Issue / Category Meta Bar -->
+      <div class="editorial-meta-bar">
+        <div class="editorial-meta-left">
+          <span class="editorial-label-lead">GŁÓWNY ESEJ</span>
+          <span class="editorial-label-cat">{{ featured_post.category_name }}</span>
         </div>
+        <div class="editorial-meta-right">
+          <span class="editorial-date-issue">{{ featured_post.created_date }}</span>
+        </div>
+      </div>
 
-        <h3 class="post-card-title">
-          <a href="{{ base_url }}/post/{{ post.slug }}">{{ post.title }}</a>
+      <!-- Hero Lead Article -->
+      <article class="editorial-hero-article">
+        <h1 class="editorial-hero-title">
+          <a href="{{ base_url }}/post/{{ featured_post.slug }}">{{ featured_post.title }}</a>
+        </h1>
+
+        {% if featured_post.cover_image %}
+        <div class="editorial-hero-image-wrap">
+          <a href="{{ base_url }}/post/{{ featured_post.slug }}">
+            <img src="{{ featured_post.cover_image }}" alt="{{ featured_post.title }}" class="editorial-hero-image">
+          </a>
+        </div>
+        {% endif %}
+
+        <div class="editorial-hero-body">
+          <div class="editorial-author-byline">
+            <span class="byline-author-name">Ireneusz Machowiec</span>
+            <span class="byline-separator">&bull;</span>
+            <span class="byline-read-time">⏱️ {{ featured_post.read_time }} min czytania</span>
+          </div>
+
+          <p class="editorial-hero-excerpt">
+            {{ featured_post.summary }}
+          </p>
+
+          <div class="editorial-hero-action">
+            <a href="{{ base_url }}/post/{{ featured_post.slug }}" class="btn-editorial-read">
+              Czytaj cały esej &rarr;
+            </a>
+          </div>
+        </div>
+      </article>
+      {% endif %}
+
+      <!-- Thin Section Rule -->
+      <hr class="editorial-section-rule">
+
+      <!-- 2-Column Subgrid of Articles (Directly beneath hero, like Kultura Liberalna) -->
+      {% if posts and posts|length >= 1 %}
+      <div class="editorial-subgrid-2col">
+        {% for post in posts[:2] %}
+        <article class="editorial-sub-card {% if loop.first %}sub-card-left{% else %}sub-card-right{% endif %}">
+          <div class="editorial-sub-meta">
+            <a href="{{ base_url }}/kategoria/{{ post.category }}" class="editorial-cat-tag">
+              {{ post.category_name }}
+            </a>
+            <span class="editorial-read-min">⏱️ {{ post.read_time }} min</span>
+          </div>
+
+          <h3 class="editorial-sub-title">
+            <a href="{{ base_url }}/post/{{ post.slug }}">{{ post.title }}</a>
+          </h3>
+
+          <div class="editorial-author-byline">
+            <span class="byline-author-name">Ireneusz Machowiec</span>
+          </div>
+
+          <p class="editorial-sub-excerpt">
+            {{ post.summary }}
+          </p>
+        </article>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Outlined Button at Bottom of Left Column -->
+      <div class="editorial-more-bar">
+        <a href="#katalog-publikacji" class="btn-editorial-outline">
+          Wszystkie eseje i analizy &darr;
+        </a>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDEBAR COLUMN: Najnowsze (Vertical rule on left) -->
+    <aside class="editorial-sidebar-col">
+      
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">Najnowsze</h2>
+      </div>
+
+      <div class="sidebar-articles-list">
+        {% for post in posts %}
+        <article class="sidebar-article-item {% if loop.first %}sidebar-featured-item{% endif %}">
+          {% if loop.first and post.cover_image %}
+          <div class="sidebar-thumb-wrap">
+            <a href="{{ base_url }}/post/{{ post.slug }}">
+              <img src="{{ post.cover_image }}" alt="{{ post.title }}" class="sidebar-thumb" loading="lazy">
+            </a>
+          </div>
+          {% endif %}
+
+          <div class="sidebar-item-body">
+            <div class="sidebar-item-cat">
+              <a href="{{ base_url }}/kategoria/{{ post.category }}">{{ post.category_name }}</a>
+            </div>
+
+            <h3 class="sidebar-item-title">
+              <a href="{{ base_url }}/post/{{ post.slug }}">{{ post.title }}</a>
+            </h3>
+
+            <div class="editorial-author-byline">
+              <span class="byline-author-name">Ireneusz Machowiec</span>
+              <span class="byline-separator">&bull;</span>
+              <span class="byline-date">{{ post.created_date }}</span>
+            </div>
+
+            {% if loop.first %}
+            <p class="sidebar-featured-excerpt">
+              {{ post.summary }}
+            </p>
+            {% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+
+      <!-- Editorial Quote / Manifesto Box (Kultura Liberalna Style) -->
+      <div class="editorial-manifesto-card">
+        <div class="manifesto-card-badge">PERSPEKTYWA LAIKA</div>
+        <h3 class="manifesto-card-heading">
+          Z perspektywy dociekliwego laika widać to, co umyka ekspertom.
         </h3>
-
-        <p class="post-card-excerpt">
-          {{ post.summary }}
+        <p class="manifesto-card-desc">
+          Bez akademickiego żargonu, bez korporacyjnych banałów i bez clickbaitu. Niezależna publicystyka o technologii, gospodarce i współczesnym świecie.
         </p>
-
-        <div class="post-card-footer">
-          <span>{{ post.created_date }}</span>
-          <a href="{{ base_url }}/post/{{ post.slug }}" style="text-decoration: none; font-weight: 600; color: var(--accent);">
-            Czytaj &rarr;
-          </a>
-        </div>
+        <a href="{{ base_url }}/o-blogu" class="manifesto-card-link">
+          O manifeście &rarr;
+        </a>
       </div>
-    </article>
-    {% endfor %}
-  </div>
-  {% else %}
-  <div style="text-align: center; padding: 4rem 1rem; color: var(--text-muted);">
-    <p style="font-size: 1.2rem; margin-bottom: 1rem;">Brak opublikowanych wpisów w tej sekcji.</p>
-    <a href="{{ base_url }}/" class="btn btn-secondary">Wróć do strony głównej</a>
-  </div>
-  {% endif %}
 
-  <!-- Newsletter / Manifesto Banner -->
-  <div style="margin-top: 5rem; padding: 3rem; background: var(--bg-surface); border-radius: var(--radius-lg); text-align: center; border: 1px solid var(--border-color);">
-    <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 0.8rem;">
-      Myśl poza schematami. Dołącz do dociekliwych.
-    </h3>
-    <p style="color: var(--text-secondary); max-width: 580px; margin: 0 auto 1.5rem auto; font-size: 1.05rem;">
-      Blog Laika to przestrzeń bez reklam, clickbaitu i pośpiechu. Zapisz się do powiadomień przez czytnik RSS lub regularnie odwiedzaj stronę.
-    </p>
-    <a href="{{ base_url }}/rss.xml" target="_blank" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M4 11a9 9 0 0 1 9 9"></path>
-        <path d="M4 4a16 16 0 0 1 16 16"></path>
-        <circle cx="5" cy="19" r="1"></circle>
-      </svg>
-      Subskrybuj kanał RSS
-    </a>
+      <!-- Quick RSS Subscription Card -->
+      <div class="sidebar-rss-card">
+        <a href="{{ base_url }}/rss.xml" target="_blank" rel="noopener" class="sidebar-rss-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M4 11a9 9 0 0 1 9 9"></path>
+            <path d="M4 4a16 16 0 0 1 16 16"></path>
+            <circle cx="5" cy="19" r="1"></circle>
+          </svg>
+          <span>Subskrybuj kanał RSS</span>
+        </a>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- ========================================================
+       SECTION 2: ALL ARTICLES CATALOG
+       ======================================================== -->
+  <div id="katalog-publikacji" class="editorial-catalog-section">
+    <div class="section-header">
+      <h2 class="section-title">Katalog esejów i artykułów</h2>
+      <span class="section-count" style="font-size: 0.88rem; color: var(--text-muted);">
+        Łącznie: {{ (posts|length) + (1 if featured_post else 0) }} eseje
+      </span>
+    </div>
+
+    <div class="posts-grid">
+      {% if featured_post %}
+      <article class="post-card">
+        {% if featured_post.cover_image %}
+        <a href="{{ base_url }}/post/{{ featured_post.slug }}">
+          <img src="{{ featured_post.cover_image }}" alt="{{ featured_post.title }}" class="post-card-thumb" loading="lazy">
+        </a>
+        {% endif %}
+        <div class="post-card-body">
+          <div class="post-meta">
+            <a href="{{ base_url }}/kategoria/{{ featured_post.category }}" class="post-category-tag">
+              {{ featured_post.category_name }}
+            </a>
+            <span>&bull;</span>
+            <span class="byline-author-name">Ireneusz Machowiec</span>
+            <span>&bull;</span>
+            <span>⏱️ {{ featured_post.read_time }} min</span>
+          </div>
+          <h3 class="post-card-title">
+            <a href="{{ base_url }}/post/{{ featured_post.slug }}">{{ featured_post.title }}</a>
+          </h3>
+          <p class="post-card-excerpt">{{ featured_post.summary }}</p>
+          <div class="post-card-footer">
+            <span>{{ featured_post.created_date }}</span>
+            <a href="{{ base_url }}/post/{{ featured_post.slug }}" style="text-decoration: none; font-weight: 700; color: var(--accent);">
+              Czytaj esej &rarr;
+            </a>
+          </div>
+        </div>
+      </article>
+      {% endif %}
+
+      {% for post in posts %}
+      <article class="post-card">
+        {% if post.cover_image %}
+        <a href="{{ base_url }}/post/{{ post.slug }}">
+          <img src="{{ post.cover_image }}" alt="{{ post.title }}" class="post-card-thumb" loading="lazy">
+        </a>
+        {% endif %}
+        <div class="post-card-body">
+          <div class="post-meta">
+            <a href="{{ base_url }}/kategoria/{{ post.category }}" class="post-category-tag">
+              {{ post.category_name }}
+            </a>
+            <span>&bull;</span>
+            <span class="byline-author-name">Ireneusz Machowiec</span>
+            <span>&bull;</span>
+            <span>⏱️ {{ post.read_time }} min</span>
+          </div>
+          <h3 class="post-card-title">
+            <a href="{{ base_url }}/post/{{ post.slug }}">{{ post.title }}</a>
+          </h3>
+          <p class="post-card-excerpt">{{ post.summary }}</p>
+          <div class="post-card-footer">
+            <span>{{ post.created_date }}</span>
+            <a href="{{ base_url }}/post/{{ post.slug }}" style="text-decoration: none; font-weight: 700; color: var(--accent);">
+              Czytaj esej &rarr;
+            </a>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
   </div>
 
 </div>
