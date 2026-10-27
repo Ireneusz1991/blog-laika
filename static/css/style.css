@@ -277,7 +277,6 @@ header.site-header {
   background: var(--bg-secondary);
   border-bottom: 1.5px solid var(--border-color);
   padding: 0.65rem 0;
-  overflow: hidden;
 }
 
 .category-nav-inner {
@@ -288,7 +287,6 @@ header.site-header {
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  max-width: 100%;
 }
 
 .category-nav-inner::-webkit-scrollbar {
@@ -1020,11 +1018,9 @@ footer.site-footer {
 
   .category-nav {
     padding: 0.45rem 0;
-    overflow: hidden;
   }
 
   .category-nav-inner {
-    max-width: 100%;
     padding: 0.1rem 0;
   }
 
