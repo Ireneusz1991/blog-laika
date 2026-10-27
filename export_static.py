@@ -123,14 +123,10 @@ def build_static(output_dir="dist", base_url=None):
         f.write(home_tmpl.render(**ctx))
     print("    [OK] Wygenerowano: index.html")
 
-    # 2. Strona O blogu (o-blogu/index.html)
-    ctx_about = get_common_context()
-    ctx_about["active_page"] = "about"
-    about_tmpl = env.get_template("about.html")
-    os.makedirs(os.path.join(output_dir, "o-blogu"), exist_ok=True)
-    with open(os.path.join(output_dir, "o-blogu", "index.html"), "w", encoding="utf-8") as f:
-        f.write(about_tmpl.render(**ctx_about))
-    print("    [OK] Wygenerowano: o-blogu/index.html")
+    # Usunięcie o-blogu jeśli pozostał z poprzednich kompilacji
+    old_about = os.path.join(output_dir, "o-blogu")
+    if os.path.exists(old_about):
+        shutil.rmtree(old_about)
 
     # 2b. Polityka prywatności i cookies (polityka-prywatnosci/index.html)
     ctx_privacy = get_common_context()
