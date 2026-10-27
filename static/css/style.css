@@ -460,34 +460,87 @@ header.site-header {
 .editorial-cat-nav-inner {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding-left: 140px;
-  gap: 1.75rem;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 0.2rem 0;
+}
+
+.editorial-cat-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   overflow-x: auto;
   white-space: nowrap;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  padding-top: 0.1rem;
-  padding-bottom: 0.1rem;
+}
+
+.editorial-cat-links::-webkit-scrollbar {
+  display: none;
+}
+
+/* Wyszukiwarka przy sekcjach nawigacyjnych (Wzór Kultura Liberalna) */
+.cat-nav-search-form {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.cat-nav-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  color: var(--text-muted);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.cat-nav-search-input {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 0.38rem 0.85rem 0.38rem 2.1rem;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  width: 170px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+}
+
+.cat-nav-search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  width: 230px;
+  background: var(--bg-card);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 @media (max-width: 992px) {
   .editorial-cat-nav-inner {
-    padding-left: 60px;
-    gap: 1.25rem;
+    gap: 1rem;
   }
 }
 
 @media (max-width: 768px) {
   .editorial-cat-nav-inner {
-    justify-content: flex-start;
-    padding-left: 0;
+    flex-wrap: wrap;
     gap: 0.5rem;
+    padding: 0.35rem 0;
   }
-}
-
-.editorial-cat-nav-inner::-webkit-scrollbar {
-  display: none;
+  .editorial-cat-links {
+    width: 100%;
+  }
+  .cat-nav-search-form {
+    width: 100%;
+    margin-top: 0.2rem;
+  }
+  .cat-nav-search-input {
+    width: 100%;
+  }
+  .cat-nav-search-input:focus {
+    width: 100%;
+  }
 }
 
 .cat-nav-link {

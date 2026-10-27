@@ -70,29 +70,8 @@
           </svg>
         </a>
 
-        <!-- Desktop Nav Links -->
-        <nav class="desktop-nav-links" aria-label="Główne linki">
-          <a href="{{ base_url }}/o-blogu">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.75;">
-              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-            </svg>
-            O blogu
-          </a>
-        </nav>
-
-        <!-- Header Actions: Wyszukiwarka, Przełącznik motywu, Hamburger -->
+        <!-- Header Actions: Przełącznik motywu, Hamburger (Architektura Kultury Liberalnej) -->
         <div class="header-actions">
-          <form action="{{ base_url }}/szukaj" method="get" class="header-search-wrapper">
-            <span class="header-search-icon">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </span>
-            <input type="text" name="q" class="header-search-input" placeholder="Szukaj artykułu..." value="{{ search_query or '' }}">
-          </form>
-
           <!-- Przełącznik motywu Jasny / Ciemny -->
           <button id="theme-toggle" class="btn-icon" aria-label="Przełącz motyw" title="Zmień motyw ciemny/jasny">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -161,15 +140,28 @@
   </div>
   <div id="mobile-nav-backdrop" class="mobile-nav-backdrop"></div>
 
-  <!-- Editorial Category Navbar (W stylu Kultura Liberalna) -->
+  <!-- Editorial Category Navbar (W stylu Kultura Liberalna z wyszukiwarką przy sekcjach) -->
   <nav class="editorial-cat-navbar" aria-label="Działy tematyczne">
     <div class="container">
       <div class="editorial-cat-nav-inner">
-        {% for cat in categories %}
-        <a href="{{ base_url }}/kategoria/{{ cat.slug }}" class="cat-nav-link {% if current_category == cat.slug %}active{% endif %}">
-          {{ cat.name }}
-        </a>
-        {% endfor %}
+        <div class="editorial-cat-links">
+          {% for cat in categories %}
+          <a href="{{ base_url }}/kategoria/{{ cat.slug }}" class="cat-nav-link {% if current_category == cat.slug %}active{% endif %}">
+            {{ cat.name }}
+          </a>
+          {% endfor %}
+        </div>
+
+        <!-- Szukaj przy sekcjach nawigacyjnych (Wzór Kultura Liberalna) -->
+        <form action="{{ base_url }}/szukaj" method="get" class="cat-nav-search-form">
+          <span class="cat-nav-search-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <input type="text" name="q" class="cat-nav-search-input" placeholder="Szukaj artykułu..." value="{{ search_query or '' }}">
+        </form>
       </div>
     </div>
   </nav>

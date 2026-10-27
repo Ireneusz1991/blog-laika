@@ -110,60 +110,95 @@
       </div>
     </div>
 
-    <!-- Daily Topic Suggestions from Editorial Scraper -->
-    {% if latest_proposals %}
+    <!-- 7-Day Proposals Bank (4 proposals x 7 days = 28 proposals) with Rolling Retention -->
+    {% if weekly_proposals and weekly_proposals.packages %}
     <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); margin-bottom: 2.5rem; overflow: hidden;">
       <div style="padding: 1.25rem 1.5rem; border-bottom: 1.5px solid var(--border-color); background: var(--bg-surface); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
         <div>
-          <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+          <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
             <span style="font-size: 1.1rem;">💡</span>
-            <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.6px;">Codzienny Scraper Redakcyjny</span>
-            {% if latest_proposals_date %}
-            <span class="badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; font-weight: 700;">Zestaw z dnia: {{ latest_proposals_date }}</span>
-            {% endif %}
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.6px;">Archiwum Redakcyjne AI (Tydzień: 4 × 7 = 28 tematów)</span>
+            <span class="badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; font-weight: 700;">
+              Łącznie: {{ weekly_proposals.total_proposals }} propozycji z ostatnich {{ weekly_proposals.total_days }} dni
+            </span>
+            <span class="badge" style="background: rgba(59, 130, 246, 0.12); color: #3b82f6; font-weight: 600;">
+              Rotacja: nowe nadpisują starsze niż 7 dni
+            </span>
           </div>
           <h2 style="font-family: var(--font-serif); font-size: 1.4rem; font-weight: 800; margin: 0;">
-            Świeże propozycje tematów i konspektów na dziś
+            Bank tematów i konspektów z datami wyszukania
           </h2>
           <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
-            Przygotowane automatycznie na podstawie aktualnych trendów technologicznych, gospodarczych i geopolitycznych.
+            Wybierz dzień tygodnia poniżej, aby przejrzeć 4 propozycje (technologia, gospodarka, polityka, eseje) i jednym kliknięciem załadować konspekt do edytora.
           </p>
         </div>
-        <div>
+        <div id="active-day-download-container">
           {% if latest_proposals_file %}
-          <a href="{{ base_url }}/propozycje-tematow/{{ latest_proposals_file }}" target="_blank" download class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.4rem 0.8rem; border-color: var(--accent); color: var(--accent);">
-            📥 Pobierz plik .md z propozycjami
+          <a id="btn-download-active-prop" href="{{ base_url }}/propozycje-tematow/{{ latest_proposals_file }}" target="_blank" download class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.4rem 0.8rem; border-color: var(--accent); color: var(--accent);">
+            📥 Pobierz plik .md aktywnego dnia
           </a>
           {% endif %}
         </div>
       </div>
 
-      <div style="padding: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
-        {% for prop in latest_proposals %}
-        <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition);">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
-              <span class="post-category-tag" style="font-size: 0.75rem;">{{ prop.category|upper }}</span>
-              <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Temat #{{ loop.index }}</span>
+      <!-- Date selector tabs (7 days) -->
+      <div style="display: flex; gap: 0.5rem; padding: 0.85rem 1.5rem; background: var(--bg-surface); border-bottom: 1.5px solid var(--border-color); overflow-x: auto; -webkit-overflow-scrolling: touch;" class="custom-scrollbar">
+        {% for pkg in weekly_proposals.packages %}
+        <button type="button" 
+                id="prop-tab-{{ loop.index0 }}" 
+                onclick="switchProposalDay({{ loop.index0 }});" 
+                class="btn {% if loop.first %}btn-primary{% else %}btn-secondary{% endif %}" 
+                style="padding: 0.45rem 0.85rem; font-size: 0.82rem; font-weight: 700; white-space: nowrap; border-radius: var(--radius-full); display: inline-flex; align-items: center; gap: 0.4rem;">
+          <span>📅 {{ pkg.formatted_date }}</span>
+          <span style="font-size: 0.75rem; opacity: 0.85;">({{ pkg.day_name }})</span>
+          <span class="badge" style="font-size: 0.7rem; padding: 0.1rem 0.4rem; background: rgba(0,0,0,0.15); border-radius: 999px;">{{ pkg.count }}</span>
+        </button>
+        {% endfor %}
+      </div>
+
+      <!-- Daily proposal packages containers -->
+      <div style="padding: 1.5rem;">
+        {% for pkg in weekly_proposals.packages %}
+        {% set day_idx = loop.index0 %}
+        <div id="prop-package-{{ day_idx }}" class="prop-day-package" style="{% if not loop.first %}display: none;{% endif %}">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;">
+              <span>Zestaw z dnia: <strong style="color: var(--accent);">{{ pkg.formatted_date }} ({{ pkg.day_name }})</strong></span>
+              <span style="font-size: 0.8rem; font-weight: 500; color: var(--text-muted);">| Plik: <code>{{ pkg.filename }}</code></span>
             </div>
-            <h3 style="font-size: 1.05rem; font-weight: 700; line-height: 1.4; margin-bottom: 0.65rem; color: var(--text-primary);">
-              {{ prop.title }}
-            </h3>
-            {% if prop.lead %}
-            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.75rem;">
-              {{ prop.lead }}
-            </p>
-            {% endif %}
-            {% if prop.thesis %}
-            <div style="font-size: 0.8rem; font-style: italic; background: var(--bg-card); border-left: 3px solid var(--accent); padding: 0.5rem 0.75rem; border-radius: 4px; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.4;">
-              „{{ prop.thesis }}”
-            </div>
-            {% endif %}
           </div>
-          <div>
-            <button type="button" onclick="loadProposalIntoEditor({{ loop.index0 }});" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.82rem; padding: 0.5rem; font-weight: 600;">
-              ✍️ Załaduj konspekt do edytora &rarr;
-            </button>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+            {% for prop in pkg.proposals %}
+            <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition);">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.3rem;">
+                  <span class="post-category-tag" style="font-size: 0.75rem;">{{ prop.category|upper }}</span>
+                  <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">
+                    🔍 {{ prop.search_date if prop.search_date else pkg.formatted_date }}
+                  </span>
+                </div>
+                <h3 style="font-size: 1.05rem; font-weight: 700; line-height: 1.4; margin-bottom: 0.65rem; color: var(--text-primary);">
+                  {{ prop.title }}
+                </h3>
+                {% if prop.lead %}
+                <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.75rem;">
+                  {{ prop.lead }}
+                </p>
+                {% endif %}
+                {% if prop.thesis %}
+                <div style="font-size: 0.8rem; font-style: italic; background: var(--bg-card); border-left: 3px solid var(--accent); padding: 0.5rem 0.75rem; border-radius: 4px; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.4;">
+                  „{{ prop.thesis }}”
+                </div>
+                {% endif %}
+              </div>
+              <div>
+                <button type="button" onclick="loadProposalIntoEditor({{ day_idx }}, {{ loop.index0 }});" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.82rem; padding: 0.5rem; font-weight: 600;">
+                  ✍️ Załaduj konspekt do edytora &rarr;
+                </button>
+              </div>
+            </div>
+            {% endfor %}
           </div>
         </div>
         {% endfor %}
@@ -933,10 +968,57 @@ ${body}`;
   }
 
   // Load scraped proposal directly into scratch editor
+  const WEEKLY_PROPOSALS = {{ weekly_proposals_json|safe if weekly_proposals_json else 'null' }};
   const PROPOSALS_DATA = {{ latest_proposals_json|safe if latest_proposals_json else '[]' }};
 
-  function loadProposalIntoEditor(index) {
-    const prop = PROPOSALS_DATA[index];
+  function switchProposalDay(dayIndex) {
+    if (!WEEKLY_PROPOSALS || !WEEKLY_PROPOSALS.packages) return;
+    
+    // Hide all day packages and show the selected one
+    const packages = document.querySelectorAll('.prop-day-package');
+    packages.forEach((el, idx) => {
+      el.style.display = (idx === dayIndex) ? 'block' : 'none';
+    });
+
+    // Update tab styling
+    WEEKLY_PROPOSALS.packages.forEach((pkg, idx) => {
+      const tab = document.getElementById(`prop-tab-${idx}`);
+      if (tab) {
+        if (idx === dayIndex) {
+          tab.classList.remove('btn-secondary');
+          tab.classList.add('btn-primary');
+        } else {
+          tab.classList.remove('btn-primary');
+          tab.classList.add('btn-secondary');
+        }
+      }
+    });
+
+    // Update download button
+    const pkg = WEEKLY_PROPOSALS.packages[dayIndex];
+    const dlBtn = document.getElementById('btn-download-active-prop');
+    if (dlBtn && pkg) {
+      dlBtn.href = `{{ base_url }}/propozycje-tematow/${pkg.filename}`;
+      dlBtn.textContent = `📥 Pobierz plik .md (${pkg.formatted_date})`;
+    }
+  }
+
+  function loadProposalIntoEditor(dayIndexOrIndex, propIndex) {
+    let prop = null;
+    let pkgDate = "";
+    if (propIndex !== undefined && WEEKLY_PROPOSALS && WEEKLY_PROPOSALS.packages) {
+      const pkg = WEEKLY_PROPOSALS.packages[dayIndexOrIndex];
+      if (pkg && pkg.proposals) {
+        prop = pkg.proposals[propIndex];
+        pkgDate = pkg.formatted_date;
+      }
+    } else if (WEEKLY_PROPOSALS && WEEKLY_PROPOSALS.packages && WEEKLY_PROPOSALS.packages[0]) {
+      prop = WEEKLY_PROPOSALS.packages[0].proposals[dayIndexOrIndex];
+      pkgDate = WEEKLY_PROPOSALS.packages[0].formatted_date;
+    } else if (PROPOSALS_DATA && PROPOSALS_DATA[dayIndexOrIndex]) {
+      prop = PROPOSALS_DATA[dayIndexOrIndex];
+    }
+
     if (!prop) return;
     
     // Fill title and generate slug
@@ -960,6 +1042,9 @@ ${body}`;
 
     // Build starter markdown content
     let body = `# ${prop.title}\n\n`;
+    if (prop.search_date || pkgDate) {
+      body += `*Data wyszukania i analizy tematu: ${prop.search_date || pkgDate}*\n\n`;
+    }
     if (prop.lead) {
       body += `${prop.lead}\n\n---\n\n`;
     }

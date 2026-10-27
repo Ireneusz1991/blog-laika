@@ -7,6 +7,7 @@ from jinja2 import Environment, FileSystemLoader
 
 import config
 import database
+import proposals_manager
 from sample_data import seed_database
 
 def build_static(output_dir="dist", base_url=None):
@@ -172,63 +173,28 @@ def build_static(output_dir="dist", base_url=None):
     ctx_admin = get_common_context()
     ctx_admin["posts"] = posts
 
-    # Kopiowanie i ładowanie propozycji tematów
+    # Kopiowanie i ładowanie propozycji tematów (rotacja 7 dni = 4x7 = 28 propozycji)
     prop_src = os.path.join(os.path.dirname(__file__), "propozycje-tematow")
     prop_dst = os.path.join(output_dir, "propozycje-tematow")
-    latest_proposals = []
-    latest_proposals_file = ""
-    latest_proposals_date = ""
+
+    # Egzekwowanie tygodniowej rotacji: zachowaj 7 najnowszych dni, usuń starsze
+    proposals_manager.enforce_retention(prop_src, max_days=7)
+    weekly_data = proposals_manager.load_all_weekly_proposals(prop_src, max_days=7)
 
     if os.path.exists(prop_src):
         os.makedirs(prop_dst, exist_ok=True)
         for pf in os.listdir(prop_src):
             if pf.endswith(".md"):
                 shutil.copy(os.path.join(prop_src, pf), os.path.join(prop_dst, pf))
-        files = sorted([f for f in os.listdir(prop_src) if f.endswith(".md")], reverse=True)
-        if files:
-            latest_proposals_file = files[0]
-            m_date = re.search(r'(\d{4}-\d{2}-\d{2})', latest_proposals_file)
-            if m_date:
-                latest_proposals_date = m_date.group(1)
-            
-            with open(os.path.join(prop_src, latest_proposals_file), "r", encoding="utf-8") as f:
-                prop_content = f.read()
-            
-            sections = re.split(r'\n##\s+', prop_content)
-            for sec in sections[1:]:
-                lines = sec.strip().splitlines()
-                first_line = lines[0]
-                title = first_line
-                if ":" in first_line:
-                    title = first_line.split(":", 1)[1].strip().strip('„”"\'')
-                category = "eseje"
-                lead = ""
-                thesis = ""
-                body_lines = []
-                for line in lines[1:]:
-                    line_str = line.strip()
-                    if line_str.startswith("* **Kategoria:**"):
-                        cat_m = re.search(r'`([^`]+)`', line_str)
-                        if cat_m:
-                            category = cat_m.group(1)
-                    elif line_str.startswith("* **Lead:**"):
-                        lead = line_str.replace("* **Lead:**", "").strip()
-                    elif line_str.startswith("*") and not line_str.startswith("* **"):
-                        if not thesis:
-                            thesis = line_str.strip('*')
-                        else:
-                            body_lines.append(line)
-                    else:
-                        body_lines.append(line)
-                
-                latest_proposals.append({
-                    "title": title,
-                    "category": category,
-                    "lead": lead,
-                    "thesis": thesis,
-                    "raw_body": "\n".join(body_lines).strip()
-                })
 
+    packages = weekly_data.get("packages", [])
+    latest_package = packages[0] if packages else None
+    latest_proposals = latest_package["proposals"] if latest_package else []
+    latest_proposals_file = latest_package["filename"] if latest_package else ""
+    latest_proposals_date = latest_package["date"] if latest_package else ""
+
+    ctx_admin["weekly_proposals"] = weekly_data
+    ctx_admin["weekly_proposals_json"] = json.dumps(weekly_data, ensure_ascii=False)
     ctx_admin["latest_proposals"] = latest_proposals
     ctx_admin["latest_proposals_file"] = latest_proposals_file
     ctx_admin["latest_proposals_date"] = latest_proposals_date
