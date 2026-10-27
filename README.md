@@ -162,10 +162,22 @@ blog-laika/
 
 ---
 
-## 🌐 Wdrożenie na serwer
+## 🌐 Wdrożenie na serwer i GitHub Pages
 
-Jeśli zechcesz opublikować blog w publicznym internecie pod własną domeną (np. `bloglaika.pl`):
-1. **Darmowy hosting w chmurze (Render / Fly.io / Railway)**:
-   - Wystarczy podpiąć repozytorium GitHub i ustawić polecenie startowe: `uvicorn app:app --host 0.0.0.0 --port $PORT`.
-2. **Własny serwer VPS (np. Hetzner, OVH, Cyberfolks)**:
-   - Uruchomienie przez `systemd` lub Docker za reverse proxy Nginx z darmowym certyfikatem SSL Let's Encrypt.
+### 🌟 Hosting na GitHub Pages (100% darmowy, SSL, globalny CDN):
+Twój blog jest już przygotowany i skompilowany na gałęzi **`gh-pages`**!
+Adres strony:
+👉 **[https://ireneusz1991.github.io/blog-laika/](https://ireneusz1991.github.io/blog-laika/)**
+
+#### Aby włączyć stronę w GitHubie (jednorazowo):
+1. Otwórz: **[https://github.com/Ireneusz1991/blog-laika/settings/pages](https://github.com/Ireneusz1991/blog-laika/settings/pages)**
+2. W sekcji **„Build and deployment”**:
+   - **Source**: wybierz `Deploy from a branch`
+   - **Branch**: wybierz `gh-pages` oraz folder `/ (root)`
+   - Kliknij **Save**.
+3. Po minucie blog będzie publicznie dostępny na całym świecie!
+
+#### Publikacja nowych esejów na GitHub Pages w 1 kliknięcie:
+Gdy napiszesz nowy esej w panelu CMS na komputerze, po prostu kliknij dwukrotnie:
+👉 **`publikuj_na_github_pages.bat`**  
+Skrypt automatycznie przebuduje stronę i wyśle najnowszą wersję na GitHub Pages!
