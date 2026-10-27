@@ -10,6 +10,9 @@
 
 * **Kategoria:** `technologia`
 * **Data wyszukania:** 26 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Abstrakcyjna sieć neuronowa z podświetlonymi węzłami logicznymi na ciemnym laboratoryjnym tle.
+* **Prompt AI dla grafiki:** `Complex glowing decision-tree neural network nodes floating in dark scientific laboratory, deep focus on analytical inference paths, clean high-tech photography, 8k.`
 * **Lead:** Dotychczasowe modele językowe odpowiadały natychmiast, przewidując kolejne słowo. Nowa generacja systemów została nauczona 'namysłu' przed udzieleniem odpowiedzi, co radykalnie poprawiło skuteczność w matematyce i kodowaniu.
 * **Kluczowa teza wpisu:**  
   *Wydłużenie czasu obliczeń na etapie wnioskowania (test-time compute) to najważniejszy przełom inżynieryjny ostatnich dwóch lat. Pozwala mniejszym modelom osiągać wyniki lepsze niż wielokrotnie większe sieci starszego typu.*
@@ -25,6 +28,9 @@
 
 * **Kategoria:** `gospodarka`
 * **Data wyszukania:** 26 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Młody inżynier oprogramowania pracujący przy monitorze z fragmentami kodu w zaciemnionym biurze.
+* **Prompt AI dla grafiki:** `Software developer at night staring at complex multi-monitor IDE code screen, moody ambient lighting, authentic software engineering reality, 8k.`
 * **Lead:** Automatyzacja pisania kodu uderzyła przede wszystkim w programistów stawiających pierwsze kroki w zawodzie. Firmy tną rekrutację początkujących, co stwarza ogromne ryzyko luki pokoleniowej.
 * **Kluczowa teza wpisu:**  
   *Krótkoterminowe oszczędności z zastępowania juniorów asystentami AI obrócą się przeciwko branży za kilka lat. Bez doświadczenia zdobywanego na prostych zadaniach nikt nie wykształci intuicji potrzebnej do projektowania złożonych systemów.*
@@ -40,6 +46,9 @@
 
 * **Kategoria:** `polityka`
 * **Data wyszukania:** 26 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Abstrakcyjny cyfrowy szum i zniekształcone strumienie danych symbolizujące masową dezinformację.
+* **Prompt AI dla grafiki:** `Abstract digital distortion waves representing synthetic social media bot networks, fragmented glowing data streams, dark technological dystopia aesthetic, 8k.`
 * **Lead:** Czasy prymitywnych botów powtarzających te same hasła minęły. Zaawansowane agenty potrafią prowadzić spójne, wielotygodniowe dyskusje, symulując autentycznych mieszkańców miast czy zwolenników partii.
 * **Kluczowa teza wpisu:**  
   *Masowa obecność autonomicznych agentów w sieci niszczy wiarygodność pomiarów opinii publicznej. Platformy społecznościowe bez weryfikacji tożsamości stają się podatne na manipulacje zagrażające stabilności państwa.*
@@ -55,6 +64,9 @@
 
 * **Kategoria:** `eseje`
 * **Data wyszukania:** 26 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Nowoczesna sala lekcyjna z tablicą i ławkami w ciepłym, naturalnym świetle dziennym.
+* **Prompt AI dla grafiki:** `Classroom interior with wooden desks and sunlight shining through windows, blackboard with handwritten questions, education reform journalism photo, 8k.`
 * **Lead:** Uczniowie generują referaty w kilka sekund, a nauczyciele korzystają z nieskutecznych detektorów tekstu syntetycznego. Instytucje edukacyjne muszą pilnie zrewidować metody weryfikacji wiedzy.
 * **Kluczowa teza wpisu:**  
   *Kopiowanie i kompilowanie faktów w domu przestało być miarą nauki. Szkoła musi przenieść ciężar oceny na dyskusję w klasie, argumentację ustną i zdolność krytycznej oceny źródeł.*

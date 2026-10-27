@@ -170,8 +170,17 @@
 
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
             {% for prop in pkg.proposals %}
-            <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition);">
+            <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition); overflow: hidden;">
               <div>
+                {% if prop.image_url %}
+                <div style="position: relative; height: 140px; margin: -1.25rem -1.25rem 0.85rem -1.25rem; background: #0f172a; overflow: hidden;">
+                  <img src="{{ prop.image_url }}" alt="{{ prop.title }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                  <div style="position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; backdrop-filter: blur(4px); display: flex; align-items: center; gap: 4px;">
+                    <span>📷 Dobrana grafika</span>
+                  </div>
+                </div>
+                {% endif %}
+
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.3rem;">
                   <span class="post-category-tag" style="font-size: 0.75rem;">{{ prop.category|upper }}</span>
                   <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">
@@ -187,14 +196,19 @@
                 </p>
                 {% endif %}
                 {% if prop.thesis %}
-                <div style="font-size: 0.8rem; font-style: italic; background: var(--bg-card); border-left: 3px solid var(--accent); padding: 0.5rem 0.75rem; border-radius: 4px; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.4;">
+                <div style="font-size: 0.8rem; font-style: italic; background: var(--bg-card); border-left: 3px solid var(--accent); padding: 0.5rem 0.75rem; border-radius: 4px; color: var(--text-muted); margin-bottom: 0.75rem; line-height: 1.4;">
                   „{{ prop.thesis }}”
+                </div>
+                {% endif %}
+                {% if prop.image_concept %}
+                <div style="font-size: 0.75rem; color: var(--text-muted); background: var(--bg-card); padding: 0.45rem 0.65rem; border-radius: 4px; border: 1px dashed var(--border-color); margin-bottom: 0.85rem; line-height: 1.4;">
+                  🎨 <strong>Koncepcja wizualna:</strong> {{ prop.image_concept }}
                 </div>
                 {% endif %}
               </div>
               <div>
                 <button type="button" onclick="loadProposalIntoEditor({{ day_idx }}, {{ loop.index0 }});" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.82rem; padding: 0.5rem; font-weight: 600;">
-                  ✍️ Załaduj konspekt do edytora &rarr;
+                  ✍️ Załaduj konspekt i grafikę &rarr;
                 </button>
               </div>
             </div>
@@ -289,9 +303,16 @@
         </div>
       </div>
 
-      <div style="margin-bottom: 1rem;">
-        <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Krótkie streszczenie / Lead</label>
-        <textarea id="scratch-summary" class="form-input" rows="2" placeholder="Wpisz 1-2 zdania wprowadzenia (lead) do artykułu..."></textarea>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+        <div>
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Krótkie streszczenie / Lead *</label>
+          <textarea id="scratch-summary" class="form-input" rows="2" placeholder="Wpisz 1-2 zdania wprowadzenia (lead) do artykułu..."></textarea>
+        </div>
+        <div>
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Dobrana grafika okładkowa (URL) *</label>
+          <input type="text" id="scratch-image" class="form-input" placeholder="https://images.unsplash.com/photo-..." oninput="updateLivePreview();">
+          <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">Wklej adres obrazu (np. z Unsplash) lub użyj grafiki z dobranej propozycji</span>
+        </div>
       </div>
 
       <!-- Formatting Toolbar -->
@@ -656,6 +677,7 @@
   function updateLivePreview() {
     const title = document.getElementById('scratch-title').value;
     const text = document.getElementById('scratch-body').value;
+    const imgUrl = document.getElementById('scratch-image')?.value?.trim();
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
     const minutes = Math.max(1, Math.ceil(words / 200));
 
@@ -663,6 +685,9 @@
 
     // Simple Markdown parsing for preview
     let html = '';
+    if (imgUrl) {
+      html += `<div style="margin-bottom: 1.25rem; border-radius: var(--radius-md); overflow: hidden; max-height: 220px; background: #0f172a;"><img src="${escapeHtml(imgUrl)}" style="width: 100%; height: 220px; object-fit: cover;" alt="Okładka artykułu" onerror="this.style.display='none';"></div>`;
+    }
     if (title) html += `<h1>${escapeHtml(title)}</h1>`;
     
     const lines = text.split('\n');
@@ -926,6 +951,7 @@
     const slug = document.getElementById('scratch-slug').value || slugify(title) || 'nowy-artykul';
     const category = document.getElementById('scratch-category').value || 'eseje';
     const summary = document.getElementById('scratch-summary').value || '';
+    const coverImage = document.getElementById('scratch-image')?.value?.trim() || '';
     const body = document.getElementById('scratch-body').value || '';
     const now = new Date().toISOString().slice(0, 10);
 
@@ -936,6 +962,7 @@ category: "${category}"
 author: "Ireneusz Machowiec"
 date: "${now}"
 summary: "${summary.replace(/"/g, '\\"')}"
+cover_image: "${coverImage}"
 featured: 0
 ---
 
@@ -1040,6 +1067,12 @@ ${body}`;
       sumEl.value = prop.lead;
     }
 
+    // Fill cover image if matched
+    const imgEl = document.getElementById('scratch-image');
+    if (imgEl && prop.image_url) {
+      imgEl.value = prop.image_url;
+    }
+
     // Build starter markdown content
     let body = `# ${prop.title}\n\n`;
     if (prop.search_date || pkgDate) {
@@ -1074,7 +1107,7 @@ ${body}`;
     const notif = document.getElementById('import-notification');
     if (notif) {
       notif.style.display = 'block';
-      notif.innerHTML = `💡 <strong>Konspekt załadowany:</strong> "${prop.title}". Pola formularza i edytor zostały uzupełnione!`;
+      notif.innerHTML = `💡 <strong>Konspekt i dobrana grafika załadowane:</strong> "${prop.title}". Tytuł, lead, kategoria oraz grafika okładkowa zostały uzupełnione!`;
       setTimeout(() => { notif.style.display = 'none'; }, 6000);
     }
   }

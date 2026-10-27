@@ -10,6 +10,9 @@
 
 * **Kategoria:** `technologia`
 * **Data wyszukania:** 24 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Cyfrowy zamek bezpieczeństwa na tle węzłów sieciowych w chłodnej tonacji stalowo-niebieskiej.
+* **Prompt AI dla grafiki:** `Cybersecurity padlock concept on server room motherboards, blue neon security shield, network vulnerability defense theme, 8k.`
 * **Lead:** Narzędzia oparte na modelach językowych potrafią analizować kod w poszukiwaniu podatności dnia zerowego (Zero-Day) i automatycznie generować spersonalizowane ataki phishingowe w ułamkach sekund.
 * **Kluczowa teza wpisu:**  
   *Tradycyjne mechanizmy obronne oparte na statycznych regułach i okresowych audytach stają się bezużyteczne. Bezpieczeństwo IT wymusza wdrożenie systemów obronnych działających z prędkością maszyn.*
@@ -25,6 +28,9 @@
 
 * **Kategoria:** `gospodarka`
 * **Data wyszukania:** 24 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Lekarz ze stetoskopem analizujący cyfrowe skany radiologiczne na podświetlanym ekranie diagnostycznym.
+* **Prompt AI dla grafiki:** `Doctor in clinical coat examining glowing high-resolution medical CT scan on modern digital diagnostic screen, clean hospital lighting, medical technology editorial, 8k.`
 * **Lead:** Systemy wizyjne wspomagają radiologów i onkologów w wykrywaniu wczesnych zmian chorobowych z ogromną precyzją. Prawdziwym problemem pozostaje jednak odpowiedzialność prawna i ubezpieczeniowa.
 * **Kluczowa teza wpisu:**  
   *Wdrażanie AI w szpitalach nie zależy dziś od technologii, lecz od uregulowania odpowiedzialności cywilnej. Przerzucanie całego ryzyka na lekarza hamuje innowacje ratujące życie.*
@@ -40,6 +46,9 @@
 
 * **Kategoria:** `polityka`
 * **Data wyszukania:** 24 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Płytka krzemowa z mikroprocesorem sfotografowana w makro z refleksami czystej fabryki półprzewodników.
+* **Prompt AI dla grafiki:** `Cleanroom wafer semiconductor chip macro view, iridescent nano-circuit patterns, high precision Taiwan foundry aesthetic, industrial photography, 8k.`
 * **Lead:** Wszystkie wiodące akceleratory AI na świecie produkowane są w technologii poniżej 4 nanometrów przez TSMC. Ewentualny kryzys w Cieśninie Tajwańskiej oznaczałby natychmiastowe zatrzymanie globalnego postępu.
 * **Kluczowa teza wpisu:**  
   *Mimo miliardowych dotacji na fabryki w USA i Niemczech, pełna dywersyfikacja produkcji zaawansowanych półprzewodników potrwa co najmniej dekadę. Zależność świata od Tajwanu pozostaje krytycznym punktem zapalnym.*
@@ -55,6 +64,9 @@
 
 * **Kategoria:** `eseje`
 * **Data wyszukania:** 24 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Inżynier w kasku ochronnym pracujący przy precyzyjnej instalacji automatyki przemysłowej.
+* **Prompt AI dla grafiki:** `Industrial field engineer in safety helmet calibrating modern robotics machinery, authentic factory floor, high resolution technical journalism, 8k.`
 * **Lead:** Rewolucja AI najmocniej uderza w pracowników umysłowych wykonujących powtarzalne analizy i tworzących standardowe dokumenty. Równolegle zyskują specjaliści pracujący w świecie fizycznym oraz eksperci od rozwiązywania nietypowych problemów.
 * **Kluczowa teza wpisu:**  
   *Przekonanie, że praca biurowa jest zawsze bezpieczniejsza od technicznej lub rzemieślniczej, definitywnie odchodzi do przeszłości. Najbardziej stabilne zawody łączą wiedzę merytoryczną z pracą w terenie i empatią.*

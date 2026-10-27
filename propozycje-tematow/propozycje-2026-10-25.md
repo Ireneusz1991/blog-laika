@@ -10,6 +10,9 @@
 
 * **Kategoria:** `technologia`
 * **Data wyszukania:** 25 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Rząd szaf serwerowych w centrum danych z migającymi diodami aktywności sieciowej.
+* **Prompt AI dla grafiki:** `High-end corporate data center server racks in perspective, glowing network cables, open cloud architecture concept, realistic editorial technology photo, 8k.`
 * **Lead:** Modele z otwartymi wagami (jak Llama czy Mistral) osiągają parametry porównywalne z komercyjnymi flagowcami. Dla dyrektorów IT oznacza to realną alternatywę dla płatnych chmur i uzależnienia od jednego dostawcy.
 * **Kluczowa teza wpisu:**  
   *Bezpieczeństwo danych i przewidywalność kosztów skłaniają coraz więcej firm do wdrażania otwartych modeli na własnej infrastrukturze. Monopol zamkniętych laboratoriów pęka szybciej, niż prognozowano.*
@@ -25,6 +28,9 @@
 
 * **Kategoria:** `gospodarka`
 * **Data wyszukania:** 25 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Słupy energetyczne wysokiego napięcia na tle dramatycznego nieba o zmierzchu.
+* **Prompt AI dla grafiki:** `High-voltage electrical power transmission lines and transformers against dramatic dusk sky, industrial power grid journalism photo, raw industrial aesthetic, 8k.`
 * **Lead:** Inwestorzy skupiają się na wydaniach kolejnych wersji oprogramowania, podczas gdy operatorzy centrów danych walczą o przyłącza energetyczne. Zapotrzebowanie na prąd rośnie szybciej niż możliwości sieci przesyłowych.
 * **Kluczowa teza wpisu:**  
   *Fizyczne ograniczenia energetyki i dostępności wody chłodzącej stają się twardą barierą wzrostu sektora AI. Prawdziwym beneficjentem boomu technologicznego staje się sektor energetyczny i producenci aparatury sieciowej.*
@@ -40,6 +46,9 @@
 
 * **Kategoria:** `polityka`
 * **Data wyszukania:** 25 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Stare prasy drukarskie i stosy gazet w zestawieniu z cyfrowym ekranem symbolizujące zderzenie tradycyjnych mediów z modelami.
+* **Prompt AI dla grafiki:** `Newspaper printing press and editorial manuscripts meeting digital tablet screen, dramatic court copyright law aesthetic, journalism, 8k.`
 * **Lead:** Największe agencje prasowe, gazety i platformy internetowe pozywają laboratoria AI za nieuprawnione trenowanie modeli na ich artykułach. Pierwsze ugody opiewają na dziesiątki milionów dolarów.
 * **Kluczowa teza wpisu:**  
   *Koniec ery darmowego pobierania danych z otwartego internetu. Dostęp do wysokiej jakości, rzetelnych artykułów staje się towarem premium, za który twórcy modeli muszą regularnie płacić.*
@@ -55,6 +64,9 @@
 
 * **Kategoria:** `eseje`
 * **Data wyszukania:** 25 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Matryca zielonego kodu binarnego z widocznym szumem informacyjnym na czarnym tle.
+* **Prompt AI dla grafiki:** `Endless rows of glowing digital computer code and synthetic data clutter, cyber web noise, realistic internet architecture photo, 8k.`
 * **Lead:** Sieć została zalana milionami zoptymalizowanych pod SEO, wygenerowanych automatycznie stron bez żadnej merytorycznej wartości. Tradycyjne wyszukiwarki mają problem z oddzieleniem faktów od syntetycznej papki.
 * **Kluczowa teza wpisu:**  
   *Zjawisko degradacji jakości wyników wyszukiwania przyspiesza powrót czytelników do zaufanych autorów, płatnych biuletynów i sprawdzonych redakcji eksperckich.*

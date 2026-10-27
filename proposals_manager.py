@@ -72,6 +72,9 @@ def parse_proposals_file(filepath: str) -> list:
         lead = ""
         thesis = ""
         search_date = ""
+        image_url = ""
+        image_concept = ""
+        image_prompt = ""
         body_lines = []
 
         for line in lines[1:]:
@@ -82,6 +85,12 @@ def parse_proposals_file(filepath: str) -> list:
                     category = cat_m.group(1)
             elif line_str.startswith("* **Data wyszukania:**"):
                 search_date = line_str.replace("* **Data wyszukania:**", "").strip()
+            elif line_str.startswith("* **Proponowana grafika:**") or line_str.startswith("* **Grafika:**"):
+                image_url = re.sub(r'^\*\s*\*\*(?:Proponowana grafika|Grafika):\*\*', '', line_str).strip().strip('<>')
+            elif line_str.startswith("* **Koncepcja wizualna:**"):
+                image_concept = line_str.replace("* **Koncepcja wizualna:**", "").strip()
+            elif line_str.startswith("* **Prompt AI dla grafiki:**") or line_str.startswith("* **Prompt AI:**"):
+                image_prompt = re.sub(r'^\*\s*\*\*Prompt AI(?:\s+dla grafiki)?:\*\*', '', line_str).strip().strip('`')
             elif line_str.startswith("* **Lead:**"):
                 lead = line_str.replace("* **Lead:**", "").strip()
             elif line_str.startswith("* **Kluczowa teza") or line_str.startswith("* **Główna teza") or (line_str.startswith("*") and not line_str.startswith("* **")):
@@ -97,6 +106,9 @@ def parse_proposals_file(filepath: str) -> list:
             "title": title,
             "category": category,
             "search_date": search_date,
+            "image_url": image_url,
+            "image_concept": image_concept,
+            "image_prompt": image_prompt,
             "lead": lead,
             "thesis": thesis,
             "raw_body": "\n".join(body_lines).strip()

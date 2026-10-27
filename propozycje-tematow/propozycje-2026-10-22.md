@@ -10,6 +10,9 @@
 
 * **Kategoria:** `technologia`
 * **Data wyszukania:** 22 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Wielka, historyczna biblioteka uniwersytecka z regałami pełnymi książek reprezentująca ogromne zbiory danych i wiedzę.
+* **Prompt AI dla grafiki:** `Vast grand library with soaring bookshelves and study desk, sunlight streaming across archival volumes, information retrieval and data architecture metaphor, 8k.`
 * **Lead:** Najnowsze modele potrafią przetworzyć w jednym zapytaniu miliony tokenów, czyli całe tomy dokumentacji. W praktyce wrzucenie wszystkiego do jednego promptu okazuje się zbyt drogie, powolne i podatne na pomijanie kluczowych faktów.
 * **Kluczowa teza wpisu:**  
   *Wyszukiwanie semantyczne (RAG) i grafy wiedzy pozostają optymalnym fundamentem systemów firmowych. Selektywne dostarczanie sprawdzonych fragmentów wiedzy bije na głowę kosztowne i powolne przeszukiwanie całego kontekstu.*
@@ -25,6 +28,9 @@
 
 * **Kategoria:** `gospodarka`
 * **Data wyszukania:** 22 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Zaawansowany humanoidalny robot o minimalistycznym, białym designie w przestrzeni przemysłowo-badawczej.
+* **Prompt AI dla grafiki:** `White modern bipedal humanoid robot standing in automotive factory assembly line, high-precision industrial robotics photography, 8k.`
 * **Lead:** Filmy prezentujące roboty humanoidalne montujące części czy noszące paczki robią furorę w sieci. Producenci samochodów uruchamiają pierwsze linie testowe, ale do opłacalności wciąż daleko.
 * **Kluczowa teza wpisu:**  
   *Uniwersalny robot dwunożny to skomplikowane i drogie wyzwanie inżynieryjne. W większości zadań magazynowych wyspecjalizowane wózki autonomiczne i ramiona przemysłowe są wielokrotnie tańsze i bardziej niezawodne.*
@@ -40,6 +46,9 @@
 
 * **Kategoria:** `polityka`
 * **Data wyszukania:** 22 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Czarny dron taktyczny w zawisie na tle chmurnego nieba o świcie.
+* **Prompt AI dla grafiki:** `Military tactical reconnaissance drone hovering in foggy morning sky, precision carbon-fiber frame, autonomous aerospace defense journalism, 8k.`
 * **Lead:** Na współczesnym polu walki systemy walki radioelektronicznej skutecznie zrywają łączność z operatorem. Jedynym sposobem na realizację zadania staje się powierzenie decyzji o rozpoznaniu i ataku algorytmom pokładowym.
 * **Kluczowa teza wpisu:**  
   *Zasada obecności człowieka w pętli decyzyjnej (Human-in-the-loop) staje się fikcją z przyczyn czysto technicznych. Przewaga prędkości i odporności na zakłócenia wymusza pełną autonomizację broni.*
@@ -55,6 +64,9 @@
 
 * **Kategoria:** `eseje`
 * **Data wyszukania:** 22 października 2026 r.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Otwarta książka z tekstami w różnych alfabetach i językach oświetlona ciepłym światłem.
+* **Prompt AI dla grafiki:** `Open book pages with diverse multilingual typography scripts blending into digital holographic letters, global communications theme, 8k.`
 * **Lead:** Słuchawki i aplikacje tłumaczące mowę w czasie rzeczywistym zacierają różnice językowe w podróżach i biznesie. Jednocześnie rośnie zapotrzebowanie na specjalistów od niuansów prawnych i kulturowych.
 * **Kluczowa teza wpisu:**  
   *Płynne tłumaczenie maszynowe democratyzuje dostęp do rynków zagranicznych dla małych firm. Wycofuje jednak z rynku prostych tłumaczy technicznych na rzecz ekspertów od lokalizacji i prawa.*
