@@ -113,19 +113,19 @@
     <!-- Management Methods Grid -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
       
-      <!-- Option 1: Local Full CMS -->
+      <!-- Option 1: Live Online Markdown Editor -->
       <div style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
-        <div style="font-size: 1.4rem; margin-bottom: 0.5rem;">💻</div>
+        <div style="font-size: 1.4rem; margin-bottom: 0.5rem;">✍️</div>
         <h3 style="font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">
-          Lokalny panel CMS (SQLite)
+          Wbudowany edytor online
         </h3>
         <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
-          Uruchom plik <code style="font-size: 0.85em;">uruchom_blog.bat</code> na swoim komputerze, aby pisać wpisy z automatycznym zapisem do bazy SQLite oraz 1-klikowym publikowaniem.
+          Pisz i formatuj nowe eseje bezpośrednio na tej stronie. Otrzymujesz podgląd na żywo, zliczanie słów i automatyczny czas czytania.
         </p>
         <div>
-          <a href="http://127.0.0.1:8000/admin" target="_blank" class="btn btn-secondary" style="width: 100%; justify-content: center; font-size: 0.88rem;">
-            Otwórz http://127.0.0.1:8000/admin &rarr;
-          </a>
+          <button onclick="toggleOnlineEditor();" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.88rem;">
+            Otwórz edytor poniżej &darr;
+          </button>
         </div>
       </div>
 
@@ -133,10 +133,10 @@
       <div style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
         <div style="font-size: 1.4rem; margin-bottom: 0.5rem;">☁️</div>
         <h3 style="font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">
-          Edytor Webowy GitHub (github.dev)
+          Edytor w Chmurze (github.dev)
         </h3>
         <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
-          Możesz edytować posty bezpośrednio w przeglądarce za pomocą webowego VS Code na GitHubie. Wystarczy otworzyć edytor w chmurze:
+          Edytuj pliki bloga w pełnym środowisku VS Code bezpośrednio w przeglądarce, z każdego komputera i telefonu, bez instalowania czegokolwiek.
         </p>
         <div>
           <a href="https://github.dev/Ireneusz1991/blog-laika" target="_blank" rel="noopener" class="btn btn-secondary" style="width: 100%; justify-content: center; font-size: 0.88rem; border-color: var(--accent); color: var(--accent);">
