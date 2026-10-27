@@ -140,6 +140,55 @@ header.site-header {
   object-fit: contain;
 }
 
+.brand-logo-svg {
+  height: 46px;
+  width: auto;
+  display: block;
+}
+
+.logo-title-text {
+  fill: var(--text-primary);
+  transition: fill 0.3s ease;
+}
+
+.logo-subtitle-text {
+  fill: var(--text-muted);
+  transition: fill 0.3s ease;
+}
+
+.header-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.header-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  color: var(--text-muted);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.header-search-input {
+  padding: 0.42rem 0.9rem 0.42rem 2.2rem;
+  font-size: 0.88rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  outline: none;
+  width: 160px;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.header-search-input:focus {
+  width: 240px;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
 .nav-links {
   display: flex;
   align-items: center;

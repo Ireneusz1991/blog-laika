@@ -20,49 +20,73 @@
   <!-- RSS Feed discovery -->
   <link rel="alternate" type="application/rss+xml" title="{{ blog_title }} RSS" href="{{ base_url }}/rss.xml">
 
+  <!-- Instant Theme Initializer (Default: Light) -->
+  <script>
+    (function() {
+      var t = localStorage.getItem('blog-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+
   {% block extra_head %}{% endblock %}
 </head>
 <body>
   <div id="reading-progress"></div>
 
-  <!-- Header -->
+  <!-- Header: Czysty, elegancki z logo i wyszukiwarką -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="{{ base_url }}/" class="brand-link" title="{{ blog_title }} - Strona główna">
-        <img src="{{ base_url }}/static/images/logo.svg" alt="{{ blog_title }} Logo" class="brand-logo-img">
+        <svg class="brand-logo-svg" viewBox="0 0 380 60" width="280" height="44" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="laikaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#2563eb" />
+              <stop offset="100%" stop-color="#4f46e5" />
+            </linearGradient>
+            <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#f59e0b" />
+              <stop offset="100%" stop-color="#ef4444" />
+            </linearGradient>
+          </defs>
+          <!-- Badge Icon -->
+          <g transform="translate(4, 4)">
+            <rect x="0" y="0" width="52" height="52" rx="13" fill="url(#laikaGrad)" />
+            <path d="M 26 12 L 33 29 L 26 39 L 19 29 Z" fill="#ffffff" />
+            <line x1="26" y1="18" x2="26" y2="38" stroke="#2563eb" stroke-width="2" stroke-linecap="round" />
+            <circle cx="26" cy="26" r="2" fill="#2563eb" />
+            <circle cx="38" cy="15" r="3.5" fill="url(#starGrad)" />
+            <path d="M 14 33 A 14 14 0 0 1 38 21" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-dasharray="2 3" opacity="0.85" />
+          </g>
+          <!-- Dynamic High-Contrast Typography (Jasny/Ciemny) -->
+          <g transform="translate(68, 14)">
+            <text x="0" y="24" class="logo-title-text" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="800" letter-spacing="-0.5px">
+              BLOG LAIKA
+            </text>
+            <text x="1" y="40" class="logo-subtitle-text" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" font-weight="600" letter-spacing="1.5px" text-transform="uppercase">
+              Technologia • Gospodarka • Polityka
+            </text>
+          </g>
+        </svg>
       </a>
 
-      <nav>
-        <ul class="nav-links">
-          <li><a href="{{ base_url }}/" class="nav-link {% if active_page == 'home' %}active{% endif %}">Eseje</a></li>
-          <li><a href="{{ base_url }}/o-blogu" class="nav-link {% if active_page == 'about' %}active{% endif %}">Manifest & O blogu</a></li>
-          {% if is_logged_in %}
-          <li><a href="/admin" class="nav-link {% if active_page == 'admin' %}active{% endif %}" style="color: var(--accent); font-weight: 700;">★ Panel CMS</a></li>
-          <li><a href="/admin/logout" class="nav-link" style="color: var(--text-muted);">Wyloguj</a></li>
-          {% endif %}
-        </ul>
-      </nav>
-
+      <!-- Header Actions: Tylko wyszukiwarka i przełącznik motywu -->
       <div class="header-actions">
-        <!-- Search Button / Form trigger -->
-        <form action="{{ base_url }}/szukaj" method="get" style="display: inline-flex; align-items: center; position: relative;">
-          <input type="text" name="q" placeholder="Szukaj eseju..." value="{{ search_query or '' }}" 
-                 style="padding: 0.38rem 0.8rem; font-size: 0.85rem; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-primary); outline: none; width: 140px; transition: width 0.3s ease;"
-                 onfocus="this.style.width='200px'" onblur="if(!this.value) this.style.width='140px'">
+        <form action="{{ base_url }}/szukaj" method="get" class="header-search-wrapper">
+          <span class="header-search-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <input type="text" name="q" class="header-search-input" placeholder="Szukaj eseju..." value="{{ search_query or '' }}">
         </form>
 
-        <!-- Theme Switcher -->
+        <!-- Przełącznik motywu Jasny / Ciemny -->
         <button id="theme-toggle" class="btn-icon" aria-label="Przełącz motyw" title="Zmień motyw ciemny/jasny">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
         </button>
-
-        {% if is_logged_in %}
-        <a href="{{ base_url }}/admin/nowy" class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.85rem;">
-          + Nowy esej
-        </a>
-        {% endif %}
       </div>
     </div>
   </header>
