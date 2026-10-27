@@ -25,7 +25,7 @@
     {% for post in posts %}
     <article class="post-card">
       {% if post.cover_image %}
-      <a href="/post/{{ post.slug }}">
+      <a href="{{ base_url }}/post/{{ post.slug }}">
         <img src="{{ post.cover_image }}" alt="{{ post.title }}" class="post-card-thumb" loading="lazy">
       </a>
       {% endif %}
@@ -38,7 +38,7 @@
         </div>
 
         <h3 class="post-card-title">
-          <a href="/post/{{ post.slug }}">{{ post.title }}</a>
+          <a href="{{ base_url }}/post/{{ post.slug }}">{{ post.title }}</a>
         </h3>
 
         <p class="post-card-excerpt">
@@ -47,7 +47,7 @@
 
         <div class="post-card-footer">
           <span>{{ post.created_date }}</span>
-          <a href="/post/{{ post.slug }}" style="text-decoration: none; font-weight: 600; color: var(--accent);">
+          <a href="{{ base_url }}/post/{{ post.slug }}" style="text-decoration: none; font-weight: 600; color: var(--accent);">
             Czytaj &rarr;
           </a>
         </div>
@@ -58,7 +58,7 @@
   {% else %}
   <div style="text-align: center; padding: 4rem 1rem; color: var(--text-muted);">
     <p style="font-size: 1.2rem; margin-bottom: 1rem;">Brak wpisów w kategorii {{ category.name }}.</p>
-    <a href="/" class="btn btn-secondary">Wróć do strony głównej</a>
+    <a href="{{ base_url }}/" class="btn btn-secondary">Wróć do strony głównej</a>
   </div>
   {% endif %}
 

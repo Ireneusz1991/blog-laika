@@ -73,7 +73,8 @@ def common_context(request: Request) -> dict:
         "blog_author_bio": config.BLOG_AUTHOR_BIO,
         "categories": config.CATEGORIES,
         "current_year": datetime.now().year,
-        "is_logged_in": is_admin_authenticated(request)
+        "is_logged_in": is_admin_authenticated(request),
+        "base_url": config.BASE_URL
     }
 
 # Startup hook

@@ -8,7 +8,7 @@
   
   <header class="article-header">
     <div class="post-meta" style="justify-content: center; margin-bottom: 1.2rem;">
-      <a href="/kategoria/{{ post.category }}" class="post-category-tag">
+      <a href="{{ base_url }}/kategoria/{{ post.category }}" class="post-category-tag">
         {{ post.category_name }}
       </a>
       <span>•</span>
@@ -17,7 +17,7 @@
       <span>{{ post.created_date }}</span>
       {% if is_logged_in %}
       <span>•</span>
-      <a href="/admin/edytuj/{{ post.id }}" style="color: var(--accent); font-weight: 600;">[Edytuj wpis]</a>
+      <a href="{{ base_url }}/admin/edytuj/{{ post.id }}" style="color: var(--accent); font-weight: 600;">[Edytuj wpis]</a>
       {% endif %}
     </div>
 
@@ -58,11 +58,11 @@
       <button id="btn-share" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
         Kopiuj link
       </button>
-      <a href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ request.url|urlencode }}" 
+      <a href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ (page_url or (request.url if request else ''))|urlencode }}" 
          target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 0.35rem 0.65rem;" title="Udostępnij na X">
         𝕏
       </a>
-      <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url|urlencode }}" 
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ (page_url or (request.url if request else ''))|urlencode }}" 
          target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 0.35rem 0.65rem;" title="Udostępnij na LinkedIn">
         in
       </a>
@@ -80,7 +80,7 @@
 
   <!-- Back to Home -->
   <div style="max-width: var(--max-w-content); margin: 2.5rem auto 0 auto; text-align: center;">
-    <a href="/" class="btn btn-secondary">&larr; Powrót do listy esejów</a>
+    <a href="{{ base_url }}/" class="btn btn-secondary">&larr; Powrót do listy esejów</a>
   </div>
 
 </article>

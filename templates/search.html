@@ -26,7 +26,7 @@
         </div>
 
         <h3 class="post-card-title">
-          <a href="/post/{{ post.slug }}">{{ post.title }}</a>
+          <a href="{{ base_url }}/post/{{ post.slug }}">{{ post.title }}</a>
         </h3>
 
         <p class="post-card-excerpt">
@@ -35,7 +35,7 @@
 
         <div class="post-card-footer">
           <span>{{ post.created_date }}</span>
-          <a href="/post/{{ post.slug }}" style="text-decoration: none; font-weight: 600; color: var(--accent);">
+          <a href="{{ base_url }}/post/{{ post.slug }}" style="text-decoration: none; font-weight: 600; color: var(--accent);">
             Czytaj esej &rarr;
           </a>
         </div>
@@ -46,9 +46,64 @@
   {% else %}
   <div style="text-align: center; padding: 4rem 1rem; color: var(--text-muted); background: var(--bg-surface); border-radius: var(--radius-md);">
     <p style="font-size: 1.2rem; margin-bottom: 1rem;">Nie znaleziono esejów pasujących do zapytania „{{ query }}”.</p>
-    <a href="/" class="btn btn-secondary">Zobacz wszystkie eseje</a>
+    <a href="{{ base_url }}/" class="btn btn-secondary">Zobacz wszystkie eseje</a>
   </div>
   {% endif %}
 
+  <!-- Client-side Search Loader for Static Hosting (GitHub Pages) -->
+  <div id="static-search-container" style="display: none;"></div>
+
 </div>
+
+<script>
+  // If running on static hosting without server rendered posts
+  (async function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const q = (urlParams.get('q') || '').trim().toLowerCase();
+    if (!q) return;
+
+    try {
+      const res = await fetch('{{ base_url }}/search-index.json');
+      if (!res.ok) return;
+      const index = await res.json();
+      const results = index.filter(p => 
+        p.title.toLowerCase().includes(q) || 
+        p.summary.toLowerCase().includes(q) || 
+        (p.tags && p.tags.toLowerCase().includes(q))
+      );
+
+      const titleElem = document.querySelector('h1 span');
+      if (titleElem) titleElem.innerText = `„${urlParams.get('q')}”`;
+      
+      const countElem = document.querySelector('h1 + p');
+      if (countElem) countElem.innerText = `Znaleziono ${results.length} pasujących wpisów.`;
+
+      const grid = document.querySelector('.posts-grid') || document.getElementById('static-search-container');
+      if (results.length > 0) {
+        grid.style.display = 'grid';
+        grid.innerHTML = results.map(p => `
+          <article class="post-card">
+            <div class="post-card-body">
+              <div class="post-meta">
+                <span class="post-category-tag">${p.category_name || p.category}</span>
+                <span>•</span>
+                <span>⏱️ ${p.read_time} min</span>
+              </div>
+              <h3 class="post-card-title">
+                <a href="{{ base_url }}/post/${p.slug}">${p.title}</a>
+              </h3>
+              <p class="post-card-excerpt">${p.summary}</p>
+              <div class="post-card-footer">
+                <span>${p.created_date || ''}</span>
+                <a href="{{ base_url }}/post/${p.slug}" style="text-decoration: none; font-weight: 600; color: var(--accent);">Czytaj esej &rarr;</a>
+              </div>
+            </div>
+          </article>
+        `).join('');
+      }
+    } catch(e) {
+      console.log('Search fallback log:', e);
+    }
+  })();
+</script>
 {% endblock %}
