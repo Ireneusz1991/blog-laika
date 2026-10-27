@@ -72,8 +72,20 @@
 
         <!-- Desktop Nav Links -->
         <nav class="desktop-nav-links" aria-label="Główne linki">
-          <a href="{{ base_url }}/o-blogu">O blogu</a>
-          <a href="{{ base_url }}/kontakt">Kontakt</a>
+          <a href="{{ base_url }}/o-blogu">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.75;">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            O blogu
+          </a>
+          <a href="{{ base_url }}/kontakt">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.75;">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            Kontakt
+          </a>
         </nav>
 
         <!-- Header Actions: Wyszukiwarka, Przełącznik motywu, Hamburger -->
@@ -127,13 +139,21 @@
       <div class="mobile-nav-section">
         <div class="mobile-nav-heading">Działy tematyczne</div>
         <div class="mobile-nav-categories">
-          <a href="{{ base_url }}/" class="category-chip {% if not current_category %}active{% endif %}">
-            Wszystkie
+          <a href="{{ base_url }}/" class="category-chip category-chip-all {% if not current_category %}active{% endif %}">
+            <span class="chip-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+              </svg>
+            </span>
+            <span>Wszystkie</span>
           </a>
           {% for cat in categories %}
           <a href="{{ base_url }}/kategoria/{{ cat.slug }}" class="category-chip {% if current_category == cat.slug %}active{% endif %}">
             <span class="dot dot-{{ cat.slug }}"></span>
-            {{ cat.name }}
+            <span>{{ cat.name }}</span>
           </a>
           {% endfor %}
         </div>
@@ -153,13 +173,21 @@
   <nav class="category-nav">
     <div class="container">
       <div class="category-nav-inner">
-        <a href="{{ base_url }}/" class="category-chip {% if not current_category %}active{% endif %}">
-          Wszystkie
+        <a href="{{ base_url }}/" class="category-chip category-chip-all {% if not current_category %}active{% endif %}">
+          <span class="chip-icon">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+              <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+              <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+            </svg>
+          </span>
+          <span>Wszystkie</span>
         </a>
         {% for cat in categories %}
         <a href="{{ base_url }}/kategoria/{{ cat.slug }}" class="category-chip {% if current_category == cat.slug %}active{% endif %}">
           <span class="dot dot-{{ cat.slug }}"></span>
-          {{ cat.name }}
+          <span>{{ cat.name }}</span>
         </a>
         {% endfor %}
       </div>
