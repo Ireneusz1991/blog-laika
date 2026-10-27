@@ -201,9 +201,17 @@
                 </div>
                 {% endif %}
                 {% if prop.image_concept %}
-                <div style="font-size: 0.75rem; color: var(--text-muted); background: var(--bg-card); padding: 0.45rem 0.65rem; border-radius: 4px; border: 1px dashed var(--border-color); margin-bottom: 0.85rem; line-height: 1.4;">
+                <div style="font-size: 0.75rem; color: var(--text-muted); background: var(--bg-card); padding: 0.45rem 0.65rem; border-radius: 4px; border: 1px dashed var(--border-color); margin-bottom: 0.5rem; line-height: 1.4;">
                   🎨 <strong>Koncepcja wizualna:</strong> {{ prop.image_concept }}
                 </div>
+                {% endif %}
+                {% if prop.image_prompt %}
+                <details style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.85rem; cursor: pointer;">
+                  <summary style="font-weight: 600; color: var(--accent); user-select: none;">🤖 Alternatywny prompt AI dla grafiki</summary>
+                  <div style="background: var(--bg-card); padding: 0.4rem 0.6rem; border-radius: 4px; margin-top: 0.3rem; font-family: monospace; font-size: 0.7rem; border: 1px solid var(--border-color); word-break: break-all; color: var(--text-secondary);">
+                    {{ prop.image_prompt }}
+                  </div>
+                </details>
                 {% endif %}
               </div>
               <div>
@@ -1087,7 +1095,7 @@ ${body}`;
     if (prop.raw_body) {
       body += `## Punkty zwrotne i wątki do rozwinięcia\n\n${prop.raw_body}\n\n`;
     }
-    body += `\n---\n\n*Tutaj rozwiń treść artykułu. Autor: Ireneusz Machowiec*\n`;
+    body += `\n---\n\n*Tutaj rozwiń treść wpisu. Autor: Ireneusz Machowiec*\n`;
     
     const bodyEl = document.getElementById('scratch-body');
     if (bodyEl) bodyEl.value = body;
