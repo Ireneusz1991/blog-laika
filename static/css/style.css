@@ -460,13 +460,30 @@ header.site-header {
 .editorial-cat-nav-inner {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 0.25rem;
+  justify-content: center;
+  padding-left: 140px;
+  gap: 1.75rem;
   overflow-x: auto;
   white-space: nowrap;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  padding: 0;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+}
+
+@media (max-width: 992px) {
+  .editorial-cat-nav-inner {
+    padding-left: 60px;
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .editorial-cat-nav-inner {
+    justify-content: flex-start;
+    padding-left: 0;
+    gap: 0.5rem;
+  }
 }
 
 .editorial-cat-nav-inner::-webkit-scrollbar {

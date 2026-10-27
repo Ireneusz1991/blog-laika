@@ -173,24 +173,11 @@
   <nav class="editorial-cat-navbar" aria-label="Działy tematyczne">
     <div class="container">
       <div class="editorial-cat-nav-inner">
-        <a href="{{ base_url }}/" class="cat-nav-link {% if not current_category and active_page != 'about' and active_page != 'contact' %}active{% endif %}">
-          Główny esej
-        </a>
         {% for cat in categories %}
         <a href="{{ base_url }}/kategoria/{{ cat.slug }}" class="cat-nav-link {% if current_category == cat.slug %}active{% endif %}">
           {{ cat.name }}
         </a>
         {% endfor %}
-        <a href="{{ base_url }}/o-blogu" class="cat-nav-link {% if active_page == 'about' %}active{% endif %}">
-          O blogu & Manifest
-        </a>
-        <a href="{{ base_url }}/kontakt" class="cat-nav-link {% if active_page == 'contact' %}active{% endif %}">
-          Kontakt
-        </a>
-        <a href="{{ base_url }}/szukaj" class="cat-nav-link cat-nav-search" title="Szukaj">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <span>Szukaj</span>
-        </a>
       </div>
     </div>
   </nav>
