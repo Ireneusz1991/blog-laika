@@ -1093,7 +1093,7 @@ main {
   margin-top: 0.5rem;
 }
 
-.editorial-manifesto-card {
+.editorial-mission-card {
   background: var(--bg-surface);
   border: 1.5px solid var(--border-color);
   padding: 1.5rem;
@@ -1101,7 +1101,7 @@ main {
   border-top: 3.5px solid var(--accent);
 }
 
-.manifesto-card-badge {
+.mission-card-badge {
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 1px;
@@ -1110,7 +1110,7 @@ main {
   margin-bottom: 0.5rem;
 }
 
-.manifesto-card-heading {
+.mission-card-heading {
   font-family: var(--font-serif);
   font-size: 1.15rem;
   font-weight: 700;
@@ -1119,14 +1119,14 @@ main {
   color: var(--text-primary);
 }
 
-.manifesto-card-desc {
+.mission-card-desc {
   font-size: 0.85rem;
   color: var(--text-secondary);
   line-height: 1.55;
   margin-bottom: 1rem;
 }
 
-.manifesto-card-link {
+.mission-card-link {
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--accent);

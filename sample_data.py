@@ -109,7 +109,7 @@ Prawdziwym wyzwaniem kolejnej dekady nie będzie wyłącznie walka ze wskaźniki
         "featured": 0,
         "content_markdown": """# Nowy koncert mocarstw: Od wolnego handlu do geopolitycznej autarkii
 
-Początek lat 90. przyniósł słynną tezę Francisa Fukuyamy o „końcu historii”. Powszechnie wierzono, że wolny handel, wzajemne powiązania gospodarcze i globalne łańcuchy dostaw uczynią wojny między mocarstwami czystym ekonomicznym absurdem. Niemiecka koncepcja *Wandel durch Handel* (zmiana poprzez handel) była sztandarowym manifestem tego okresu.
+Początek lat 90. przyniósł słynną tezę Francisa Fukuyamy o „końcu historii”. Powszechnie wierzono, że wolny handel, wzajemne powiązania gospodarcze i globalne łańcuchy dostaw uczynią wojny między mocarstwami czystym ekonomicznym absurdem. Niemiecka koncepcja *Wandel durch Handel* (zmiana poprzez handel) była sztandarową doktryną tego okresu.
 
 Dziś, z perspektywy połowy lat 20., widzimy, jak bardzo te nadzieje były naiwne.
 

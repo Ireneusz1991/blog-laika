@@ -122,7 +122,7 @@ def build_static(output_dir="dist", base_url=None):
         f.write(home_tmpl.render(**ctx))
     print("    [OK] Wygenerowano: index.html")
 
-    # 2. Strona O blogu / Manifest (o-blogu/index.html)
+    # 2. Strona O blogu (o-blogu/index.html)
     ctx_about = get_common_context()
     ctx_about["active_page"] = "about"
     about_tmpl = env.get_template("about.html")
