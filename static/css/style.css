@@ -775,7 +775,9 @@ main {
 }
 
 .editorial-label-cat {
-  color: var(--text-muted);
+  color: var(--accent);
+  font-weight: 800;
+  letter-spacing: 0.8px;
 }
 
 .editorial-date-issue {

@@ -56,5 +56,5 @@
 * **Kluczowe wątki i konspekt argumentacji:**
   1. **Złudzenie natychmiastowej biegłości (Fluency Illusion):** Dlaczego płynna, elokwentna odpowiedź modelu AI wyłącza w naszym mózgu mechanizmy obronne i sceptycyzm, skłaniając nas do bezkrytycznej akceptacji halucynacji.
   2. **Uwiąd mięśnia intelektualnego oporu:** Co dzieje się ze zdolnością twórczą i analityczną, gdy przestajemy pisać szkice od zera i stajemy się jedynie 'akceptatorami' gotowych propozycji algorytmu.
-  3. **Manifest dociekliwego laika w epoce maszyn:** Dlaczego zadawanie naiwnych, niewygodnych pytań na głos jest dziś aktem odwagi intelektualnej w świecie zdominowanym przez gotowe odpowiedzi maszyn.
+  3. **Etyka dociekliwego laika w epoce maszyn:** Dlaczego zadawanie naiwnych, niewygodnych pytań na głos jest dziś aktem odwagi intelektualnej w świecie zdominowanym przez gotowe odpowiedzi maszyn.
   4. **Pytanie dociekliwego laika:** *Jeśli pozwolimy algorytmom myśleć za nas, bo robią to szybciej i bez zmęczenia, to co właściwie zostanie z naszej podmiotowości za dziesięć lat?*

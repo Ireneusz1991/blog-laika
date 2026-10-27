@@ -8,31 +8,33 @@
        ======================================================== -->
   <div class="editorial-magazine-grid">
     
-    <!-- LEFT MAIN COLUMN: Hero Essay & 2-Col Subgrid -->
+    <!-- LEFT MAIN COLUMN: Lead Essay & 2-Col Subgrid -->
     <div class="editorial-main-col">
       
-      {% if featured_post %}
-      <!-- Issue / Category Meta Bar -->
+      {% set lead_post = featured_post if featured_post else (posts[0] if posts else None) %}
+      {% set sub_posts = posts[1:3] if (not featured_post and posts|length > 1) else posts[:2] %}
+
+      {% if lead_post %}
+      <!-- Category Meta Bar -->
       <div class="editorial-meta-bar">
         <div class="editorial-meta-left">
-          <span class="editorial-label-lead">GŁÓWNY ESEJ</span>
-          <span class="editorial-label-cat">{{ featured_post.category_name }}</span>
+          <span class="editorial-label-cat">{{ lead_post.category_name }}</span>
         </div>
         <div class="editorial-meta-right">
-          <span class="editorial-date-issue">{{ featured_post.created_date }}</span>
+          <span class="editorial-date-issue">{{ lead_post.created_date }}</span>
         </div>
       </div>
 
-      <!-- Hero Lead Article -->
+      <!-- Lead Article -->
       <article class="editorial-hero-article">
         <h1 class="editorial-hero-title">
-          <a href="{{ base_url }}/post/{{ featured_post.slug }}">{{ featured_post.title }}</a>
+          <a href="{{ base_url }}/post/{{ lead_post.slug }}">{{ lead_post.title }}</a>
         </h1>
 
-        {% if featured_post.cover_image %}
+        {% if lead_post.cover_image %}
         <div class="editorial-hero-image-wrap">
-          <a href="{{ base_url }}/post/{{ featured_post.slug }}">
-            <img src="{{ featured_post.cover_image }}" alt="{{ featured_post.title }}" class="editorial-hero-image">
+          <a href="{{ base_url }}/post/{{ lead_post.slug }}">
+            <img src="{{ lead_post.cover_image }}" alt="{{ lead_post.title }}" class="editorial-hero-image">
           </a>
         </div>
         {% endif %}
@@ -41,15 +43,15 @@
           <div class="editorial-author-byline">
             <span class="byline-author-name">Ireneusz Machowiec</span>
             <span class="byline-separator">&bull;</span>
-            <span class="byline-read-time">⏱️ {{ featured_post.read_time }} min czytania</span>
+            <span class="byline-read-time">⏱️ {{ lead_post.read_time }} min czytania</span>
           </div>
 
           <p class="editorial-hero-excerpt">
-            {{ featured_post.summary }}
+            {{ lead_post.summary }}
           </p>
 
           <div class="editorial-hero-action">
-            <a href="{{ base_url }}/post/{{ featured_post.slug }}" class="btn-editorial-read">
+            <a href="{{ base_url }}/post/{{ lead_post.slug }}" class="btn-editorial-read">
               Czytaj cały esej &rarr;
             </a>
           </div>
@@ -60,10 +62,10 @@
       <!-- Thin Section Rule -->
       <hr class="editorial-section-rule">
 
-      <!-- 2-Column Subgrid of Articles (Directly beneath hero, like Kultura Liberalna) -->
-      {% if posts and posts|length >= 1 %}
+      <!-- 2-Column Subgrid of Articles (Directly beneath lead, like Kultura Liberalna) -->
+      {% if sub_posts and sub_posts|length >= 1 %}
       <div class="editorial-subgrid-2col">
-        {% for post in posts[:2] %}
+        {% for post in sub_posts %}
         <article class="editorial-sub-card {% if loop.first %}sub-card-left{% else %}sub-card-right{% endif %}">
           <div class="editorial-sub-meta">
             <a href="{{ base_url }}/kategoria/{{ post.category }}" class="editorial-cat-tag">
