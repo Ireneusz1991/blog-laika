@@ -179,28 +179,29 @@ async def rss_feed():
 # ---------------- CMS & ADMIN ROUTES ----------------
 
 @app.get("/admin", response_class=HTMLResponse)
-async def admin_dashboard(request: Request):
+async def admin_dashboard(request: Request, msg: Optional[str] = None):
     if not is_admin_authenticated(request):
-        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+        return RedirectResponse(url="/admin/login", status_code=302)
         
     ctx = common_context(request)
     ctx["active_page"] = "admin"
     raw_posts = database.get_posts(status="all", limit=100)
     ctx["posts"] = [enrich_post(p) for p in raw_posts]
     ctx["stats"] = database.get_stats()
+    ctx["msg"] = msg
     return render(request, "admin/dashboard.html", ctx)
 
 @app.get("/admin/login", response_class=HTMLResponse)
 async def admin_login_page(request: Request):
     if is_admin_authenticated(request):
-        return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
+        return RedirectResponse(url="/admin", status_code=302)
     ctx = common_context(request)
     return render(request, "admin/login.html", ctx)
 
 @app.post("/admin/login")
 async def admin_login_post(request: Request, username: str = Form(...), password: str = Form(...)):
     if username == config.ADMIN_USERNAME and password == config.ADMIN_PASSWORD:
-        response = RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
+        response = RedirectResponse(url="/admin", status_code=302)
         token = generate_auth_token()
         response.set_cookie(key="laika_auth", value=token, httponly=True, max_age=86400 * 30, samesite="lax")
         return response
@@ -211,14 +212,14 @@ async def admin_login_post(request: Request, username: str = Form(...), password
 
 @app.get("/admin/logout")
 async def admin_logout():
-    response = RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    response = RedirectResponse(url="/", status_code=302)
     response.delete_cookie(key="laika_auth")
     return response
 
 @app.get("/admin/nowy", response_class=HTMLResponse)
 async def admin_new_post_page(request: Request):
     if not is_admin_authenticated(request):
-        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+        return RedirectResponse(url="/admin/login", status_code=302)
     ctx = common_context(request)
     ctx["post"] = None
     return render(request, "admin/editor.html", ctx)
@@ -233,7 +234,7 @@ async def admin_create_post(
     summary: str = Form(""),
     cover_image: str = Form(""),
     tags: str = Form(""),
-    status: str = Form("published"),
+    post_status: str = Form("published", alias="status"),
     featured: Optional[str] = Form(None)
 ):
     if not is_admin_authenticated(request):
@@ -248,15 +249,15 @@ async def admin_create_post(
         slug=slug,
         tags=tags,
         cover_image=cover_image,
-        status=status,
+        status=post_status,
         featured=is_featured
     )
-    return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
+    return RedirectResponse(url="/admin", status_code=303)
 
 @app.get("/admin/edytuj/{post_id}", response_class=HTMLResponse)
 async def admin_edit_post_page(post_id: int, request: Request):
     if not is_admin_authenticated(request):
-        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+        return RedirectResponse(url="/admin/login", status_code=302)
     post = database.get_post_by_id(post_id)
     if not post:
         raise HTTPException(status_code=404, detail="Wpis nie istnieje.")
@@ -275,7 +276,7 @@ async def admin_update_post(
     summary: str = Form(""),
     cover_image: str = Form(""),
     tags: str = Form(""),
-    status: str = Form("published"),
+    post_status: str = Form("published", alias="status"),
     featured: Optional[str] = Form(None)
 ):
     if not is_admin_authenticated(request):
@@ -291,17 +292,52 @@ async def admin_update_post(
         slug=slug,
         tags=tags,
         cover_image=cover_image,
-        status=status,
+        status=post_status,
         featured=is_featured
     )
-    return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
+    return RedirectResponse(url="/admin", status_code=303)
 
 @app.post("/admin/usun/{post_id}")
 async def admin_delete_post(post_id: int, request: Request):
     if not is_admin_authenticated(request):
         raise HTTPException(status_code=403, detail="Brak uprawnień.")
     database.delete_post(post_id)
-    return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
+    return RedirectResponse(url="/admin", status_code=303)
+
+@app.post("/admin/publikuj-github")
+async def admin_publish_github(request: Request):
+    if not is_admin_authenticated(request):
+        raise HTTPException(status_code=403, detail="Brak uprawnień.")
+    
+    try:
+        from export_static import build_static
+        import shutil
+        import subprocess
+
+        # 1. Budowanie statyczne
+        build_static(base_url="/blog-laika")
+
+        # 2. Wypchnięcie na gałąź gh-pages
+        git_exe = r"C:\Users\irene\AppData\Local\Programs\Git\cmd\git.exe"
+        temp_dir = os.environ.get("TEMP", r"C:\Users\irene\AppData\Local\Temp")
+        dist_tmp = os.path.join(temp_dir, "blog-laika-gh-pages")
+
+        if os.path.exists(dist_tmp):
+            shutil.rmtree(dist_tmp, ignore_errors=True)
+        shutil.copytree(os.path.join(os.path.dirname(__file__), "dist"), dist_tmp)
+
+        subprocess.run(f'"{git_exe}" -C "{dist_tmp}" init -b gh-pages', shell=True, check=True)
+        subprocess.run(f'"{git_exe}" -C "{dist_tmp}" config user.name "Blog Laika"', shell=True, check=True)
+        subprocess.run(f'"{git_exe}" -C "{dist_tmp}" config user.email "kontakt@bloglaika.pl"', shell=True, check=True)
+        subprocess.run(f'"{git_exe}" -C "{dist_tmp}" add .', shell=True, check=True)
+        subprocess.run(f'"{git_exe}" -C "{dist_tmp}" commit -m "Aktualizacja z panelu CMS"', shell=True, check=True)
+        subprocess.run(f'"{git_exe}" -C "{dist_tmp}" remote add origin https://github.com/Ireneusz1991/blog-laika.git', shell=True, check=True)
+        subprocess.run(f'"{git_exe}" -C "{dist_tmp}" push origin gh-pages --force', shell=True, check=True)
+
+        return RedirectResponse(url="/admin?msg=sukces_github", status_code=303)
+    except Exception as e:
+        print("Błąd publikacji GitHub:", e)
+        return RedirectResponse(url="/admin?msg=blad_github", status_code=303)
 
 if __name__ == "__main__":
     import uvicorn

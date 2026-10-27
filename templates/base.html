@@ -36,7 +36,10 @@
         <ul class="nav-links">
           <li><a href="{{ base_url }}/" class="nav-link {% if active_page == 'home' %}active{% endif %}">Eseje</a></li>
           <li><a href="{{ base_url }}/o-blogu" class="nav-link {% if active_page == 'about' %}active{% endif %}">Manifest & O blogu</a></li>
-          <li><a href="{{ base_url }}/admin" class="nav-link {% if active_page == 'admin' %}active{% endif %}">Panel CMS</a></li>
+          {% if is_logged_in %}
+          <li><a href="/admin" class="nav-link {% if active_page == 'admin' %}active{% endif %}" style="color: var(--accent); font-weight: 700;">★ Panel CMS</a></li>
+          <li><a href="/admin/logout" class="nav-link" style="color: var(--text-muted);">Wyloguj</a></li>
+          {% endif %}
         </ul>
       </nav>
 
@@ -99,7 +102,9 @@
         <ul class="footer-nav">
           <li><a href="{{ base_url }}/rss.xml" target="_blank">Kanał RSS</a></li>
           <li><a href="{{ base_url }}/o-blogu">O autorze</a></li>
-          <li><a href="{{ base_url }}/admin">Zarządzaj (CMS)</a></li>
+          {% if is_logged_in %}
+          <li><a href="/admin" style="color: var(--accent);">Panel CMS</a></li>
+          {% endif %}
         </ul>
       </div>
     </div>
