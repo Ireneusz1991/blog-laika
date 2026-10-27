@@ -58,7 +58,7 @@
             </div>
             <div style="margin: 1.25rem 0 1rem 0;">
               <a href="{{ base_url }}/post/{{ lead_post.slug }}" style="font-size: 0.88rem; font-weight: 700; color: var(--accent); text-decoration: none;">
-                Przejdź do pełnej treści artykułu &rarr;
+                Przejdź do pełnej treści wpisu &rarr;
               </a>
             </div>
           </div>
@@ -68,10 +68,10 @@
                     onclick="togglePostExpand('post-lead-{{ lead_post.slug }}', this)"
                     aria-expanded="false">
               <span class="btn-label-expand">Czytaj więcej &darr;</span>
-              <span class="btn-label-collapse" style="display: none;">Zwiń artykuł &uarr;</span>
+              <span class="btn-label-collapse" style="display: none;">Zwiń wpis &uarr;</span>
             </button>
             <a href="{{ base_url }}/post/{{ lead_post.slug }}" style="font-size: 0.85rem; color: var(--text-muted); text-decoration: none; font-weight: 600;">
-              Otwórz artykuł &rarr;
+              Otwórz wpis &rarr;
             </a>
           </div>
         </div>
@@ -113,7 +113,7 @@
             </div>
             <div style="margin: 0.85rem 0 0.5rem 0;">
               <a href="{{ base_url }}/post/{{ post.slug }}" style="font-size: 0.82rem; font-weight: 700; color: var(--accent); text-decoration: none;">
-                Przejdź do pełnej treści artykułu &rarr;
+                Przejdź do pełnej treści wpisu &rarr;
               </a>
             </div>
           </div>
@@ -123,10 +123,10 @@
                     onclick="togglePostExpand('post-sub-{{ post.slug }}', this)"
                     aria-expanded="false">
               <span class="btn-label-expand">Czytaj więcej &darr;</span>
-              <span class="btn-label-collapse" style="display: none;">Zwiń artykuł &uarr;</span>
+              <span class="btn-label-collapse" style="display: none;">Zwiń wpis &uarr;</span>
             </button>
             <a href="{{ base_url }}/post/{{ post.slug }}" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: none;">
-              Otwórz artykuł &rarr;
+              Otwórz wpis &rarr;
             </a>
           </div>
         </article>
@@ -134,11 +134,11 @@
       </div>
       {% endif %}
 
-      <!-- Przycisk rozwijania sekcji z artykułami -->
+      <!-- Przycisk rozwijania sekcji z wpisami -->
       <div class="editorial-more-bar">
         <button id="btn-toggle-catalog" type="button" class="btn-editorial-outline" onclick="toggleCatalog(this)" aria-expanded="false">
-          <span class="catalog-btn-expand">Więcej artykułów &darr;</span>
-          <span class="catalog-btn-collapse" style="display: none;">Zwiń listę artykułów &uarr;</span>
+          <span class="catalog-btn-expand">Więcej wpisów &darr;</span>
+          <span class="catalog-btn-collapse" style="display: none;">Zwiń listę wpisów &uarr;</span>
         </button>
       </div>
 
@@ -192,13 +192,13 @@
   </div>
 
   <!-- ========================================================
-       SECTION 2: ALL ARTICLES CATALOG (Rozwijana sekcja z artykułami)
+       SECTION 2: ALL POSTS CATALOG (Rozwijana sekcja z wpisami)
        ======================================================== -->
   <div id="katalog-publikacji" class="editorial-catalog-section expandable-catalog" style="display: none;">
     <div class="section-header">
-      <h2 class="section-title">Katalog artykułów</h2>
+      <h2 class="section-title">Katalog wpisów</h2>
       <span class="section-count" style="font-size: 0.88rem; color: var(--text-muted);">
-        Łącznie: {{ posts|length }} artykuły
+        Łącznie: {{ posts|length }} wpisy
       </span>
     </div>
 
@@ -241,10 +241,10 @@
                       onclick="togglePostExpand('post-card-{{ post.slug }}', this)"
                       aria-expanded="false">
                 <span class="btn-label-expand">Czytaj więcej &darr;</span>
-                <span class="btn-label-collapse" style="display: none;">Zwiń artykuł &uarr;</span>
+                <span class="btn-label-collapse" style="display: none;">Zwiń wpis &uarr;</span>
               </button>
               <a href="{{ base_url }}/post/{{ post.slug }}" style="text-decoration: none; font-weight: 700; color: var(--accent); font-size: 0.85rem;">
-                Otwórz artykuł &rarr;
+                Otwórz wpis &rarr;
               </a>
             </div>
           </div>
