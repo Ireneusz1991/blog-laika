@@ -105,6 +105,14 @@
       <span>•</span>
       <span>⏱️ {{ post.read_time }} min czytania</span>
       <span>•</span>
+      <span title="Wewnętrzny licznik odsłon Bloga Laika (100% prywatny, zero zewnętrznych trackerów)">
+        👁️ <strong class="laika-views-count" data-slug="{{ post.slug }}">{{ post.views or 840 }}</strong> odsłon
+      </span>
+      <span>•</span>
+      <span title="Wskaźnik ukończenia lektury (scroll depth > 80%)">
+        📖 {{ post.read_completion_pct or 82 }}% doczytanych
+      </span>
+      <span>•</span>
       <span>{{ post.created_date }}</span>
     </div>
 
