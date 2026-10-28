@@ -10,11 +10,12 @@ import database
 import proposals_manager
 from sample_data import seed_database
 try:
-    from scripts.sources_registry import EDITORIAL_SOURCES, get_curated_social_bundles, export_sources_to_csv
+    from scripts.sources_registry import EDITORIAL_SOURCES, get_curated_social_bundles, export_sources_to_csv, export_opml_feeds
 except ImportError:
     EDITORIAL_SOURCES = []
     get_curated_social_bundles = lambda: {}
     export_sources_to_csv = lambda p: None
+    export_opml_feeds = lambda p: None
 
 def build_static(output_dir="dist", base_url=None):
     cname_file = os.path.join(os.path.dirname(__file__), "CNAME")
@@ -220,6 +221,14 @@ def build_static(output_dir="dist", base_url=None):
         print("    [OK] Wygenerowano plik do pobrania: zrodla_inspiracji_laika.csv")
     except Exception as e:
         print(f"    [!] Błąd generowania CSV: {e}")
+
+    # Eksport pliku OPML z feedami RSS (PL & ENG) dla Feedly / Inoreader
+    opml_file = os.path.join(output_dir, "laika_feeds.opml")
+    try:
+        export_opml_feeds(opml_file)
+        print("    [OK] Wygenerowano plik do pobrania: laika_feeds.opml (OPML)")
+    except Exception as e:
+        print(f"    [!] Błąd generowania OPML: {e}")
 
     admin_tmpl = env.get_template("admin/static_admin.html")
     os.makedirs(os.path.join(output_dir, "admin"), exist_ok=True)

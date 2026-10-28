@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<opml version="2.0">
+  <head>
+    <title>Blog Laika — Eseje i Inspiracje (PL &amp; ENG Feed)</title>
+  </head>
+  <body>
+    <outline text="PL Esej Feed (Laika)" title="PL Esej Feed (Laika)">
+      <outline type="rss" text="Kultura Liberalna" title="Kultura Liberalna" xmlUrl="https://kulturaliberalna.pl/feed/" htmlUrl="https://kulturaliberalna.pl"/>
+      <outline type="rss" text="Klub Jagielloński" title="Klub Jagielloński" xmlUrl="https://klubjagiellonski.pl/feed/" htmlUrl="https://klubjagiellonski.pl"/>
+      <outline type="rss" text="Nowa Konfederacja" title="Nowa Konfederacja" xmlUrl="https://nowakonfederacja.pl/feed/" htmlUrl="https://nowakonfederacja.pl"/>
+      <outline type="rss" text="Dwutygodnik.com" title="Dwutygodnik.com" xmlUrl="https://www.dwutygodnik.com/rss" htmlUrl="https://www.dwutygodnik.com"/>
+      <outline type="rss" text="Krytyka Polityczna" title="Krytyka Polityczna" xmlUrl="https://krytykapolityczna.pl/feed/" htmlUrl="https://krytykapolityczna.pl"/>
+      <outline type="rss" text="Puls Azji (Puls Lewantu)" title="Puls Azji (Puls Lewantu)" xmlUrl="https://pulsazji.pl/feed/" htmlUrl="https://pulsazji.pl"/>
+      <outline type="rss" text="Ośrodek Studiów Wschodnich (OSW)" title="Ośrodek Studiów Wschodnich (OSW)" xmlUrl="https://www.osw.waw.pl/pl/rss.xml" htmlUrl="https://www.osw.waw.pl"/>
+      <outline type="rss" text="8000 (Osiem tysięcy / osiemtysiecy.pl)" title="8000 (Osiem tysięcy / osiemtysiecy.pl)" xmlUrl="https://osiemtysiecy.substack.com/feed" htmlUrl="https://osiemtysiecy.pl"/>
+      <outline type="rss" text="Crazy Nauka" title="Crazy Nauka" xmlUrl="https://www.crazynauka.pl/feed/" htmlUrl="https://www.crazynauka.pl"/>
+      <outline type="rss" text="Kwantowo.pl" title="Kwantowo.pl" xmlUrl="https://www.kwantowo.pl/feed/" htmlUrl="https://www.kwantowo.pl"/>
+      <outline type="rss" text="Magazyn Kontakt" title="Magazyn Kontakt" xmlUrl="https://magazynkontakt.pl/feed/" htmlUrl="https://magazynkontakt.pl"/>
+    </outline>
+    <outline text="ENG Esej Feed (Laika)" title="ENG Esej Feed (Laika)">
+      <outline type="rss" text="Slow Boring (Matt Yglesias)" title="Slow Boring (Matt Yglesias)" xmlUrl="https://www.slowboring.com/feed" htmlUrl="https://www.slowboring.com"/>
+      <outline type="rss" text="The Financial Times (FT)" title="The Financial Times (FT)" xmlUrl="https://www.ft.com/rss/home" htmlUrl="https://www.ft.com"/>
+      <outline type="rss" text="Business Insider (Polska &amp; Global)" title="Business Insider (Polska &amp; Global)" xmlUrl="https://businessinsider.com.pl/rss" htmlUrl="https://businessinsider.com.pl"/>
+      <outline type="rss" text="Noahpinion (Noah Smith)" title="Noahpinion (Noah Smith)" xmlUrl="https://www.noahpinion.blog/feed" htmlUrl="https://www.noahpinion.blog"/>
+      <outline type="rss" text="Investing.com" title="Investing.com" xmlUrl="https://pl.investing.com/rss/news.rss" htmlUrl="https://pl.investing.com"/>
+      <outline type="rss" text="Stratechery (Ben Thompson)" title="Stratechery (Ben Thompson)" xmlUrl="https://stratechery.com/feed/" htmlUrl="https://stratechery.com"/>
+      <outline type="rss" text="Understanding AI (Timothy Lee)" title="Understanding AI (Timothy Lee)" xmlUrl="https://www.understandingai.org/feed" htmlUrl="https://www.understandingai.org"/>
+      <outline type="rss" text="The Diff (Byrne Hobart)" title="The Diff (Byrne Hobart)" xmlUrl="https://www.thediff.co/feed" htmlUrl="https://www.thediff.co"/>
+      <outline type="rss" text="Hacker News (Y Combinator)" title="Hacker News (Y Combinator)" xmlUrl="https://news.ycombinator.com/rss" htmlUrl="https://news.ycombinator.com"/>
+      <outline type="rss" text="LessWrong" title="LessWrong" xmlUrl="https://www.lesswrong.com/feed.xml" htmlUrl="https://www.lesswrong.com"/>
+      <outline type="rss" text="Ars Technica" title="Ars Technica" xmlUrl="https://feeds.arstechnica.com/arstechnica/index" htmlUrl="https://arstechnica.com"/>
+      <outline type="rss" text="Works in Progress Magazine" title="Works in Progress Magazine" xmlUrl="https://worksinprogress.co/feed" htmlUrl="https://worksinprogress.co"/>
+      <outline type="rss" text="Astral Codex Ten (Scott Alexander)" title="Astral Codex Ten (Scott Alexander)" xmlUrl="https://www.astralcodexten.com/feed" htmlUrl="https://www.astralcodexten.com"/>
+      <outline type="rss" text="The Roots of Progress (Jason Crawford)" title="The Roots of Progress (Jason Crawford)" xmlUrl="https://rootsofprogress.org/feed" htmlUrl="https://rootsofprogress.org"/>
+      <outline type="rss" text="Farnam Street (Shane Parrish)" title="Farnam Street (Shane Parrish)" xmlUrl="https://fs.blog/feed/" htmlUrl="https://fs.blog"/>
+      <outline type="rss" text="Persuasion (Yascha Mounk)" title="Persuasion (Yascha Mounk)" xmlUrl="https://www.persuasion.community/feed" htmlUrl="https://www.persuasion.community"/>
+    </outline>
+  </body>
+</opml>

@@ -1,26 +1,39 @@
 # -*- coding: utf-8 -*-
 """
 Rejestr Źródeł Redakcyjnych, Analitycznych i Inspiracji dla Bloga Laika.
-Zawiera polskie i międzynarodowe media, eseje, think-tanki, serwisy finansowe oraz profile na X i LinkedIn,
-z których pobierane są impulsy faktograficzne i metodologiczne do autorskiej Samokreacji.
+Zorganizowany w 4 szuflady odpowiadające 4 działom Bloga Laika:
+  1. Polityka & Myśl Państwowa (PL & Geopolityka) -> kategoria: polityka
+  2. Gospodarka, Finanse & Rynki -> kategoria: gospodarka
+  3. Technologia & Architektura Uwagi -> kategoria: technologia
+  4. Inne eseje / Filozofia laika & Postęp cywilizacyjny -> kategoria: eseje
+
+Obsługuje:
+  - Eksport do pliku CSV (z profilami X, LinkedIn, Substack, YouTube i strategią 'co podkraść')
+  - Eksport do pliku OPML (dla Feedly, Inoreader, NetNewsWire z podziałem na feed PL i ENG)
+  - Rekomendacje najlepszych esejów na start w każdej kategorii.
 """
 import os
 import csv
+import xml.etree.ElementTree as ET
+from xml.dom import minidom
 
 EDITORIAL_SOURCES = [
-    # =============================================================
-    # 1. POLSKA — BEZPOŚREDNIA KONKURENCJA / INSPIRACJA ESEJOWA
-    # =============================================================
+    # =========================================================================
+    # SZUFLADA 1: POLITYKA, MYŚL PAŃSTWOWA & SPOŁECZEŃSTWO (Dział: polityka)
+    # =========================================================================
     {
         "id": "kultura_liberalna",
         "name": "Kultura Liberalna",
-        "category_group": "PL_ESEJ",
+        "drawer": "SZUFLADA_POLITYKA",
+        "drawer_name": "Polityka & Myśl Państwowa",
+        "blog_category": "polityka",
         "region": "Polska",
         "scope": "Polska / Europa",
         "lang": "PL",
         "flag": "🇵🇱",
         "type": "Tygodnik opinii / Think tank",
         "url": "https://kulturaliberalna.pl",
+        "rss": "https://kulturaliberalna.pl/feed/",
         "social": {
             "x": "https://x.com/KulturaLiberalna",
             "linkedin": "https://www.linkedin.com/company/kultura-liberalna/",
@@ -29,447 +42,585 @@ EDITORIAL_SOURCES = [
         },
         "topics": ["Polityka", "Instytucje demokratyczne", "Kultura", "Filozofia społeczna", "Europa"],
         "desc": "Liberalny namysł nad państwem, prawem, kulturą i przemianami cywilizacyjnymi. Unika taniego populizmu.",
-        "takeaway": "Nienachalny, elegancki ton namysłu nad instytucjami; eseje społeczne bez tabloidyzacji; newsletter ideowy wysokiej próby."
+        "takeaway": "Nienachalny, elegancki ton namysłu nad instytucjami; eseje społeczne bez tabloidyzacji; newsletter ideowy wysokiej próby.",
+        "best_essay": "„Koniec epoki naiwności: Dlaczego liberalne instytucje potrzebują nowego języka obrony”"
     },
     {
         "id": "klub_jagiellonski",
         "name": "Klub Jagielloński",
-        "category_group": "PL_ESEJ",
+        "drawer": "SZUFLADA_POLITYKA",
+        "drawer_name": "Polityka & Myśl Państwowa",
+        "blog_category": "polityka",
         "region": "Polska",
         "scope": "Polska",
         "lang": "PL",
         "flag": "🇵🇱",
         "type": "Centrum analityczne / Pismo opinii",
         "url": "https://klubjagiellonski.pl",
+        "rss": "https://klubjagiellonski.pl/feed/",
         "social": {
             "x": "https://x.com/KlubJagiellonski",
             "linkedin": "https://www.linkedin.com/company/klub-jagielloński/",
             "facebook": "https://www.facebook.com/KlubJagiellonski/"
         },
         "topics": ["Wydolność państwa", "Demografia", "Deglomeracja", "Gospodarka", "Suwerenność"],
-        "desc": "Republikańska i propaństwowa analiza instytucji, 'państwa z kartonu', polityki regionalnej i demografii.",
-        "takeaway": "Twarda propaństwowość, diagnoza wad systemowych urzędów i prawa, regionalizm (Polska poza metropoliami) oraz demografia."
+        "desc": "Najlepsze polskie długie formy o państwie, prawie i demografii. Konserwatywny odpowiednik Kultury Liberalnej na tym samym poziomie.",
+        "takeaway": "Twarda propaństwowość, diagnoza wad systemowych urzędów ('państwo z kartonu'), regionalizm i demografia.",
+        "best_essay": "„Państwo z kartonu: Anatomia instytucjonalnej bezsilności i jak ją przełamać”"
     },
     {
         "id": "nowa_konfederacja",
         "name": "Nowa Konfederacja",
-        "category_group": "PL_ESEJ",
+        "drawer": "SZUFLADA_POLITYKA",
+        "drawer_name": "Polityka & Myśl Państwowa",
+        "blog_category": "polityka",
         "region": "Polska",
         "scope": "Polska / Geopolityka",
         "lang": "PL",
         "flag": "🇵🇱",
         "type": "Thinkzine / Ośrodek analityczny",
         "url": "https://nowakonfederacja.pl",
+        "rss": "https://nowakonfederacja.pl/feed/",
         "social": {
             "x": "https://x.com/NKonfederacja",
             "linkedin": "https://www.linkedin.com/company/nowa-konfederacja/",
             "youtube": "https://www.youtube.com/@NowaKonfederacja"
         },
         "topics": ["Bezpieczeństwo narodowe", "Konstytucjonalizm", "Dyplomacja", "Przemysł obronny"],
-        "desc": "Eksperckie spojrzenie na strategiczne interesy Polski, relacje transatlantyckie i stan sił zbrojnych.",
-        "takeaway": "Chłodny realizm geopolityczny, zbrojenia bez emocji propagandowych, bezlitosny bilans polskich interesów narodowych."
+        "desc": "Geopolityka, autarkia, nowy koncert mocarstw. Wzorcowy ton dla analitycznych wpisów o polskim bezpieczeństwie.",
+        "takeaway": "Chłodny realizm geopolityczny, zbrojenia bez emocji propagandowych, bezlitosny bilans polskich interesów narodowych.",
+        "best_essay": "„Nowy koncert mocarstw: Równowaga sił na wschodzie i granice gwarancji sojuszniczych”"
+    },
+    {
+        "id": "dwutygodnik",
+        "name": "Dwutygodnik.com",
+        "drawer": "SZUFLADA_POLITYKA",
+        "drawer_name": "Polityka & Myśl Państwowa",
+        "blog_category": "polityka",
+        "region": "Polska",
+        "scope": "Polska / Kultura i Esej",
+        "lang": "PL",
+        "flag": "🇵🇱",
+        "type": "Magazyn kultury i idei",
+        "url": "https://www.dwutygodnik.com",
+        "rss": "https://www.dwutygodnik.com/rss",
+        "social": {
+            "x": "https://x.com/dwutygodnik",
+            "facebook": "https://www.facebook.com/dwutygodnik"
+        },
+        "topics": ["Kultura", "Filozofia codzienności", "Esej", "Pytania laika", "Sztuka"],
+        "desc": "Ta luźniejsza strona eseju. Kultura, idee, 'po co zadajemy naiwne pytania'. Wolne od politycznego jadu spojrzenie na kondycję człowieka.",
+        "takeaway": "Lekkość pióra, autentyczna ciekawość świata, eseje kulturowe bez akademickiego nadęcia.",
+        "best_essay": "„Pochwała dociekliwego laika: Po co zadajemy naiwne pytania w świecie aroganckich ekspertów”"
     },
     {
         "id": "krytyka_polityczna",
         "name": "Krytyka Polityczna",
-        "category_group": "PL_ESEJ",
+        "drawer": "SZUFLADA_POLITYKA",
+        "drawer_name": "Polityka & Myśl Państwowa",
+        "blog_category": "polityka",
         "region": "Polska",
         "scope": "Polska / Społeczeństwo",
         "lang": "PL",
         "flag": "🇵🇱",
         "type": "Pismo społeczno-polityczne / Wydawnictwo",
         "url": "https://krytykapolityczna.pl",
+        "rss": "https://krytykapolityczna.pl/feed/",
         "social": {
             "x": "https://x.com/Krytyka",
             "linkedin": "https://www.linkedin.com/company/krytyka-polityczna/",
             "facebook": "https://www.facebook.com/KrytykaPolityczna/"
         },
         "topics": ["Rynek mieszkaniowy", "Prawa pracownicze", "Prekariat", "Ekologia", "Krytyka neoliberalizmu"],
-        "desc": "Lewicowa perspektywa na koszty transformacji, nierówności majątkowe, wyzwania socjalne i rynek najmu.",
-        "takeaway": "Wrażliwość na społeczne koszty rynkowych reform, problematyka rentierstwa i mieszkań, nośne i zaczepne tytuły esejowe."
+        "desc": "Dla kontrapunktu do nurtów konserwatywnych i liberalnych. Jeśli piszemy o gospodarce i państwie, trzeba znać ich narrację.",
+        "takeaway": "Wrażliwość na społeczne koszty rynkowych reform, problematyka rentierstwa i mieszkań, nośne i zaczepne tytuły esejowe.",
+        "best_essay": "„Kto naprawdę płaci za tanie państwo: Niewidzialne koszty cięć w infrastrukturze”"
     },
     {
-        "id": "magazyn_kontakt_8000",
-        "name": "Magazyn Kontakt / 8000 (Osiem tysięcy)",
-        "category_group": "PL_ESEJ",
+        "id": "puls_azji",
+        "name": "Puls Azji (Puls Lewantu)",
+        "drawer": "SZUFLADA_POLITYKA",
+        "drawer_name": "Polityka & Myśl Państwowa",
+        "blog_category": "polityka",
         "region": "Polska",
-        "scope": "Polska / Gospodarka",
+        "scope": "Azja / Bliski Wschód / Świat",
         "lang": "PL",
         "flag": "🇵🇱",
-        "type": "Magazyn idei & Najlepszy newsletter gospodarczy LinkedIn",
-        "url": "https://magazynkontakt.pl",
+        "type": "Ośrodek analityczny i podcast",
+        "url": "https://pulsazji.pl",
+        "rss": "https://pulsazji.pl/feed/",
         "social": {
-            "x": "https://x.com/MagazynKontakt",
-            "linkedin": "https://www.linkedin.com/newsletters/osiem-tysi%C4%99cy-6962043685532585984/"
+            "x": "https://x.com/PulsAzji",
+            "youtube": "https://www.youtube.com/@PulsAzji"
         },
-        "topics": ["Dane makroekonomiczne", "Etyka społeczna", "Rynek pracy", "Płace", "Wykresy tygodnia"],
-        "desc": "Dwa wzorce: Magazyn Kontakt (społeczno-etyczny) oraz '8000' – wybitny newsletter gospodarczy na LinkedIn.",
-        "takeaway": "Format 'Osiem tysięcy' (8000): czyste wykresy, twarde dane makro podane bez hermetycznego żargonu ekonomicznego."
-    },
-    {
-        "id": "kanal_zero",
-        "name": "Kanał Zero (Publicystyka & Debaty)",
-        "category_group": "PL_ESEJ",
-        "region": "Polska",
-        "scope": "Polska / Świat",
-        "lang": "PL",
-        "flag": "🇵🇱",
-        "type": "Media internetowe / Format debat",
-        "url": "https://www.youtube.com/@KanalZeroPL",
-        "social": {
-            "x": "https://x.com/OficjalneZero",
-            "youtube": "https://www.youtube.com/@KanalZeroPL"
-        },
-        "topics": ["Debaty polityczne", "Gospodarka", "Geopolityka", "Spory społeczne", "Media"],
-        "desc": "Szeroka dyskusja społeczna bez poprawności politycznej. Zderzenie różnych perspektyw w kluczowych sporach Polaków.",
-        "takeaway": "Bezkompromisowe zadawanie prostych, laickich pytań ekspertom; dynamika starć argumentacyjnych na żywo."
+        "topics": ["Chiny", "Indie", "Tajwan", "Czipy", "Łańcuchy dostaw", "Geopolityka surowcowa"],
+        "desc": "Geopolityka + gospodarka azjatycka, absolutnie bez emocji. Pokazuje realny rozkład sił gospodarczych na Pacyfiku.",
+        "takeaway": "Patrzenie na Europę i Polskę z perspektywy Azji; analiza faktów bez europocentrycznego złudzenia.",
+        "best_essay": "„Wielka gra o cieśninę Malakka i czipy z Tajwanu: Kiedy globalizacja spotyka się z blokadą morską”"
     },
     {
         "id": "osw",
         "name": "Ośrodek Studiów Wschodnich (OSW)",
-        "category_group": "PL_ESEJ",
+        "drawer": "SZUFLADA_POLITYKA",
+        "drawer_name": "Polityka & Myśl Państwowa",
+        "blog_category": "polityka",
         "region": "Polska",
         "scope": "Europa Środkowa / Wschód / Świat",
         "lang": "PL / EN",
         "flag": "🇵🇱",
         "type": "Rządowy instytut analityczny",
         "url": "https://www.osw.waw.pl",
+        "rss": "https://www.osw.waw.pl/pl/rss.xml",
         "social": {
             "x": "https://x.com/OSW_pl",
             "youtube": "https://www.youtube.com/@OSWOsrodekStudiowWschodnich"
         },
         "topics": ["Geopolityka", "Bezpieczeństwo", "Energetyka", "Niemcy", "Ukraina", "Rosja"],
         "desc": "Niezrównany, chłodny i precyzyjny aparat analityczny w sprawach bezpieczeństwa, surowców i równowagi sił.",
-        "takeaway": "Rygor faktograficzny, oparcie na źródłach pierwotnych, myślenie procesami wieloletnimi a nie nagłówkami z wczoraj."
-    },
-    {
-        "id": "interia",
-        "name": "Interia (Wydarzenia & Biznes)",
-        "category_group": "PL_ESEJ",
-        "region": "Polska",
-        "scope": "Polska",
-        "lang": "PL",
-        "flag": "🇵🇱",
-        "type": "Portal ogólnoinformacyjny",
-        "url": "https://wydarzenia.interia.pl",
-        "social": {
-            "x": "https://x.com/Int_Wydarzenia",
-            "facebook": "https://www.facebook.com/interia"
-        },
-        "topics": ["Wiadomości krajowe", "Gospodarka codzienna", "Nastroje społeczne", "Prawo"],
-        "desc": "Puls codziennego życia gospodarczego i politycznego w Polsce. Weryfikacja twardych decyzji rządu i nastrojów.",
-        "takeaway": "Przekładanie skomplikowanych projektów ustaw na realny portfel i życie przeciętnego obywatela."
+        "takeaway": "Rygor faktograficzny, oparcie na źródłach pierwotnych, myślenie procesami wieloletnimi a nie nagłówkami z wczoraj.",
+        "best_essay": "„Nowa architektura bezpieczeństwa Bałtyku: Floty, kable światłowodowe i korytarz suwalski”"
     },
 
-    # =============================================================
-    # 2. GOSPODARKA OGÓLNA, BIZNES I SUROWCE
-    # =============================================================
+    # =========================================================================
+    # SZUFLADA 2: GOSPODARKA, FINANSE & RYNKI (Dział: gospodarka)
+    # =========================================================================
     {
-        "id": "business_insider",
-        "name": "Business Insider (Polska & Global)",
-        "category_group": "BIZNES_MAKRO",
-        "region": "Polska / Globalny",
-        "scope": "Gospodarka / Rynki / Biznes",
-        "lang": "PL / EN",
-        "flag": "🌍",
-        "type": "Portal biznesowo-ekonomiczny",
-        "url": "https://businessinsider.com.pl",
+        "id": "osiem_tysiecy",
+        "name": "8000 (Osiem tysięcy / osiemtysiecy.pl)",
+        "drawer": "SZUFLADA_GOSPODARKA",
+        "drawer_name": "Gospodarka, Finanse & Rynki",
+        "blog_category": "gospodarka",
+        "region": "Polska",
+        "scope": "Polska / Gospodarka",
+        "lang": "PL",
+        "flag": "🇵🇱",
+        "type": "Najlepszy polski Substack o gospodarce bez bullshitu",
+        "url": "https://osiemtysiecy.pl",
+        "rss": "https://osiemtysiecy.substack.com/feed",
         "social": {
-            "x": "https://x.com/BIPolska",
-            "linkedin": "https://www.linkedin.com/company/business-insider-polska/"
+            "x": "https://x.com/MagazynKontakt",
+            "linkedin": "https://www.linkedin.com/newsletters/osiem-tysi%C4%99cy-6962043685532585984/"
         },
-        "topics": ["Makroekonomia", "Trendy rynkowe", "Praca i wynagrodzenia", "Przedsiębiorczość", "Ceny surowców"],
-        "desc": "Jeden z najpopularniejszych serwisów gospodarczych na świecie. Tłumaczy mechanizmy rynkowe i zmiany nawyków konsumentów.",
-        "takeaway": "Dynamika narracji biznesowej, chwytliwe i merytoryczne ujęcia makro, zwięzłe infografiki trendów i psychologia pracy."
+        "topics": ["Dane makroekonomiczne", "Rynek pracy", "Płace", "Stopy procentowe", "Wykresy tygodnia"],
+        "desc": "Najlepszy polski newsletter gospodarczy bez bullshitu. Czyste wykresy, twarde dane makro. Idealny punkt odniesienia dla wpisów o tanim kapitale.",
+        "takeaway": "Format czystych wykresów, twarde dane makro podane bez hermetycznego żargonu ekonomicznego.",
+        "best_essay": "„Złudzenie taniego kapitału: Dlaczego zerowe stopy procentowe były anomalią stulecia”"
+    },
+    {
+        "id": "slow_boring",
+        "name": "Slow Boring (Matt Yglesias)",
+        "drawer": "SZUFLADA_GOSPODARKA",
+        "drawer_name": "Gospodarka, Finanse & Rynki",
+        "blog_category": "gospodarka",
+        "region": "Zagranica",
+        "scope": "USA / Polityka publiczna",
+        "lang": "EN (do translacji)",
+        "flag": "🇺🇸",
+        "type": "Substack polityczno-gospodarczy (Wielka Czwórka)",
+        "url": "https://www.slowboring.com",
+        "rss": "https://www.slowboring.com/feed",
+        "social": {
+            "x": "https://x.com/mattyglesias",
+            "substack": "https://www.slowboring.com"
+        },
+        "topics": ["Mieszkalnictwo (YIMBY)", "Polityka publiczna", "Instytucje", "Podatki", "Umiarkowanie"],
+        "desc": "Polityka i gospodarka pragmatycznie, bez plemienności. Świetny wzór jak pisać o polityce dla ludzi, którzy nie lubią polityki.",
+        "takeaway": "Model 'poważnego, umiarkowanego bloga politycznego', który szuka działających rozwiązań zamiast moralizowania.",
+        "best_essay": "„The Housing Crisis is an Abundance Crisis: Why Rent Subsidies Fuel Price Inflation”"
     },
     {
         "id": "financial_times",
         "name": "The Financial Times (FT)",
-        "category_group": "BIZNES_MAKRO",
+        "drawer": "SZUFLADA_GOSPODARKA",
+        "drawer_name": "Gospodarka, Finanse & Rynki",
+        "blog_category": "gospodarka",
         "region": "Zagranica",
         "scope": "Globalny",
         "lang": "EN (do translacji)",
         "flag": "🇬🇧",
         "type": "Dziennik finansowy / Global benchmark",
         "url": "https://www.ft.com",
+        "rss": "https://www.ft.com/rss/home",
         "social": {
             "x": "https://x.com/FinancialTimes",
             "linkedin": "https://www.linkedin.com/company/financial-times/"
         },
         "topics": ["Makroekonomia", "Banki centralne (FED/EBC)", "Dług publiczny", "Handel globalny", "Geonomia"],
         "desc": "Światowy punkt odniesienia w analityce rynkowej. Wyjaśnia głębokie przepływy kapitałowe i politykę stóp procentowych.",
-        "takeaway": "Globalny standard analizy długu suwerennego, polityki banków centralnych i długich cykli inwestycyjnych."
+        "takeaway": "Globalny standard analizy długu suwerennego, polityki banków centralnych i długich cykli inwestycyjnych.",
+        "best_essay": "„The Era of Free Money is Over: Sovereign Debt Traps in the Post-ZIRP World”"
     },
     {
-        "id": "investing",
-        "name": "Investing.com",
-        "category_group": "BIZNES_MAKRO",
-        "region": "Zagranica",
-        "scope": "Globalny / Rynki",
-        "lang": "EN / PL",
+        "id": "business_insider",
+        "name": "Business Insider (Polska & Global)",
+        "drawer": "SZUFLADA_GOSPODARKA",
+        "drawer_name": "Gospodarka, Finanse & Rynki",
+        "blog_category": "gospodarka",
+        "region": "Polska / Globalny",
+        "scope": "Gospodarka / Rynki / Biznes",
+        "lang": "PL / EN",
         "flag": "🌍",
-        "type": "Platforma rynkowa i surowcowa",
-        "url": "https://pl.investing.com",
+        "type": "Portal biznesowo-ekonomiczny",
+        "url": "https://businessinsider.com.pl",
+        "rss": "https://businessinsider.com.pl/rss",
         "social": {
-            "x": "https://x.com/Investingcom"
+            "x": "https://x.com/BIPolska",
+            "linkedin": "https://www.linkedin.com/company/business-insider-polska/"
         },
-        "topics": ["Ropa i gaz", "Obligacje skarbowe", "Waluty", "Kruszce", "Wskaźniki PMI/CPI"],
-        "desc": "Dane rynkowe w czasie rzeczywistym, spready rentowności obligacji i twarde wskaźniki makro.",
-        "takeaway": "Twarde dane liczbowe (rentowności 10-letnich obligacji, notowania ropy Brent i gazu TTF) jako tło dla polskich wpisów."
-    },
-    {
-        "id": "bankier",
-        "name": "Bankier.pl / Forsal",
-        "category_group": "BIZNES_MAKRO",
-        "region": "Polska",
-        "scope": "Polska",
-        "lang": "PL",
-        "flag": "🇵🇱",
-        "type": "Portal finansowo-ekonomiczny",
-        "url": "https://www.bankier.pl",
-        "social": {
-            "x": "https://x.com/bankier_pl",
-            "facebook": "https://www.facebook.com/bankierpl"
-        },
-        "topics": ["Stopy NBP", "Rynek nieruchomości", "Kredyty hipoteczne", "Podatki", "Budżet państwa"],
-        "desc": "Kluczowe źródło danych o kondycji portfela polskiego obywatela, rynku mieszkań i polityce monetarnej RPP.",
-        "takeaway": "Rozliczanie kolejnych programów dopłat mieszkaniowych i twarde dane o realnej sile nabywczej pensji."
-    },
-    {
-        "id": "bloomberg",
-        "name": "Bloomberg Markets",
-        "category_group": "BIZNES_MAKRO",
-        "region": "Zagranica",
-        "scope": "Globalny",
-        "lang": "EN (do translacji)",
-        "flag": "🇺🇸",
-        "type": "Agencja analityczno-finansowa",
-        "url": "https://www.bloomberg.com",
-        "social": {
-            "x": "https://x.com/business",
-            "linkedin": "https://www.linkedin.com/company/bloomberg-lp/"
-        },
-        "topics": ["Finanse korporacyjne", "Rynek surowców", "Łańcuchy dostaw", "Energetyka"],
-        "desc": "Twarde dane z terminali rynkowych dotyczące fuzji, długu, sankcji oraz kondycji największych korporacji świata.",
-        "takeaway": "Ekspresowa identyfikacja punktów zwrotnych w łańcuchach dostaw i decyzjach kapitałowych funduszy private equity."
-    },
-
-    # =============================================================
-    # 3. ZAGRANICA — WZORCE ESEJOWE I METODOLOGICZNE DLA BLOGA LAIKA
-    # =============================================================
-    {
-        "id": "works_in_progress",
-        "name": "Works in Progress",
-        "category_group": "ENG_ESEJ",
-        "region": "Zagranica",
-        "scope": "Świat / Cywilizacja",
-        "lang": "EN (do translacji)",
-        "flag": "🇬🇧",
-        "type": "Magazyn esejów o postępie (Stripe Press)",
-        "url": "https://worksinprogress.co",
-        "social": {
-            "x": "https://x.com/worksinprogress"
-        },
-        "topics": ["Postęp cywilizacyjny", "Infrastruktura", "Historia innowacji", "Materiały", "Miasta"],
-        "desc": "Wybitny magazyn długich, dogłębnych esejów badających dlaczego rzeczy w świecie realnym działają tak, jak działają.",
-        "takeaway": "Nacisk na fizyczny świat (budownictwo, energetyka, rolnictwo), drobiazgowość dowodowa i piękna, czysta typografia eseju."
-    },
-    {
-        "id": "astral_codex_ten",
-        "name": "Astral Codex Ten (Scott Alexander)",
-        "category_group": "ENG_ESEJ",
-        "region": "Zagranica",
-        "scope": "Świat / Racjonalność",
-        "lang": "EN (do translacji)",
-        "flag": "🇺🇸",
-        "type": "Substack / Eseje racjonalistyczne",
-        "url": "https://www.astralcodexten.com",
-        "social": {
-            "x": "https://x.com/slatestarcodex",
-            "substack": "https://www.astralcodexten.com"
-        },
-        "topics": ["Epistemologia", "Myślenie probabilistyczne", "Dekonstrukcja mitów", "Psychologia", "Przyszłość"],
-        "desc": "Kultowy blog Scotta Alexandera (dawniej Slate Star Codex). Arcydzieło rygoru intelektualnego i uczciwości argumentacji.",
-        "takeaway": "Dociekliwość laika weryfikującego twierdzenia ekspertów, myślenie Bayesowskie, badanie alternatywnych hipotez."
-    },
-    {
-        "id": "slow_boring",
-        "name": "Slow Boring (Matt Yglesias)",
-        "category_group": "ENG_ESEJ",
-        "region": "Zagranica",
-        "scope": "USA / Polityka publiczna",
-        "lang": "EN (do translacji)",
-        "flag": "🇺🇸",
-        "type": "Substack polityczno-gospodarczy",
-        "url": "https://www.slowboring.com",
-        "social": {
-            "x": "https://x.com/mattyglesias",
-            "substack": "https://www.slowboring.com"
-        },
-        "topics": ["Mieszkalnictwo (YIMBY)", "Polityka publiczna", "Instytucje", "Podatki", "Umiarkowanie"],
-        "desc": "Trzeźwy, pragmatyczny i oparty na faktach namysł nad reformami państwa. Unika histerii i polaryzacyjnych wojen plemiennych.",
-        "takeaway": "Model 'poważnego, umiarkowanego bloga politycznego', który szuka działających rozwiązań zamiast moralizowania."
-    },
-    {
-        "id": "roots_of_progress",
-        "name": "The Roots of Progress (Jason Crawford)",
-        "category_group": "ENG_ESEJ",
-        "region": "Zagranica",
-        "scope": "Świat / Historia technologii",
-        "lang": "EN (do translacji)",
-        "flag": "🇺🇸",
-        "type": "Substack & Instytut filozofii postępu",
-        "url": "https://rootsofprogress.org",
-        "social": {
-            "x": "https://x.com/jasoncrawford",
-            "substack": "https://rootsofprogress.org"
-        },
-        "topics": ["Filozofia postępu", "Historia inżynierii", "Czysta woda i higiena", "Energetyka jądrowa", "Przemysł"],
-        "desc": "Analiza fundamentalnych przełomów w dziejach ludzkości podtrzymujących współczesny standard życia i zdrowia.",
-        "takeaway": "Docenianie dorobku inżynierii i technologii z pozycji wdzięczności i głębokiego zrozumienia fundamentów materialnych."
-    },
-    {
-        "id": "stratechery",
-        "name": "Stratechery (Ben Thompson)",
-        "category_group": "ENG_ESEJ",
-        "region": "Zagranica",
-        "scope": "Globalny / Big Tech",
-        "lang": "EN (do translacji)",
-        "flag": "🇺🇸",
-        "type": "Monografia analityczna / Newsletter biznesowy",
-        "url": "https://stratechery.com",
-        "social": {
-            "x": "https://x.com/benthompson",
-            "linkedin": "https://www.linkedin.com/in/ben-thompson-stratechery/"
-        },
-        "topics": ["Teoria agregacji", "Monopole platformowe", "Strategia biznesowa", "Hardware vs Software"],
-        "desc": "Najbardziej wpływowy jednoosobowy biuletyn analityczny o strategii technologicznej i ekonomii platform na świecie.",
-        "takeaway": "Autorskie modele pojęciowe (Aggregation Theory) i chłodna analiza modeli biznesowych bez podniecania się PR-em."
-    },
-    {
-        "id": "farnam_street",
-        "name": "Farnam Street (Shane Parrish)",
-        "category_group": "ENG_ESEJ",
-        "region": "Zagranica",
-        "scope": "Świat / Myślenie krytyczne",
-        "lang": "EN (do translacji)",
-        "flag": "🇨🇦",
-        "type": "Katalog modeli mentalnych / Eseje",
-        "url": "https://fs.blog",
-        "social": {
-            "x": "https://x.com/farnamstreet"
-        },
-        "topics": ["Modele mentalne", "Podejmowanie decyzji", "Brzytwa Ockhama", "Myślenie drugiego rzędu", "Mądrość"],
-        "desc": "Słynny serwis poświęcony sztuce podejmowania trudnych decyzji i ponadczasowym modelom mentalnym (Charlie Munger).",
-        "takeaway": "Wykorzystywanie pojęć 'myślenia drugiego rzędu' (second-order thinking) oraz inwersji problemu w polskich analizach."
+        "topics": ["Makroekonomia", "Trendy rynkowe", "Praca i wynagrodzenia", "Przedsiębiorczość", "Ceny surowców"],
+        "desc": "Tłumaczy mechanizmy rynkowe i zmiany nawyków konsumentów. Dynamiczne, wyraziste ujęcia makro.",
+        "takeaway": "Dynamika narracji biznesowej, chwytliwe i merytoryczne ujęcia makro, zwięzłe infografiki trendów i psychologia pracy.",
+        "best_essay": "„Cichy kryzys rynku pracy: Dlaczego miliony etatów zmienią się szybciej niż kodeks pracy”"
     },
     {
         "id": "noahpinion",
         "name": "Noahpinion (Noah Smith)",
-        "category_group": "ENG_ESEJ",
+        "drawer": "SZUFLADA_GOSPODARKA",
+        "drawer_name": "Gospodarka, Finanse & Rynki",
+        "blog_category": "gospodarka",
         "region": "Zagranica",
         "scope": "Świat / Makroekonomia",
         "lang": "EN (do translacji)",
         "flag": "🇺🇸",
         "type": "Substack ekonomiczny",
         "url": "https://www.noahpinion.blog",
+        "rss": "https://www.noahpinion.blog/feed",
         "social": {
             "x": "https://x.com/noahpinion",
             "substack": "https://www.noahpinion.blog"
         },
         "topics": ["Polityka przemysłowa", "Rywalizacja USA-Chiny", "Czipy i fabryki", "Płace", "Wykresy"],
-        "desc": "Były felietonista Bloomberga obalający mity ekonomiczne za pomocą przejrzystych wykresów i surowych danych statystycznych.",
-        "takeaway": "Wojna na twarde wykresy z danymi, re-industrializacja zachodu i powrót do budowy fabryk zamiast samej inżynierii finansowej."
+        "desc": "Ekonomista, który pisze o wszystkim: od anime po geopolitykę Tajwanu. Pokazuje jak łączyć tematy.",
+        "takeaway": "Wojna na twarde wykresy z danymi, re-industrializacja zachodu i powrót do budowy fabryk zamiast samej inżynierii finansowej.",
+        "best_essay": "„Industrial Policy is Back: Why Finance Can No Longer Substitute for Physical Factories”"
+    },
+    {
+        "id": "investing",
+        "name": "Investing.com",
+        "drawer": "SZUFLADA_GOSPODARKA",
+        "drawer_name": "Gospodarka, Finanse & Rynki",
+        "blog_category": "gospodarka",
+        "region": "Zagranica",
+        "scope": "Globalny / Rynki",
+        "lang": "EN / PL",
+        "flag": "🌍",
+        "type": "Platforma rynkowa i surowcowa",
+        "url": "https://pl.investing.com",
+        "rss": "https://pl.investing.com/rss/news.rss",
+        "social": {
+            "x": "https://x.com/Investingcom"
+        },
+        "topics": ["Ropa i gaz", "Obligacje skarbowe", "Waluty", "Kruszce", "Wskaźniki PMI/CPI"],
+        "desc": "Dane rynkowe w czasie rzeczywistym, spready rentowności obligacji i twarde wskaźniki makro.",
+        "takeaway": "Twarde dane liczbowe (rentowności 10-letnich obligacji, notowania ropy Brent i gazu TTF) jako tło dla polskich wpisów.",
+        "best_essay": "„Rentowności obligacji 10Y jako kanarek w kopalni: Co mówi spread między Niemcami a Polską”"
+    },
+
+    # =========================================================================
+    # SZUFLADA 3: TECHNOLOGIA & ARCHITEKTURA UWAGI (Dział: technologia)
+    # =========================================================================
+    {
+        "id": "stratechery",
+        "name": "Stratechery (Ben Thompson)",
+        "drawer": "SZUFLADA_TECHNOLOGIA",
+        "drawer_name": "Technologia & Architektura Uwagi",
+        "blog_category": "technologia",
+        "region": "Zagranica",
+        "scope": "Globalny / Big Tech",
+        "lang": "EN (do translacji)",
+        "flag": "🇺🇸",
+        "type": "Monografia analityczna / Newsletter biznesowy",
+        "url": "https://stratechery.com",
+        "rss": "https://stratechery.com/feed/",
+        "social": {
+            "x": "https://x.com/benthompson",
+            "linkedin": "https://www.linkedin.com/in/ben-thompson-stratechery/"
+        },
+        "topics": ["Teoria agregacji", "Monopole platformowe", "Strategia biznesowa", "Hardware vs Software"],
+        "desc": "Płatny, ale każdy esej to lekcja ekonomii uwagi i platform. Najważniejszy analityk strategii cyfrowej na świecie.",
+        "takeaway": "Autorskie modele pojęciowe (Aggregation Theory) i chłodna analiza modeli biznesowych bez podniecania się PR-em.",
+        "best_essay": "„Aggregation Theory: How the Internet Reshaped the Monopolies of Attention”"
+    },
+    {
+        "id": "understanding_ai",
+        "name": "Understanding AI (Timothy Lee)",
+        "drawer": "SZUFLADA_TECHNOLOGIA",
+        "drawer_name": "Technologia & Architektura Uwagi",
+        "blog_category": "technologia",
+        "region": "Zagranica",
+        "scope": "Globalny / AI bez hype'u",
+        "lang": "EN (do translacji)",
+        "flag": "🇺🇸",
+        "type": "Substack technologiczno-analityczny",
+        "url": "https://www.understandingai.org",
+        "rss": "https://www.understandingai.org/feed",
+        "social": {
+            "x": "https://x.com/binarybits",
+            "substack": "https://www.understandingai.org"
+        },
+        "topics": ["Sztuczna inteligencja", "Architektura LLM", "Koszty wnioskowania", "Regulacje", "Rzeczywiste wdrożenia"],
+        "desc": "Tłumaczy sztuczną inteligencję bez hype'u. Wzorzec klarownego wyjaśniania transformerów i tokenów.",
+        "takeaway": "Tłumaczenie fundamentów modeli AI prostym, rzeczowym językiem; demaskowanie mitów o 'sztucznej superinteligencji za rogiem'.",
+        "best_essay": "„Large Language Models Explained with Plain English and Zero Hype”"
     },
     {
         "id": "the_diff",
         "name": "The Diff (Byrne Hobart)",
-        "category_group": "ENG_ESEJ",
+        "drawer": "SZUFLADA_TECHNOLOGIA",
+        "drawer_name": "Technologia & Architektura Uwagi",
+        "blog_category": "technologia",
         "region": "Zagranica",
         "scope": "Globalny / Rynki i Tech",
         "lang": "EN (do translacji)",
         "flag": "🇺🇸",
         "type": "Substack finansowo-analityczny",
         "url": "https://www.thediff.co",
+        "rss": "https://www.thediff.co/feed",
         "social": {
             "x": "https://x.com/byrnehobart",
             "substack": "https://www.thediff.co"
         },
         "topics": ["Infleksje rynkowe", "Finanse korporacyjne", "Arbitraż regulacyjny", "Giełda"],
-        "desc": "Dziennik śledzący głębokie przesunięcia kapitałowe, nieoczywiste zależności rynkowe i zmiany w modelach biznesowych.",
-        "takeaway": "Zdolność do łączenia mikro-detali z wielkimi falami makroekonomicznymi i pokazywania, kto naprawdę zarabia."
+        "desc": "Łączy technologię i finanse. Wyjaśnia dlaczego taniego kapitału już nie będzie i kto finansuje serwerownie AI.",
+        "takeaway": "Zdolność do łączenia mikro-detali z wielkimi falami makroekonomicznymi i pokazywania, kto naprawdę zarabia.",
+        "best_essay": "„CapEx Cycles in Tech: Why the Data Center Boom Changes the Marginal Cost of Money”"
     },
-
-    # =============================================================
-    # 4. POLITYKA MIĘDZYNARODOWA, GEOPOLITYKA I TECHNOLOGIA HARDWARE
-    # =============================================================
     {
-        "id": "foreign_affairs",
-        "name": "Foreign Affairs",
-        "category_group": "ENG_ESEJ",
+        "id": "crazy_nauka",
+        "name": "Crazy Nauka",
+        "drawer": "SZUFLADA_TECHNOLOGIA",
+        "drawer_name": "Technologia & Architektura Uwagi",
+        "blog_category": "technologia",
+        "region": "Polska",
+        "scope": "Polska / Popularyzacja nauki",
+        "lang": "PL",
+        "flag": "🇵🇱",
+        "type": "Największy polski blog popularnonaukowy",
+        "url": "https://www.crazynauka.pl",
+        "rss": "https://www.crazynauka.pl/feed/",
+        "social": {
+            "x": "https://x.com/CrazyNauka",
+            "facebook": "https://www.facebook.com/CrazyNauka"
+        },
+        "topics": ["Nauka", "Klimat", "Medycyna", "Kosmos", "Weryfikacja faktów"],
+        "desc": "Jak tłumaczyć trudne rzeczy laikom. Wzór dla przystępnego dziennikarstwa naukowego w dziale Technologia.",
+        "takeaway": "Sztuka budowania analogii ze świata codziennego do wyjaśniania skomplikowanych praw fizyki i inżynierii.",
+        "best_essay": "„Jak odróżnić przełom laboratoryjny od prasowego szumu: Lekcja dociekliwego laika”"
+    },
+    {
+        "id": "kwantowo",
+        "name": "Kwantowo.pl",
+        "drawer": "SZUFLADA_TECHNOLOGIA",
+        "drawer_name": "Technologia & Architektura Uwagi",
+        "blog_category": "technologia",
+        "region": "Polska",
+        "scope": "Polska / Fizyka i Filozofia nauki",
+        "lang": "PL",
+        "flag": "🇵🇱",
+        "type": "Autorski blog popularnonaukowy (Adam Adamczyk)",
+        "url": "https://www.kwantowo.pl",
+        "rss": "https://www.kwantowo.pl/feed/",
+        "social": {
+            "x": "https://x.com/Kwantowo",
+            "facebook": "https://www.facebook.com/kwantowo"
+        },
+        "topics": ["Fizyka kwantowa", "Kryptografia postkwantowa", "Kosmologia", "Filozofia nauki"],
+        "desc": "Arcydzieło rzetelnej popularyzacji trudnej nauki. Rozbija skomplikowane zjawiska na przejrzyste klocki logiczne.",
+        "takeaway": "Rygor dowodowy połączony z pasją dociekania; idealny wzorzec dla technicznych i filozoficznych wpisów Bloga Laika.",
+        "best_essay": "„Kryptografia postkwantowa: Dlaczego algorytm Shora zmusi banki do wymiany całego szyfrowania”"
+    },
+    {
+        "id": "hacker_news",
+        "name": "Hacker News (Y Combinator)",
+        "drawer": "SZUFLADA_TECHNOLOGIA",
+        "drawer_name": "Technologia & Architektura Uwagi",
+        "blog_category": "technologia",
         "region": "Zagranica",
-        "scope": "Globalny",
+        "scope": "Globalny / Agregator inżynierski",
         "lang": "EN (do translacji)",
         "flag": "🇺🇸",
-        "type": "Kwartalnik stosunków międzynarodowych",
-        "url": "https://www.foreignaffairs.com",
+        "type": "Agregator & Forum inżynierów",
+        "url": "https://news.ycombinator.com",
+        "rss": "https://news.ycombinator.com/rss",
         "social": {
-            "x": "https://x.com/ForeignAffairs"
+            "x": "https://x.com/newsycombinator"
         },
-        "topics": ["Wielka strategia", "Rywalizacja mocarstw", "Przyszłość NATO", "Ład postliberalny"],
-        "desc": "Najbardziej wpływowy magazyn politologiczny świata. Kształtuje debaty o równowadze sił i doktrynach obronnych.",
-        "takeaway": "Makrostrukturalne spojrzenie na sojusze wojskowe i architekturę bezpieczeństwa w Europie Środkowej."
+        "topics": ["Inżynieria", "Systemy rozproszone", "Hardware", "Prywatność", "SLM / Edge AI"],
+        "desc": "Agregator, gdzie tematy na eseje rodzą się na 2 miesiące przed mediami głównego nurtu.",
+        "takeaway": "Śledzenie komentarzy inżynierów i praktyków; wyłapywanie wczesnych sygnałów o porażkach i przełomach w hardware.",
+        "best_essay": "Wątki: „Show HN: On-device SLM performance” oraz dekonstrukcja kosztów chmury AWS/Azure."
     },
     {
-        "id": "politico_eu",
-        "name": "Politico Europe",
-        "category_group": "ENG_ESEJ",
-        "region": "Europa",
-        "scope": "Unia Europejska",
+        "id": "lesswrong",
+        "name": "LessWrong",
+        "drawer": "SZUFLADA_TECHNOLOGIA",
+        "drawer_name": "Technologia & Architektura Uwagi",
+        "blog_category": "technologia",
+        "region": "Zagranica",
+        "scope": "Globalny / Racjonalizm & Bezpieczeństwo AI",
         "lang": "EN (do translacji)",
-        "flag": "🇪🇺",
-        "type": "Dziennikarstwo śledcze i unijne",
-        "url": "https://www.politico.eu",
-        "social": {
-            "x": "https://x.com/PoliticoEurope"
-        },
-        "topics": ["Bruksela", "Komisja Europejska", "Regulacje handlowe", "Polityka klimatyczna", "Lobbying"],
-        "desc": "Kulisy unijnych instytucji, targi między Berlinem, Paryżem i Warszawą oraz mechanizmy unijnego prawa.",
-        "takeaway": "Kulisy gier gabinetowych w Brukseli i realny rozkład sił przy głosowaniach traktatowych."
+        "flag": "🇺🇸",
+        "type": "Forum racjonalistyczne & Agregator esejów",
+        "url": "https://www.lesswrong.com",
+        "rss": "https://www.lesswrong.com/feed.xml",
+        "topics": ["Epistemologia", "Błędy poznawcze", "Bezpieczeństwo AI", "Teoria decyzji", "Modele świata"],
+        "desc": "Kolebka współczesnego racjonalizmu. Źródło głębokich debat o myśleniu krytycznym i granicach maszyn.",
+        "takeaway": "Rozróżnienie między mapą a terytorium (The Map is Not the Territory); dekonstrukcja psychologicznych mechanizmów samooszukiwania.",
+        "best_essay": "„Map and Territory: The Foundational Sequences of Critical Thinking”"
     },
     {
         "id": "ars_technica",
         "name": "Ars Technica",
-        "category_group": "TECH_PRZYSZLOSC",
+        "drawer": "SZUFLADA_TECHNOLOGIA",
+        "drawer_name": "Technologia & Architektura Uwagi",
+        "blog_category": "technologia",
         "region": "Zagranica",
         "scope": "Globalny",
         "lang": "EN (do translacji)",
         "flag": "🇺🇸",
         "type": "Publicystyka technologiczna",
         "url": "https://arstechnica.com",
+        "rss": "https://feeds.arstechnica.com/arstechnica/index",
         "social": {
             "x": "https://x.com/arstechnica"
         },
         "topics": ["Cyberbezpieczeństwo", "Hardware", "Polityka cyfrowa", "Kryptografia", "Prawa cyfrowe"],
         "desc": "Rzetelne dziennikarstwo technologiczne bez bezkrytycznego zachwytu nad nowościami. Twarda ocena kodu i sprzętu.",
-        "takeaway": "Krytyczne spojrzenie na obietnice Doliny Krzemowej i ochrona praw użytkownika do własnego sprzętu."
+        "takeaway": "Krytyczne spojrzenie na obietnice Doliny Krzemowej i ochrona praw użytkownika do własnego sprzętu.",
+        "best_essay": "„The Silicon Wall: Why Shrinking Transistors Beyond 2nm Breaks Classical Physics”"
+    },
+
+    # =========================================================================
+    # SZUFLADA 4: FILOZOFIA LAIKA, POSTĘP & INNE ESEJE (Dział: eseje)
+    # =========================================================================
+    {
+        "id": "works_in_progress",
+        "name": "Works in Progress Magazine",
+        "drawer": "SZUFLADA_ESEJE",
+        "drawer_name": "Filozofia Laika & Postęp",
+        "blog_category": "eseje",
+        "region": "Zagranica",
+        "scope": "Świat / Cywilizacja",
+        "lang": "EN (do translacji)",
+        "flag": "🇬🇧",
+        "type": "Magazyn esejów o postępie (Stripe Press / Wielka Czwórka)",
+        "url": "https://worksinprogress.co",
+        "rss": "https://worksinprogress.co/feed",
+        "social": {
+            "x": "https://x.com/worksinprogress"
+        },
+        "topics": ["Postęp cywilizacyjny", "Infrastruktura", "Historia innowacji", "Materiały", "Miasta"],
+        "desc": "Długie eseje o tym dlaczego postęp technologiczny zwolnił, o architekturze, gospodarce, nauce. Absolutny benchmark światowy dla Bloga Laika.",
+        "takeaway": "Nacisk na fizyczny świat (budownictwo, energetyka, rolnictwo), drobiazgowość dowodowa i piękna, czysta typografia eseju.",
+        "best_essay": "„Why We Stopped Making Things: The Stagnation of Physical Innovation in the Atomic Age”"
     },
     {
-        "id": "mit_tech_review",
-        "name": "MIT Technology Review",
-        "category_group": "TECH_PRZYSZLOSC",
+        "id": "astral_codex_ten",
+        "name": "Astral Codex Ten (Scott Alexander)",
+        "drawer": "SZUFLADA_ESEJE",
+        "drawer_name": "Filozofia Laika & Postęp",
+        "blog_category": "eseje",
         "region": "Zagranica",
-        "scope": "Globalny",
+        "scope": "Świat / Racjonalność",
         "lang": "EN (do translacji)",
         "flag": "🇺🇸",
-        "type": "Magazyn naukowo-technologiczny",
-        "url": "https://www.technologyreview.com",
+        "type": "Substack / Eseje racjonalistyczne (Wielka Czwórka)",
+        "url": "https://www.astralcodexten.com",
+        "rss": "https://www.astralcodexten.com/feed",
         "social": {
-            "x": "https://x.com/techreview"
+            "x": "https://x.com/slatestarcodex",
+            "substack": "https://www.astralcodexten.com"
         },
-        "topics": ["Etyka technologii", "Przełomy laboratoryjne", "Klimatotech", "Biotechnologia"],
-        "desc": "Krytyczny namysł nad wpływem inżynierii na społeczeństwo, rynek pracy i przyszłość człowieka.",
-        "takeaway": "Oddzielanie realnych innowacji laboratoryjnych od giełdowego szumu i spekulacji."
+        "topics": ["Epistemologia", "Myślenie probabilistyczne", "Dekonstrukcja mitów", "Psychologia", "Przyszłość"],
+        "desc": "Były psychiatra pisze najlepsze eseje na świecie o racjonalności, AI, polityce i psychiatrii. Czysta definicja 'pochwały dociekliwego laika'.",
+        "takeaway": "Dociekliwość laika weryfikującego twierdzenia ekspertów, myślenie Bayesowskie, badanie alternatywnych hipotez.",
+        "best_essay": "„The Toxoplasma of Rage: How Viral Ideas Exploit the Architecture of Human Attention”"
+    },
+    {
+        "id": "roots_of_progress",
+        "name": "The Roots of Progress (Jason Crawford)",
+        "drawer": "SZUFLADA_ESEJE",
+        "drawer_name": "Filozofia Laika & Postęp",
+        "blog_category": "eseje",
+        "region": "Zagranica",
+        "scope": "Świat / Historia technologii",
+        "lang": "EN (do translacji)",
+        "flag": "🇺🇸",
+        "type": "Substack & Instytut filozofii postępu (Wielka Czwórka)",
+        "url": "https://rootsofprogress.org",
+        "rss": "https://rootsofprogress.org/feed",
+        "social": {
+            "x": "https://x.com/jasoncrawford",
+            "substack": "https://rootsofprogress.org"
+        },
+        "topics": ["Filozofia postępu", "Historia inżynierii", "Czysta woda i higiena", "Energetyka jądrowa", "Przemysł"],
+        "desc": "Historia technologii opowiedziana jak powieść. Dlaczego wynaleźliśmy to co wynaleźliśmy i dlaczego to cud, że żyjemy w dobrobycie.",
+        "takeaway": "Docenianie dorobku inżynierii i technologii z pozycji wdzięczności i głębokiego zrozumienia fundamentów materialnych.",
+        "best_essay": "„The Iron Engine of Progress: How Cheap Energy Replaced Human Slavery with Machines”"
+    },
+    {
+        "id": "farnam_street",
+        "name": "Farnam Street (Shane Parrish)",
+        "drawer": "SZUFLADA_ESEJE",
+        "drawer_name": "Filozofia Laika & Postęp",
+        "blog_category": "eseje",
+        "region": "Zagranica",
+        "scope": "Świat / Myślenie krytyczne",
+        "lang": "EN (do translacji)",
+        "flag": "🇨🇦",
+        "type": "Katalog modeli mentalnych / Eseje",
+        "url": "https://fs.blog",
+        "rss": "https://fs.blog/feed/",
+        "social": {
+            "x": "https://x.com/farnamstreet"
+        },
+        "topics": ["Modele mentalne", "Podejmowanie decyzji", "Brzytwa Ockhama", "Myślenie drugiego rzędu", "Mądrość"],
+        "desc": "Mental models. Jak myśleć, żeby nie dać się oszukać własnemu mózgowi. Bardzo bliskie 'Pochwale dociekliwego laika'.",
+        "takeaway": "Wykorzystywanie pojęć 'myślenia drugiego rzędu' (second-order thinking) oraz inwersji problemu w polskich analizach.",
+        "best_essay": "„Mental Models: The Best Way to Make Intelligent Decisions Without Being an Expert”"
+    },
+    {
+        "id": "persuasion",
+        "name": "Persuasion (Yascha Mounk)",
+        "drawer": "SZUFLADA_ESEJE",
+        "drawer_name": "Filozofia Laika & Postęp",
+        "blog_category": "eseje",
+        "region": "Zagranica",
+        "scope": "Świat / Wolność słowa i pluralizm",
+        "lang": "EN (do translacji)",
+        "flag": "🇺🇸",
+        "type": "Magazyn idei & Substack",
+        "url": "https://www.persuasion.community",
+        "rss": "https://www.persuasion.community/feed",
+        "social": {
+            "x": "https://x.com/Yascha_Mounk",
+            "substack": "https://www.persuasion.community"
+        },
+        "topics": ["Obrona liberalnej demokracji", "Pluralizm", "Wolność słowa", "Polityka tożsamości", "Tolerancja"],
+        "desc": "O obronie liberalnej demokracji bez bycia nudnym think-tankiem. Odważna obrona wolności słowa i otwartego społeczeństwa.",
+        "takeaway": "Obrona wolności słowa i zdrowego rozsądku bez ulegania radykalizmom; precyzyjna, angażująca proza eseistyczna.",
+        "best_essay": "„The Identity Trap: Why Groupthink Corrodes Liberal Institutions”"
+    },
+    {
+        "id": "magazyn_kontakt",
+        "name": "Magazyn Kontakt",
+        "drawer": "SZUFLADA_ESEJE",
+        "drawer_name": "Filozofia Laika & Postęp",
+        "blog_category": "eseje",
+        "region": "Polska",
+        "scope": "Polska / Etyka i idee",
+        "lang": "PL",
+        "flag": "🇵🇱",
+        "type": "Czasopismo idei społecznych",
+        "url": "https://magazynkontakt.pl",
+        "rss": "https://magazynkontakt.pl/feed/",
+        "social": {
+            "x": "https://x.com/MagazynKontakt"
+        },
+        "topics": ["Etyka społeczna", "Humanizm", "Sprawiedliwość", "Kościół a państwo", "Praca"],
+        "desc": "Ta wrażliwsza, filozoficzna strona polskiego eseju. Łączy chrześcijańską wrażliwość społeczną z krytycznym namysłem nad kapitalizmem.",
+        "takeaway": "Zadawanie pytań o moralny sens procedur rynkowych i poszukiwanie wspólnoty w zatomizowanym świecie.",
+        "best_essay": "„Samotność w epoce algorytmów: Dlaczego zatomizowane społeczeństwo traci zdolność do zaufania”"
     }
 ]
 
@@ -480,54 +631,109 @@ def get_source_by_id(source_id: str) -> dict:
     return None
 
 def get_curated_social_bundles():
-    """Zwraca gotowe zestawy do obserwowania na X i LinkedIn."""
+    """Zwraca gotowe zestawy do obserwowania na X i LinkedIn oraz podział na 4 szuflady."""
+    drawers_dict = {
+        "SZUFLADA_POLITYKA": {
+            "title": "🏛️ Szuflada 1: Polityka & Myśl Państwowa (PL & Geopolityka)",
+            "category": "polityka",
+            "desc": "Odpowiedniki Kultury Liberalnej — państwo, ustrój, prawo, wojskowość i bezemocjonalna geopolityka."
+        },
+        "SZUFLADA_GOSPODARKA": {
+            "title": "📊 Szuflada 2: Gospodarka, Finanse & Rynki",
+            "category": "gospodarka",
+            "desc": "Gospodarka bez bullshitu — stopy, dług suwerenny, nieruchomości, surowce i fabryki."
+        },
+        "SZUFLADA_TECHNOLOGIA": {
+            "title": "💻 Szuflada 3: Technologia & Architektura Uwagi",
+            "category": "technologia",
+            "desc": "Ekonomia uwagi, hardware, małe modele (SLM), krytyka chmury i twarda nauka tłumaczona laikom."
+        },
+        "SZUFLADA_ESEJE": {
+            "title": "🔭 Szuflada 4: Filozofia Laika, Postęp & Inne Eseje",
+            "category": "eseje",
+            "desc": "Wielka Czwórka światowego eseju — postęp materialny, racjonalizm, modele mentalne i pochwała dociekliwości."
+        }
+    }
+
     return {
+        "drawers": drawers_dict,
         "x_lists": [
             {
                 "name": "PL Esej & Debata",
                 "desc": "Polskie środowisko eseju, myśli państwowej, liberalizmu, republikanizmu i debaty publicznej.",
-                "handles": ["@KulturaLiberalna", "@KlubJagiellonski", "@NKonfederacja", "@Krytyka", "@MagazynKontakt", "@OficjalneZero", "@OSW_pl", "@BIPolska"],
+                "handles": ["@KulturaLiberalna", "@KlubJagiellonski", "@NKonfederacja", "@dwutygodnik", "@Krytyka", "@MagazynKontakt", "@PulsAzji", "@BIPolska", "@CrazyNauka", "@Kwantowo"],
                 "url": "https://x.com/i/lists/create"
             },
             {
                 "name": "ENG Esej & Progress",
                 "desc": "Światowe wzorce głębokiego bloga, racjonalizmu, postępu cywilizacyjnego i analizy rynków.",
-                "handles": ["@worksinprogress", "@slatestarcodex", "@mattyglesias", "@jasoncrawford", "@benthompson", "@farnamstreet", "@noahpinion", "@byrnehobart", "@FinancialTimes"],
+                "handles": ["@worksinprogress", "@slatestarcodex", "@mattyglesias", "@jasoncrawford", "@benthompson", "@binarybits", "@byrnehobart", "@farnamstreet", "@noahpinion", "@Yascha_Mounk", "@FinancialTimes"],
                 "url": "https://x.com/i/lists/create"
             }
         ],
-        "linkedin_newsletters": [
+        "rss_feeds": [
             {
-                "name": "Osiem tysięcy (8000)",
-                "author": "Michał Gulczyński / Zespół 8000",
-                "url": "https://www.linkedin.com/newsletters/osiem-tysi%C4%99cy-6962043685532585984/",
-                "reason": "Najlepszy newsletter gospodarczy na polskim LinkedIn. Czyste dane, świetne wykresy, zero lania wody."
+                "feed_name": "PL feed (Paliwo eseistyczne)",
+                "sources": ["Kultura Liberalna", "Klub Jagielloński", "8000 (osiemtysiecy.pl)", "Nowa Konfederacja", "Dwutygodnik.com", "Kwantowo.pl"],
+                "frequency": "~3-4 długie formy tygodniowo"
             },
             {
-                "name": "Kultura Liberalna",
-                "author": "Redakcja Kultury Liberalnej",
-                "url": "https://www.linkedin.com/company/kultura-liberalna/",
-                "reason": "Tygodniowy przegląd esejów o stanie demokracji, prawa i kultury europejskiej."
+                "feed_name": "ENG feed (Światowy benchmark)",
+                "sources": ["Works in Progress", "Astral Codex Ten", "The Diff", "Slow Boring", "Understanding AI", "Stratechery"],
+                "frequency": "~4-5 esejów tygodniowo"
+            }
+        ],
+        "starter_essays": [
+            {
+                "category": "polityka",
+                "category_title": "1. Polityka & Myśl Państwowa",
+                "essays": [
+                    {"source": "Kultura Liberalna", "title": "Koniec epoki naiwności: Dlaczego liberalne instytucje potrzebują nowego języka obrony", "url": "https://kulturaliberalna.pl"},
+                    {"source": "Klub Jagielloński", "title": "Państwo z kartonu: Anatomia instytucjonalnej bezsilności i jak ją przełamać", "url": "https://klubjagiellonski.pl"},
+                    {"source": "Nowa Konfederacja", "title": "Nowy koncert mocarstw: Równowaga sił na wschodzie i granice gwarancji sojuszniczych", "url": "https://nowakonfederacja.pl"},
+                    {"source": "Dwutygodnik.com", "title": "Pochwała dociekliwego laika: Po co zadajemy naiwne pytania w świecie aroganckich ekspertów", "url": "https://www.dwutygodnik.com"},
+                    {"source": "Puls Azji", "title": "Wielka gra o cieśninę Malakka i czipy z Tajwanu: Kiedy globalizacja spotyka się z blokadą", "url": "https://pulsazji.pl"}
+                ]
             },
             {
-                "name": "Nowa Konfederacja",
-                "author": "Bartłomiej Radziejewski i Zespół NK",
-                "url": "https://www.linkedin.com/company/nowa-konfederacja/",
-                "reason": "Realistyczna analiza polskiego bezpieczeństwa narodowego i przemysłu zbrojeniowego."
+                "category": "gospodarka",
+                "category_title": "2. Gospodarka, Finanse & Rynki",
+                "essays": [
+                    {"source": "8000 (Osiem tysięcy)", "title": "Złudzenie taniego kapitału: Dlaczego zerowe stopy procentowe były anomalią stulecia", "url": "https://osiemtysiecy.pl"},
+                    {"source": "Slow Boring", "title": "The Housing Crisis is an Abundance Crisis: Why Rent Subsidies Fuel Price Inflation", "url": "https://www.slowboring.com"},
+                    {"source": "The Financial Times", "title": "The Era of Free Money is Over: Sovereign Debt Traps in the Post-ZIRP World", "url": "https://www.ft.com"},
+                    {"source": "Noahpinion", "title": "Industrial Policy is Back: Why Finance Can No Longer Substitute for Physical Factories", "url": "https://www.noahpinion.blog"}
+                ]
             },
             {
-                "name": "Business Insider Polska",
-                "author": "Redakcja BI",
-                "url": "https://www.linkedin.com/company/business-insider-polska/",
-                "reason": "Puls polskiego biznesu, kodeksu pracy i trendów konsumenckich."
+                "category": "technologia",
+                "category_title": "3. Technologia & Architektura Uwagi",
+                "essays": [
+                    {"source": "Stratechery", "title": "Aggregation Theory: How the Internet Reshaped the Monopolies of Attention", "url": "https://stratechery.com"},
+                    {"source": "Understanding AI", "title": "Large Language Models Explained with Plain English and Zero Hype", "url": "https://www.understandingai.org"},
+                    {"source": "The Diff", "title": "CapEx Cycles in Tech: Why the Data Center Boom Changes the Marginal Cost of Money", "url": "https://www.thediff.co"},
+                    {"source": "Kwantowo.pl", "title": "Kryptografia postkwantowa: Dlaczego algorytm Shora zmusi banki do wymiany szyfrowania", "url": "https://www.kwantowo.pl"},
+                    {"source": "LessWrong", "title": "Map and Territory: The Foundational Sequences of Critical Thinking", "url": "https://www.lesswrong.com"}
+                ]
+            },
+            {
+                "category": "eseje",
+                "category_title": "4. Filozofia Laika, Postęp & Inne Eseje",
+                "essays": [
+                    {"source": "Works in Progress", "title": "Why We Stopped Making Things: The Stagnation of Physical Innovation in the Atomic Age", "url": "https://worksinprogress.co"},
+                    {"source": "Astral Codex Ten", "title": "The Toxoplasma of Rage: How Viral Ideas Exploit the Architecture of Human Attention", "url": "https://www.astralcodexten.com"},
+                    {"source": "The Roots of Progress", "title": "The Iron Engine of Progress: How Cheap Energy Replaced Human Slavery with Machines", "url": "https://rootsofprogress.org"},
+                    {"source": "Farnam Street", "title": "Mental Models: The Best Way to Make Intelligent Decisions Without Being an Expert", "url": "https://fs.blog"},
+                    {"source": "Persuasion", "title": "The Identity Trap: Why Groupthink Corrodes Liberal Institutions", "url": "https://www.persuasion.community"}
+                ]
             }
         ]
     }
 
 def export_sources_to_csv(filepath: str):
-    """Eksportuje pełną listę źródeł wraz z profilami X, LinkedIn, Substack i strategią 'co podkraść' do CSV."""
+    """Eksportuje pełną listę źródeł wraz z szufladami, profilami X, LinkedIn, Substack i strategią 'co podkraść' do CSV."""
     fieldnames = [
-        "Nazwa", "Region", "Kraj_Zasieg", "Typ_Medium", "X_Twitter", "LinkedIn", "Substack_WWW", "Tematyka", "Kluczowa_Wartosc_Dla_Laika", "Co_Zaadaptowac_Pod_Katem_Laika"
+        "Nazwa", "Szuflada_Dzial", "Kategoria_Bloga", "Region", "Zasieg", "Typ_Medium", "X_Twitter", "LinkedIn", "Substack_WWW", "Kanal_RSS", "Kluczowa_Wartosc_Dla_Laika", "Co_Zaadaptowac_Pod_Katem_Laika", "Wzorcowy_Esej_Na_Start"
     ]
     with open(filepath, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -536,19 +742,67 @@ def export_sources_to_csv(filepath: str):
             soc = s.get("social", {})
             writer.writerow({
                 "Nazwa": f"{s['flag']} {s['name']}",
+                "Szuflada_Dzial": s.get("drawer_name", ""),
+                "Kategoria_Bloga": s.get("blog_category", ""),
                 "Region": s.get("region", "Polska"),
-                "Kraj_Zasieg": s.get("scope", ""),
+                "Zasieg": s.get("scope", ""),
                 "Typ_Medium": s.get("type", ""),
                 "X_Twitter": soc.get("x", ""),
                 "LinkedIn": soc.get("linkedin", ""),
                 "Substack_WWW": soc.get("substack", s.get("url", "")),
-                "Tematyka": " / ".join(s.get("topics", [])),
+                "Kanal_RSS": s.get("rss", ""),
                 "Kluczowa_Wartosc_Dla_Laika": s.get("desc", ""),
-                "Co_Zaadaptowac_Pod_Katem_Laika": s.get("takeaway", "")
+                "Co_Zaadaptowac_Pod_Katem_Laika": s.get("takeaway", ""),
+                "Wzorcowy_Esej_Na_Start": s.get("best_essay", "")
             })
+    return filepath
+
+def export_opml_feeds(filepath: str):
+    """Generuje plik OPML z podziałem na PL feed i ENG feed do zaimportowania w Feedly, Inoreader, NetNewsWire."""
+    opml = ET.Element("opml", version="2.0")
+    head = ET.SubElement(opml, "head")
+    title = ET.SubElement(head, "title")
+    title.text = "Blog Laika — Eseje i Inspiracje (PL & ENG Feed)"
+    
+    body = ET.SubElement(opml, "body")
+
+    # Folder 1: PL Esej Feed (Laika)
+    pl_folder = ET.SubElement(body, "outline", text="PL Esej Feed (Laika)", title="PL Esej Feed (Laika)")
+    for s in EDITORIAL_SOURCES:
+        if s.get("region") == "Polska" and s.get("rss"):
+            ET.SubElement(
+                pl_folder, "outline",
+                type="rss",
+                text=s["name"],
+                title=s["name"],
+                xmlUrl=s["rss"],
+                htmlUrl=s["url"]
+            )
+
+    # Folder 2: ENG Esej Feed (Laika)
+    eng_folder = ET.SubElement(body, "outline", text="ENG Esej Feed (Laika)", title="ENG Esej Feed (Laika)")
+    for s in EDITORIAL_SOURCES:
+        if s.get("region") != "Polska" and s.get("rss"):
+            ET.SubElement(
+                eng_folder, "outline",
+                type="rss",
+                text=s["name"],
+                title=s["name"],
+                xmlUrl=s["rss"],
+                htmlUrl=s["url"]
+            )
+
+    xml_str = ET.tostring(opml, encoding="utf-8")
+    parsed = minidom.parseString(xml_str)
+    pretty_xml = parsed.toprettyxml(indent="  ", encoding="utf-8")
+
+    with open(filepath, "wb") as f:
+        f.write(pretty_xml)
     return filepath
 
 if __name__ == "__main__":
     test_csv = os.path.join(os.path.dirname(__file__), "zrodla_inspiracji_laika.csv")
+    test_opml = os.path.join(os.path.dirname(__file__), "laika_feeds.opml")
     export_sources_to_csv(test_csv)
-    print(f"Wyeksportowano {len(EDITORIAL_SOURCES)} zródeł do: {test_csv}")
+    export_opml_feeds(test_opml)
+    print(f"Wyeksportowano {len(EDITORIAL_SOURCES)} zródeł do: {test_csv} oraz {test_opml}")
