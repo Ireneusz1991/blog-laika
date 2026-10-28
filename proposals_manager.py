@@ -76,6 +76,9 @@ def parse_proposals_file(filepath: str) -> list:
         image_concept = ""
         image_prompt = ""
         samokreacja = "100% Samokreacja (autorska synteza faktów)"
+        source_name = ""
+        source_flag = "🇵🇱"
+        source_note = ""
         body_lines = []
 
         for line in lines[1:]:
@@ -88,6 +91,16 @@ def parse_proposals_file(filepath: str) -> list:
                 search_date = line_str.replace("* **Data wyszukania:**", "").strip()
             elif line_str.startswith("* **Model powstawania:**") or line_str.startswith("* **Format:**"):
                 samokreacja = re.sub(r'^\*\s*\*\*(?:Model powstawania|Format):\*\*', '', line_str).strip()
+            elif line_str.startswith("* **Źródło impulsu:**") or line_str.startswith("* **Źródło:**"):
+                source_raw = re.sub(r'^\*\s*\*\*(?:Źródło impulsu|Źródło):\*\*', '', line_str).strip()
+                if "🇬🇧" in source_raw: source_flag = "🇬🇧"
+                elif "🇺🇸" in source_raw: source_flag = "🇺🇸"
+                elif "🇪🇺" in source_raw: source_flag = "🇪🇺"
+                elif "🌍" in source_raw: source_flag = "🌍"
+                elif "🇵🇱" in source_raw: source_flag = "🇵🇱"
+                source_name = source_raw.replace("🇬🇧", "").replace("🇺🇸", "").replace("🇪🇺", "").replace("🌍", "").replace("🇵🇱", "").strip()
+            elif line_str.startswith("* **Wątek źródłowy:**") or line_str.startswith("* **Raport źródłowy:**"):
+                source_note = re.sub(r'^\*\s*\*\*(?:Wątek|Raport)\s+źródłowy:\*\*', '', line_str).strip()
             elif line_str.startswith("* **Proponowana grafika:**") or line_str.startswith("* **Grafika:**"):
                 image_url = re.sub(r'^\*\s*\*\*(?:Proponowana grafika|Grafika):\*\*', '', line_str).strip().strip('<>')
             elif line_str.startswith("* **Koncepcja wizualna:**"):
@@ -113,6 +126,9 @@ def parse_proposals_file(filepath: str) -> list:
             "image_concept": image_concept,
             "image_prompt": image_prompt,
             "samokreacja": samokreacja,
+            "source_name": source_name,
+            "source_flag": source_flag,
+            "source_note": source_note,
             "lead": lead,
             "thesis": thesis,
             "raw_body": "\n".join(body_lines).strip()

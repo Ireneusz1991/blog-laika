@@ -182,11 +182,16 @@
                 {% endif %}
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.3rem;">
-                  <div style="display: flex; gap: 0.4rem; align-items: center;">
+                  <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
                     <span class="post-category-tag" style="font-size: 0.75rem;">{{ prop.category|upper }}</span>
                     <span style="background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.25); font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px;" title="{{ prop.samokreacja }}">
                       🛡️ 100% Samokreacja
                     </span>
+                    {% if prop.source_name %}
+                    <span style="background: rgba(59, 130, 246, 0.12); color: #2563eb; border: 1px solid rgba(59, 130, 246, 0.25); font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px;" title="{{ prop.source_note if prop.source_note else prop.source_name }}">
+                      📡 {{ prop.source_flag }} {{ prop.source_name }}
+                    </span>
+                    {% endif %}
                   </div>
                   <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">
                     🔍 {{ prop.search_date if prop.search_date else pkg.formatted_date }}
@@ -195,6 +200,11 @@
                 <h3 style="font-size: 1.05rem; font-weight: 700; line-height: 1.4; margin-bottom: 0.65rem; color: var(--text-primary);">
                   {{ prop.title }}
                 </h3>
+                {% if prop.source_note %}
+                <div style="font-size: 0.74rem; color: #1e40af; background: rgba(59, 130, 246, 0.08); border-left: 3px solid #3b82f6; padding: 0.35rem 0.6rem; border-radius: 4px; margin-bottom: 0.65rem; line-height: 1.4;">
+                  <strong>Wątek źródłowy (analiza / translacja):</strong> {{ prop.source_note }}
+                </div>
+                {% endif %}
                 {% if prop.lead %}
                 <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.75rem;">
                   {{ prop.lead }}
@@ -231,6 +241,64 @@
         {% endfor %}
       </div>
     </div>
+    {% endif %}
+
+    <!-- Editorial Sources Catalog (14 monitored sources: PL, Macro, Geopolitics, Tech) -->
+    {% if editorial_sources %}
+    <details class="editorial-sources-box" style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); margin-bottom: 2.5rem; overflow: hidden;" open>
+      <summary style="padding: 1.25rem 1.5rem; background: var(--bg-surface); border-bottom: 1.5px solid var(--border-color); cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; list-style: none;">
+        <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+          <span style="font-size: 1.3rem;">📚</span>
+          <span style="font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700;">
+            Katalog Monitorowanych Źródeł Redakcyjnych ({{ editorial_sources|length }} serwisów)
+          </span>
+          <span class="badge" style="background: rgba(59, 130, 246, 0.12); color: #2563eb; font-weight: 600;">
+            Polska &bull; Rynki &bull; Świat &bull; Translacja
+          </span>
+        </div>
+        <span style="font-size: 0.85rem; color: var(--accent); font-weight: 600;">Rozwiń / Zwiń listę &darr;</span>
+      </summary>
+      <div style="padding: 1.5rem;">
+        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 1.25rem; max-width: 900px;">
+          Blog Laika monitoruje zróżnicowany zestaw 14 polskich i światowych źródeł prasowych, ośrodków analitycznych i platform rynkowych. 
+          Zagraniczne publikacje (m.in. <strong>The Financial Times, Investing.com, Bloomberg, Foreign Affairs, Politico</strong>) są tłumaczone 
+          i syntetyzowane z perspektywy polskiego czytelnika, wzbogacone o perspektywę polskich think-tanków (<strong>Klub Jagielloński, Kultura Liberalna, OSW, Kanał Zero</strong>).
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+          {% for src in editorial_sources %}
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s ease, border-color 0.15s ease;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.4rem; gap: 0.5rem;">
+                <h4 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 6px;">
+                  <span>{{ src.flag }}</span>
+                  <a href="{{ src.url }}" target="_blank" rel="noopener" style="color: var(--text-primary); text-decoration: none; border-bottom: 1px dotted var(--border-color);" title="Odwiedź serwis źródłowy">
+                    {{ src.name }}
+                  </a>
+                </h4>
+                <span style="font-size: 0.68rem; font-weight: 700; background: rgba(0,0,0,0.06); padding: 2px 6px; border-radius: 4px; white-space: nowrap; color: var(--text-secondary);">
+                  {{ src.lang }}
+                </span>
+              </div>
+              <div style="font-size: 0.73rem; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;">
+                {{ src.type }} &bull; {{ src.scope }}
+              </div>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
+                {{ src.desc }}
+              </p>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 4px; border-top: 1px solid var(--border-color); padding-top: 0.5rem;">
+              {% for tag in src.topics %}
+              <span style="font-size: 0.66rem; background: var(--bg-card); color: var(--text-muted); border: 1px solid var(--border-color); border-radius: 3px; padding: 1px 5px;">
+                #{{ tag }}
+              </span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </details>
     {% endif %}
 
     <!-- Management Methods Grid -->
@@ -1097,6 +1165,9 @@ ${body}`;
     // Build starter markdown content
     let body = `# ${prop.title}\n\n`;
     body += `> 🛡️ **Model Samokreacji Bloga Laika:** 100% autorska synteza faktów i trendów rynkowych z perspektywy dociekliwego laika. Zero kopiowania cudzych tekstów.\n\n`;
+    if (prop.source_name) {
+      body += `> 📡 **Źródło impulsu i inspiracji rynkowej:** ${prop.source_flag || '🇵🇱'} ${prop.source_name}${prop.source_note ? ' — ' + prop.source_note : ''}\n\n`;
+    }
     if (prop.search_date || pkgDate) {
       body += `*Data wyszukania i analizy tematu: ${prop.search_date || pkgDate}*\n\n`;
     }

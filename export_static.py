@@ -9,6 +9,10 @@ import config
 import database
 import proposals_manager
 from sample_data import seed_database
+try:
+    from scripts.sources_registry import EDITORIAL_SOURCES
+except ImportError:
+    EDITORIAL_SOURCES = []
 
 def build_static(output_dir="dist", base_url=None):
     cname_file = os.path.join(os.path.dirname(__file__), "CNAME")
@@ -203,6 +207,8 @@ def build_static(output_dir="dist", base_url=None):
     ctx_admin["latest_proposals_file"] = latest_proposals_file
     ctx_admin["latest_proposals_date"] = latest_proposals_date
     ctx_admin["latest_proposals_json"] = json.dumps(latest_proposals, ensure_ascii=False)
+    ctx_admin["editorial_sources"] = EDITORIAL_SOURCES
+    ctx_admin["editorial_sources_json"] = json.dumps(EDITORIAL_SOURCES, ensure_ascii=False)
 
     admin_tmpl = env.get_template("admin/static_admin.html")
     os.makedirs(os.path.join(output_dir, "admin"), exist_ok=True)
