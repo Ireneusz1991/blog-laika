@@ -110,14 +110,14 @@
       </div>
     </div>
 
-    <!-- 7-Day Proposals Bank (4 proposals x 7 days = 28 proposals) with Rolling Retention -->
+    <!-- 7-Day Proposals Bank (5 proposals x 7 days = 35 proposals) with Rolling Retention -->
     {% if weekly_proposals and weekly_proposals.packages %}
     <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); margin-bottom: 2.5rem; overflow: hidden;">
       <div style="padding: 1.25rem 1.5rem; border-bottom: 1.5px solid var(--border-color); background: var(--bg-surface); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
         <div>
           <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
             <span style="font-size: 1.1rem;">💡</span>
-            <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.6px;">Archiwum Redakcyjne AI (Tydzień: 4 × 7 = 28 tematów)</span>
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.6px;">Archiwum Redakcyjne AI (Tydzień: 5 × 7 = 35 tematów z gotowymi artykułami)</span>
             <span class="badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; font-weight: 700;">
               Łącznie: {{ weekly_proposals.total_proposals }} propozycji z ostatnich {{ weekly_proposals.total_days }} dni
             </span>
@@ -126,10 +126,10 @@
             </span>
           </div>
           <h2 style="font-family: var(--font-serif); font-size: 1.4rem; font-weight: 800; margin: 0;">
-            Bank tematów i konspektów z datami wyszukania
+            Bank tematów z rozwijanymi artykułami do weryfikacji
           </h2>
           <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
-            Wybierz dzień tygodnia poniżej, aby przejrzeć 4 propozycje (technologia, gospodarka, polityka, eseje) i jednym kliknięciem załadować konspekt do edytora.
+            Wybierz dzień tygodnia poniżej, aby przejrzeć 5 propozycji (technologia, gospodarka, historia, polityka, inne eseje), rozwinąć pełny artykuł do weryfikacji i jednym kliknięciem załadować go do edytora.
           </p>
         </div>
         <div id="active-day-download-container">
@@ -228,10 +228,33 @@
                   </div>
                 </details>
                 {% endif %}
+
+                <!-- ROZWIJANY GOTOWY ARTYKUŁ DO WERYFIKACJI I PUBLIKACJI -->
+                <details class="proposal-draft-drawer" style="margin-top: 0.75rem; margin-bottom: 0.85rem; background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 6px; overflow: hidden;">
+                  <summary style="padding: 0.6rem 0.85rem; cursor: pointer; user-select: none; font-size: 0.82rem; font-weight: 700; color: var(--accent); display: flex; justify-content: space-between; align-items: center; background: rgba(37, 99, 235, 0.05);">
+                    <span style="display: flex; align-items: center; gap: 0.4rem;">
+                      <span>📖 Rozwiń gotowy artykuł do weryfikacji</span>
+                    </span>
+                    <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 500;">Rozwiń &darr;</span>
+                  </summary>
+                  <div style="padding: 0.85rem; border-top: 1px solid var(--border-color); font-size: 0.83rem; line-height: 1.6; color: var(--text-primary); max-height: 380px; overflow-y: auto;" class="custom-scrollbar">
+                    <div class="proposal-draft-rendered-content" style="font-size: 0.84rem; line-height: 1.6;">
+                      {{ prop.full_draft_html|safe }}
+                    </div>
+                    <div style="margin-top: 0.85rem; padding-top: 0.65rem; border-top: 1px dashed var(--border-color); display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                      <button type="button" onclick="loadProposalIntoEditor({{ day_idx }}, {{ loop.index0 }});" class="btn btn-primary" style="font-size: 0.78rem; padding: 0.35rem 0.75rem; flex: 1; justify-content: center;">
+                        ✍️ Załaduj do edytora &rarr;
+                      </button>
+                      <button type="button" onclick="copyProposalDraft({{ day_idx }}, {{ loop.index0 }});" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.35rem 0.75rem;" title="Kopiuj pełną treść artykułu">
+                        📋 Kopiuj treść
+                      </button>
+                    </div>
+                  </div>
+                </details>
               </div>
               <div>
                 <button type="button" onclick="loadProposalIntoEditor({{ day_idx }}, {{ loop.index0 }});" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.82rem; padding: 0.5rem; font-weight: 600;">
-                  ✍️ Załaduj konspekt i grafikę &rarr;
+                  ✍️ Załaduj do edytora online &rarr;
                 </button>
               </div>
             </div>
@@ -250,10 +273,10 @@
         <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
           <span style="font-size: 1.3rem;">📡</span>
           <span style="font-family: var(--font-serif); font-size: 1.18rem; font-weight: 700;">
-            Katalog Inspiracji Redakcyjnych & RSS Feeds ({{ editorial_sources|length }} źródeł w 4 szufladach)
+            Katalog Inspiracji Redakcyjnych & RSS Feeds ({{ editorial_sources|length }} źródeł w 5 szufladach)
           </span>
           <span class="badge" style="background: rgba(59, 130, 246, 0.12); color: #2563eb; font-weight: 600;">
-            Inteligentny Laikat &bull; 4 Szuflady &bull; OPML &bull; CSV
+            Inteligentny Laikat &bull; 5 Szuflad &bull; OPML &bull; CSV
           </span>
         </div>
         <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
@@ -316,22 +339,25 @@
           </div>
         </div>
 
-        <!-- Filter tabs for 4 Drawers -->
+        <!-- Filter tabs for 5 Drawers -->
         <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
           <button type="button" class="source-filter-btn" onclick="filterSources('all', this);" style="background: var(--accent); color: #fff; border: 1px solid var(--accent); padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; font-weight: 700; cursor: pointer;">
             Wszystkie szuflady ({{ editorial_sources|length }})
           </button>
-          <button type="button" class="source-filter-btn" onclick="filterSources('SZUFLADA_POLITYKA', this);" style="background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">
-            🏛️ 1. Polityka & Myśl Państwowa
+          <button type="button" class="source-filter-btn" onclick="filterSources('SZUFLADA_TECHNOLOGIA', this);" style="background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">
+            💻 1. Technologia & AI
           </button>
           <button type="button" class="source-filter-btn" onclick="filterSources('SZUFLADA_GOSPODARKA', this);" style="background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">
-            📊 2. Gospodarka, Finanse & Rynki
+            📊 2. Gospodarka & Rynki
           </button>
-          <button type="button" class="source-filter-btn" onclick="filterSources('SZUFLADA_TECHNOLOGIA', this);" style="background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">
-            💻 3. Technologia & Architektura Uwagi
+          <button type="button" class="source-filter-btn" onclick="filterSources('SZUFLADA_HISTORIA', this);" style="background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">
+            🏛️ 3. Historia & Lekcje Dziejów
+          </button>
+          <button type="button" class="source-filter-btn" onclick="filterSources('SZUFLADA_POLITYKA', this);" style="background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">
+            🌐 4. Polityka & Myśl Państwowa
           </button>
           <button type="button" class="source-filter-btn" onclick="filterSources('SZUFLADA_ESEJE', this);" style="background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">
-            🔭 4. Filozofia Laika, Postęp & Eseje
+            🔭 5. Inne eseje & Filozofia Laika
           </button>
         </div>
 
@@ -1341,25 +1367,30 @@ ${body}`;
       imgEl.value = prop.image_url;
     }
 
-    // Build starter markdown content
-    let body = `# ${prop.title}\n\n`;
-    body += `> 🛡️ **Model Samokreacji Bloga Laika:** 100% autorska synteza faktów i trendów rynkowych z perspektywy dociekliwego laika. Zero kopiowania cudzych tekstów.\n\n`;
-    if (prop.source_name) {
-      body += `> 📡 **Źródło impulsu i inspiracji rynkowej:** ${prop.source_flag || '🇵🇱'} ${prop.source_name}${prop.source_note ? ' — ' + prop.source_note : ''}\n\n`;
+    // Load full ready draft if present, or build structured starter
+    let body = "";
+    if (prop.full_draft && prop.full_draft.trim().length > 0) {
+      body = prop.full_draft;
+    } else {
+      body = `# ${prop.title}\n\n`;
+      body += `> 🛡️ **Model Samokreacji Bloga Laika:** 100% autorska synteza faktów i trendów rynkowych z perspektywy dociekliwego laika. Zero kopiowania cudzych tekstów.\n\n`;
+      if (prop.source_name) {
+        body += `> 📡 **Źródło impulsu i inspiracji rynkowej:** ${prop.source_flag || '🇵🇱'} ${prop.source_name}${prop.source_note ? ' — ' + prop.source_note : ''}\n\n`;
+      }
+      if (prop.search_date || pkgDate) {
+        body += `*Data wyszukania i analizy tematu: ${prop.search_date || pkgDate}*\n\n`;
+      }
+      if (prop.lead) {
+        body += `${prop.lead}\n\n---\n\n`;
+      }
+      if (prop.thesis) {
+        body += `> **Kluczowa teza wpisu:** ${prop.thesis}\n\n`;
+      }
+      if (prop.raw_body) {
+        body += `## Punkty zwrotne i wątki do rozwinięcia\n\n${prop.raw_body}\n\n`;
+      }
+      body += `\n---\n\n*Tutaj rozwiń treść wpisu. Autor: Ireneusz Machowiec*\n`;
     }
-    if (prop.search_date || pkgDate) {
-      body += `*Data wyszukania i analizy tematu: ${prop.search_date || pkgDate}*\n\n`;
-    }
-    if (prop.lead) {
-      body += `${prop.lead}\n\n---\n\n`;
-    }
-    if (prop.thesis) {
-      body += `> **Kluczowa teza wpisu:** ${prop.thesis}\n\n`;
-    }
-    if (prop.raw_body) {
-      body += `## Punkty zwrotne i wątki do rozwinięcia\n\n${prop.raw_body}\n\n`;
-    }
-    body += `\n---\n\n*Tutaj rozwiń treść wpisu. Autor: Ireneusz Machowiec*\n`;
     
     const bodyEl = document.getElementById('scratch-body');
     if (bodyEl) bodyEl.value = body;
@@ -1379,9 +1410,47 @@ ${body}`;
     const notif = document.getElementById('import-notification');
     if (notif) {
       notif.style.display = 'block';
-      notif.innerHTML = `🛡️ <strong>Konspekt Samokreacji i grafika załadowane:</strong> "${prop.title}". Tytuł, lead, kategoria oraz grafika okładkowa są gotowe do autorskiego rozwinięcia!`;
+      notif.innerHTML = `🛡️ <strong>Gotowy artykuł załadowany do edytora:</strong> "${prop.title}". Tytuł, lead, kategoria, grafika okładkowa oraz pełna treść są gotowe do weryfikacji i publikacji!`;
       setTimeout(() => { notif.style.display = 'none'; }, 6000);
     }
+  }
+
+  function copyProposalDraft(dayIndex, propIndex) {
+    let prop = null;
+    if (WEEKLY_PROPOSALS && WEEKLY_PROPOSALS.packages && WEEKLY_PROPOSALS.packages[dayIndex]) {
+      const pkg = WEEKLY_PROPOSALS.packages[dayIndex];
+      if (pkg && pkg.proposals) {
+        prop = pkg.proposals[propIndex];
+      }
+    }
+    if (!prop) return;
+    const textToCopy = prop.full_draft || prop.raw_body || prop.title;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        alert('Skopiowano treść gotowego artykułu do schowka!');
+      }).catch(err => {
+        fallbackCopyText(textToCopy);
+      });
+    } else {
+      fallbackCopyText(textToCopy);
+    }
+  }
+
+  function fallbackCopyText(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      alert('Skopiowano treść gotowego artykułu do schowka!');
+    } catch (e) {
+      alert('Nie udało się skopiować automatycznie. Zaznacz tekst ręcznie.');
+    }
+    document.body.removeChild(ta);
+  }
   }
 
   // ==========================================

@@ -263,7 +263,7 @@ def build_static(output_dir="dist", base_url=None):
         ctx_cat["canonical_url"] = f"{site_domain}{base_url}/kategoria/{cat['slug']}/"
         with open(os.path.join(cat_dir, "index.html"), "w", encoding="utf-8") as f:
             f.write(cat_tmpl.render(**ctx_cat))
-    print(f"    [OK] Wygenerowano widoki 4 kategorii w /kategoria/<slug>/")
+    print(f"    [OK] Wygenerowano widoki {len(config.CATEGORIES)} kategorii w /kategoria/<slug>/")
 
     # 6. Indeks wyszukiwania JSON (search-index.json)
     search_index = [

@@ -21,6 +21,7 @@
   
   --cat-tech: #2563eb;
   --cat-econ: #059669;
+  --cat-hist: #d97706;
   --cat-pol: #dc2626;
   --cat-essay: #7c3aed;
   
@@ -686,6 +687,7 @@ header.site-header {
 }
 .dot-technologia { background-color: var(--cat-tech); }
 .dot-gospodarka { background-color: var(--cat-econ); }
+.dot-historia { background-color: var(--cat-hist); }
 .dot-polityka { background-color: var(--cat-pol); }
 .dot-eseje { background-color: var(--cat-essay); }
 

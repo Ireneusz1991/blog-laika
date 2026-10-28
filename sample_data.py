@@ -92,6 +92,73 @@ Nie mamy do czynienia z prostym cofnięciem się do XIX wieku, lecz z procesem o
 
 Świat staje się bardziej podzielony, droższy i bardziej nieprzewidywalny. Dla laika obserwującego te procesy płynie z tego jedna kluczowa lekcja: **nigdy nie bierz stabilności za pewnik**.
 """
+    },
+    {
+        "title": "Anatomia kryzysu sueskiego 1956: Dzień, w którym Europa zrozumiała, że nie jest już centrum świata",
+        "slug": "kryzys-sueski-1956-lekcja-historii",
+        "category": "historia",
+        "tags": "historia, geopolityka, suez, ropa, wielka brytania, suwerennosc, imperia",
+        "cover_image": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80",
+        "featured": 0,
+        "content_markdown": """# Anatomia kryzysu sueskiego 1956: Lekcja utraconej suwerenności
+
+Jesienią 1956 roku rządy Wielkiej Brytanii i Francji, w porozumieniu z Izraelem, rozpoczęły tajną operację militarną mającą na celu odzyskanie kontroli nad znacjonalizowanym przez Gamala Abdela Nasera Kanałem Sueskim. Z wojskowego punktu widzenia operacja „Muszkieter” była niemal natychmiastowym sukcesem – desant spadochroniarzy błyskawicznie zabezpieczył newralgiczne punkty korytarza morskiego.
+
+Mimo to w ciągu zaledwie kilkudziesięciu godzin dumne europejskie mocarstwa zostały zmuszone do bezwarunkowej i upokarzającej kapitulacji. Jak do tego doszło?
+
+---
+
+## Broń finansowa silniejsza od pancerników
+
+Kluczowy cios nie padł na piaskach Synaju ani w wodach Port Saidu. Zadał go prezydent USA Dwight Eisenhower, sięgając po narzędzie, które do dziś decyduje o losach globalnej geopolityki: **panikę na rynku walutowym i szantaż rezerwami kapitałowymi**.
+
+1. **Atak na funta szterlinga**: Waszyngton zagroził wyprzedażą brytyjskich obligacji rządowych, co doprowadziłoby do natychmiastowego załamania kursu funta i bankructwa Banku Anglii.
+2. **Kran z ropą naftową**: Stany Zjednoczone zablokowały dostawy ropy z Zatoki Meksykańskiej do Europy, dopóki wojska koalicji nie wycofają się z Egiptu.
+3. **Weto w MFW**: Administracja USA zablokowała brytyjski wniosek o pożyczkę ratunkową z Międzynarodowego Funduszu Walutowego.
+
+## Czego uczy nas Suez w XXI wieku?
+
+Dla dociekliwego obserwatora historii kryzys sueski to nie zakurzony podręcznikowy epizod, lecz fundamentalne studium mechanizmów władzy:
+
+- **Złudzenie dawnej potęgi**: Państwa często podejmują decyzje strategiczne w oparciu o pamięć o swojej dawnej sile, ignorując zmianę globalnego układu bilansu kapitałowego.
+- **Suwerenność ma cenę w rezerwach**: Nie można prowadzić niezależnej polityki zagranicznej, będąc zadłużonym u podmiotu, którego interesy w danym regionie są odmienne od naszych.
+- **Wąskie gardła geograficzne**: Cieśniny, kanały żeglugowe i rurociągi są od wieków tym samym – punktami nacisku, w których lokalny konflikt może sparaliżować gospodarki oddalone o tysiące kilometrów.
+
+Lekcja z 1956 roku brzmi chłodno: armia bez suwerenności finansowej i energetycznej jest tylko kosztowną dekoracją.
+"""
+    },
+    {
+        "title": "Pochwała dociekliwego laika: Dlaczego w epoce wąskich specjalizacji najbardziej potrzebujemy spojrzenia z zewnątrz",
+        "slug": "pochwala-dociekliwego-laika",
+        "category": "eseje",
+        "tags": "eseje, filozofia laika, edukacja, spoleczenstwo, krytyczne myslenie",
+        "cover_image": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=1200&q=80",
+        "featured": 0,
+        "content_markdown": """# Pochwała dociekliwego laika: Spojrzenie z zewnątrz
+
+Współczesny świat nagradza hiper-specjalizację. Od inżynierów oprogramowania, przez analityków finansowych, po lekarzy i politologów – każdy zamyka się we własnym hermetycznym żargonie, własnych konferencjach i wąskich modelach myślowych. Zjawisko to przyniosło olbrzymi postęp techniczny, lecz stworzyło zarazem groźną lukę: **niemal nikt nie łączy kropek między poszczególnymi dziedzinami**.
+
+Właśnie w tym miejscu pojawia się postać dociekliwego laika.
+
+---
+
+## Naiwne pytania jako najpotężniejsze narzędzie poznania
+
+Ekspert często cierpi na tzw. klątwę wiedzy (*curse of knowledge*). Gdy spędziłeś dekadę na optymalizacji jednego algorytmu lub jednej procedury podatkowej, pewne założenia stają się dla Ciebie przezroczyste jak powietrze. Nie podważasz ich, bo stanowią fundament Twojej dyscypliny.
+
+Dociekliwy laik ma przywilej zadawania pytań z pozoru dziecinnych, które burzą skostniałe dogmaty:
+- *„Dlaczego właściwie ten system musi tak działać?”*
+- *„Jaki jest rzeczywisty cel tej procedury, poza tym, że robimy to od dwudziestu lat?”*
+- *„Co się stanie, gdy jedno założenie wyjściowe okaże się błędne?”*
+
+Największe innowacje rzadko powstają w samym centrum ugruntowanej branży; najczęściej rodzą się na jej peryferiach, gdy ktoś przynosi mentalne modele z zupełnie innej dyscypliny.
+
+## Odwaga myślenia wbrew szumowi informacyjnemu
+
+Być dociekliwym laikiem nie oznacza ignorancji. Wręcz przeciwnie – oznacza to pokorę wobec złożoności świata połączoną z odmową biernej konsumpcji gotowych haseł. Oznacza gotowość do czytania pierwotnych raportów zamiast nagłówków w mediach społecznościowych, do sprawdzania liczb w oficjalnych statystykach i do konfrontowania sprzecznych punktów widzenia.
+
+W świecie zalanym płytką sensacją, umiejętność zatrzymania się i zadania jednego rzetelnego pytania: *„Zaraz, jak to naprawdę działa?”* – staje się najcenniejszą formą intelektualnej suwerenności.
+"""
     }
 ]
 

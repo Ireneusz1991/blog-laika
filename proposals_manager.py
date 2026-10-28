@@ -2,6 +2,7 @@ import os
 import re
 import shutil
 from datetime import datetime
+import markdown
 
 POLISH_MONTHS = [
     "", "stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca",
@@ -27,7 +28,7 @@ def get_day_name_pl(date_str: str) -> str:
         return ""
 
 def enforce_retention(proposals_dir: str, max_days: int = 7):
-    """Zachowuje wyłącznie najnowsze `max_days` zestawów propozycji (np. 7 dni x 4 tematy = 28 tematów).
+    """Zachowuje wyłącznie najnowsze `max_days` zestawów propozycji (np. 7 dni x 5 tematów = 35 tematów).
     Starsze pliki są automatycznie usuwane (rotacja tygodniowa)."""
     if not os.path.exists(proposals_dir):
         return []
@@ -80,9 +81,19 @@ def parse_proposals_file(filepath: str) -> list:
         source_flag = "🇵🇱"
         source_note = ""
         body_lines = []
+        draft_lines = []
+        is_in_draft = False
 
         for line in lines[1:]:
             line_str = line.strip()
+            if line_str.startswith("### 📝 Gotowy szkic") or line_str.startswith("### Gotowy szkic") or line_str.startswith("### Gotowy artykuł"):
+                is_in_draft = True
+                continue
+            
+            if is_in_draft:
+                draft_lines.append(line)
+                continue
+
             if line_str.startswith("* **Kategoria:**"):
                 cat_m = re.search(r'`([^`]+)`', line_str)
                 if cat_m:
@@ -118,6 +129,27 @@ def parse_proposals_file(filepath: str) -> list:
             else:
                 body_lines.append(line)
 
+        # Build full ready-to-verify-and-publish draft
+        if draft_lines:
+            full_draft = "\n".join(draft_lines).strip()
+        else:
+            draft_parts = [f"# {title}\n"]
+            if lead:
+                draft_parts.append(f"{lead}\n")
+            draft_parts.append("---\n")
+            if source_name:
+                draft_parts.append(f"> 📡 **Źródło impulsu i inspiracji:** {source_flag} **{source_name}**" + (f" — *{source_note}*" if source_note else "") + "\n")
+            if thesis:
+                draft_parts.append(f"> 💡 **Kluczowa teza wpisu:** *{thesis}*\n")
+            if body_lines:
+                draft_parts.append("## Węzłowe punkty argumentacji i analiza faktów\n")
+                draft_parts.append("\n".join(body_lines).strip())
+            draft_parts.append("\n\n---\n\n*Autorski wpis Bloga Laika. 100% Samokreacja — synteza faktów z perspektywy dociekliwego laika.*")
+            full_draft = "\n".join(draft_parts)
+
+        # Convert full draft to HTML for inline reading accordion
+        full_draft_html = markdown.markdown(full_draft, extensions=['extra', 'tables', 'fenced_code', 'nl2br'])
+
         proposals.append({
             "title": title,
             "category": category,
@@ -131,7 +163,9 @@ def parse_proposals_file(filepath: str) -> list:
             "source_note": source_note,
             "lead": lead,
             "thesis": thesis,
-            "raw_body": "\n".join(body_lines).strip()
+            "raw_body": "\n".join(body_lines).strip(),
+            "full_draft": full_draft,
+            "full_draft_html": full_draft_html
         })
 
     return proposals

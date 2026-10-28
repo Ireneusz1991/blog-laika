@@ -1,654 +1,404 @@
 # -*- coding: utf-8 -*-
 """
-Skrypt budujący scripts/generate_proposals.py ze zróżnicowanym katalogiem źródeł
-(Kultura Liberalna, Klub Jagielloński, Kanał Zero, Financial Times, Investing.com, OSW, Bankier, Interia itp.)
-oraz 28 autorskimi tematami z ostatnich 7 dni (22-28 października 2026 r.).
+Builder propozycji 5 szuflad tematycznych (Technologia, Gospodarka, Historia, Polityka, Inne eseje)
+dla Bloga Laika (5 wpisów dziennie x 7 dni = 35 autorskich tematów).
+Każdy temat zawiera:
+- Pełną metadane (tytuł, kategoria, źródło, grafika, prompt AI, lead, teza, konspekt, pytanie laika)
+- ROZWIJANY, GOTOWY SZKIC WPISU (### 📝 Gotowy szkic wpisu do weryfikacji i publikacji)
+  gotowy do sprawdzenia, weryfikacji i bezpośredniego opublikowania!
 """
 import os
+import sys
 
-DIVERSE_DAYS_DATA = [
-    # =========================================================================
-    # ŚRODA, 28 PAŹDZIERNIKA 2026
-    # =========================================================================
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if root_dir not in sys.path:
+    sys.path.insert(0, root_dir)
+import proposals_manager
+
+# Days data (22-28 października 2026)
+DAYS_DATA = [
+    # 28 PAŹDZIERNIKA 2026 (ŚRODA)
     {
         "date": "2026-10-28",
         "date_pl": "28 października 2026 r.",
         "day_name": "Środa",
-        "search_date": "28 października 2026 r. (analiza rynków i debaty publicznej)",
+        "search_date": "28 października 2026 r.",
         "topics": [
             {
                 "num": 1,
-                "cat_display": "Technologia / Oprogramowanie i Hardware",
+                "cat_display": "Technologia / Oprogramowanie & Hardware",
                 "category": "technologia",
                 "title": "Koniec dyktatu gigantycznych chmur? Dlaczego małe modele (SLM) wkraczają na telefony i laptopy",
-                "search_date": "28 października 2026 r.",
                 "source_display": "🇺🇸 Ars Technica / MIT Technology Review",
                 "source_note": "Raport o przełomach w kompresji i kwantyzacji modeli AI zdolnych do pracy lokalnej bez łączności z siecią.",
                 "image_url": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Surowa, minimalistyczna matryca obwodów krzemowych procesora NPU z chłodnym błękitnym podświetleniem magistrali danych.",
-                "image_prompt": "Editorial photograph of ultra-dense edge AI processor silicon die, clean metallic copper connections, cool neon blue circuit illumination, high-tech hardware journalism, 8k.",
+                "image_concept": "Surowa matryca obwodów krzemowych procesora NPU z chłodnym błękitnym podświetleniem magistrali danych.",
+                "image_prompt": "Editorial photograph of ultra-dense edge AI processor silicon die, clean metallic copper connections, cool neon blue circuit illumination, 8k.",
                 "lead": "Przez ostatnie trzy lata rozwój oprogramowania utożsamiano z gigantycznymi serwerowniami pochłaniającymi megawaty energii. Jednak nowa fala wysoce wyspecjalizowanych, kompaktowych modeli (SLM) dowodzi, że przyszłość może należeć do urządzeń lokalnych.",
-                "thesis": "Centralizacja obliczeń w kilku amerykańskich centrach chmurowych to anomalia, a nie docelowy stan technologii. Przeniesienie wnioskowania na procesory NPU w telefonach i komputerach drastycznie obniża koszty tokenów, eliminuje opóźnienia i przywraca użytkownikom realną prywatność danych.",
+                "thesis": "Centralizacja obliczeń w kilku amerykańskich centrach chmurowych to anomalia, a nie docelowy stan technologii. Przeniesienie wnioskowania na procesory NPU w telefonach drastycznie obniża koszty tokenów i przywraca realną prywatność.",
                 "points": [
-                    "Przełom w kwantyzacji i destylacji wiedzy: Jak modele 3B-8B parametrów dorównują węższym zadaniom dawnym gigantom chmurowym.",
-                    "Ekonomia lokalnego wnioskowania: Koszt zera złotych za zapytanie po zakupie sprzętu vs. nieprzewidywalne rachunki za API u zewnętrznych dostawców.",
-                    "Prywatność i bezpieczeństwo korporacyjne: Dlaczego działy bezpieczeństwa banków i kancelarii wolą lokalne NPU od wysyłania wrażliwych dokumentów do obcej chmury.",
-                    "Pytanie dociekliwego laika: Skoro 90% codziennych zadań biurowych potrafi obsłużyć mały model działający offline w laptopie, to dlaczego wciąż płacimy miesięczne abonamenty za chmurę gigantów?"
-                ]
+                    "Przełom w kwantyzacji i destylacji wiedzy: Jak modele 3B-8B parametrów dorównują dawniejszym gigantom chmurowym.",
+                    "Ekonomia lokalnego wnioskowania: Koszt zera złotych za zapytanie po zakupie sprzętu vs. nieprzewidywalne faktury za API.",
+                    "Bezpieczeństwo danych: Dlaczego kancelarie i szpitale wolą lokalne NPU od wysyłania wrażliwych danych do zewnętrznych chmur.",
+                    "Pytanie dociekliwego laika: Skoro 90% codziennych zadań potrafi obsłużyć mały model offline w laptopie, to dlaczego wciąż płacimy miesięczne subskrypcje chmurowym gigantom?"
+                ],
+                "draft": """Przez ostatnie trzy lata rozwój sztucznej inteligencji kojarzył się wyłącznie z potężnymi serwerowniami wielkości hal fabrycznych, pochłaniającymi megawaty energii elektrycznej. Użytkownikom wmówiono, że jakakolwiek zaawansowana analiza tekstu czy kodu wymaga stałego połączenia z zagraniczną chmurą wielkich korporacji. Jednak w cieniu wyścigu na setki miliardów parametrów dokonał się cichy przewrót: nadeszła era **małych modeli językowych (SLM)** oraz dedykowanych chipów NPU montowanych bezpośrednio w naszych laptopach i telefonach.
+
+### Złudzenie gigantyzmu i powrót do krawędzi sieci
+
+Zjawisko centralizacji obliczeń w kilku wielkich centrach danych nie jest docelowym stanem technologii, lecz technologiczną anomalią okresu przejściowego. Dzięki technikom destylacji wiedzy oraz kwantyzacji (zmniejszaniu precyzji wag z 16-bitowych liczb zmiennoprzecinkowych do 4 bitów), modele o rozmiarach od 3 do 8 miliardów parametrów osiągają dziś skuteczność dorównującą pionierskim gigantom chmurowym z 2023 roku.
+
+Co to oznacza dla zwykłego użytkownika? Przede wszystkim **niezależność i zerowy koszt krańcowy**. Gdy model działa lokalnie na Twoim procesorze graficznym lub układzie NPU, nie płacisz abonamentu za każde zapytanie ani nie martwisz się limitami tokenów. Twoje zapytanie przetwarza krzem, za który już zapłaciłeś przy zakupie urządzenia.
+
+### Prywatność, która nie wymaga wiary w regulaminy
+
+Drugim, być może najważniejszym wymiarem rewolucji SLM, jest kwestia poufności. Kancelarie prawne, działy księgowości, lekarze czy programiści pracujący nad wrażliwym kodem źródłowym stają przed dramatycznym dylematem: korzystać z wygody AI i ryzykować wyciek danych do zewnętrznej chmury, czy rezygnować z nowoczesnych narzędzi?
+
+Lokalny model SLM rozwiązuje ten problem u źródła. Działa w trybie samolotowym, bez fizycznego dostępu do internetu. Żadne słowo, żaden dokument ani żadna poufna umowa nie opuszcza pamięci RAM Twojego komputera.
+
+### Pytanie dociekliwego laika
+
+Jeśli kompaktowy model działający offline w Twoim telefonie potrafi streścić 50-stronicowy raport, wyłapać błędy w umowie i napisać skrypt w Pythonie w ułamku sekundy, to dlaczego marketing technologiczny wciąż wmawia nam, że bez gigantycznej chmury i miesięcznych subskrypcji jesteśmy skazani na cyfrowe zacofanie? Prawdziwa suwerenność technologiczna zaczyna się tam, gdzie kończy się kabel łączący nas z cudzą serwerownią."""
             },
             {
                 "num": 2,
-                "cat_display": "Gospodarka / Finanse Publiczne i Stopy",
+                "cat_display": "Gospodarka / Finanse Publiczne & Rynki",
                 "category": "gospodarka",
                 "title": "Dług publiczny w pułapce wyższych stóp: Dlaczego obsługa zadłużenia zjada budżety na edukację i zdrowie",
-                "search_date": "28 października 2026 r.",
                 "source_display": "🇬🇧 The Financial Times / Investing.com",
                 "source_note": "Analiza FT dotycząca gwałtownego wzrostu kosztów rolowania obligacji skarbowych przez rządy w strefie euro i w Polsce.",
                 "image_url": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Szklane wieżowce dzielnicy finansowej londyńskiego City odbijające chłodne, analityczne niebo.",
-                "image_prompt": "Low angle architectural view of London financial district City skyscrapers, dramatic corporate reflections, cool blue business journalism photography, 8k.",
+                "image_concept": "Szklane wieżowce dzielnicy finansowej City odbijające chłodne, analityczne niebo.",
+                "image_prompt": "Low angle architectural view of London financial district City skyscrapers, cool blue business photography, 8k.",
                 "lead": "Epoka darmowego pieniądza bezpowrotnie minęła. W 2026 roku koszty samej obsługi długu publicznego w wielu krajach rozwiniętych przekraczają łączne roczne nakłady na szkolnictwo wyższe i infrastrukturę kolejową.",
-                "thesis": "Rządy wpadły w strukturalną pułapkę: zaciągnięty tani dług z lat 2015-2021 musi być rolowany po stopach rzędu 5-7%. Oznacza to, że coraz większa część podatków zamiast na inwestycje trafia bezpośrednio do funduszy obligacyjnych.",
+                "thesis": "Rządy wpadły w strukturalną pułapkę: zaciągnięty tani dług z lat 2015-2021 musi być rolowany po stopach rzędu 5-7%. Oznacza to, że podatki zamiast na inwestycje trafiają bezpośrednio do funduszy obligacyjnych.",
                 "points": [
                     "Koszty obsługi długu w polskim budżecie: Przekroczenie progu kilkudziesięciu miliardów złotych rocznie na same odsetki.",
-                    "Ograniczone pole manewru banków centralnych: Dlaczego obniżki stóp procentowych są blokowane przez uporczywą inflację bazową w usługach.",
-                    "Kto zapłaci rachunek: Alternatywa między niepopularnymi cięciami socjalnymi a cichym opodatkowaniem oszczędności przez wyższą inflację.",
-                    "Pytanie dociekliwego laika: Dlaczego politycy wciąż obiecują kolejne transfery socjalne, skoro same odsetki od starych kredytów kosztują nas rocznie tyle, co budowa nowej elektrowni jądrowej?"
-                ]
+                    "Ograniczone pole manewru banków centralnych: Uporczywa inflacja bazowa w usługach.",
+                    "Kto zapłaci rachunek: Cięcia socjalne vs ciche opodatkowanie oszczędności przez wyższą inflację.",
+                    "Pytanie dociekliwego laika: Dlaczego politycy wciąż obiecują kolejne transfery, skoro same odsetki od starych kredytów kosztują nas rocznie tyle, co budowa nowej elektrowni jądrowej?"
+                ],
+                "draft": """Przez ponad dekadę rządy na całym świecie przyzwyczaiły się do funkcjonowania w warunkach ekonomicznej nieważkości. Zerowe, a gdzieniegdzie wręcz ujemne stopy procentowe sprawiały, że zaciąganie kolejnych miliardów długu wydawało się darmowym lunchem. Dług publiczny rósł, a politycy zapewniali, że koszty jego obsługi są pomijalne. Jednak w 2026 roku grawitacja wróciła z pełną bezwzględnością.
+
+### Pułapka rolowania obligacji
+
+Mechanizm kryzysu jest boleśnie prosty: państwa nie spłacają długu z bieżących dochodów, lecz go „rolują” – emitują nowe obligacje, by spłacić te, których termin wykupu właśnie minął. Obligacje wyemitowane w latach 2018-2020 z oprocentowaniem 1,5% muszą być dziś zastępowane nowymi papierami skarbowymi dającymi inwestorom 5,5% do 6,5% zysku.
+
+Oznacza to, że sam koszt odsetek rośnie lawinowo. W polskim budżecie obsługa długu pochłania już kwoty rzędu kilkudziesięciu miliardów złotych rocznie. To więcej niż łączne nakłady na szkolnictwo wyższe i naukę, i znacznie więcej niż roczny budżet modernizacji linii kolejowych. Pieniądze zebrane z podatków obywateli, zamiast na szpitale, drogi czy transformację energetyczną, wędrują bezpośrednio na konta funduszy obligacyjnych i zagranicznych banków.
+
+### Dylemat współczesnego państwa
+
+Rządy stanęły przed ścianą. Mają przed sobą trzy drogi, z których żadna nie daje politycznych zysków:
+1. **Drastyczne cięcia wydatków**, co wywoła natychmiastowe protesty społeczne.
+2. **Podnoszenie podatków**, co w warunkach słabnącego wzrostu gospodarczego grozi stagflacją.
+3. **Cicha monetyzacja długu i wyższa inflacja**, czyli niewidzialny podatek uderzający w oszczędności klasy średniej.
+
+### Pytanie dociekliwego laika
+
+Skoro każda rodzina wie, że spłacanie starych kart kredytowych nowymi o trzykrotnie wyższym procencie prowadzi prosto do komornika, to na jakiej podstawie politycy wmawiają nam, że państwo może robić to bez końca bez katastrofalnych konsekwencji dla wartości naszej waluty?"""
             },
             {
                 "num": 3,
-                "cat_display": "Polityka / Bezpieczeństwo i Geopolityka",
+                "cat_display": "Historia / Węzłowe Lekcje Dziejów",
+                "category": "historia",
+                "title": "Anatomia kryzysu sueskiego 1956: Jak finansowy szantaż Waszyngtonu zakończył imperialną mocarstwowość Europy",
+                "source_display": "🇵🇱 Dzieje.pl / Historia.org.pl / 🇺🇸 Hardcore History",
+                "source_note": "Analiza operacji Muszkieter i ataku Eisenhowera na funta szterlinga jako punktu zwrotnego powojennego ładu.",
+                "image_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80",
+                "image_concept": "Ciemna tafla kanału i industrialny horyzont ze sylwetkami okrętów w surowym świetle poranka.",
+                "image_prompt": "Cinematic historical documentary photograph of Suez Canal entrance, vintage patrol destroyers, moody morning sky, editorial history, 8k.",
+                "lead": "Jesienią 1956 roku Francja i Wielka Brytania wygrały wojnę w Kanale Sueskim w 72 godziny, by natychmiast skapitulować pod presją jednego telefonu z Waszyngtonu. To najbardziej pouczająca lekcja o tym, że suwerenność bez własnych rezerw finansowych jest tylko iluzją.",
+                "thesis": "Kryzys sueski był momentem, w którym stara Europa bezpowrotnie straciła status globalnego mocarstwa. Eisenhower udowodnił, że groźba wyprzedaży obligacji skarbowych i odcięcie dostaw ropy są skuteczniejszą bronią niż lotniskowce i dywizje spadochronowe.",
+                "points": [
+                    "Błyskawiczny sukces militarny: Jak połączone siły francusko-brytyjskie zajęły Port Said w operacji Muszkieter.",
+                    "Finansowy szantaż Waszyngtonu: Groźba ataku na funta szterlinga i zablokowanie pożyczki z MFW przez Eisenhowera.",
+                    "Paliwo jako narzędzie nacisku: Blokada dostaw ropy z Zatoki Meksykańskiej do Europy Zachodniej.",
+                    "Pytanie dociekliwego laika: Dlaczego państwa europejskie wciąż wierzą w swoją geopolityczną niezależność, skoro kluczowe punkty zaopatrzenia w energię i walutę rozliczeniową kontrolują zewnętrzne mocarstwa?"
+                ],
+                "draft": """Jesienią 1956 roku w gabinetach Londynu i Paryża wciąż panowało przekonanie, że o losach świata decydują europejskie imperia. Gdy prezydent Egiptu Gamal Abdel Naser dokonał nacjonalizacji Kanału Sueskiego – kluczowej arterii łączącej Europę z polami naftowymi Bliskiego Wschodu – rządy brytyjski i francuski zawarły tajne porozumienie z Izraelem. Rozpoczęła się operacja „Muszkieter”.
+
+Z czysto militarnego punktu widzenia był to podręcznikowy blitzkrieg: desant spadochroniarzy i ostrzał z okrętów wojennych w ciągu kilkudziesięciu godzin złamały opór egipski i zabezpieczyły korytarz żeglugowy. Jednak zanim generałowie zdążyli otworzyć szampana, premier Wielkiej Brytanii Anthony Eden musiał ogłosić bezwarunkowe wycofanie wojsk. Jak doszło do tego spektakularnego upokorzenia?
+
+### Królestwo za funta: Pieniądz silniejszy od pancerników
+
+Prawdziwy cios w imperialne ambicje Europy nie nadszedł z Kairu ani z Moskwy, lecz z sojuszniczego Waszyngtonu. Prezydent Dwight Eisenhower był wściekły na samowolną akcję sojuszników, która groziła wepchnięciem świata arabskiego w ramiona ZSRR. Zamiast wysyłać flotę, sięgnął po narzędzia z arsenału finansowego:
+
+1. **Groźba załamania funta**: Rezerwa Federalna zagroziła zrzuceniem na rynek potężnych pakietów brytyjskich obligacji rządowych. W obliczu topniejących rezerw dewizowych Banku Anglii doprowadziłoby to do natychmiastowego krachu waluty i hiperinflacji na Wyspach.
+2. **Kran z ropą**: USA wstrzymały nadzwyczajne dostawy ropy z Zatoki Meksykańskiej do Europy, dopóki brytyjscy żołnierze nie opuszczą strefy kanału.
+3. **Blokada MFW**: Waszyngton zawetował wniosek Londynu o pożyczkę ratunkową z Międzynarodowego Funduszu Walutowego.
+
+### Koniec iluzji o wielkości
+
+Kryzys sueski był brutalnym przebudzeniem. W ciągu kilku dni Wielka Brytania i Francja zrozumiały to, co historycy widzieli od dawna: nie można być globalnym imperium militarnym, będąc jednocześnie dłużnikiem cudzego banku centralnego. Od 1956 roku Londyn nigdy więcej nie podjął samodzielnej operacji wojskowej wbrew woli Waszyngtonu, a Francja pod wodzą de Gaulle'a wyciągnęła wniosek, że jedyną drogą do niezależności jest budowa własnego arsenału jądrowego i autarkii energetycznej.
+
+### Pytanie dociekliwego laika
+
+Kiedy patrzymy na dzisiejszą Europę debatującą o 'strategicznej autonomii', warto zadać naiwne, laickie pytanie: czy europejskie stolice posiadają dziś własne rezerwy energii, własny przemysł zbrojeniowy i własną architekturę finansową, czy też przy pierwszym poważnym kryzysie znów wystarczy jeden telefon z Waszyngtonu lub Pekinu, by zamknąć europejską mocarstwowość na klucz?"""
+            },
+            {
+                "num": 4,
+                "cat_display": "Polityka / Geopolityka & Bezpieczeństwo",
                 "category": "polityka",
                 "title": "Geopolityka Bałtyku i przesmyku suwalskiego: Nowa architektura odstraszania na wschodniej flance NATO",
-                "search_date": "28 października 2026 r.",
                 "source_display": "🇵🇱 Ośrodek Studiów Wschodnich (OSW) / Kanał Zero",
                 "source_note": "Raport analityczny OSW o militaryzacji Bałtyku oraz debata publicystów Kanału Zero o realnej gotowości obronnej Polski.",
                 "image_url": "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Wzburzone, ciemne Morze Bałtyckie z sylwetką okrętu patrolowego w surowym, mglistym świetle poranka.",
-                "image_prompt": "Cinematic naval documentary photograph of grey patrol frigate on rough stormy Baltic Sea, cold overcast morning light, geopolitical defense theme, 8k.",
+                "image_concept": "Wzburzone, ciemne Morze Bałtyckie z sylwetką okrętu patrolowego w surowym świetle poranka.",
+                "image_prompt": "Cinematic naval documentary photograph of grey patrol frigate on stormy Baltic Sea, cold morning light, defense journalism, 8k.",
                 "lead": "Po dołączeniu Szwecji i Finlandii do Sojuszu Morze Bałtyckie bywa nazywane 'jeziorem NATO'. Jednak w realiach wojny hybrydowej ochrona podwodnych gazociągów, kabli światłowodowych i wąskich korytarzy lądowych stawia przed Polską gigantyczne wyzwania.",
-                "thesis": "Sojusznicze traktaty są bezcenne, ale ich wiarygodność mierzy się wyłącznie twardymi zdolnościami logistycznymi, własnymi zapasami amunicji i odpornością infrastruktury krytycznej na sabotaż.",
+                "thesis": "Poczucie bezpieczeństwa wynikające z przewagi terytorialnej NATO na Bałtyku jest złudne. Wojna podprogowa przeniosła się pod wodę i w sferę logistyki amunicyjnej, gdzie decydują szybkie siły reagowania, a nie deklaracje polityczne.",
                 "points": [
-                    "Wojna pod powierzchnią: Incydenty uszkodzeń kabli telekomunikacyjnych i rurociągów na dnie Bałtyku jako test reakcji państw regionu.",
-                    "Logistyka przesmyku suwalskiego: Czy modernizacja linii kolejowych i dróg ekspresowych nadąża za planami przerzutu wojsk sojuszniczych.",
-                    "Polska obrona cywilna: Dlaczego budowa schronów i edukacja ludności wciąż pozostają na papierze w porównaniu z rozwiązaniami fińskimi.",
-                    "Pytanie dociekliwego laika: Czy jako społeczeństwo rozumiemy, że odstraszanie agresora wymaga realnych wyrzeczeń budżetowych i dyscypliny, a nie tylko lajków pod patriotycznymi przemówieniami?"
-                ]
+                    "Kruchość infrastruktury krytycznej: Kable zasilające i światłowody na dnie Bałtyku jako cel ataków sabotażowych.",
+                    "Geografia Przesmyku Suwalskiego: Realny bilans sił lądowych między Obwodem Królewieckim a Białorusią.",
+                    "Logistyka a sojusze: Ile dni Polska musiałaby bronić korytarzy zaopatrzeniowych przed nadejściem wsparcia.",
+                    "Pytanie dociekliwego laika: Czy w erze dronów morskich i min podwodnych status 'wewnętrznego morza NATO' chroni nasze terminale gazowe lepiej niż twarda obecność własnych fregat?"
+                ],
+                "draft": """Wraz z wejściem Finlandii i Szwecji do Sojuszu Północnoatlantyckiego w mediach głównego nurtu zapanował bezkrytyczny optymizm. Nagłówki gazet obwieściły, że Morze Bałtyckie stało się 'wewnętrznym jeziorem NATO', a wschodnia flanka zyskała nienaruszalną głębię strategiczną. Dla analityków wojskowych i dociekliwych obserwatorów mapa wygląda jednak zupełnie inaczej.
+
+### Wojna cieni na dnie morza
+
+Współczesna wojna na Bałtyku nie toczy się w widowiskowych bitwach eskadr nawodnych, lecz w mrocznych głębinach szelfu kontynentalnego. To tam spoczywają tysiące kilometrów podmorskich kabli światłowodowych, gazociąg Baltic Pipe, terminale LNG oraz interkonektory elektroenergetyczne łączące Polskę ze Skandynawią.
+
+Jak pokazały incydenty uszkodzeń gazociągów i kabli telekomunikacyjnych w ostatnich latach, pojedynczy statek handlowy pod tanią banderą, wlokący kotwicę po dnie, potrafi wywołać paraliż komunikacyjny całego regionu. Co gorsza, w realiach tzw. szarej strefy (poniżej progu art. 5 Traktatu Waszyngtońskiego) udowodnienie celowości sabotażu i podjęcie natychmiastowej odpowiedzi militarnej bywa sparaliżowane przez procedury prawne.
+
+### Przesmyk suwalski: Wąskie gardło logistyki
+
+Równolegle na lądzie kluczowym punktem zapalnym pozostaje tzw. przesmyk suwalski – wąski pas ziemi łączący Polskę z państwami bałtyckimi, rozdzielający silnie zmilitaryzowany Obwód Królewiecki od Białorusi. W razie eskalacji to właśnie przez te nieliczne drogi i mosty kolejowe musiałoby przetoczyć się całe zaopatrzenie dla Litwy, Łotwy i Estonii.
+
+Zdolność odstraszania nie zależy od uroczystych deklaracji polityków na szczytach, lecz od twardych zapasów amunicji artyleryjskiej, mobilności systemów przeciwlotniczych i zdolności do natychmiastowego zaryglowania korytarza.
+
+### Pytanie dociekliwego laika
+
+Jeśli ochrona 100 kilometrów granicy lądowej i kilkuset kilometrów podwodnych rurociągów wymaga ciągłej czujności flot i wojsk inżynieryjnych, to czy uspokajający ton o 'bezpiecznym jeziorze NATO' nie jest powtórzeniem historycznego błędu usypiania czujności własnego społeczeństwa?"""
             },
             {
-                "num": 4,
-                "cat_display": "Społeczeństwo / Debata Publiczna i Polaryzacja",
+                "num": 5,
+                "cat_display": "Inne eseje / Społeczeństwo & Filozofia Laika",
                 "category": "eseje",
                 "title": "Plemiona w wieżach z kości słoniowej: Dlaczego Polacy przestali rozmawiać i zaczęli na siebie krzyczeć",
-                "search_date": "28 października 2026 r.",
-                "source_display": "🇵🇱 Kultura Liberalna / Klub Jagielloński",
-                "source_note": "Esej Kultury Liberalnej i Klubu Jagiellońskiego o zaniku wspólnego mianownika kulturowego i polaryzacji algorytmicznej.",
-                "image_url": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Minimalistyczna sala spotkań z dwoma pustymi krzesłami rozdzielonymi smugą chłodnego światła symbolizującą brak dialogu.",
-                "image_prompt": "Atmospheric editorial photo of modern minimalist meeting room, single ray of morning light dividing two empty chairs, themes of political polarization and civic silence, 8k.",
+                "source_display": "🇵🇱 Kultura Liberalna / Klub Jagielloński / 🇺🇸 Astral Codex Ten",
+                "source_note": "Esej o zaniku wspólnego mianownika kulturowego i polaryzacji napędzanej algorytmami zaangażowania.",
+                "image_url": "https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=1200&q=80",
+                "image_concept": "Minimalistyczna sala spotkań z pustymi krzesłami rozdzielonymi smugą chłodnego światła.",
+                "image_prompt": "Editorial fine art photograph of minimalist debate room, empty modern chairs facing each other, stark beam of dramatic sunlight, 8k.",
                 "lead": "Polityczna polaryzacja dawno przestała być sporem o wysokość podatków czy reformę sądownictwa. Stała się tożsamościową wojną religijną, w której rację ma wyłącznie ten, kto głośniej zdezawuuje swojego przeciwnika w sieci.",
-                "thesis": "Zanikanie neutralnych instytucji i monetyzacja społecznego gniewu przez media doprowadziły do upadku sztuki kompromisu. Prawdziwym zagrożeniem dla wspólnoty nie jest odmienność poglądów, lecz całkowita utrata szacunku dla faktów stojących w sprzeczności z własnym plemieniem.",
+                "thesis": "Zanikanie neutralnych instytucji i komercjalizacja społecznego gniewu przez algorytmy doprowadziły do upadku sztuki kompromisu. Prawdziwym zagrożeniem nie jest odmienność poglądów, lecz całkowita utrata szacunku dla faktów stojących w sprzeczności z narracją własnego plemienia.",
                 "points": [
-                    "Biznesplan na nienawiść: Dlaczego algorytmy platform społecznościowych premiują emocjonalny hejt zamiast wyważonej argumentacji.",
-                    "Erozja autorytetów: Jak zniszczyliśmy zaufanie do naukowców, lekarzy i sędziów, zastępując ich partyjnymi komentatorami.",
-                    "Praktyka ponownego łączenia: Czy w spolaryzowanym społeczeństwie istnieje jeszcze przestrzeń na debatę o sprawach fundamentalnych (CPK, atom, edukacja).",
-                    "Pytanie dociekliwego laika: Kiedy ostatnio zmieniłeś zdanie w ważnej sprawie publicznej pod wpływem merytorycznych argumentów osoby z drugiego obozu politycznego?"
-                ]
+                    "Architektura gniewu: Jak algorytmy mediów społecznościowych monetyzują oburzenie moralne.",
+                    "Śmierć autorytetu arbitra: Rozpad zaufania do instytucji państwowych, uczelni i mediów publicznych.",
+                    "Samoizolacja w bańkach: Dlaczego czytamy wyłącznie tych, którzy potwierdzają nasze uprzedzenia.",
+                    "Pytanie dociekliwego laika: Kiedy po raz ostatni zmieniłeś zdanie w ważnej sprawie politycznej pod wpływem merytorycznych argumentów oponenta?"
+                ],
+                "draft": """Jeszcze dwadzieścia lat temu spory polityczne w Polsce, choć bywały ostre, toczyły się wokół konkretnych wyborów: jak szybko prywatyzować gospodarkę, jak reformować system emerytalny czy jak negocjować warunki wejścia do Unii Europejskiej. Dziś merytoryczna dyskusja o programach została zastąpiona przez totalną wojnę tożsamościową. Przeciwnik polityczny przestał być oponentem, z którym zasiada się do stołu – stał się wrogiem egzystencjalnym, którego należy bezwarunkowo wykluczyć ze wspólnoty narodowej.
+
+### Algorytmiczna monetyzacja furii
+
+Ten stan rzeczy nie jest dziełem przypadku ani wyłącznie winą polityków. Został zoptymalizowany przez architekturę cyfrową, w której żyjemy. Jak zauważył Scott Alexander w eseju 'The Toxoplasma of Rage', współczesne algorytmy rekomendacji nie promują treści wyważonych, mądrych czy szukających kompromisu. Promują to, co wywołuje natychmiastowe oburzenie moralne.
+
+Gniew to najbardziej uzależniająca emocja w internecie. Generuje kliknięcia, retweety, komentarze i zaangażowanie. W efekcie twórcy treści, redakcje prasowe i politycy zostali wciągnięci w spiralę licytacji na radykalizm: im bardziej bezwzględny atak na drugą stronę, tym większe zasięgi i tym większe finansowanie od sponsorów.
+
+### Utrata wspólnego słownika faktów
+
+Prawdziwym dramatem nie jest jednak to, że różnimy się w poglądach – pluralizm jest solą demokracji. Dramatem jest to, że przestaliśmy posługiwać się wspólnym słownikiem elementarnych faktów. Ta sama dana statystyczna, ten sam wyrok sądu czy ten sam wskaźnik gospodarczy jest przez jedno plemię uznawany za niezbity dowód sukcesu, a przez drugie za zdradę narodową i manipulację.
+
+Gdy znikają neutralni arbitrzy – zaufani sędziowie, bezstronni profesorowie, rzetelni reporterzy śledczy – społeczeństwo rozpada się na sekty uwięzione we własnych wieżach z kości słoniowej.
+
+### Pytanie dociekliwego laika
+
+Kiedy po raz ostatni zdarzyło Ci się przyznać, że Twój ideowy rywal ma rację w konkretnej sprawie, a Twój ulubiony polityk popełnił fatalny błąd? Jeśli nie pamiętasz takiego momentu, to być może nie jesteś niezależnym obywatelem, lecz zmanipulowanym żołnierzem w wojnie, na której zarabiają tylko cyfrowe platformy."""
             }
         ]
-    },
+    }
+]
 
-    # =========================================================================
-    # WTOREK, 27 PAŹDZIERNIKA 2026
-    # =========================================================================
+# Dodajmy schemat pozostałych 6 dni, zapewniając pełne 5 tematów na każdy dzień!
+# Szablon generatora dla dni 22-27 października 2026 r.:
+HISTORICAL_TOPICS_POOL = [
     {
+        "day_offset": 1,
         "date": "2026-10-27",
         "date_pl": "27 października 2026 r.",
         "day_name": "Wtorek",
-        "search_date": "27 października 2026 r. (analiza rynków i debaty publicznej)",
-        "topics": [
-            {
-                "num": 1,
-                "cat_display": "Technologia / Oprogramowanie i Bezpieczeństwo",
-                "category": "technologia",
-                "title": "Autonomiczni agenci oprogramowania a monopol wielkich platform cyfrowych",
-                "search_date": "27 października 2026 r.",
-                "source_display": "🇺🇸 Ars Technica / Bloomberg Tech",
-                "source_note": "Analiza procesów antymonopolowych w USA i UE wobec platform kontrolujących dostęp do cyfrowych API.",
-                "image_url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Pulpit analityczny z przepływem danych i schematem blokowym architektury systemowej.",
-                "image_prompt": "Editorial photo of high-tech digital workflow dashboard, abstract glowing API data streams connecting corporate systems, dark blue corporate minimalist aesthetics, 8k.",
-                "lead": "Przez dekady oprogramowanie oznaczało klikanie w formularze, menu i tabele. Wdrożenie agentów potrafiących komunikować się bezpośrednio z bazami danych zmienia relację między użytkownikiem a dostawcą oprogramowania.",
-                "thesis": "Model aplikacji z interfejsem graficznym (GUI) przestaje być jedynym sposobem pracy z danymi. Przyszłość firmowych systemów to agenci realizujący cele biznesowe w tle, co uderza w dotychczasowe przychody z drogich licencji 'per user'.",
-                "points": [
-                    "Koniec monopolu interfejsów klikanych: Przejście z ręcznego wprowadzania danych na instrukcje zadaniowe.",
-                    "Kwestia kontroli i audytowalności: Jak firmy weryfikują decyzje podejmowane autonomicznie przez agentów w logistyce i obsłudze klienta.",
-                    "Ryzyko uzależnienia od zamkniętych ekosystemów API kilku globalnych korporacji.",
-                    "Pytanie dociekliwego laika: Czy firmy są gotowe powierzyć realne budżety i operacje algorytmom, nad którymi nikt nie czuwa przy każdym kliknięciu?"
-                ]
-            },
-            {
-                "num": 2,
-                "cat_display": "Gospodarka / Nieruchomości i Rynek Kredytów",
-                "category": "gospodarka",
-                "title": "Ceny mieszkań a dopłaty państwa: Dlaczego programy tanich kredytów napędzają marże deweloperów",
-                "search_date": "27 października 2026 r.",
-                "source_display": "🇵🇱 Bankier.pl / Interia Biznes",
-                "source_note": "Raport Bankier.pl o wpływie rządowych programów wsparcia popytu na średnie ceny transakcyjne za metr kwadratowy w największych miastach.",
-                "image_url": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Nowoczesne osiedle mieszkaniowe z betonu i szkła z żurawiami budowlanymi w tle w perspektywie rynku nieruchomości.",
-                "image_prompt": "Contemporary residential apartment blocks in metropolitan city, architectural photography, concrete and glass balconies, construction cranes, economics editorial, 8k.",
-                "lead": "Kupno własnego mieszkania przez młodych ludzi w polskich metropoliach stało się barierą nie do przebycia. Zamiast zwiększać podaż gruntów i budować mieszkania komunalne, rządy od lat pompują w rynek kolejne dopłaty do kredytów.",
-                "thesis": "Dotowanie popytu przy sztywnej podaży gruntów prowadzi wyłącznie do jednego rezultatu: natychmiastowego wzrostu cen mieszkań i rekordowych zysków banków oraz deweloperów. To polityka, która zamyka drogę do samodzielności całemu pokoleniu.",
-                "points": [
-                    "Mechanizm inflacji mieszkaniowej: Jak zapowiedź każdego kolejnego programu dopłat podnosiła ceny ofertowe w ciągu 48 godzin.",
-                    "Model wiedeński vs. model polski: Dlaczego w Europie Zachodniej państwo stawia na tani najem instytucjonalny, a w Polsce wyłącznie na zadłużanie obywateli na 30 lat.",
-                    "Wpływ drożyzny mieszkaniowej na zapaść demograficzną: Brak stabilnego dachu nad głową jako kluczowy powód odkładania decyzji o dzieciach.",
-                    "Pytanie dociekliwego laika: Dlaczego miliardy złotych z podatków wszystkich Polaków mają iść na subsydiowanie odsetek bankowych, zamiast na budowę dostępnych mieszkań miejskich?"
-                ]
-            },
-            {
-                "num": 3,
-                "cat_display": "Polityka / Unia Europejska i Suwerenność",
-                "category": "polityka",
-                "title": "Spór o zniesienie weta w UE: Czy federalizacja Brukseli leży w polskim interesie narodowym?",
-                "search_date": "27 października 2026 r.",
-                "source_display": "🇵🇱 Klub Jagielloński / Politico Europe",
-                "source_note": "Dyskusja Klubu Jagiellońskiego i doniesienia Politico o pracach nad reformą traktatów unijnych i głosowaniem większościowym (QMV).",
-                "image_url": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Podświetlona mapa kontynentu europejskiego z siecią powiązań instytucjonalnych i granic państwowych.",
-                "image_prompt": "Cinematic visual of European continent at night with glowing network lines representing institutional ties, dark geopolitical photography, 8k.",
-                "lead": "W stolicach Europy Zachodniej narasta presja na odejście od zasady jednomyślności w polityce zagranicznej i obronnej Unii Europejskiej. Zwolennicy reformy mówią o decyzyjnej sprawności wspólnoty, przeciwnicy – o dominacji największych graczy.",
-                "thesis": "Prawo weta to dla państw średnich, takich jak Polska, jedyny twardy bezpiecznik chroniący przed decyzjami sprzecznymi z ich żywotnym bezpieczeństwem. Zgoda na jego likwidację bez żelaznych gwarancji strategicznych osłabi pozycję Warszawy w Europie.",
-                "points": [
-                    "Lekcja z przeszłości: Jak Niemcy i Francja przez lata forsowały współpracę energetyczną z Rosją wbrew ostrzeżeniom Europy Środkowej.",
-                    "Mechanizm większości kwalifikowanej (QMV): Czy koalicja państw wschodniej flanki ma wystarczającą siłę blokującą w 27-osobowej unii.",
-                    "Jak zreformować UE, by nie wpaść w paraliż, a jednocześnie nie zredukować roli państw narodowych do wykonawców brukselskich dyrektyw.",
-                    "Pytanie dociekliwego laika: Czy w sprawach kluczowych dla obrony granic Polski chcemy, aby o naszych działaniach decydowało głosowanie większościowe w Brukseli?"
-                ]
-            },
-            {
-                "num": 4,
-                "cat_display": "Społeczeństwo / Styl Życia i Zdrowie Psychiczne",
-                "category": "eseje",
-                "title": "Kult nieustannej produktywności: Dlaczego w pogoni za sukcesem staliśmy się chronicznie zmęczeni",
-                "search_date": "27 października 2026 r.",
-                "source_display": "🇵🇱 Kultura Liberalna / Interia Opinie",
-                "source_note": "Esej Kultury Liberalnej o syndromie 'hustle culture', wypaleniu zawodowym młodych specjalistów i ucieczce od odpoczynku.",
-                "image_url": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Nowoczesne biurko z laptopem i notatkami w surowym, profesjonalnym minimalistycznym stylu.",
-                "image_prompt": "Overhead shot of sleek modern workspace desk with open laptop showing analytical charts, coffee cup and notebook, calm minimalist Scandinavian office aesthetic, 8k.",
-                "lead": "Aplikacje do optymalizacji czasu, podcasty słuchane w przyspieszeniu 1.5x i wieczne poczucie winy, gdy nie robimy nic pożytecznego. Współczesny człowiek zamienił własne życie w arkusz kalkulacyjny nakierowany na optymalizację wyników.",
-                "thesis": "Utożsamienie wartości człowieka z jego efektywnością rynkową to prosta droga do epidemii depresji i poczucia pustki. Zdolność do niespiesznego myślenia, nudy i bezinteresownej rozmowy to warunek konieczny zachowania zdrowia psychicznego.",
-                "points": [
-                    "Tyrania samodyscypliny: Przejście od zewnętrznego przymusu pracy w fabryce do wewnętrznego terroru bycia 'najlepszą wersją siebie'.",
-                    "Dlaczego odpoczynek traktujemy jako nagrodę za wyczerpanie, zamiast jako naturalny stan regeneracji organizmu.",
-                    "Jak odzyskać kontrolę nad własnym czasem w świecie powiadomień korporacyjnych komunikatorów.",
-                    "Pytanie dociekliwego laika: Kiedy po raz ostatni spędziłeś całe popołudnie na robieniu czegoś, co nie miało żadnego celu zarobkowego ani nie przyniosło żadnej wymiernej korzyści?"
-                ]
-            }
-        ]
+        "tech": {
+            "title": "Krzemowa suwerenność: Dlaczego maszyny litograficzne ASML są ważniejsze niż bazy wojskowe",
+            "source": "🇺🇸 Ars Technica / Politico",
+            "note": "Analiza holenderskich restrykcji eksportowych na maszyny High-NA EUV i wyścigu o fabryki czipów."
+        },
+        "econ": {
+            "title": "Kryzys dostępności mieszkań: Dlaczego dopłaty do kredytów pompują ceny zamiast budować domy",
+            "source": "🇵🇱 8000 (osiemtysiecy.pl) / Slow Boring",
+            "note": "Twarde dane o elastyczności podaży i skutkach stymulacji popytu na polskim rynku nieruchomości."
+        },
+        "hist": {
+            "title": "Żelazo, chleb i logistyka: Dlaczego starożytny Rzym upadł nie od ciosów barbarzyńców, lecz przez paraliż dostaw zboża",
+            "source": "🇺🇸 ACOUP (Dr. Bret Devereaux) / 🇵🇱 Dzieje.pl",
+            "note": "Twarde kalkulacje kalorii i transportu wozami; jak zerwanie szlaków z Afryki Północnej zagłodziło stolicę imperium."
+        },
+        "pol": {
+            "title": "Koniec prawa weta w Unii Europejskiej? Dlaczego małe i średnie kraje boją się dyktatu większości",
+            "source": "🇵🇱 Klub Jagielloński / Politico Europe",
+            "note": "Debata nad reformą traktatów UE i przejściem na głosowanie większością kwalifikowaną (QMV)."
+        },
+        "essay": {
+            "title": "Pochwała dociekliwego laika: Po co zadajemy naiwne pytania w świecie aroganckich ekspertów",
+            "source": "🇵🇱 Dwutygodnik.com / 🇺🇸 Astral Codex Ten",
+            "note": "Esej o roli myślenia pierwszych zasad (First Principles Thinking) i odwadze zadawania prostych pytań."
+        }
     },
-
-    # =========================================================================
-    # PONIEDZIAŁEK, 26 PAŹDZIERNIKA 2026
-    # =========================================================================
     {
+        "day_offset": 2,
         "date": "2026-10-26",
         "date_pl": "26 października 2026 r.",
         "day_name": "Poniedziałek",
-        "search_date": "26 października 2026 r. (analiza rynków i debaty publicznej)",
-        "topics": [
-            {
-                "num": 1,
-                "cat_display": "Technologia / Cyberbezpieczeństwo i Infrastruktura",
-                "category": "technologia",
-                "title": "Cyberwojna poniżej progu wojny: Jak paraliż szpitali i wodociągów stał się nową normą",
-                "search_date": "26 października 2026 r.",
-                "source_display": "🇬🇧 The Financial Times / Ars Technica",
-                "source_note": "Raport FT i agencji wywiadowczych o zmasowanych atakach ransomware na zachodnią infrastrukturę komunalną i energetyczną.",
-                "image_url": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Ciemna serwerownia z migającymi diodami światłowodów i chłodnym oświetleniem w klimacie cyberbezpieczeństwa.",
-                "image_prompt": "High-tech server room with glowing fiber optic cables and cybersecurity alert status lights, dramatic corporate technology journalism photo, 8k.",
-                "lead": "Nowoczesne państwo można sparaliżować bez wystrzelenia ani jednego pocisku. Ataki hakerskie na bazy danych szpitali, stacje uzdatniania wody czy systemy sterowania ruchem pociągów przestały być domeną filmów science-fiction.",
-                "thesis": "Cyfryzacja bez analogowych bezpieczników i rygorystycznej ochrony kryptograficznej to zaproszenie do katastrofy. Skupiając się na wygodzie aplikacji online, zapomnieliśmy o fizycznej odporności państwa na sabotaż.",
-                "points": [
-                    "Wojna hybrydowa w szarej strefie: Dlaczego rządom trudno oficjalnie odpowiedzieć na ataki grup hakerskich działających na zlecenie obcych wywiadów.",
-                    "Dług technologiczny polskiego sektora publicznego: Przetargi 'najniższa cena' a przestarzałe oprogramowanie w urzędach i szpitalach.",
-                    "Koncepcja odporności analogowej: Dlaczego kluczowe zawory, zwrotnice i generatory muszą posiadać ręczne sterowanie na wypadek odcięcia sieci.",
-                    "Pytanie dociekliwego laika: Co zrobi Twoje miasto, gdy w wyniku cyberataku na 72 godziny zniknie woda w kranach i prąd w lodówkach?"
-                ]
-            },
-            {
-                "num": 2,
-                "cat_display": "Gospodarka / Handel Międzynarodowy i Cła",
-                "category": "gospodarka",
-                "title": "Wojna celna USA–Chiny: Koniec epoki tanich towarów i powrót twardego protekcjonizmu",
-                "search_date": "26 października 2026 r.",
-                "source_display": "🌍 Investing.com / Bloomberg",
-                "source_note": "Analiza rynkowa Investing.com dotycząca nowych taryf celnych na samochody elektryczne, panele fotowoltaiczne i metale ziem rzadkich.",
-                "image_url": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Kontenery towarowe w wielkim terminalu przeładunkowym portu morskiego o wschodzie słońca.",
-                "image_prompt": "Shipping containers stacked in international cargo seaport terminal at sunrise, industrial cargo crane, global trade economics photography, 8k.",
-                "lead": "Trzydzieści lat globalizacji opartej na zasadzie 'produkujmy tam, gdzie najtaniej' właśnie dobiega końca. Zarówno Waszyngton, jak i Bruksela wznoszą mury celne, aby chronić rodzime miejsca pracy przed zalewem dotowanych produktów z Azji.",
-                "thesis": "Bezpieczeństwo dostaw i suwerenność przemysłowa kosztują. Powrót produkcji do krajów zachodnich oznacza trwale wyższą inflację i konieczność zaakceptowania wyższych cen codziennych produktów konsumpcyjnych.",
-                "points": [
-                    "Efekt skali i chiński dumping: Dlaczego żaden zachodni producent nie jest w stanie konkurować cenowo z państwowymi subsydiami w Pekinie.",
-                    "Koszty 'friend-shoringu': Przenoszenie fabryk do Meksyku, Indii czy Polski a rosnące wydatki inwestycyjne korporacji.",
-                    "Dylemat europejskiego konsumenta: Chcemy zielonej transformacji, ale nie chcemy płacić dwukrotnie więcej za auta i baterie wyprodukowane w Europie.",
-                    "Pytanie dociekliwego laika: Czy jako konsumenci jesteśmy gotowi płacić 30% więcej za elektronikę i ubrania, aby fabryki i miejsca pracy wróciły do Europy?"
-                ]
-            },
-            {
-                "num": 3,
-                "cat_display": "Polityka / Demografia i Społeczeństwo",
-                "category": "polityka",
-                "title": "Kryzys demograficzny Polski: Dlaczego transfery finansowe nie skłoniły Polaków do rodzenia dzieci?",
-                "search_date": "26 października 2026 r.",
-                "source_display": "🇵🇱 Klub Jagielloński / Kanał Zero (Debaty)",
-                "source_note": "Analiza Klubu Jagiellońskiego dotycząca danych GUS o rekordowo niskiej liczbie urodzeń w Polsce i dyskusja na Kanale Zero.",
-                "image_url": "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Pusta ulica z zabawkami dziecięcymi i cichym podwórkiem miejskim w ciepłym świetle popołudnia.",
-                "image_prompt": "Atmospheric documentary photo of quiet residential park bench with single forgotten child toy, soft afternoon sunlight, demographic transition theme, 8k.",
-                "lead": "Kolejne programy wsparcia finansowego rodzin miały odwrócić negatywne trendy ludnościowe. Tymczasem wskaźniki dzietności w Polsce spadły do najniższych poziomów w powojennej historii kraju.",
-                "thesis": "Pieniądze do ręki nie zastąpią dostępnych żłobków, stabilnej pracy, nowoczesnej opieki okołoporodowej i przystępnych cenowo mieszkań. Zapaść demograficzna to wotum nieufności obywateli wobec jakości usług publicznych świadczonych przez państwo.",
-                "points": [
-                    "Diagnoza przyczyn: Poczucie braku stabilności u młodych kobiet jako główny czynnik odraczania macierzyństwa.",
-                    "Przyszłość systemu emerytalnego ZUS: Kto sfinansuje emerytury obecnych 30- i 40-latków, gdy na jednego emeryta przypadać będzie jeden pracownik.",
-                    "Konieczność mądrej i kontrolowanej polityki imigracyjnej zamiast zamiatania tematu pod dywan.",
-                    "Pytanie dociekliwego laika: Skoro kolejne setki miliardów złotych wydane na programy socjalne nie przyniosły ani jednego dodatkowego dziecka, dlaczego nikt nie weryfikuje sensu tej polityki?"
-                ]
-            },
-            {
-                "num": 4,
-                "cat_display": "Społeczeństwo / Kultura i Edukacja",
-                "category": "eseje",
-                "title": "Atrofia czytelnictwa: Jak konsumpcja 15-sekundowych rolek niszczy zdolność rozumienia złożonego świata",
-                "search_date": "26 października 2026 r.",
-                "source_display": "🇵🇱 Kultura Liberalna / Klub Jagielloński",
-                "source_note": "Esej Kultury Liberalnej i Klubu Jagiellońskiego o degradacji uwagi, spadku sprzedaży książek i kryzysie humanistycznym.",
-                "image_url": "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Stare i nowe książki na drewnianym regale w ciepłym świetle domowej biblioteki.",
-                "image_prompt": "Artistic close-up of classical hardcover books stacked on wooden shelf, soft glowing dust particles in library sunlight, quiet intellectual focus, 8k.",
-                "lead": "Przeczytanie kilkustronicowego artykułu lub powieści staje się dla wielu osób wysiłkiem ponad siły. Mózgi wytresowane przez algorytmy TikToka i Instagrama domagają się natychmiastowego strzału dopaminy co kilkanaście sekund.",
-                "thesis": "Spadek czytelnictwa to nie tylko problem księgarzy, lecz fundamentalne zagrożenie dla demokracji. Człowiek niezdolny do skupienia uwagi na długim tekście staje się bezbronny wobec prymitywnej propagandy i emocjonalnych manipulacji.",
-                "points": [
-                    "Mechanizm 'rozproszonej uwagi': Dlaczego przerywanie lektury sprawdzaniem telefonu oducza mózg myślenia przyczynowo-skutkowego.",
-                    "Szkoła w kryzysie: Tradycyjny kanon lektur w zderzeniu z pokoleniem, które przyswaja rzeczywistość wyłącznie w formie wizualnych skrótów.",
-                    "Czytanie książek jako akt politycznego oporu przeciwko rynkowi algorytmicznego uzależnienia.",
-                    "Pytanie dociekliwego laika: Kiedy ostatnio przeczytałeś książkę od deski do deski bez sięgania po smartfon co piętnaście minut?"
-                ]
-            }
-        ]
+        "tech": {
+            "title": "Kryptografia postkwantowa: Dlaczego algorytm Shora zmusi banki do wymiany całego szyfrowania",
+            "source": "🇵🇱 Kwantowo.pl / 🇺🇸 MIT Tech Review",
+            "note": "Raport NIST o nowych standardach szyfrowania odpornych na komputery kwantowe (ML-KEM, SLH-DSA)."
+        },
+        "econ": {
+            "title": "Pułapka demograficzna Europy Środkowej: Kiedy zabraknie rąk do pracy przy taśmie i w szpitalach",
+            "source": "🇵🇱 Klub Jagielloński / Bankier.pl",
+            "note": "Analiza strukturalnego spadku liczby osób w wieku produkcyjnym w Polsce i regionie CEE."
+        },
+        "hist": {
+            "title": "Złoto Galicji i narodziny naftowego świata: Jak Ignacy Łukasiewicz i polscy nafciarze wyprzedzili Rockefellerów",
+            "source": "🇵🇱 Dzieje.pl / CiekawostkiHistoryczne.pl",
+            "note": "Historia pierwszego na świecie szybu naftowego w Bóbrce i rafinerii w Gorlicach; polski wkład w rewolucję XIX wieku."
+        },
+        "pol": {
+            "title": "Czy Trójmorze może zastąpić Trójkąt Weimarski? Realia infrastruktury Północ-Południe",
+            "source": "🇵🇱 Nowa Konfederacja / OSW",
+            "note": "Bilans inwestycji w korytarze Via Carpatia i Rail Baltica wobec osi Berlin-Paryż."
+        },
+        "essay": {
+            "title": "Cyfrowy detoks czy ucieczka od rzeczywistości: Jak odzyskać kontrolę nad własną uwagą",
+            "source": "🇺🇸 Stratechery / 🇨🇦 Farnam Street",
+            "note": "Filozoficzna analiza ekonomii uwagi i technik ochrony skupienia przed powiadomieniami."
+        }
     },
-
-    # =========================================================================
-    # NIEDZIELA, 25 PAŹDZIERNIKA 2026
-    # =========================================================================
     {
+        "day_offset": 3,
         "date": "2026-10-25",
         "date_pl": "25 października 2026 r.",
         "day_name": "Niedziela",
-        "search_date": "25 października 2026 r. (analiza rynków i debaty publicznej)",
-        "topics": [
-            {
-                "num": 1,
-                "cat_display": "Technologia / Prawa Autorskie i Media",
-                "category": "technologia",
-                "title": "Kradzież czy postęp? Kto ma prawo do zysków, gdy algorytmy szkolą się na dorobku ludzkości",
-                "search_date": "25 października 2026 r.",
-                "source_display": "🇺🇸 Ars Technica / Politico",
-                "source_note": "Spory sądowe wydawców prasowych i autorów z korporacjami technologicznymi w Nowym Jorku i Brukseli.",
-                "image_url": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Sędziowski młotek na tle regałów z księgami prawniczymi w klimacie prawa autorskiego.",
-                "image_prompt": "Judicial wooden gavel resting on leather bound law books, dramatic courtroom library lighting, copyright and intellectual property editorial photo, 8k.",
-                "lead": "Wszystkie wiodące korporacje cyfrowe zbudowały swoje modele w oparciu o teksty, obrazy i kod stworzone przez miliony pisarzy, dziennikarzy i programistów. Gdy przyszło do podziału zysków, autorzy zostali z niczym.",
-                "thesis": "Koncepcja 'dozwolonego użytku' nie może służyć jako parawan dla bezpłatnej eksploatacji własności intelektualnej na skalę przemysłową. Jeśli zniszczymy model biznesowy niezależnego dziennikarstwa i twórczości, wkrótce algorytmy będą karmić się wyłącznie syntetycznym bełkotem.",
-                "points": [
-                    "Pozwy zbiorowe mediów przeciwko Big Tech: Bitwa o licencjonowanie treści i definicję cytatu.",
-                    "Problem 'zanieczyszczenia danych': Co się stanie z modelami, gdy w sieci zabraknie nowych tekstów napisanych przez żywych ludzi.",
-                    "Jak wycenić wkład pojedynczego autora w model zasilany bilionami tokenów.",
-                    "Pytanie dociekliwego laika: Czy gdybyś skopiował treść całej encyklopedii i sprzedawał ją pod własnym nazwiskiem, sąd nazwałby to innowacją czy zwykłym piractwem?"
-                ]
-            },
-            {
-                "num": 2,
-                "cat_display": "Gospodarka / Energetyka i Przemysł",
-                "category": "gospodarka",
-                "title": "Reindustrializacja Europy czy ucieczka kapitału? Dlaczego fabryki przenoszą się do USA i Azji",
-                "search_date": "25 października 2026 r.",
-                "source_display": "🇬🇧 The Financial Times / OSW",
-                "source_note": "Raport Mario Draghiego i analizy FT o drastycznym spadku konkurencyjności europejskiego przemysłu chemicznego i maszynowego.",
-                "image_url": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Zautomatyzowana linia produkcyjna w fabryce przemysłowej z precyzyjnymi ramionami robotycznymi.",
-                "image_prompt": "Automated modern automotive manufacturing plant with robotic assembly arms and precision laser welding, cool blue industrial photography, 8k.",
-                "lead": "Wysokie koszty energii elektrycznej, restrykcyjna polityka klimatyczna ETS i biurokracja sprawiają, że europejskie koncerny masowo ogłaszają inwestycje poza kontynentem. Europa staje w obliczu realnego ryzyka dezindustrializacji.",
-                "thesis": "Nie da się utrzymać dobrobytu i wysokich standardów socjalnych wyłącznie w oparciu o turystykę i usługi finansowe. Jeśli Europa straci bazę przemysłową, stanie się bezsilnym skansenem uzależnionym od dostaw z zewnątrz.",
-                "points": [
-                    "Różnica w kosztach energii: Dlaczego gaz i prąd dla przemysłu w USA są trzykrotnie tańsze niż w Niemczech i Polsce.",
-                    "Amerykańska ustawa IRA i subsydia: Jak Waszyngton przyciąga europejski kapitał podatkowymi ulgami.",
-                    "Co oznacza utrata przemysłu dla polskiego eksportu: Jesteśmy poddostawcą niemieckich fabryk, więc ich kryzys uderzy w polskie pensje.",
-                    "Pytanie dociekliwego laika: Skąd weźmiemy pieniądze na obronność i szpitale, jeśli największe zakłady produkcyjne zamkną się i przeniosą do Teksasu lub Chin?"
-                ]
-            },
-            {
-                "num": 3,
-                "cat_display": "Polityka / Bezpieczeństwo i Obrona Cywilna",
-                "category": "polityka",
-                "title": "Obrona cywilna w Polsce: Pomiędzy papierowymi procedurami a twardą rzeczywistością schronów",
-                "search_date": "25 października 2026 r.",
-                "source_display": "🇵🇱 Kanał Zero / Nowa Konfederacja",
-                "source_note": "Debata Kanału Zero z udziałem ekspertów wojskowych i samorządowców o braku ustawy o obronie cywilnej i stanie schronów.",
-                "image_url": "https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Podziemny surowy żelbetowy korytarz schronu ochronnego z hermetycznymi drzwiami stalowymi.",
-                "image_prompt": "Underground heavy reinforced concrete protective shelter corridor with heavy steel blast doors, stark emergency lighting, civil defense documentary photo, 8k.",
-                "lead": "Wydajemy setki miliardów złotych na czołgi, myśliwce i wyrzutnie rakiet. Jednocześnie miliony obywateli w polskich miastach w razie nalotu nie mają pojęcia, gdzie szukać bezpiecznego schronienia.",
-                "thesis": "Prawdziwa siła obronna państwa leży w ochronie ludności cywilnej. Zaniedbania w obszarze schronów, magazynów wody pitnej i procedur ewakuacyjnych to najsłabsze ogniwo polskiego systemu bezpieczeństwa.",
-                "points": [
-                    "Luka prawna po likwidacji Obrony Cywilnej Kraju: Samorządy bez budżetów i bez jasnych wytycznych technicznych.",
-                    "Stan techniczny piwnic i parkingów podziemnych: Dlaczego 95% z nich nie spełnia norm ochrony przed falami uderzeniowymi i gazami bojowymi.",
-                    "Wzór szwajcarski i izraelski: Jak małe państwa potrafiły zbudować system, w którym miejsce w schronie ma zapewniony każdy obywatel.",
-                    "Pytanie dociekliwego laika: Na co komu najnowocześniejsze myśliwce na niebie, jeśli na dole nikt nie potrafi zabezpieczyć ujęć wody i szpitali przed pierwszym atakiem?"
-                ]
-            },
-            {
-                "num": 4,
-                "cat_display": "Społeczeństwo / Media i Autorytety",
-                "category": "eseje",
-                "title": "Kryzys autorytetów: Dlaczego w epoce niepewności zaufaliśmy influencerom bardziej niż naukowcom?",
-                "search_date": "25 października 2026 r.",
-                "source_display": "🇵🇱 Kultura Liberalna / Interia Opinie",
-                "source_note": "Analiza socjologiczna w Kulturze Liberalnej o upadku zaufania do tradycyjnych ekspertów i triumfie charyzmatycznych twórców internetowych.",
-                "image_url": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Samotna postać w półmroku przed świecącym ekranem smartfona w wielkim mieście nocą.",
-                "image_prompt": "Solitary person looking at glowing smartphone screen at night by apartment window overlooking metropolitan skyline, intimate emotional technology theme, 8k.",
-                "lead": "Naukowcy mówią językiem pełnym zastrzeżeń, prawdopodobieństw i skomplikowanych danych. Twórca internetowy oferuje proste odpowiedzi, emocjonalną autentyczność i poczucie bliskości. W efekcie to on kształtuje opinie milionów.",
-                "thesis": "Kryzys tradycyjnych autorytetów nie wynika z ignorancji ludzi, lecz z hermetyczności i arogancji instytucji akademickich. Gdy eksperci zamknęli się w wieżach z kości słoniowej, próżnię natychmiast wypełnili sprawni handlarze emocji i teorii spiskowych.",
-                "points": [
-                    "Paradoks dostępności wiedzy: Mamy pod ręką całą wiedzę ludzkości, a wierzymy w najprostsze szarlataństwa medyczne i finansowe.",
-                    "Dlaczego 'charyzma z TikToka' wygrywa z rzetelnym dorobkiem profesorskim.",
-                    "Jak przywrócić szacunek dla twardej nauki w świecie, w którym każdy ma prawo do własnej prawdy.",
-                    "Pytanie dociekliwego laika: Dlaczego w sprawach zdrowia czy finansów jesteśmy skłonni zaufać osobie znanej z internetu, której jedyną kwalifikacją jest wysoka liczba obserwujących?"
-                ]
-            }
-        ]
+        "tech": {
+            "title": "Prawo do naprawy w epoce procesorów zintegrowanych: Walka o suwerenność użytkownika",
+            "source": "🇺🇸 Ars Technica / 🇬🇧 Works in Progress",
+            "note": "Lutowane pamięci, klejone baterie i cyfrowy monopol serwisowy producentów elektroniki."
+        },
+        "econ": {
+            "title": "Geonomia surowców krytycznych: Dlaczego bez litu i metali ziem rzadkich transformacja stanie w miejscu",
+            "source": "🌍 Investing.com / The Financial Times",
+            "note": "Zależność Zachodu od chińskich rafinerii galu, germanu i grafitu."
+        },
+        "hist": {
+            "title": "Iluzja gwarancji z 1939 roku: Czego lekcja z Londynu i Paryża uczy Polskę o granicach traktatów sojuszniczych",
+            "source": "🇵🇱 Historia Realna (Piotr Zychowicz) / Nowa Konfederacja",
+            "note": "Dokumenty sztabowe z maja 1939 r.; dlaczego sojusze bez tożsamych interesów geopolitycznych stają się fikcją na papierze."
+        },
+        "pol": {
+            "title": "Obrona cywilna w ruinie: Dlaczego Polska ma nowoczesne czołgi, a nie ma schronów dla obywateli",
+            "source": "🇵🇱 Klub Jagielloński / Kanał Zero (Debaty)",
+            "note": "Raport NIK o zapaści schronów i braku procedur ratunkowych dla ludności cywilnej."
+        },
+        "essay": {
+            "title": "Kryzys czytelnictwa długich form: Co tracimy, gdy zamieniamy książki na 30-sekundowe rolki",
+            "source": "🇵🇱 Kultura Liberalna / Dwutygodnik.com",
+            "note": "Kognitywne skutki fragmentaryzacji uwagi i zanikania nawyku pogłębionej lektury."
+        }
     },
-
-    # =========================================================================
-    # SOBOTA, 24 PAŹDZIERNIKA 2026
-    # =========================================================================
     {
+        "day_offset": 4,
         "date": "2026-10-24",
         "date_pl": "24 października 2026 r.",
         "day_name": "Sobota",
-        "search_date": "24 października 2026 r. (analiza rynków i debaty publicznej)",
-        "topics": [
-            {
-                "num": 1,
-                "cat_display": "Technologia / Bezpieczeństwo i Komputery Kwantowe",
-                "category": "technologia",
-                "title": "Kwantowe odliczanie do zera: Dlaczego banki i armie już dziś wymieniają kryptografię",
-                "search_date": "24 października 2026 r.",
-                "source_display": "🇺🇸 MIT Technology Review / Ars Technica",
-                "source_note": "Publikacja MIT Tech Review o wdrożeniach algorytmów Post-Quantum Cryptography (PQC) certyfikowanych przez NIST.",
-                "image_url": "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Abstrakcyjna geometria kwantowa ze złotymi cylindrami chłodzenia kriogenicznego procesora.",
-                "image_prompt": "Golden quantum computing cryostat chandelier in dark research laboratory, futuristic quantum physics technology photo, 8k.",
-                "lead": "Choć komercyjne komputery kwantowe zdolne złamać klucze RSA jeszcze nie powstały, wrogie wywiady już teraz przechwytują i magazynują szyfrowany ruch w sieci. Zasada brzmi: przechwyć dziś, odszyfruj za 5 lat.",
-                "thesis": "Zagrożenie kwantowe nie jest kwestią odległej przyszłości, lecz dzisiejszej logistyki IT. Instytucje finansowe i wojskowe, które spóźnią się z migracją na kryptografię postkwantową, staną się bezbronnym celem szantażu.",
-                "points": [
-                    "Strategia 'Store Now, Decrypt Later': Dlaczego poufne dane dyplomatyczne i patenty medyczne są kopiowane przez obce państwa już dziś.",
-                    "Wyzwania wdrożeniowe: Dlaczego wymiana algorytmów w tysiącach bankomatów i kart płatniczych zajmie dekadę.",
-                    "Kto przewodzi w wyścigu: Amerykańscy giganci technologiczni vs. państwowe laboratoria w Szanghaju.",
-                    "Pytanie dociekliwego laika: Czy Twoje hasła bankowe i prywatne wiadomości z dzisiaj będą cokolwiek warte, gdy ktoś odszyfruje je jednym kliknięciem za kilka lat?"
-                ]
-            },
-            {
-                "num": 2,
-                "cat_display": "Gospodarka / Surowce i Rynki Energetyczne",
-                "category": "gospodarka",
-                "title": "Baryłka ropy a globalna inflacja: Dlaczego surowce wciąż dyktują koszty życia w Europie",
-                "search_date": "24 października 2026 r.",
-                "source_display": "🌍 Investing.com / The Financial Times",
-                "source_note": "Dane rynkowe Investing.com dotyczące polityki wydobywczej OPEC+, transportu przez cieśninę Ormuz i cen paliw w detalu.",
-                "image_url": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Platforma wiertnicza na otwartym oceanie o zachodzie słońca z płonącym pochodnią gazową.",
-                "image_prompt": "Offshore deepwater oil drilling platform on vast dark ocean waves at sunset, glowing industrial flare, energy commodities economics photography, 8k.",
-                "lead": "Mimo haseł o odchodzeniu od paliw kopalnych ropa naftowa i gaz ziemny pozostają krwioobiegiem globalnego transportu i przemysłu chemicznego. Każdy skok cen baryłki na giełdzie w Nowym Jorku przekłada się na ceny żywności w polskim dyskoncie.",
-                "thesis": "Zielona transformacja prowadzona bez zabezpieczenia stabilnych źródeł konwencjonalnych na okres przejściowy naraża gospodarki na potężne szoki podażowe. Zamiast uniezależnienia od dyktatu karteli surowcowych, wpadamy w kolejne uzależnienia.",
-                "points": [
-                    "Koszt transportu morskiego i ubezpieczeń tankowców w rejonach zapalnych (Morze Czerwone, Cieśnina Malakka).",
-                    "Ropa jako fundament nawozów sztucznych i tworzyw: Dlaczego droga ropa to automatycznie droższy chleb i warzywa.",
-                    "Strategiczne rezerwy surowcowe państwa: Czy Polska jest odporna na nagłe wstrzymanie dostaw morskich.",
-                    "Pytanie dociekliwego laika: Skoro od lat słyszymy o nieuchronnym końcu ery ropy, dlaczego decyzje kilku szejków wciąż decydują o tym, ile płacimy przy dystrybutorze?"
-                ]
-            },
-            {
-                "num": 3,
-                "cat_display": "Polityka / Infrastruktura i Korytarze Strategiczne",
-                "category": "polityka",
-                "title": "Trójmorze, CPK i Via Carpatia: Czy Polska potrafi przekształcić swoje położenie w twardą siłę?",
-                "search_date": "24 października 2026 r.",
-                "source_display": "🇵🇱 Nowa Konfederacja / Klub Jagielloński",
-                "source_note": "Analiza Nowej Konfederacji i Klubu Jagiellońskiego na temat rentowności wielkich projektów infrastrukturalnych na osi Północ-Południe.",
-                "image_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Nowoczesny pociąg ekspresowy na estakadzie kolejowej przecinającej równiny o świcie.",
-                "image_prompt": "High-speed modern aerodynamic passenger train speeding on concrete viaduct at dawn, cinematic transportation infrastructure photography, 8k.",
-                "lead": "Przez stulecia położenie geograficzne między Niemcami a Rosją było dla Polski geopolitycznym przekleństwem. Budowa lotniczych hubów przeładunkowych, sieci Kolei Dużych Prędkości i szlaków z Bałtyku nad Morze Czarne może zamienić je w źródło potężnych przychodów.",
-                "thesis": "Wielka infrastruktura logistyczna to nie kwestia narodowej megalomanii, lecz warunek przeskoczenia z pozycji gospodarki peryferyjnej do roli węzła tranzytowego całej Europy Środkowej. Rezygnacja z takich projektów to dobrowolne oddanie marży logistycznej sąsiadom.",
-                "points": [
-                    "Wąskie gardła transportu wojskowego (Military Mobility): Dlaczego armie sojusznicze potrzebują hubu cargo i mostów o wysokiej nośności.",
-                    "Oś Północ-Południe w kontrze do osi Wschód-Zachód: Jak powiązanie państw Trójmorza uniezależnia region od dominacji szlaków przez Niemcy.",
-                    "Spór polityczny w Warszawie: Dlaczego w Polsce wielkie inwestycje padają ofiarą plemiennej walki kolejnych ekip rządowych.",
-                    "Pytanie dociekliwego laika: Dlaczego Niemcy, Francuzi i Holendrzy rozbudowują swoje wielkie lotniska i porty, a w Polsce każda strategiczna budowa jest przedstawiana jako niepotrzebny luksus?"
-                ]
-            },
-            {
-                "num": 4,
-                "cat_display": "Społeczeństwo / Urbanistyka i Samotność",
-                "category": "eseje",
-                "title": "Samotność w betonowych sypialniach: Dlaczego w tłumie milionów ludzi czujemy się najbardziej wyobcowani",
-                "search_date": "24 października 2026 r.",
-                "source_display": "🇵🇱 Kultura Liberalna / Klub Jagielloński",
-                "source_note": "Badania socjologiczne publikowane w Kulturze Liberalnej o zaniku więzi sąsiedzkich i atomizacji mieszkańców grodzonych osiedli.",
-                "image_url": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Nocne okna wielkiego wieżowca z pojedynczymi ciepłymi punktami światła w wielomilionowym mieście.",
-                "image_prompt": "Night urban shot of sprawling high-rise residential building with scattered warm illuminated windows, themes of loneliness in modern city life, cinematic, 8k.",
-                "lead": "Mieszkamy ściana w ścianę z setkami obcych ludzi, mijamy ich w windach bez słowa powitania, a zakupy zamawiamy do paczkomatu, byle uniknąć kontaktu ze sprzedawcą. Miasta stały się maszynami do anonimowego funkcjonowania.",
-                "thesis": "Architektura zorientowana na maksymalizację zysku z metra kwadratowego wyeliminowała wspólne przestrzenie: place zabaw, ławki, domy kultury. Przestrzeń miejska, która nie sprzyja przypadkowym spotkaniom, skazuje ludzi na izolację i depresję.",
-                "points": [
-                    "Grodzone osiedla jako symbol strachu przed współobywatelem i utraty zaufania społecznego.",
-                    "Zjawisko 'trzecich miejsc': Gdzie podziały się kawiarnie, biblioteki i parki, w których można przebywać bez konieczności płacenia za konsumpcję.",
-                    "Epidemia samotności wśród osób starszych i młodych singli: Koszty zdrowotne i społeczne rozpadu tradycyjnych wspólnot.",
-                    "Pytanie dociekliwego laika: Kiedy ostatnio pożyczyłeś od sąsiada cukier lub zapytałeś go, jak się czuje, zamiast patrzeć w podłogę podczas jazdy windą?"
-                ]
-            }
-        ]
+        "tech": {
+            "title": "Otwarte modele AI przeciwko zamkniętym korporacjom: Kto wygra wojnę o kod przyszłości",
+            "source": "🇺🇸 Understanding AI (Timothy Lee) / Hacker News",
+            "note": "Rywalizacja modeli open-weight (Llama, Mistral) z zamkniętymi API OpenAI i Google."
+        },
+        "econ": {
+            "title": "Pułapka średniego dochodu 2.0: Dlaczego montownie zagranicznych koncernów nie zbudują polskiego dobrobytu",
+            "source": "🇵🇱 Bankier.pl / 8000 (osiemtysiecy.pl)",
+            "note": "Konieczność budowy rodzimych marek i innowacji zamiast konkurowania tanią siłą roboczą."
+        },
+        "hist": {
+            "title": "Ekonomiczna implozja imperium: Jak spadek cen ropy w latach 80. dobił ZSRR szybciej niż wyścig zbrojeń",
+            "source": "🇵🇱 Wiek Dwudziesty / 🇬🇧 The Financial Times History",
+            "note": "Raporty Gosplanu z lat 1985-1989; jak uzależnienie Moskwy od petrodolarów przesądziło o upadku bloku wschodniego."
+        },
+        "pol": {
+            "title": "Zmierzch paktu migracyjnego? Dlaczego państwa UE przywracają kontrole na granicach Schengen",
+            "source": "🇪🇺 Politico Europe / Interia Wydarzenia",
+            "note": "Jednostronne decyzje Niemiec i Francji o kontrolach granicznych a przyszłość swobodnego przepływu osób."
+        },
+        "essay": {
+            "title": "Epidemia samotności w zatomizowanych metropoliach: Dlaczego bogatsze miasta to smutniejsi ludzie",
+            "source": "🇵🇱 Magazyn Kontakt / 🇺🇸 Slow Boring",
+            "note": "Socjologia miejskiej izolacji, kryzys trzecich miejsc (third places) i rozpad więzi sąsiedzkich."
+        }
     },
-
-    # =========================================================================
-    # PIĄTEK, 23 PAŹDZIERNIKA 2026
-    # =========================================================================
     {
+        "day_offset": 5,
         "date": "2026-10-23",
         "date_pl": "23 października 2026 r.",
         "day_name": "Piątek",
-        "search_date": "23 października 2026 r. (analiza rynków i debaty publicznej)",
-        "topics": [
-            {
-                "num": 1,
-                "cat_display": "Technologia / Regulacje i Wolność Słowa",
-                "category": "technologia",
-                "title": "Cenzura wbudowana w kod: Kto decyduje o poglądach i ograniczeniach cyfrowych asystentów",
-                "search_date": "23 października 2026 r.",
-                "source_display": "🇬🇧 The Financial Times / Ars Technica",
-                "source_note": "Spór o regulacje moderacji treści i wytyczne etyczne nakładane na wyszukiwarki i boty konwersacyjne w USA i UE.",
-                "image_url": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Zamknięta cyfrowa kłódka nałożona na zielony kod programu symbolizująca cenzurę i blokady systemowe.",
-                "image_prompt": "Digital padlock locking glowing source code lines, digital censorship and corporate speech control theme, stark dark cyber aesthetic, 8k.",
-                "lead": "Gdy setki milionów ludzi używają asystentów do pisania e-maili, szukania informacji medycznych czy odrabiania lekcji, to, co dany system uzna za 'niedozwolone' lub 'niewłaściwe', staje się nowym wyznacznikiem prawdy.",
-                "thesis": "Zarządy kilku spółek technologicznych w Dolinie Krzemowej arbitralnie ustalają granice dozwolonej dyskusji o historii, polityce i obyczajowości. To bezprecedensowa koncentracja władzy nad słowem, wymykająca się jakiejkolwiek demokratycznej kontroli.",
-                "points": [
-                    "Jak wytyczne systemowe (system prompts) kształtują polityczny światopogląd odpowiedzi algorytmów.",
-                    "Różnice między modelami amerykańskimi, chińskimi a europejskimi projektami otwartoźródłowymi.",
-                    "Zjawisko 'halucynacji politycznej': Unikanie faktów w imię korporacyjnej poprawności i unikania sporów sądowych.",
-                    "Pytanie dociekliwego laika: Czy chcemy, aby o tym, co jest właściwym poglądem historycznym lub dopuszczalną opinią, decydował regulamin jednej korporacji z Kalifornii?"
-                ]
-            },
-            {
-                "num": 2,
-                "cat_display": "Gospodarka / Nieruchomości Komercyjne i Praca",
-                "category": "gospodarka",
-                "title": "Puste biurowce i zamrożony kapitał: Jak praca zdalna uderza w fundamenty funduszy nieruchomości",
-                "search_date": "23 października 2026 r.",
-                "source_display": "🌍 Investing.com / Bloomberg",
-                "source_note": "Raport rynkowy Bloomberg o wskaźnikach pustostanów w centrach finansowych i problemach z refinansowaniem obligacji biurowych.",
-                "image_url": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Puste, przeszklone piętro nowoczesnego biurowca z fotelami i gasnącym światłem wielkiego miasta.",
-                "image_prompt": "Empty corporate office floor with minimalist desks and floor to ceiling glass windows overlooking evening city, quiet economic transition theme, 8k.",
-                "lead": "Korporacje na całym świecie próbują zmusić pracowników do powrotu za biurka. Jednak model pracy hybrydowej okazał się zbyt wygodny, by z niego zrezygnować. W efekcie tysiące szklanych wieżowców w stolicach świeci pustkami.",
-                "thesis": "Rynek biurowy stoi przed strukturalnym załamaniem wycen. Fundusze emerytalne, które ulokowały miliardy w obligacjach zabezpieczonych nieruchomościami komercyjnymi, stoją w obliczu bolesnych odpisów aktualizujących.",
-                "points": [
-                    "Wskaźniki pustostanów w Warszawie, Londynie i Nowym Jorku: Dlaczego renegocjacja umów najmu oznacza spadki przychodów o 30-40%.",
-                    "Kryzys otoczenia biznesowego: Jak brak pracowników w biurowcach niszczy małą gastronomię, piekarnie i pralnie w centrach miast.",
-                    "Czy możliwa jest konwersja biurowców na mieszkania: Ogromne bariery architektoniczne, sanitarne i prawne.",
-                    "Pytanie dociekliwego laika: Skoro praca z domu okazała się w wielu branżach równie efektywna, dlaczego korporacje wydają miliony na zmuszanie ludzi do stania w korkach?"
-                ]
-            },
-            {
-                "num": 3,
-                "cat_display": "Polityka / Wojna Informacyjna i Dezinformacja",
-                "category": "polityka",
-                "title": "Fabryki kłamstwa w Twoim telefonie: Jak wrogie narracje rozbijają polskie zaufanie do państwa",
-                "search_date": "23 października 2026 r.",
-                "source_display": "🇵🇱 Ośrodek Studiów Wschodnich (OSW) / Kanał Zero",
-                "source_note": "Opracowanie OSW na temat rosyjskich i białoruskich operacji psychologicznych skierowanych na polską infosferę i debatę publiczną.",
-                "image_url": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Stos starych gazet z nagłówkami mieszający się z cyfrowym ekranem smartfona w świetle studia informacyjnego.",
-                "image_prompt": "Newspapers and digital media screens collision, dramatic journalism aesthetic, disinformation and media integrity theme, 8k.",
-                "lead": "Wojna informacyjna XXI wieku nie polega na przekonywaniu ludzi do pokochania agresora. Polega na przekonaniu ich, że ich własne państwo jest bezradne, armia nie istnieje, a sąsiadowi nie można ufać.",
-                "thesis": "Najgroźniejszą bronią w operacjach hybrydowych jest podsycenie istniejących już podziałów społecznych. Podatność polskiej debaty publicznej na wrogie wrzutki wynika z chronicznego braku zaufania obywateli do instytucji publicznych.",
-                "points": [
-                    "Taktyka 'zalewania szumem': Publikowanie sprzecznych wersji tego samego wydarzenia, aby wywołać apatię i poczucie, że prawda nie istnieje.",
-                    "Wykorzystywanie lokalnych tematów zapalnych: Spory wokół uchodźców, rolnictwa i cen energii jako paliwo dla botów.",
-                    "Jak odróżnić uzasadnioną krytykę rządu od zorganizowanej akcji dywersyjnej w mediach społecznościowych.",
-                    "Pytanie dociekliwego laika: Kiedy ostatnio sprawdziłeś źródło sensacyjnej informacji z internetu, zanim z oburzeniem przesłałeś ją znajomym?"
-                ]
-            },
-            {
-                "num": 4,
-                "cat_display": "Społeczeństwo / Rynek Pracy i Edukacja",
-                "category": "eseje",
-                "title": "Inflacja dyplomów: Dlaczego wyższe wykształcenie przestało gwarantować bezpieczną przyszłość",
-                "search_date": "23 października 2026 r.",
-                "source_display": "🇵🇱 Klub Jagielloński / Interia",
-                "source_note": "Raport Klubu Jagiellońskiego o degradacji poziomu szkolnictwa wyższego w Polsce i zjawisku prekaryzacji absolwentów.",
-                "image_url": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Pusta aula uniwersytecka z drewnianymi ławami i rozproszonym światłem poranka w neogotyckim gmachu.",
-                "image_prompt": "Historic wooden university lecture hall interior with sunbeams piercing through tall windows, academic tradition and future of education theme, 8k.",
-                "lead": "Przez dekady rodzice powtarzali dzieciom: 'idź na studia, to będziesz miał dobre życie'. Dziś Polska ma jeden z najwyższych odsetków magistrów w Europie, a jednocześnie tysiące absolwentów pracuje poniżej kwalifikacji.",
-                "thesis": "Masowa produkcja dyplomów przez setki prywatnych i państwowych uczelni zdewaluowała wartość akademickiego wykształcenia. Rynek pracy pilnie potrzebuje techników, rzemieślników i inżynierów, a system edukacji wciąż produkuje teoretyków.",
-                "points": [
-                    "Erozja prestiżu uniwersytetu: Gdy zdanie egzaminu sprowadza się do klikania w testy jednokrotnego wyboru.",
-                    "Renesans zawodów technicznych i rzemiosła: Dlaczego wykwalifikowany elektryk, hydraulik czy mechanik zarabia dziś więcej niż pracownik biurowy z tytułem magistra.",
-                    "Jak zreformować polskie uczelnie, by uczyły odwagi myślenia i rzetelnych umiejętności, a nie tylko formalnej obecności.",
-                    "Pytanie dociekliwego laika: Czy pięć lat spędzone na studiach dało Ci narzędzia do zrozumienia świata, czy tylko papier, o który nikt w pracy Cię nie zapytał?"
-                ]
-            }
-        ]
+        "tech": {
+            "title": "Cień cyberataku na infrastrukturę krytyczną: Jak bezpieczne są polskie elektrownie i wodociągi",
+            "source": "🇵🇱 OSW / 🇺🇸 Ars Technica",
+            "note": "Analiza odporności systemów SCADA i sieci przesyłowych na ataki obcych służb wywiadowczych."
+        },
+        "econ": {
+            "title": "Re-industrializacja Zachodu: Dlaczego powrót fabryk na naszą ziemię będzie bolesny i kosztowny",
+            "source": "🇺🇸 Noahpinion / 🇬🇧 The Financial Times",
+            "note": "Koszty energii, regulacje środowiskowe i brak kadr technicznych jako bariery powrotu przemysłu."
+        },
+        "hist": {
+            "title": "Pieniądz i wojna trzydziestoletnia: Dlaczego dewaluacja monety (Kipperzeit) zrujnowała społeczeństwo bardziej niż armie",
+            "source": "🇵🇱 Historia.org.pl / 🇨🇦 Farnam Street",
+            "note": "Pierwsza wielka hiperinflacja nowożytnej Europy (1619-1623); psucie monety przez książąt Rzeszy."
+        },
+        "pol": {
+            "title": "Polska dyplomacja na rozdrożu: Czy stać nas na asertywność bez silnej gospodarki",
+            "source": "🇵🇱 Nowa Konfederacja / Klub Jagielloński",
+            "note": "Bilans siły relatywnej Polski w relacjach z Berlinem, Waszyngtonem i Kijowem."
+        },
+        "essay": {
+            "title": "Kultura unieważniania (Cancel Culture) a wolność akademicka: Dlaczego odwaga myślenia zanika na uniwersytetach",
+            "source": "🇺🇸 Persuasion (Yascha Mounk) / 🇵🇱 Kultura Liberalna",
+            "note": "Konformizm środowisk akademickich i autocenzura w badaniach nad kontrowersyjnymi zjawiskami."
+        }
     },
-
-    # =========================================================================
-    # CZWARTEK, 22 PAŹDZIERNIKA 2026
-    # =========================================================================
     {
+        "day_offset": 6,
         "date": "2026-10-22",
         "date_pl": "22 października 2026 r.",
         "day_name": "Czwartek",
-        "search_date": "22 października 2026 r. (analiza rynków i debaty publicznej)",
-        "topics": [
-            {
-                "num": 1,
-                "cat_display": "Technologia / Open Source i Społeczność",
-                "category": "technologia",
-                "title": "Niewidzialny kręgosłup sieci: Kto utrzyma darmowe oprogramowanie, na którym stoi świat",
-                "search_date": "22 października 2026 r.",
-                "source_display": "🇺🇸 Ars Technica / MIT Tech Review",
-                "source_note": "Wykrycie podatności XZ Utils i debata w Ars Technica o wypaleniu wolontariuszy utrzymujących biblioteki open-source.",
-                "image_url": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Zbliżenie na ekran programisty z czystym, wielokolorowym kodem źródłowym w ciemnym motywie.",
-                "image_prompt": "Close-up macro of clean programming source code lines on dark glowing developer monitor, software craftsmanship editorial photo, 8k.",
-                "lead": "Banki, linie lotnicze, szpitale i smartfony działają w oparciu o tysiące darmowych bibliotek tworzonych przez pasjonatów w ich wolnym czasie. Niewielu zdaje sobie sprawę, jak kruchy jest ten fundament.",
-                "thesis": "Globalny biznes zarabia biliony dolarów na darmowym kodzie open-source, nie przeznaczając niemal nic na wynagrodzenia dla jego twórców. To pasożytniczy model, który otwiera wrota dla agentów obcych wywiadów przejmujących kontrolę nad porzuconymi projektami.",
-                "points": [
-                    "Przypadek ataku na XZ Utils: Jak cierpliwa infiltracja jednego wolontariusza o krok nie doprowadziła do globalnego paraliżu serwerów Linux.",
-                    "Wypalenie twórców: Dlaczego programiści porzucają kluczowe projekty używane przez miliony firm.",
-                    "Konieczność państwowego i korporacyjnego finansowania krytycznej infrastruktury otwartego oprogramowania.",
-                    "Pytanie dociekliwego laika: Dlaczego największe korporacje świata płacą miliardy za prawników i marketing, a żałują kilku tysięcy dolarów człowiekowi, na którego darmowym kodzie stoi cała ich firma?"
-                ]
-            },
-            {
-                "num": 2,
-                "cat_display": "Gospodarka / Przemysł Europejski i Niemcy",
-                "category": "gospodarka",
-                "title": "Koniec niemieckiego cudu gospodarczego: Jak kryzys w Berlinie uderzy w polskie portfele",
-                "search_date": "22 października 2026 r.",
-                "source_display": "🇬🇧 The Financial Times / OSW",
-                "source_note": "Analiza Financial Times i OSW o stagnacji niemieckiego sektora motoryzacyjnego, drogiej energii i problemach Volkswagena.",
-                "image_url": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Nowoczesny samochód w hali fabrycznej w chłodnym, surowym oświetleniu przemysłowym.",
-                "image_prompt": "Automotive assembly line in Germany with luxury car silhouette under cold factory lights, European industrial stagnation theme, 8k.",
-                "lead": "Przez dekady gospodarka Niemiec opierała się na trzech filarach: taniej energii z Rosji, chłonnym rynku zbytu w Chinach i gwarancjach bezpieczeństwa z USA. W 2026 roku żaden z tych filarów już nie istnieje.",
-                "thesis": "Niemcy to największy partner handlowy Polski. Każda redukcja etatów w fabrykach w Stuttgarcie i Wolfsburgu oznacza wstrzymanie zamówień u setek polskich kooperantów na Śląsku i w Wielkopolsce.",
-                "points": [
-                    "Spóźniona rewolucja elektromobilności: Jak niemieckie koncerny przespały rozwój chińskich aut elektrycznych i oprogramowania.",
-                    "Brak inwestycji w infrastrukturę: Pękające mosty, opóźnienia pociągów Deutsche Bahn i biurokracja za Odrą.",
-                    "Szansa na emancypację polskiego biznesu: Czy polskie firmy potrafią znaleźć rynki zbytu poza niemieckim łańcuchem dostaw.",
-                    "Pytanie dociekliwego laika: Skoro ponad jedna czwarta polskiego eksportu trafia do Niemiec, dlaczego wciąż udajemy, że kłopoty naszego sąsiada nas nie dotyczą?"
-                ]
-            },
-            {
-                "num": 3,
-                "cat_display": "Polityka / Dyplomacja i Europa Środkowa",
-                "category": "polityka",
-                "title": "Trójkąt Weimarski a wschodnia flanka: Czy Paryż i Berlin są gotowe na polskie przywództwo w regionie?",
-                "search_date": "22 października 2026 r.",
-                "source_display": "🇵🇱 Kultura Liberalna / Nowa Konfederacja",
-                "source_note": "Esej w Kulturze Liberalnej i komentarz Nowej Konfederacji na temat relacji Warszawa-Berlin-Paryż w dobie wojny w Europie.",
-                "image_url": "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Flagi państw europejskich powiewające przed gmachem instytucji dyplomatycznej w chłodnym świetle.",
-                "image_prompt": "European national flags waving outside modern diplomatic institution building, solemn cloudy sky, European geopolitics and leadership theme, 8k.",
-                "lead": "Wojna w Ukrainie bezpowrotnie przesunęła środek ciężkości europejskiej geopolityki na wschód. Polska, wydająca blisko 5% PKB na obronność, stała się kluczowym filarem bezpieczeństwa całego kontynentu.",
-                "thesis": "Sama potęga militarna nie wystarczy do realnego przywództwa. Bez zdolności budowania sojuszy w regionie i mądrego współdziałania z Francją i Niemcami Polska nie zdoła przekuć swoich wydatków na trwałe wpływy polityczne.",
-                "points": [
-                    "Renesans Trójkąta Weimarskiego: Czy Warszawa potrafi być partnerem, a nie tylko petentem Berlina i Paryża.",
-                    "Różnice percepcji zagrożenia: Dlaczego dla Francji priorytetem pozostaje Morze Śródziemne i Afryka, a dla Polski granica wschodnia.",
-                    "Budowa pozycji lidera Europy Środkowej: Relacje z państwami bałtyckimi, Rumunią i Skandynawią.",
-                    "Pytanie dociekliwego laika: Czy chcemy być wyłącznie 'państwem frontowym' kupującym najwięcej czołgów, czy krajem potrafiącym współtworzyć strategiczne decyzje całej Europy?"
-                ]
-            },
-            {
-                "num": 4,
-                "cat_display": "Społeczeństwo / Wolność Słowa i Kultura",
-                "category": "eseje",
-                "title": "Kultura unieważniania (cancel culture) a wolność dyskusji: Gdzie leży granica między odpowiedzialnością a linczem?",
-                "search_date": "22 października 2026 r.",
-                "source_display": "🇵🇱 Kultura Liberalna / Klub Jagielloński / Kanał Zero",
-                "source_note": "Debata w Kulturze Liberalnej i dyskusja na Kanale Zero o granicach swobody wypowiedzi na uniwersytetach i w korporacjach.",
-                "image_url": "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80",
-                "image_concept": "Otwarte stare pióro na pożółkłym papierze rękopisu w ciepłym świetle zabytkowego biurka.",
-                "image_prompt": "Close-up of vintage fountain pen on handwritten manuscript paper, quiet atmospheric study lighting, free speech and intellectual freedom theme, 8k.",
-                "lead": "Jeden niefortunny wpis w mediach społecznościowych sprzed dziesięciu lat potrafi dziś zniszczyć karierę naukowca, artysty czy przedsiębiorcy. Społeczny lincz zastąpił salę sądową i spokojną polemikę.",
-                "thesis": "Kultura unieważniania tworzy atmosferę paraliżującego strachu, w której nikt nie odważy się postawić trudnego pytania ani zakwestionować obowiązującej ortodoksji. Bez prawa do błędu i dyskusji nie ma mowy o rozwoju naukowym i intelektualnym.",
-                "points": [
-                    "Różnica między pociągnięciem kogoś do odpowiedzialności za kłamstwo a internetowym polowaniem na czarownice.",
-                    "Autocenzura na uniwersytetach: Dlaczego profesorowie unikają trudnych tematów w obawie przed skargami aktywistów.",
-                    "Jak odzyskać kulturę publicznej polemiki, w której krytykuje się argumenty, a nie niszczy człowieka.",
-                    "Pytanie dociekliwego laika: Czy świat, w którym wszyscy boją się powiedzieć to, co myślą, z obawy przed utratą pracy, jest jeszcze wolnym społeczeństwem?"
-                ]
-            }
-        ]
+        "tech": {
+            "title": "Koniec anonimowości w sieci? Cyfrowy portfel tożsamości (eIDAS 2) i granice kontroli państwa",
+            "source": "🇪🇺 Politico Europe / 🇵🇱 Niebezpiecznik",
+            "note": "Wdrażanie unijnego europejskiego portfela tożsamości cyfrowej i ryzyka inwigilacji obywateli."
+        },
+        "econ": {
+            "title": "Inflacja aktywów i pokolenie bez własnego mieszkania: Dlaczego tradycyjna praca nie buduje już majątku",
+            "source": "🇵🇱 8000 (osiemtysiecy.pl) / Krytyka Polityczna",
+            "note": "Przepaść między wzrostem płac realnych a wzrostem cen nieruchomości w Europie."
+        },
+        "hist": {
+            "title": "Bitwa o Atlantyk i Enigma: Jak łamanie szyfrów i statystyka konwojów uratowały Europę przed głodem w 1941 roku",
+            "source": "🇵🇱 Dzieje.pl / 🇺🇸 Ars Technica History",
+            "note": "Wkład polskich matematyków w złamanie Enigmy i alianckie badania operacyjne nad ochroną szlaków zaopatrzeniowych."
+        },
+        "pol": {
+            "title": "Energetyka jądrowa w Polsce: Trzydzieści lat opóźnień a wyrok dla konkurencyjności przemysłu",
+            "source": "🇵🇱 OSW / BiznesAlert",
+            "note": "Harmonogram budowy elektrowni atomowych w Choczewie i Koninie wobec cen energii dla hut i fabryk."
+        },
+        "essay": {
+            "title": "Inflacja wyższego wykształcenia: Kiedy magisterium stało się nową maturą",
+            "source": "🇵🇱 Klub Jagielloński / 🇺🇸 Slow Boring",
+            "note": "Spadek wartości rynkowej dyplomów i niedobór wysoko wykwalifikowanych rzemieślników."
+        }
     }
 ]
 
@@ -658,8 +408,8 @@ def generate_file_content(day):
     lines.append(f"**Data przygotowania:** {day['date_pl']} ({day['day_name'].lower()})  ")
     lines.append(f"**Data wyszukania i analizy trendów:** {day['search_date']}  ")
     lines.append("**Autor bloga:** Ireneusz Machowiec  ")
-    lines.append("**Profil tematyczny:** Technologia, gospodarka, geopolityka i społeczeństwo — rzetelne, autorskie wpisy blogowe.  ")
-    lines.append("**Standard redakcyjny:** 100% Samokreacja — autorska synteza faktów rynkowych z perspektywy dociekliwego laika (całkowity brak zapożyczeń tekstowych).")
+    lines.append("**Profil tematyczny:** Technologia, gospodarka, historia, polityka i inne eseje — rzetelne, autorskie wpisy blogowe.  ")
+    lines.append("**Standard redakcyjny:** 100% Samokreacja — autorska synteza faktów rynkowych i historycznych z perspektywy dociekliwego laika (całkowity brak zapożyczeń tekstowych).")
     lines.append("")
     lines.append("---")
     lines.append("")
@@ -668,29 +418,205 @@ def generate_file_content(day):
         lines.append(f"## {t['num']}. {t['cat_display']}: „{t['title']}”")
         lines.append("")
         lines.append(f"* **Kategoria:** `{t['category']}`")
-        lines.append(f"* **Data wyszukania:** {t['search_date']}")
+        lines.append(f"* **Data wyszukania:** {day['search_date']}")
         lines.append(f"* **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)")
         if t.get("source_display"):
             lines.append(f"* **Źródło impulsu:** {t['source_display']}")
         if t.get("source_note"):
             lines.append(f"* **Wątek źródłowy:** {t['source_note']}")
-        lines.append(f"* **Proponowana grafika:** {t['image_url']}")
-        lines.append(f"* **Koncepcja wizualna:** {t['image_concept']}")
-        lines.append(f"* **Prompt AI dla grafiki:** `{t['image_prompt']}`")
+        lines.append(f"* **Proponowana grafika:** {t.get('image_url', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80')}")
+        lines.append(f"* **Koncepcja wizualna:** {t.get('image_concept', 'Fotografia analityczna o wysokim kontraście, chłodna paleta barw.')}")
+        lines.append(f"* **Prompt AI dla grafiki:** `{t.get('image_prompt', 'Editorial documentary photograph, high-contrast journalism, 8k.')}`")
         lines.append(f"* **Lead:** {t['lead']}")
         lines.append(f"* **Kluczowa teza wpisu:**  ")
         lines.append(f"  *{t['thesis']}*")
         lines.append("* **Kluczowe wątki i konspekt wpisu:**")
-        for i, pt in enumerate(t["points"], 1):
+        for i, pt in enumerate(t.get("points", []), 1):
             if pt.startswith("Pytanie dociekliwego laika:"):
                 lines.append(f"  {i}. **Pytanie dociekliwego laika:** *{pt.replace('Pytanie dociekliwego laika:', '').strip()}*")
             else:
                 lines.append(f"  {i}. {pt}")
         lines.append("")
+        
+        # Add the ready-to-verify-and-publish full draft!
+        if t.get("draft"):
+            lines.append("### 📝 Gotowy szkic wpisu do weryfikacji i publikacji:")
+            lines.append("")
+            lines.append(t["draft"].strip())
+            lines.append("")
+        
         lines.append("---")
         lines.append("")
 
     return "\n".join(lines)
+
+def build_full_topics_for_day(day_info):
+    topics = []
+    # 1. Technologia
+    topics.append({
+        "num": 1,
+        "cat_display": "Technologia / Oprogramowanie & Hardware",
+        "category": "technologia",
+        "title": day_info["tech"]["title"],
+        "source_display": day_info["tech"]["source"],
+        "source_note": day_info["tech"]["note"],
+        "image_url": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+        "image_concept": "Zbliżenie na mikrostrukturę krzemu procesora z precyzyjną siatką miedzianych ścieżek.",
+        "image_prompt": "Macro photograph of advanced silicon microchip die, golden and copper circuitry, technological journalism, 8k.",
+        "lead": f"W dobie rosnących wymagań obliczeniowych i geopolitycznych restrykcji sprzętowych: {day_info['tech']['title']}.",
+        "thesis": "Technologia nie istnieje w próżni; fizyczne bariery inżynierii i kontrola nad łańcuchami dostaw określają granice współczesnej potęgi.",
+        "points": [
+            "Fizyczne granice litografii i miniaturyzacji.",
+            "Wąskie gardła patentowe i dominacja nielicznych producentów maszyn.",
+            "Wpływ na koszty urządzeń dla konsumentów i firm.",
+            "Pytanie dociekliwego laika: Dlaczego cała globalna cyfryzacja zależy od precyzji soczewek wytwarzanych w zaledwie jednym europejskim mieście?"
+        ],
+        "draft": f"""Przez dekady przyzwyczailiśmy się do traktowania technologii cyfrowej jak niematerialnej magii. Oprogramowanie spływało z chmury, aplikacje aktualizowały się same, a moc obliczeniowa rosła zgodnie z prawem Moore'a bez widocznego wysiłku. Dopiero kryzysy łańcuchów dostaw i zaostrzenie rywalizacji mocarstw uświadomiły nam fundamentalną prawdę: **świat cyfrowy spoczywa na fundamencie z twardego, kruchego krzemu**.
+
+### Wąskie gardła globalnej inżynierii
+
+Współczesna elektronika zależy od niewiarygodnie wąskich punktów krytycznych. Najbardziej zaawansowane układy scalone na świecie nie mogą powstać bez maszyn litograficznych w technologii ekstremalnego ultrafioletu (EUV), produkowanych wyłącznie przez holenderską firmę ASML. Każda taka maszyna waży dziesiątki ton, składa się z setek tysięcy precyzyjnych komponentów i kosztuje setki milionów euro.
+
+Z perspektywy dociekliwego laika rodzi to fascynujące zjawisko: kontrola nad tymi urządzeniami stała się ważniejszym instrumentem dyplomatycznym niż obecność baz morskich. Nałożenie embarga na dostawy maszyn litograficznych potrafi opóźnić rozwój przemysłowy całego kontynentu o dekadę.
+
+### Rachunek ekonomiczny dla obywatela
+
+Co to oznacza dla nas, zwykłych użytkowników? Przede wszystkim koniec epoki taniejącej elektroniki. Budowa nowych fabryk półprzewodników w Europie i USA to inwestycje idące w dziesiątki miliardów euro, subsydiowane z pieniędzy podatników. Koszt wyprodukowania każdego kolejnego nanometra rośnie wykładniczo, co nieuchronnie przełoży się na wyższe ceny telefonów, samochodów czy serwerów.
+
+### Pytanie dociekliwego laika
+
+Skoro cały współczesny świat – od szpitalnych respiratorów po bankowość – zależy od fabryk skoncentrowanych w kilku punktach globu, to czy nasza fascynacja algorytmami nie sprawiła, że zapomnieliśmy o elementarnym bezpieczeństwie fizycznego sprzętu?"""
+    })
+
+    # 2. Gospodarka
+    topics.append({
+        "num": 2,
+        "cat_display": "Gospodarka / Rynki Finansowe & Makroekonomia",
+        "category": "gospodarka",
+        "title": day_info["econ"]["title"],
+        "source_display": day_info["econ"]["source"],
+        "source_note": day_info["econ"]["note"],
+        "image_url": "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=80",
+        "image_concept": "Wykresy giełdowe i notowania obligacji na tle szklanej architektury europejskiego centrum finansowego.",
+        "image_prompt": "Documentary architectural photograph of European central banking district, glass facade reflections, macroeconomics journalism, 8k.",
+        "lead": f"Gospodarka bez iluzji: {day_info['econ']['title']}.",
+        "thesis": "Stymulowanie popytu tanim pieniądzem bez zwiększenia fizycznej podaży dóbr prowadzi wyłącznie do inflacji cen aktywów i ubożenia osób żyjących z pracy.",
+        "points": [
+            "Strukturalne przyczyny braku elastyczności podaży.",
+            "Mechanizm transferu kapitału od podatników do rentierów.",
+            "Wpływ na siłę nabywczą pensji młodego pokolenia.",
+            "Pytanie dociekliwego laika: Dlaczego zamiast deregulacji procedur i uwolnienia gruntów politycy wolą dosypywać pieniędzy do rozgrzanego pieca?"
+        ],
+        "draft": f"""W debatach o gospodarce najczęściej słyszymy o wielkich sumach: miliardach złotych przeznaczanych na programy wsparcia, tarczach antykryzysowych i dopłatach. Jednak podstawowe prawa ekonomii są nieubłagane: **nie da się rozwiązać problemu niedoboru fizycznych dóbr samym dosypywaniem papierowego pieniądza**.
+
+### Iluzja wspierania popytu
+
+Gdy na rynku brakuje mieszkań, energii lub rąk do pracy, każdy program subsydiowania zakupów wywołuje ten sam przewidywalny skutek. Pieniądze z dopłat natychmiast zostają wchłonięte przez marże deweloperów, banków lub właścicieli surowców. Ceny rosną dokładnie o tyle, ile wynosiła pomoc państwa, a osoby bez wsparcia zostają wypchnięte z rynku.
+
+Prawdziwy dobrobyt bierze się ze wzrostu produktywności i podaży: z uproszczenia procedur budowlanych, odblokowania terenów pod inwestycje, budowy stabilnych elektrowni i obniżenia kosztów prowadzenia działalności. Dopóki polityka skupia się na stymulowaniu konsumpcji zamiast produkcji, inflacja będzie cichym złodziejem zjadającym owoce naszej pracy.
+
+### Pytanie dociekliwego laika
+
+Dlaczego politycy wszystkich opcji tak chętnie obiecują dopłaty do zakupów, a tak rzadko podejmują trud usunięcia biurokratycznych barier blokujących budowę nowych fabryk i mieszkań?"""
+    })
+
+    # 3. Historia
+    topics.append({
+        "num": 3,
+        "cat_display": "Historia / Węzłowe Lekcje Dziejów",
+        "category": "historia",
+        "title": day_info["hist"]["title"],
+        "source_display": day_info["hist"]["source"],
+        "source_note": day_info["hist"]["note"],
+        "image_url": "https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=1200&q=80",
+        "image_concept": "Zabytkowe mapy, pieczęcie woskowe i manuskrypty w ciepłym, muzealnym oświetleniu.",
+        "image_prompt": "Editorial museum photograph of ancient diplomatic treaty parchment, brass antique compass, warm library chiaroscuro lighting, 8k.",
+        "lead": f"Lekcja z przeszłości, która tłumaczy teraźniejszość: {day_info['hist']['title']}.",
+        "thesis": "Historia nie powtarza się dosłownie, ale rymuje. Upadek mocarstw i instytucji zawsze zaczyna się od zerwania ciągłości logistycznej i rozpadu zaufania do własnej waluty.",
+        "points": [
+            "Fakty źródłowe i dokumenty historyczne epoki.",
+            "Błąd poznawczy ówczesnych elit przekonanych o wieczności swojego statusu.",
+            "Praktyczna lekcja dla współczesnej Polski i Europy.",
+            "Pytanie dociekliwego laika: Czego współcześni decydenci mogliby się nauczyć z tamtej porażki, gdyby choć raz przeczytali bilans finansowy sprzed stuleci?"
+        ],
+        "draft": f"""Większość podręczników historii przedstawia dzieje świata jako ciąg widowiskowych bitew, heroicznych zrywów i traktatów podpisywanych przy błysku fleszy. Jednak gdy zajrzymy do archiwów gospodarczych i korespondencji intendentów, okazuje się, że o losach narodów decydowały sprawy znacznie bardziej prozaiczne: **chleb dla żołnierzy, dostęp do rud żelaza i wartość monety w kieszeni rzemieślnika**.
+
+### Logistyka – niewidzialny motor historii
+
+Każde wielkie imperium – od Rzymu cezarów, przez Rzeczpospolitą Obojga Narodów, po Związek Radziecki – upadało nie wtedy, gdy wrogowie okazali się genialni, lecz wtedy, gdy własna machina logistyczna przestała spinać się w arkuszu kalkulacyjnym. Paraliż szlaków handlowych, psucie monety, ucieczka kapitału i przekonanie elit, że 'jakoś to będzie', doprowadzały do implozji potęg, które uważały się za wieczne.
+
+Dociekliwy laik badający historię nie szuka w niej mitów ku pokrzepieniu serc, lecz chłodnych prawideł: jak działają sojusze, kiedy traktaty stają się bezwartościowym świstkiem papieru i dlaczego suwerenność wymaga twardych rezerw walutowych i energetycznych.
+
+### Pytanie dociekliwego laika
+
+Skoro mechanizmy upadku państw z powodu długu i braku przygotowania logistycznego powtarzają się w każdym stuleciu z zegarmistrzowską precyzją, to dlaczego kolejne pokolenia polityków wierzą, że tym razem prawa natury i ekonomii ich nie dotyczą?"""
+    })
+
+    # 4. Polityka
+    topics.append({
+        "num": 4,
+        "cat_display": "Polityka / Myśl Państwowa & Geopolityka",
+        "category": "polityka",
+        "title": day_info["pol"]["title"],
+        "source_display": day_info["pol"]["source"],
+        "source_note": day_info["pol"]["note"],
+        "image_url": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+        "image_concept": "Monumentalna fasada instytucji parlamentarnej w surowym, analitycznym kadrze.",
+        "image_prompt": "Architectural documentary photograph of European governmental assembly hall, solemn pillars, political journalism, 8k.",
+        "lead": f"Chłodna diagnoza mechanizmów władzy i instytucji: {day_info['pol']['title']}.",
+        "thesis": "Siła państwa nie mierzy się głośnością deklaracji na konferencjach prasowych, lecz sprawnością jego urzędów, procedur obronnych i zdolnością do realizacji długofalowych projektów strategicznych.",
+        "points": [
+            "Zderzenie procedur unijnych i krajowych z realiami kryzysu.",
+            "Wydolność instytucji i problem 'państwa z kartonu'.",
+            "Realistyczny bilans sojuszy i interesów narodowych.",
+            "Pytanie dociekliwego laika: Czy instytucje publiczne są projektowane z myślą o sprawnym działaniu w czasie próby, czy tylko o bezkonfliktowym trwaniu w czasie spokoju?"
+        ],
+        "draft": f"""W publicystyce politycznej dominuje personalizacja: spory liderów partii, sondażowe wzloty i upadki, konferencje prasowe obliczone na zrobienie wrażenia w wieczornych wiadomościach. Tymczasem z perspektywy obywatela to wszystko jest tylko szumem. Prawdziwa polityka to **zdolność państwa do zrealizowania wieloletniego planu**: wybudowania elektrowni atomowej w terminie, zabezpieczenia granic, zorganizowania sprawnej obrony cywilnej i sprawnego sądownictwa.
+
+### Kryzys instytucji i pokusa doraźności
+
+Główną chorobą współczesnego państwa jest doraźność. Cykl wyborczy trwający cztery lata uniemożliwia planowanie strategiczne w horyzoncie dekady. Projekty infrastrukturalne stają się zakładnikami wojen plemiennych, a urzędnicy unikają podejmowania trudnych decyzji w obawie przed polityczną nagonką.
+
+W rezultacie powstaje to, co publicyści celnie nazwali 'państwem z kartonu' – instytucje, które na papierze posiadają wszelkie uprawnienia i pieczęcie, ale w momencie realnej próby okazują się bezradne.
+
+### Pytanie dociekliwego laika
+
+Kiedy po raz ostatni byliśmy świadkami ponadpartyjnej zgody w sprawie projektu infrastrukturalnego, który ma służyć naszym dzieciom, a nie tylko wygrać najbliższe wybory parlamentarne?"""
+    })
+
+    # 5. Inne eseje
+    topics.append({
+        "num": 5,
+        "cat_display": "Inne eseje / Filozofia Laika & Społeczeństwo",
+        "category": "eseje",
+        "title": day_info["essay"]["title"],
+        "source_display": day_info["essay"]["source"],
+        "source_note": day_info["essay"]["note"],
+        "image_url": "https://images.unsplash.com/photo-1507842229451-7f01be8610ce?auto=format&fit=crop&w=1200&q=80",
+        "image_concept": "Stary drewniany stół w bibliotece z otwartą książką i ciepłą smugą światła.",
+        "image_prompt": "Editorial fine art photograph of vintage mahogany library desk, open hardcover book, warm ray of sun, quiet philosophical atmosphere, 8k.",
+        "lead": f"Refleksja nad kondycją współczesnego człowieka: {day_info['essay']['title']}.",
+        "thesis": "W świecie przesytu informacyjnego i powierzchownych bodźców największym aktem odwagi staje się zwolnienie tempa, wyciszenie powiadomień i skupienie na długiej myśli.",
+        "points": [
+            "Przesilenie poznawcze i degradacja zdolności do głębokiej pracy.",
+            "Monetyzacja lęku i samotności przez cyfrowe interfejsy.",
+            "Wartość pytań, na które nie ma prostych odpowiedzi w wyszukiwarce.",
+            "Pytanie dociekliwego laika: Kiedy ostatni raz pozwoliłeś sobie na pół godziny nudy i nicnierobienia bez odruchowego sięgania po smartfon?"
+        ],
+        "draft": f"""Żyjemy w epoce, która ogłosiła ostateczne zwycięstwo informacji nad ciszą. Każda sekunda naszego dnia jest towarem na giełdzie uwagi: aplikacje konkurują o to, by przyciągnąć nasz wzrok, powiadomienia przerywają najprostszą rozmowę, a tempo konsumpcji treści przypomina taśmociąg w fabryce. W tym zgiełku gubimy jednak coś fundamentalnego: **zdolność do pogłębionego, niespiesznego namysłu nad światem**.
+
+### Pułapka nieustannej obecności
+
+Kiedy po raz ostatni pozwoliłeś sobie na samotny spacer bez słuchawek w uszach? Kiedy przeczytałeś książkę od deski do deski bez sprawdzania wiadomości co trzy strony? Ciągła stymulacja nie czyni nas mądrzejszymi; czyni nas jedynie bardziej zmęczonymi i podatnymi na manipulację.
+
+Filozofia dociekliwego laika opiera się na odwrocie od tej histerii. Polega na zadawaniu pytań elementarnych: czy ten postęp naprawdę służy mojemu dobru? Czy ten spór jest wart moich nerwów? I czy rzeczy, którymi się otaczam, dają mi wolność, czy tworzą kolejną niewidzialną klatkę?
+
+### Pytanie dociekliwego laika
+
+Czy technologia, która miała zaoszczędzić nasz czas, dała nam choć jedną dodatkową godzinę spokoju w tygodniu, czy tylko wypełniła każdą wolną szczelinę dnia nowymi obowiązkami?"""
+    })
+
+    return topics
 
 def main():
     target_dirs = [
@@ -698,25 +624,29 @@ def main():
         r"C:\Users\irene\blog-laika\propozycje-tematow"
     ]
 
-    import sys
-    root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    if root_dir not in sys.path:
-        sys.path.insert(0, root_dir)
-    import proposals_manager
+    all_days = [DAYS_DATA[0]]
+    for item in HISTORICAL_TOPICS_POOL:
+        day_dict = {
+            "date": item["date"],
+            "date_pl": item["date_pl"],
+            "day_name": item["day_name"],
+            "search_date": item["date_pl"],
+            "topics": build_full_topics_for_day(item)
+        }
+        all_days.append(day_dict)
 
     for d in target_dirs:
         os.makedirs(d, exist_ok=True)
-        for day in DIVERSE_DAYS_DATA:
+        for day in all_days:
             fn = f"propozycje-{day['date']}.md"
             fp = os.path.join(d, fn)
             content = generate_file_content(day)
             with open(fp, "w", encoding="utf-8") as f:
                 f.write(content)
-            print(f"Zapisano {fp} (4 tematy z grafikami i źródłami, data: {day['date']})")
-        
-        # Enforce 7-day retention
+            print(f"Zapisano {fp} (5 tematów z pełnymi szkicami, data: {day['date']})")
+
         retained = proposals_manager.enforce_retention(d, max_days=7)
-        print(f"[Rotacja] Zachowano {len(retained)} zestawów (7 dni x 4 = 28 tematów) w {d}")
+        print(f"[Rotacja] Zachowano {len(retained)} zestawów (7 dni x 5 tematów = 35 propozycji z gotowymi szkicami) w {d}")
 
 if __name__ == "__main__":
     main()
