@@ -9,8 +9,94 @@ Zawiera:
   - DOBÓR GRAFIKI: URL dobranej grafiki wysokiej jakości (Unsplash), koncepcję wizualną oraz gotowy prompt AI do generowania.
 """
 import os
+import sys
+
+# Ensure root project directory is on sys.path
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if root_dir not in sys.path:
+    sys.path.insert(0, root_dir)
 
 DAYS_DATA = [
+    {
+        "date": "2026-10-28",
+        "date_pl": "28 października 2026 r.",
+        "day_name": "Środa",
+        "search_date": "28 października 2026 r. (analiza trendów: On-Device SLM, Grid Power CapEx, Lithography Chokepoints)",
+        "topics": [
+            {
+                "num": 1,
+                "cat_display": "Technologia / Oprogramowanie i Hardware",
+                "category": "technologia",
+                "title": "Koniec dyktatu gigantycznych chmur? Dlaczego małe modele (SLM) wkraczają na telefony i laptopy",
+                "search_date": "28 października 2026 r.",
+                "image_url": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
+                "image_concept": "Surowa, minimalistyczna matryca obwodów krzemowych procesora NPU z chłodnym błękitnym podświetleniem magistrali danych.",
+                "image_prompt": "Editorial photograph of ultra-dense edge AI processor silicon die, clean metallic copper connections, cool neon blue circuit illumination, high-tech hardware journalism, 8k.",
+                "lead": "Przez ostatnie trzy lata rozwój sztucznej inteligencji utożsamiano z gigantycznymi serwerowniami pochłaniającymi megawaty energii. Jednak nowa fala wysoce wyspecjalizowanych, kompaktowych modeli (SLM) dowodzi, że przyszłość może należeć do urządzeń lokalnych.",
+                "thesis": "Centralizacja AI w kilku amerykańskich centrach chmurowych to anomalia, a nie docelowy stan technologii. Przeniesienie wnioskowania na procesory NPU w telefonach i komputerach drastycznie obniża koszty tokenów, eliminuje opóźnienia i przywraca użytkownikom realną prywatność danych.",
+                "points": [
+                    "Przełom w kwantyzacji i destylacji wiedzy: Jak modele 3B-8B parametrów dorównują węższym zadaniom dawnym gigantom chmurowym.",
+                    "Ekonomia lokalnego wnioskowania: Koszt zera złotych za zapytanie po zakupie sprzętu vs. nieprzewidywalne rachunki za API u zewnętrznych dostawców.",
+                    "Prywatność i bezpieczeństwo korporacyjne: Dlaczego działy bezpieczeństwa banków i kancelarii wolą lokalne NPU od wysyłania wrażliwych dokumentów do obcej chmury.",
+                    "Pytanie dociekliwego laika: Skoro 90% codziennych zadań biurowych potrafi obsłużyć mały model działający offline w laptopie, to dlaczego wciąż płacimy miesięczne abonamenty za chmurę gigantów?"
+                ]
+            },
+            {
+                "num": 2,
+                "cat_display": "Gospodarka / Energetyka i Infrastruktura",
+                "category": "gospodarka",
+                "title": "Rachunek energetyczny za sztuczną inteligencję: Jak centra danych destabilizują lokalne sieci przesyłowe",
+                "search_date": "28 października 2026 r.",
+                "image_url": "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1200&q=80",
+                "image_concept": "Potężne stalowe linie wysokiego napięcia przecinające horyzont o zmierzchu w dramatycznym, surowym świetle industrialnym.",
+                "image_prompt": "Dramatic wide shot of high-voltage electrical transmission towers and power substation at twilight, cinematic golden hour lighting, industrial energy infrastructure documentary photography, 8k.",
+                "lead": "Podczas gdy rynki finansowe ekscytują się wzrostem wycen spółek technologicznych, operatorzy sieci elektroenergetycznych biją na alarm. Zapotrzebowanie nowoczesnych klastrów obliczeniowych na moc rośnie szybciej niż możliwości budowy nowych linii przesyłowych.",
+                "thesis": "Fizyczną granicą ekspansji sztucznej inteligencji nie jest brak pomysłów na oprogramowanie, lecz brak dostępnej mocy przyłączeniowej. Koszty modernizacji sieci energetycznych i subsydiowania reaktorów dla chmury mogą wkrótce wylądować na rachunkach zwykłych odbiorców energii.",
+                "points": [
+                    "Kolejki po prąd: Czas oczekiwania na przyłącze energetyczne dla nowego data center w Europie i USA sięga dziś 5–7 lat.",
+                    "Renesans energii jądrowej na zamówienie Big Techu: Umowy PPA na małe reaktory SMR i odkupywanie bloków zamykanych elektrowni.",
+                    "Kto zapłaci za rozbudowę sieci: Ryzyko przeniesienia kosztów potężnej infrastruktury przesyłowej na taryfy dla gospodarstw domowych i małego biznesu.",
+                    "Pytanie dociekliwego laika: Dlaczego transformacja energetyczna, która miała prowadzić do oszczędzania zasobów, nagle musi podporządkować się niepohamowanemu apetytowi klastrów GPU?"
+                ]
+            },
+            {
+                "num": 3,
+                "cat_display": "Polityka / Geopolityka i Półprzewodniki",
+                "category": "polityka",
+                "title": "Kartel litograficzny: Jak kontrola nad maszynami do chipów stała się najostrzejszą bronią geopolityczną",
+                "search_date": "28 października 2026 r.",
+                "image_url": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+                "image_concept": "Makrofotografia szklanego wafla krzemowego z tęczową dyfrakcją światła laserowego w sterylnym cleanroomie.",
+                "image_prompt": "Macro view of advanced semiconductor silicon wafer glowing with prismatic laser light reflections in high-tech cleanroom facility, precision engineering geopolitical documentary, 8k.",
+                "lead": "Wojna o dominację technologiczną XXI wieku nie toczy się w okopach, lecz w holenderskich i japońskich laboratoriach produkujących skomplikowane systemy ekstremalnego ultrafioletu (EUV). Bez tych maszyn żadne mocarstwo nie jest w stanie wyprodukować nowoczesnego procesora.",
+                "thesis": "Światowa gospodarka opiera się na niewiarygodnie wąskim, monopolistycznym gardle technologicznym. Sankcje eksportowe na urządzenia litograficzne zmuszają państwa do budowy autarkicznych łańcuchów dostaw, co bezpowrotnie grzebie ideę globalnego, otwartego handlu.",
+                "points": [
+                    "Anatomia monopolu ASML: Dlaczego skonstruowanie maszyny EUV wymaga koordynacji setek patentów i optyki od Zeissa, której nikt inny nie potrafi skopiować.",
+                    "Chińska strategia 'wystarczająco dobrej technologii': Przełamywanie embarga za pomocą starszych procesów DUV i masowego pakowania układów.",
+                    "Europejskie złudzenie suwerenności: Posiadanie fabryki maszyn w Holandii a całkowity brak własnych zaawansowanych odlewni krzemu na kontynencie.",
+                    "Pytanie dociekliwego laika: Czy państwo, które nie jest w stanie samodzielnie wyprodukować mikroprocesora o architekturze 3 nm, ma jeszcze prawo nazywać się suwerennym mocarstwem?"
+                ]
+            },
+            {
+                "num": 4,
+                "cat_display": "Społeczeństwo / Psychologia i Poznanie",
+                "category": "eseje",
+                "title": "Cyfrowa atrofia pamięci: Czy oddając maszynom wyszukiwanie i notatki tracimy zdolność krytycznego myślenia?",
+                "search_date": "28 października 2026 r.",
+                "image_url": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&q=80",
+                "image_concept": "Klimatyczny widok drewnianego biurka z otwartym notatnikiem, piórem i stosem książek w ciepłym świetle lampy bibliotecznej.",
+                "image_prompt": "Close-up of minimalist wooden study desk with open handwritten journal, fountain pen and stacked classical books, warm atmospheric library lighting, reflective intellectual aesthetic, 8k.",
+                "lead": "Gdy każde pytanie znajduje natychmiastową, zsyntetyzowaną odpowiedź w oknie chatbota, przestajemy trenować umiejętność błądzenia, przeszukiwania źródeł i łączenia odległych faktów. Mózg błyskawicznie adaptuje się do wygody, redukując wysiłek poznawczy.",
+                "thesis": "Prawdziwe zrozumienie nie polega na szybkim zapoznaniu się z podsumowaniem, lecz na procesie zmagania się z chaosem informacji. Zastąpienie lektury i samodzielnej syntezy wygenerowanymi skrótami tworzy iluzję wiedzy przy jednoczesnej utracie samodzielności sądów.",
+                "points": [
+                    "Różnica między dostępem do informacji a budowaniem własnego modelu świata w pamięci długotrwałej.",
+                    "Jak nawyk czytania 3-punktowych podsumowań AI niszczy tolerancję na skomplikowane, wielowątkowe teksty i dylematy.",
+                    "Praktyka intelektualnej higieny: Dlaczego ręczne notowanie i celowe odcięcie od algorytmów staje się nowym przywilejem intelektualnym.",
+                    "Pytanie dociekliwego laika: Co nam zostanie z własnej inteligencji, gdy aplikacje będą pamiętać za nas, pisać za nas i wyciągać za nas wnioski?"
+                ]
+            }
+        ]
+    },
     {
         "date": "2026-10-27",
         "date_pl": "27 października 2026 r.",
@@ -624,6 +710,11 @@ def main():
             with open(fp, "w", encoding="utf-8") as f:
                 f.write(content)
             print(f"Zapisano {fp} (4 tematy z grafikami, data: {day['date']})")
+        
+        # Rotacja 7 dni (28 tematów)
+        import proposals_manager
+        retained = proposals_manager.enforce_retention(d, max_days=7)
+        print(f"[Rotacja] Zachowano {len(retained)} zestawów (7 dni x 4 = 28 tematów) w {d}")
 
 if __name__ == "__main__":
     main()
