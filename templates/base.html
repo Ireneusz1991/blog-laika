@@ -3,19 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}{{ title }} | {{ blog_title }}{% endblock %}</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>{% block title %}{{ blog_title }} — {{ blog_tagline }} | {{ blog_author_name }}{% endblock %}</title>
   <meta name="description" content="{% block description %}{{ blog_description }}{% endblock %}">
-  
-  <!-- Favicon -->
+  <meta name="author" content="{{ blog_author_name }}">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="keywords" content="sztuczna inteligencja, AI, technologia, gospodarka, geopolityka, blog laika, ireneusz machowiec, publicystyka, transformery, półprzewodniki, stopy procentowe">
+  <link rel="canonical" href="{% block canonical_url %}{{ canonical_url or site_domain ~ base_url ~ '/' }}{% endblock %}">
+
+  <!-- Open Graph / Facebook / Messenger / WhatsApp / LinkedIn -->
+  <meta property="og:site_name" content="{{ blog_title }}">
+  <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+  <meta property="og:title" content="{% block og_title %}{{ blog_title }} — {{ blog_tagline }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ blog_description }}{% endblock %}">
+  <meta property="og:url" content="{% block og_url %}{{ canonical_url or site_domain ~ base_url ~ '/' }}{% endblock %}">
+  <meta property="og:locale" content="pl_PL">
+  <meta property="og:image" content="{% block og_image %}{{ site_domain ~ base_url }}/static/images/og-cover.jpg{% endblock %}">
+  <meta property="og:image:secure_url" content="{% block og_image_secure %}{{ site_domain ~ base_url }}/static/images/og-cover.jpg{% endblock %}">
+  <meta property="og:image:width" content="{% block og_image_width %}1200{% endblock %}">
+  <meta property="og:image:height" content="{% block og_image_height %}630{% endblock %}">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="{% block og_image_alt %}{{ blog_title }} — {{ blog_tagline }}{% endblock %}">
+  {% block og_extra %}{% endblock %}
+
+  <!-- Twitter / X Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% block twitter_title %}{{ blog_title }} — {{ blog_tagline }}{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}{{ blog_description }}{% endblock %}">
+  <meta name="twitter:image" content="{% block twitter_image %}{{ site_domain ~ base_url }}/static/images/og-cover.jpg{% endblock %}">
+  <meta name="twitter:image:alt" content="{% block twitter_image_alt %}{{ blog_title }} — {{ blog_tagline }}{% endblock %}">
+
+  <!-- Mobile Theme & PWA -->
+  <meta name="theme-color" content="#2563eb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#090d16" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="{{ blog_title }}">
+
+  <!-- Favicon & Touch Icons -->
   <link rel="icon" type="image/svg+xml" href="{{ base_url }}/static/images/favicon.svg">
-  
+  <link rel="apple-touch-icon" href="{{ site_domain ~ base_url }}/static/images/og-cover.jpg">
+
   <!-- Typography & Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,700;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,700;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <!-- CSS -->
   <link rel="stylesheet" href="{{ base_url }}/static/css/style.css">
+
+  <!-- Structured Data (JSON-LD - Schema.org) -->
+  {% block json_ld %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "{{ site_domain ~ base_url }}/#website",
+        "url": "{{ site_domain ~ base_url }}/",
+        "name": "{{ blog_title }}",
+        "description": "{{ blog_description }}",
+        "publisher": {
+          "@type": "Person",
+          "name": "{{ blog_author_name }}",
+          "url": "{{ site_domain ~ base_url }}/"
+        },
+        "inLanguage": "pl-PL"
+      },
+      {
+        "@type": "Blog",
+        "@id": "{{ site_domain ~ base_url }}/#blog",
+        "name": "{{ blog_title }}",
+        "url": "{{ site_domain ~ base_url }}/",
+        "description": "{{ blog_description }}",
+        "author": {
+          "@type": "Person",
+          "name": "{{ blog_author_name }}"
+        }
+      }
+    ]
+  }
+  </script>
+  {% endblock %}
 
   <!-- Instant Theme Initializer (Default: Light) -->
   <script>

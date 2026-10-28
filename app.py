@@ -20,6 +20,7 @@ app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__
 
 # Jinja2 Templates
 templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "templates"))
+templates.env.filters['tojson'] = lambda v: json.dumps(v, ensure_ascii=False)
 
 # Category lookup map
 CATEGORY_MAP = {c["slug"]: c for c in config.CATEGORIES}
@@ -64,6 +65,9 @@ def is_admin_authenticated(request: Request) -> bool:
     return hmac.compare_digest(token, expected)
 
 def common_context(request: Request) -> dict:
+    canonical = ""
+    if request:
+        canonical = f"{config.SITE_DOMAIN}{request.url.path}"
     return {
         "request": request,
         "blog_title": config.BLOG_TITLE,
@@ -78,7 +82,9 @@ def common_context(request: Request) -> dict:
         "categories": config.CATEGORIES,
         "current_year": datetime.now().year,
         "is_logged_in": is_admin_authenticated(request),
-        "base_url": config.BASE_URL
+        "base_url": config.BASE_URL,
+        "site_domain": config.SITE_DOMAIN,
+        "canonical_url": canonical
     }
 
 # Startup hook
@@ -168,36 +174,37 @@ async def contact_view(request: Request):
     ctx["active_page"] = "contact"
     return render(request, "contact.html", ctx)
 
-@app.get("/rss.xml")
-async def rss_feed():
-    posts = database.get_posts(limit=25)
-    
-    items_xml = []
+@app.get("/robots.txt")
+async def robots_txt():
+    content = f"""User-agent: *
+Allow: /
+Disallow: /admin/
+
+Sitemap: {config.SITE_DOMAIN}/sitemap.xml
+"""
+    return Response(content=content.strip() + "\n", media_type="text/plain")
+
+@app.get("/sitemap.xml")
+async def sitemap_xml():
+    posts = database.get_posts(limit=100)
+    today_iso = datetime.now().strftime("%Y-%m-%d")
+    sitemap_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        f'  <url><loc>{config.SITE_DOMAIN}/</loc><lastmod>{today_iso}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>'
+    ]
     for p in posts:
-        pub_date = datetime.strptime(p["created_at"][:19], "%Y-%m-%d %H:%M:%S").strftime("%a, %d %b %Y %H:%M:%S +0100")
-        items_xml.append(f"""
-        <item>
-            <title><![CDATA[{p['title']}]]></title>
-            <link>http://localhost:8000/post/{p['slug']}</link>
-            <guid>http://localhost:8000/post/{p['slug']}</guid>
-            <pubDate>{pub_date}</pubDate>
-            <category>{p['category']}</category>
-            <description><![CDATA[{p['summary']}]]></description>
-        </item>
-        """)
-        
-    rss_content = f"""<?xml version="1.0" encoding="UTF-8" ?>
-    <rss version="2.0">
-    <channel>
-        <title>{config.BLOG_TITLE}</title>
-        <link>http://localhost:8000/</link>
-        <description>{config.BLOG_DESCRIPTION}</description>
-        <language>pl</language>
-        {''.join(items_xml)}
-    </channel>
-    </rss>
-    """
-    return Response(content=rss_content.strip(), media_type="application/xml")
+        post_mod = p.get("created_at", today_iso)[:10] if p.get("created_at") else today_iso
+        sitemap_lines.append(f'  <url><loc>{config.SITE_DOMAIN}/post/{p["slug"]}/</loc><lastmod>{post_mod}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>')
+    
+    for cat in config.CATEGORIES:
+        sitemap_lines.append(f'  <url><loc>{config.SITE_DOMAIN}/kategoria/{cat["slug"]}/</loc><lastmod>{today_iso}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>')
+
+    for extra_slug in ["kontakt", "regulamin", "polityka-prywatnosci"]:
+        sitemap_lines.append(f'  <url><loc>{config.SITE_DOMAIN}/{extra_slug}/</loc><lastmod>{today_iso}</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>')
+
+    sitemap_lines.append('</urlset>')
+    return Response(content="\n".join(sitemap_lines), media_type="application/xml")
 
 # ---------------- CMS & ADMIN ROUTES ----------------
 

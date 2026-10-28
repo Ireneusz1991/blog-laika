@@ -54,6 +54,14 @@ def build_static(output_dir="dist", base_url=None):
     # Konfiguracja Jinja2
     templates_dir = os.path.join(os.path.dirname(__file__), "templates")
     env = Environment(loader=FileSystemLoader(templates_dir))
+    env.filters['tojson'] = lambda v: json.dumps(v, ensure_ascii=False)
+
+    if has_custom_domain:
+        with open(cname_file, "r", encoding="utf-8") as f:
+            domain_name = f.read().strip()
+        site_domain = f"https://{domain_name}"
+    else:
+        site_domain = "https://ireneusz1991.github.io"
 
     POLISH_MONTHS = [
         "", "stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca",
@@ -92,7 +100,8 @@ def build_static(output_dir="dist", base_url=None):
             "categories": config.CATEGORIES,
             "current_year": datetime.now().year,
             "is_logged_in": False,
-            "base_url": base_url
+            "base_url": base_url,
+            "site_domain": site_domain
         }
 
     raw_posts = database.get_posts(limit=100)
@@ -105,19 +114,13 @@ def build_static(output_dir="dist", base_url=None):
     else:
         feed_posts = posts
 
-    if has_custom_domain:
-        with open(cname_file, "r", encoding="utf-8") as f:
-            domain_name = f.read().strip()
-        site_domain = f"https://{domain_name}"
-    else:
-        site_domain = "https://ireneusz1991.github.io"
-
     # 1. Strona główna (index.html)
     ctx = get_common_context()
     ctx["active_page"] = "home"
     ctx["posts"] = feed_posts
     ctx["featured_post"] = featured
     ctx["current_category"] = None
+    ctx["canonical_url"] = f"{site_domain}{base_url}/"
     home_tmpl = env.get_template("index.html")
     with open(os.path.join(output_dir, "index.html"), "w", encoding="utf-8") as f:
         f.write(home_tmpl.render(**ctx))
@@ -131,6 +134,7 @@ def build_static(output_dir="dist", base_url=None):
     # 2b. Polityka prywatności i cookies (polityka-prywatnosci/index.html)
     ctx_privacy = get_common_context()
     ctx_privacy["active_page"] = "privacy"
+    ctx_privacy["canonical_url"] = f"{site_domain}{base_url}/polityka-prywatnosci/"
     privacy_tmpl = env.get_template("privacy.html")
     os.makedirs(os.path.join(output_dir, "polityka-prywatnosci"), exist_ok=True)
     with open(os.path.join(output_dir, "polityka-prywatnosci", "index.html"), "w", encoding="utf-8") as f:
@@ -140,6 +144,7 @@ def build_static(output_dir="dist", base_url=None):
     # 2c. Regulamin serwisu i nota prawna (regulamin/index.html)
     ctx_terms = get_common_context()
     ctx_terms["active_page"] = "terms"
+    ctx_terms["canonical_url"] = f"{site_domain}{base_url}/regulamin/"
     terms_tmpl = env.get_template("terms.html")
     os.makedirs(os.path.join(output_dir, "regulamin"), exist_ok=True)
     with open(os.path.join(output_dir, "regulamin", "index.html"), "w", encoding="utf-8") as f:
@@ -149,6 +154,7 @@ def build_static(output_dir="dist", base_url=None):
     # 2d. Kontakt (kontakt/index.html)
     ctx_contact = get_common_context()
     ctx_contact["active_page"] = "contact"
+    ctx_contact["canonical_url"] = f"{site_domain}{base_url}/kontakt/"
     contact_tmpl = env.get_template("contact.html")
     os.makedirs(os.path.join(output_dir, "kontakt"), exist_ok=True)
     with open(os.path.join(output_dir, "kontakt", "index.html"), "w", encoding="utf-8") as f:
@@ -159,6 +165,7 @@ def build_static(output_dir="dist", base_url=None):
     ctx_search = get_common_context()
     ctx_search["query"] = ""
     ctx_search["posts"] = []
+    ctx_search["canonical_url"] = f"{site_domain}{base_url}/szukaj/"
     search_tmpl = env.get_template("search.html")
     os.makedirs(os.path.join(output_dir, "szukaj"), exist_ok=True)
     with open(os.path.join(output_dir, "szukaj", "index.html"), "w", encoding="utf-8") as f:
@@ -168,6 +175,7 @@ def build_static(output_dir="dist", base_url=None):
     # 3b. Panel CMS dla administratora (admin/index.html)
     ctx_admin = get_common_context()
     ctx_admin["posts"] = posts
+    ctx_admin["canonical_url"] = f"{site_domain}{base_url}/admin/"
 
     # Kopiowanie i ładowanie propozycji tematów (rotacja 7 dni = 4x7 = 28 propozycji)
     prop_src = os.path.join(os.path.dirname(__file__), "propozycje-tematow")
@@ -210,10 +218,11 @@ def build_static(output_dir="dist", base_url=None):
         ctx_post = get_common_context()
         ctx_post["post"] = p
         ctx_post["request"] = None
+        ctx_post["canonical_url"] = f"{site_domain}{base_url}/post/{p['slug']}/"
         ctx_post["page_url"] = f"{site_domain}{base_url}/post/{p['slug']}/"
         with open(os.path.join(post_dir, "index.html"), "w", encoding="utf-8") as f:
             f.write(post_tmpl.render(**ctx_post))
-    print(f"    [OK] Wygenerowano {len(posts)} stron esejów w /post/<slug>/")
+    print(f"    [OK] Wygenerowano {len(posts)} stron wpisów w /post/<slug>/")
 
     # 5. Widoki kategorii (kategoria/<slug>/index.html)
     cat_tmpl = env.get_template("category.html")
@@ -225,6 +234,7 @@ def build_static(output_dir="dist", base_url=None):
         ctx_cat["category"] = cat
         ctx_cat["current_category"] = cat["slug"]
         ctx_cat["posts"] = cat_posts
+        ctx_cat["canonical_url"] = f"{site_domain}{base_url}/kategoria/{cat['slug']}/"
         with open(os.path.join(cat_dir, "index.html"), "w", encoding="utf-8") as f:
             f.write(cat_tmpl.render(**ctx_cat))
     print(f"    [OK] Wygenerowano widoki 4 kategorii w /kategoria/<slug>/")
@@ -246,6 +256,40 @@ def build_static(output_dir="dist", base_url=None):
     with open(os.path.join(output_dir, "search-index.json"), "w", encoding="utf-8") as f:
         json.dump(search_index, f, ensure_ascii=False, indent=2)
     print("    [OK] Wygenerowano: search-index.json")
+
+    # 7. Generowanie sitemap.xml dla wyszukiwarek (Google / Bing)
+    today_iso = datetime.now().strftime("%Y-%m-%d")
+    sitemap_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        f'  <url><loc>{site_domain}{base_url}/</loc><lastmod>{today_iso}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>'
+    ]
+    for p in posts:
+        post_mod = p.get("created_at", today_iso)[:10] if p.get("created_at") else today_iso
+        sitemap_lines.append(f'  <url><loc>{site_domain}{base_url}/post/{p["slug"]}/</loc><lastmod>{post_mod}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>')
+    
+    for cat in config.CATEGORIES:
+        sitemap_lines.append(f'  <url><loc>{site_domain}{base_url}/kategoria/{cat["slug"]}/</loc><lastmod>{today_iso}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>')
+
+    for extra_slug in ["kontakt", "regulamin", "polityka-prywatnosci"]:
+        sitemap_lines.append(f'  <url><loc>{site_domain}{base_url}/{extra_slug}/</loc><lastmod>{today_iso}</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>')
+
+    sitemap_lines.append('</urlset>')
+
+    with open(os.path.join(output_dir, "sitemap.xml"), "w", encoding="utf-8") as f:
+        f.write("\n".join(sitemap_lines))
+    print("    [OK] Wygenerowano: sitemap.xml")
+
+    # 8. Generowanie robots.txt
+    robots_content = f"""User-agent: *
+Allow: /
+Disallow: /admin/
+
+Sitemap: {site_domain}{base_url}/sitemap.xml
+"""
+    with open(os.path.join(output_dir, "robots.txt"), "w", encoding="utf-8") as f:
+        f.write(robots_content.strip() + "\n")
+    print("    [OK] Wygenerowano: robots.txt")
 
     # Usunięcie rss.xml jeśli pozostał z poprzednich kompilacji
     old_rss = os.path.join(output_dir, "rss.xml")

@@ -22,4 +22,5 @@ ADMIN_PASSWORD = os.getenv("BLOG_ADMIN_PASS", "laik2026")  # Do zmiany w panelu 
 SECRET_KEY = os.getenv("BLOG_SECRET_KEY", "blog-laika-super-secret-key-change-in-prod-2026")
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "blog.db")
 BASE_URL = os.getenv("BASE_URL", "")
+SITE_DOMAIN = os.getenv("SITE_DOMAIN", "https://blog-laika.com")
 

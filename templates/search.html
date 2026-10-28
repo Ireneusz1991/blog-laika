@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
-{% block title %}Wyniki wyszukiwania dla "{{ query }}" | {{ blog_title }}{% endblock %}
+{% block title %}{% if query %}Wyniki wyszukiwania dla "{{ query }}" — {{ blog_title }}{% else %}Wyszukiwarka wpisów — {{ blog_title }}{% endif %}{% endblock %}
+{% block description %}Szukaj autorskich wpisów, komentarzy i analiz na Blogu Laika.{% endblock %}
 
 {% block content %}
 <div class="container">
