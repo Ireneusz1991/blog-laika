@@ -243,36 +243,97 @@
     </div>
     {% endif %}
 
-    <!-- Editorial Sources Catalog (14 monitored sources: PL, Macro, Geopolitics, Tech) -->
+    <!-- Editorial Sources & Social Feeds Catalog (25 monitored sources: PL & ENG with X, LinkedIn, Substack) -->
     {% if editorial_sources %}
     <details class="editorial-sources-box" style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); margin-bottom: 2.5rem; overflow: hidden;" open>
-      <summary style="padding: 1.25rem 1.5rem; background: var(--bg-surface); border-bottom: 1.5px solid var(--border-color); cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; list-style: none;">
+      <summary style="padding: 1.25rem 1.5rem; background: var(--bg-surface); border-bottom: 1.5px solid var(--border-color); cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; list-style: none; flex-wrap: wrap; gap: 0.75rem;">
         <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
-          <span style="font-size: 1.3rem;">📚</span>
-          <span style="font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700;">
-            Katalog Monitorowanych Źródeł Redakcyjnych ({{ editorial_sources|length }} serwisów)
+          <span style="font-size: 1.3rem;">📡</span>
+          <span style="font-family: var(--font-serif); font-size: 1.18rem; font-weight: 700;">
+            Katalog Inspiracji Redakcyjnych & Social Feeds ({{ editorial_sources|length }} źródeł: PL & ENG)
           </span>
           <span class="badge" style="background: rgba(59, 130, 246, 0.12); color: #2563eb; font-weight: 600;">
-            Polska &bull; Rynki &bull; Świat &bull; Translacja
+            𝕏 / X &bull; LinkedIn &bull; Substack &bull; Gotowe do klikania
           </span>
         </div>
-        <span style="font-size: 0.85rem; color: var(--accent); font-weight: 600;">Rozwiń / Zwiń listę &darr;</span>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <a href="{{ base_url }}/zrodla_inspiracji_laika.csv" download="zrodla_inspiracji_laika.csv" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.35rem 0.75rem; text-decoration: none;" onclick="event.stopPropagation();">
+            📥 Pobierz plik CSV
+          </a>
+          <span style="font-size: 0.85rem; color: var(--accent); font-weight: 600;">Rozwiń / Zwiń &darr;</span>
+        </div>
       </summary>
+      
       <div style="padding: 1.5rem;">
-        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 1.25rem; max-width: 900px;">
-          Blog Laika monitoruje zróżnicowany zestaw 14 polskich i światowych źródeł prasowych, ośrodków analitycznych i platform rynkowych. 
-          Zagraniczne publikacje (m.in. <strong>The Financial Times, Investing.com, Bloomberg, Foreign Affairs, Politico</strong>) są tłumaczone 
-          i syntetyzowane z perspektywy polskiego czytelnika, wzbogacone o perspektywę polskich think-tanków (<strong>Klub Jagielloński, Kultura Liberalna, OSW, Kanał Zero</strong>).
-        </p>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+        <!-- Pro-Tip Box: Jak obserwować na X i LinkedIn, żeby nie oszaleć -->
+        <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%); border: 1.5px solid rgba(59, 130, 246, 0.25); border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem;">
+            <span style="font-size: 1.1rem;">💡</span>
+            <strong style="font-size: 0.95rem; color: var(--text-primary);">Pro-tip redakcyjny: Jak obserwować, żeby algorytm nie ukrył esejów</strong>
+          </div>
+          <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.85rem;">
+            Na X i LinkedIn algorytm promuje krótkie spory polityczne, ucinając zasięgi długim esejom. 
+            Aby mieć czysty feed idei na każdy tydzień bez chaosu, stwórz <strong>2 dedykowane listy na X</strong> i zasubskrybuj kluczowe newslettery:
+          </p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.85rem;">
+            <div style="background: var(--bg-card); padding: 0.85rem; border-radius: 6px; border: 1px solid var(--border-color);">
+              <div style="font-size: 0.82rem; font-weight: 700; color: #2563eb; margin-bottom: 0.35rem; display: flex; align-items: center; justify-content: space-between;">
+                <span>📋 Lista 1 na X: „PL Esej & Debata”</span>
+                <a href="https://x.com/i/lists/create" target="_blank" rel="noopener" style="font-size: 0.7rem; color: var(--accent);">Utwórz listę &rarr;</a>
+              </div>
+              <div style="font-size: 0.74rem; color: var(--text-muted); line-height: 1.45;">
+                Dodaj profile: <code>@KulturaLiberalna</code>, <code>@KlubJagiellonski</code>, <code>@NKonfederacja</code>, <code>@Krytyka</code>, <code>@MagazynKontakt</code>, <code>@OficjalneZero</code>, <code>@OSW_pl</code>, <code>@BIPolska</code>.
+              </div>
+            </div>
+            <div style="background: var(--bg-card); padding: 0.85rem; border-radius: 6px; border: 1px solid var(--border-color);">
+              <div style="font-size: 0.82rem; font-weight: 700; color: #059669; margin-bottom: 0.35rem; display: flex; align-items: center; justify-content: space-between;">
+                <span>📋 Lista 2 na X: „ENG Esej & Progress”</span>
+                <a href="https://x.com/i/lists/create" target="_blank" rel="noopener" style="font-size: 0.7rem; color: var(--accent);">Utwórz listę &rarr;</a>
+              </div>
+              <div style="font-size: 0.74rem; color: var(--text-muted); line-height: 1.45;">
+                Dodaj profile: <code>@worksinprogress</code>, <code>@slatestarcodex</code>, <code>@mattyglesias</code>, <code>@jasoncrawford</code>, <code>@benthompson</code>, <code>@farnamstreet</code>, <code>@noahpinion</code>, <code>@byrnehobart</code>, <code>@FinancialTimes</code>.
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 0.85rem; padding-top: 0.65rem; border-top: 1px dashed var(--border-color); font-size: 0.78rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <strong>📬 Polecane Newslettery LinkedIn:</strong>
+            <a href="https://www.linkedin.com/newsletters/osiem-tysi%C4%99cy-6962043685532585984/" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: none; font-weight: 600;">Osiem tysięcy (8000)</a> &bull;
+            <a href="https://www.linkedin.com/company/kultura-liberalna/" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: none; font-weight: 600;">Kultura Liberalna</a> &bull;
+            <a href="https://www.linkedin.com/company/nowa-konfederacja/" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: none; font-weight: 600;">Nowa Konfederacja</a> &bull;
+            <a href="https://www.linkedin.com/company/business-insider-polska/" target="_blank" rel="noopener" style="color: #2563eb; text-decoration: none; font-weight: 600;">Business Insider</a>
+          </div>
+        </div>
+
+        <!-- Filter tabs for sources -->
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
+          <button type="button" class="source-filter-btn" onclick="filterSources('all', this);" style="background: var(--accent); color: #fff; border: 1px solid var(--accent); padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; font-weight: 700; cursor: pointer;">
+            Wszystkie ({{ editorial_sources|length }})
+          </button>
+          <button type="button" class="source-filter-btn" onclick="filterSources('PL_ESEJ', this);" style="background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">
+            🇵🇱 Polska Esej & Debata
+          </button>
+          <button type="button" class="source-filter-btn" onclick="filterSources('BIZNES_MAKRO', this);" style="background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">
+            📊 Gospodarka, Biznes & Surowce
+          </button>
+          <button type="button" class="source-filter-btn" onclick="filterSources('ENG_ESEJ', this);" style="background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">
+            🌍 Zagranica & Wzorce Esejowe
+          </button>
+          <button type="button" class="source-filter-btn" onclick="filterSources('TECH_PRZYSZLOSC', this);" style="background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">
+            💻 Hardware & Suwerenność
+          </button>
+        </div>
+
+        <!-- Cards Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.15rem;">
           {% for src in editorial_sources %}
-          <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s ease, border-color 0.15s ease;">
+          <div class="source-card-item" data-group="{{ src.category_group }}" style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s ease, border-color 0.15s ease;">
             <div>
-              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.4rem; gap: 0.5rem;">
-                <h4 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 6px;">
+              <!-- Header -->
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.35rem; gap: 0.5rem;">
+                <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 6px;">
                   <span>{{ src.flag }}</span>
-                  <a href="{{ src.url }}" target="_blank" rel="noopener" style="color: var(--text-primary); text-decoration: none; border-bottom: 1px dotted var(--border-color);" title="Odwiedź serwis źródłowy">
+                  <a href="{{ src.url }}" target="_blank" rel="noopener" style="color: var(--text-primary); text-decoration: none; border-bottom: 1px dotted var(--border-color);" title="Odwiedź serwis główny">
                     {{ src.name }}
                   </a>
                 </h4>
@@ -280,14 +341,58 @@
                   {{ src.lang }}
                 </span>
               </div>
+
+              <!-- Scope & Type -->
               <div style="font-size: 0.73rem; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;">
                 {{ src.type }} &bull; {{ src.scope }}
               </div>
-              <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
+
+              <!-- Social Links (X, LinkedIn, Substack, YouTube) -->
+              {% if src.social %}
+              <div style="display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+                {% if src.social.x %}
+                <a href="{{ src.social.x }}" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 3px; font-size: 0.7rem; font-weight: 600; padding: 2px 7px; border-radius: 4px; background: #000; color: #fff; text-decoration: none;" title="Profil na platformie X">
+                  <span>𝕏</span> X
+                </a>
+                {% endif %}
+                {% if src.social.linkedin %}
+                <a href="{{ src.social.linkedin }}" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 3px; font-size: 0.7rem; font-weight: 600; padding: 2px 7px; border-radius: 4px; background: #0a66c2; color: #fff; text-decoration: none;" title="Profil lub newsletter na LinkedIn">
+                  <span>in</span> LinkedIn
+                </a>
+                {% endif %}
+                {% if src.social.substack %}
+                <a href="{{ src.social.substack }}" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 3px; font-size: 0.7rem; font-weight: 600; padding: 2px 7px; border-radius: 4px; background: #ff6719; color: #fff; text-decoration: none;" title="Substack">
+                  <span>✉️</span> Substack
+                </a>
+                {% endif %}
+                {% if src.social.youtube %}
+                <a href="{{ src.social.youtube }}" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 3px; font-size: 0.7rem; font-weight: 600; padding: 2px 7px; border-radius: 4px; background: #dc2626; color: #fff; text-decoration: none;" title="Kanał YouTube">
+                  <span>▶</span> YouTube
+                </a>
+                {% endif %}
+                {% if src.social.facebook %}
+                <a href="{{ src.social.facebook }}" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 3px; font-size: 0.7rem; font-weight: 600; padding: 2px 7px; border-radius: 4px; background: #1877f2; color: #fff; text-decoration: none;" title="Facebook">
+                  <span>f</span> FB
+                </a>
+                {% endif %}
+              </div>
+              {% endif %}
+
+              <!-- Description -->
+              <p style="font-size: 0.81rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
                 {{ src.desc }}
               </p>
+
+              <!-- Takeaway: Co zaadaptować dla Bloga Laika -->
+              {% if src.takeaway %}
+              <div style="font-size: 0.74rem; background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b; padding: 0.4rem 0.6rem; border-radius: 4px; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.4;">
+                <strong style="color: #b45309;">💡 Co zaadaptować dla Laika:</strong> {{ src.takeaway }}
+              </div>
+              {% endif %}
             </div>
-            <div style="display: flex; flex-wrap: wrap; gap: 4px; border-top: 1px solid var(--border-color); padding-top: 0.5rem;">
+
+            <!-- Tags -->
+            <div style="display: flex; flex-wrap: wrap; gap: 4px; border-top: 1px solid var(--border-color); padding-top: 0.5rem; margin-top: 0.35rem;">
               {% for tag in src.topics %}
               <span style="font-size: 0.66rem; background: var(--bg-card); color: var(--text-muted); border: 1px solid var(--border-color); border-radius: 3px; padding: 1px 5px;">
                 #{{ tag }}
@@ -1081,6 +1186,30 @@ ${body}`;
     a.href = URL.createObjectURL(blob);
     a.download = `${slug}.md`;
     a.click();
+  }
+
+  // Filter sources in inspiration catalog
+  function filterSources(category, btn) {
+    const cards = document.querySelectorAll('.source-card-item');
+    cards.forEach(c => {
+      if (category === 'all' || c.getAttribute('data-group') === category) {
+        c.style.display = 'flex';
+      } else {
+        c.style.display = 'none';
+      }
+    });
+    document.querySelectorAll('.source-filter-btn').forEach(b => {
+      b.style.background = 'var(--bg-surface)';
+      b.style.borderColor = 'var(--border-color)';
+      b.style.color = 'var(--text-secondary)';
+      b.style.fontWeight = '500';
+    });
+    if (btn) {
+      btn.style.background = 'var(--accent)';
+      btn.style.borderColor = 'var(--accent)';
+      btn.style.color = '#fff';
+      btn.style.fontWeight = '700';
+    }
   }
 
   // Load scraped proposal directly into scratch editor
