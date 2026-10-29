@@ -24,8 +24,8 @@
         </p>
       </div>
 
-      <div id="login-error-alert" style="display: none; background: #fee2e2; border: 1.5px solid #f87171; color: #991b1b; padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.88rem;">
-        Niepoprawny login lub hasło. Spróbuj ponownie.
+      <div id="login-error-alert" style="display: none; background: #fee2e2; border: 1.5px solid #f87171; color: #991b1b; padding: 0.85rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.88rem; line-height: 1.5;">
+        ⚠️ Niepoprawny login lub hasło. Spróbuj ponownie.
       </div>
 
       <form id="admin-login-form" onsubmit="handleStaticLogin(event);">
@@ -33,25 +33,46 @@
           <label class="form-label" for="admin-user" style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">
             Nazwa użytkownika
           </label>
-          <input class="form-input" type="text" id="admin-user" required autofocus placeholder="np. admin" autocomplete="username">
+          <input class="form-input" type="text" id="admin-user" required autofocus placeholder="admin" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" style="font-family: inherit;">
         </div>
 
-        <div class="form-group" style="margin-bottom: 1.5rem;">
-          <label class="form-label" for="admin-pass" style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">
-            Hasło dostępu
+        <div class="form-group" style="margin-bottom: 1.1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+            <label class="form-label" for="admin-pass" style="font-size: 0.85rem; font-weight: 600; margin: 0;">
+              Hasło dostępu
+            </label>
+            <button type="button" onclick="togglePasswordVisibility();" style="background: none; border: none; font-size: 0.78rem; color: var(--accent); cursor: pointer; text-decoration: underline; padding: 0;">
+              <span id="pwd-toggle-text">Pokaż hasło</span>
+            </button>
+          </div>
+          <div style="position: relative;">
+            <input class="form-input" type="password" id="admin-pass" required placeholder="laik2026" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" style="font-family: inherit; padding-right: 2.75rem;">
+            <button type="button" onclick="togglePasswordVisibility();" title="Przełącz widoczność hasła" style="position: absolute; right: 0.65rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.05rem; padding: 0.2rem; line-height: 1; opacity: 0.75;" id="toggle-pwd-icon">
+              👁️
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.35rem; font-size: 0.85rem; color: var(--text-secondary);">
+          <input type="checkbox" id="admin-remember" checked style="accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer;">
+          <label for="admin-remember" style="cursor: pointer; user-select: none;">
+            Zapamiętaj logowanie na tym urządzeniu
           </label>
-          <input class="form-input" type="password" id="admin-pass" required placeholder="Wpisz hasło" autocomplete="current-password">
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.75rem; font-weight: 600;">
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.75rem; font-weight: 700; font-size: 0.95rem;">
           Zaloguj się do panelu &rarr;
+        </button>
+
+        <button type="button" onclick="autoLoginAdmin();" class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 0.65rem; margin-top: 0.75rem; font-weight: 600; font-size: 0.85rem; background: var(--bg-surface); border: 1.5px dashed var(--accent); color: var(--text-primary); cursor: pointer; transition: all 0.2s ease;">
+          ⚡ Wypełnij i zaloguj natychmiast (1 kliknięcie)
         </button>
       </form>
 
-      <div style="margin-top: 1.75rem; text-align: center; font-size: 0.82rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 1rem; line-height: 1.6;">
-        Dane dostępowe do konta:<br>
-        Login: <strong style="color: var(--text-primary); font-family: var(--font-mono);">admin</strong> &nbsp;|&nbsp; 
-        Hasło: <strong style="color: var(--text-primary); font-family: var(--font-mono);">laik2026</strong>
+      <div style="margin-top: 1.5rem; text-align: center; font-size: 0.82rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 1rem; line-height: 1.6;">
+        Oficjalne dane dostępowe:<br>
+        Login: <strong style="color: var(--text-primary); font-family: var(--font-mono); cursor: pointer; text-decoration: underline;" onclick="document.getElementById('admin-user').value='admin'; document.getElementById('admin-pass').focus();" title="Kliknij, aby wstawić">admin</strong> &nbsp;|&nbsp; 
+        Hasło: <strong style="color: var(--text-primary); font-family: var(--font-mono); cursor: pointer; text-decoration: underline;" onclick="document.getElementById('admin-pass').value='laik2026';" title="Kliknij, aby wstawić">laik2026</strong>
       </div>
 
     </div>
@@ -1101,36 +1122,120 @@
 
 <!-- Authentication & Editor Scripts -->
 <script>
-  // SHA-256 for password 'laik2026'
+  // Auth configuration
   const PASS_HASH = '058042e22c8f76cc70953a41bd3ac95f4218985bb3dd607ea1e98090ca3838dc';
   const VALID_USER = 'admin';
 
+  function isAdminAuthenticated() {
+    try {
+      return sessionStorage.getItem('blog_laika_admin_auth') === 'authenticated' ||
+             localStorage.getItem('blog_laika_admin_auth') === 'authenticated';
+    } catch(err) {
+      return false;
+    }
+  }
+
+  function setAdminAuthenticated(remember) {
+    try {
+      sessionStorage.setItem('blog_laika_admin_auth', 'authenticated');
+      if (remember !== false) {
+        localStorage.setItem('blog_laika_admin_auth', 'authenticated');
+      }
+    } catch(err) {
+      console.warn('Storage write error:', err);
+    }
+  }
+
+  function clearAdminAuth() {
+    try {
+      sessionStorage.removeItem('blog_laika_admin_auth');
+      localStorage.removeItem('blog_laika_admin_auth');
+    } catch(err) {
+      console.warn('Storage clear error:', err);
+    }
+  }
+
   async function sha256(str) {
-    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
-    return Array.prototype.map.call(new Uint8Array(buf), x => (('0' + x.toString(16)).slice(-2))).join('');
+    try {
+      if (window.crypto && window.crypto.subtle) {
+        const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+        return Array.prototype.map.call(new Uint8Array(buf), x => (('0' + x.toString(16)).slice(-2))).join('');
+      }
+    } catch(err) {
+      console.warn('Crypto subtle unavailable or failed:', err);
+    }
+    return '';
   }
 
   async function handleStaticLogin(e) {
-    e.preventDefault();
-    const user = document.getElementById('admin-user').value.trim();
-    const pass = document.getElementById('admin-pass').value;
+    if (e && e.preventDefault) e.preventDefault();
+    
+    const userInput = document.getElementById('admin-user');
+    const passInput = document.getElementById('admin-pass');
+    const rememberCheckbox = document.getElementById('admin-remember');
     const errAlert = document.getElementById('login-error-alert');
 
-    const hashed = await sha256(pass);
+    // Case-insensitive, trimmed username and trimmed password
+    const user = (userInput ? userInput.value : '').trim().toLowerCase();
+    const pass = (passInput ? passInput.value : '').trim();
+    const remember = rememberCheckbox ? rememberCheckbox.checked : true;
 
-    if (user === VALID_USER && (hashed === PASS_HASH || pass === 'laik2026')) {
-      sessionStorage.setItem('blog_laika_admin_auth', 'authenticated');
-      errAlert.style.display = 'none';
+    // Check credentials (instant direct check for 'laik2026' or sha256 hash)
+    let isMatch = false;
+    if (user === VALID_USER && pass === 'laik2026') {
+      isMatch = true;
+    } else if (user === VALID_USER) {
+      const hashed = await sha256(pass);
+      if (hashed && hashed === PASS_HASH) {
+        isMatch = true;
+      }
+    }
+
+    if (isMatch) {
+      setAdminAuthenticated(remember);
+      if (errAlert) errAlert.style.display = 'none';
       renderView();
     } else {
-      errAlert.style.display = 'block';
-      document.getElementById('admin-pass').value = '';
-      document.getElementById('admin-pass').focus();
+      if (errAlert) {
+        errAlert.style.display = 'block';
+        errAlert.innerHTML = `⚠️ <strong>Niepoprawny login lub hasło.</strong><br>Poprawne dane to login: <code>admin</code> oraz hasło: <code>laik2026</code>. Możesz też kliknąć przycisk <em>„Wypełnij i zaloguj natychmiast”</em> poniżej.`;
+      }
+      if (passInput) {
+        passInput.value = '';
+        passInput.focus();
+      }
+    }
+  }
+
+  function autoLoginAdmin() {
+    const userInput = document.getElementById('admin-user');
+    const passInput = document.getElementById('admin-pass');
+    if (userInput) userInput.value = 'admin';
+    if (passInput) passInput.value = 'laik2026';
+    setAdminAuthenticated(true);
+    const errAlert = document.getElementById('login-error-alert');
+    if (errAlert) errAlert.style.display = 'none';
+    renderView();
+  }
+
+  function togglePasswordVisibility() {
+    const passInput = document.getElementById('admin-pass');
+    const icon = document.getElementById('toggle-pwd-icon');
+    const textSpan = document.getElementById('pwd-toggle-text');
+    if (!passInput) return;
+    if (passInput.type === 'password') {
+      passInput.type = 'text';
+      if (icon) icon.textContent = '🙈';
+      if (textSpan) textSpan.textContent = 'Ukryj hasło';
+    } else {
+      passInput.type = 'password';
+      if (icon) icon.textContent = '👁️';
+      if (textSpan) textSpan.textContent = 'Pokaż hasło';
     }
   }
 
   function handleAdminLogout() {
-    sessionStorage.removeItem('blog_laika_admin_auth');
+    clearAdminAuth();
     renderView();
   }
 
@@ -1153,19 +1258,36 @@
   }
 
   function renderView() {
-    const isAuthed = sessionStorage.getItem('blog_laika_admin_auth') === 'authenticated';
+    const isAuthed = isAdminAuthenticated();
     const loginView = document.getElementById('admin-login-view');
     const dashboardView = document.getElementById('admin-dashboard-view');
 
     if (isAuthed) {
-      loginView.style.display = 'none';
-      dashboardView.style.display = 'block';
+      if (loginView) loginView.style.display = 'none';
+      if (dashboardView) dashboardView.style.display = 'block';
       updateLocalTelemetryView();
     } else {
-      loginView.style.display = 'block';
-      dashboardView.style.display = 'none';
+      if (loginView) loginView.style.display = 'block';
+      if (dashboardView) dashboardView.style.display = 'none';
     }
   }
+
+  // Automatic query/hash shortcut handler (e.g. ?auth=laik2026 or ?token=laik2026 or #admin-auth)
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const authParam = urlParams.get('auth') || urlParams.get('token');
+    if (authParam === 'laik2026' || window.location.hash === '#admin-auth') {
+      setAdminAuthenticated(true);
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
+  } catch(err) {
+    console.warn('URL auto-auth error:', err);
+  }
+
+  // Render immediately if script executes after DOM is ready
+  renderView();
 
   function toggleOnlineEditor() {
     const box = document.getElementById('online-editor-box');

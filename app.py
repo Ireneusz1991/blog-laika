@@ -230,7 +230,9 @@ async def admin_login_page(request: Request):
 
 @app.post("/admin/login")
 async def admin_login_post(request: Request, username: str = Form(...), password: str = Form(...)):
-    if username == config.ADMIN_USERNAME and password == config.ADMIN_PASSWORD:
+    u = username.strip().lower()
+    p = password.strip()
+    if u == config.ADMIN_USERNAME.strip().lower() and p == config.ADMIN_PASSWORD.strip():
         response = RedirectResponse(url="/admin", status_code=302)
         token = generate_auth_token()
         response.set_cookie(key="laika_auth", value=token, httponly=True, max_age=86400 * 30, samesite="lax")
