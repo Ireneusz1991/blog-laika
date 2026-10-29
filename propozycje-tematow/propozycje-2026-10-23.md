@@ -86,8 +86,8 @@ Dlaczego politycy wszystkich opcji tak chętnie obiecują dopłaty do zakupów, 
 * **Kategoria:** `historia`
 * **Data wyszukania:** 23 października 2026 r.
 * **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
-* **Źródło impulsu:** 🇵🇱 Historia.org.pl / 🇨🇦 Farnam Street
-* **Wątek źródłowy:** Pierwsza wielka hiperinflacja nowożytnej Europy (1619-1623); psucie monety przez książąt Rzeszy.
+* **Źródło impulsu:** 🇵🇱 Historia Bez Cenzury / Historia.org.pl
+* **Wątek źródłowy:** Pierwsza wielka hiperinflacja nowożytnej Europy (1619-1623); psucie monety przez książąt Rzeszy i bezlitosne mechanizmy wzbogacania się elit.
 * **Proponowana grafika:** https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=1200&q=80
 * **Koncepcja wizualna:** Zabytkowe mapy, pieczęcie woskowe i manuskrypty w ciepłym, muzealnym oświetleniu.
 * **Prompt AI dla grafiki:** `Editorial museum photograph of ancient diplomatic treaty parchment, brass antique compass, warm library chiaroscuro lighting, 8k.`

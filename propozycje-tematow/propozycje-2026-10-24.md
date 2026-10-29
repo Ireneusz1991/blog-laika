@@ -86,8 +86,8 @@ Dlaczego politycy wszystkich opcji tak chętnie obiecują dopłaty do zakupów, 
 * **Kategoria:** `historia`
 * **Data wyszukania:** 24 października 2026 r.
 * **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
-* **Źródło impulsu:** 🇵🇱 Wiek Dwudziesty / 🇬🇧 The Financial Times History
-* **Wątek źródłowy:** Raporty Gosplanu z lat 1985-1989; jak uzależnienie Moskwy od petrodolarów przesądziło o upadku bloku wschodniego.
+* **Źródło impulsu:** 🇵🇱 ThrashingMadPL / Wiek Dwudziesty
+* **Wątek źródłowy:** Kartograficzna i ekonomiczna analiza upadku bloku wschodniego; jak uzależnienie Moskwy od petrodolarów przesądziło o implozji.
 * **Proponowana grafika:** https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=1200&q=80
 * **Koncepcja wizualna:** Zabytkowe mapy, pieczęcie woskowe i manuskrypty w ciepłym, muzealnym oświetleniu.
 * **Prompt AI dla grafiki:** `Editorial museum photograph of ancient diplomatic treaty parchment, brass antique compass, warm library chiaroscuro lighting, 8k.`

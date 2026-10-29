@@ -86,8 +86,8 @@ Dlaczego politycy wszystkich opcji tak chętnie obiecują dopłaty do zakupów, 
 * **Kategoria:** `historia`
 * **Data wyszukania:** 25 października 2026 r.
 * **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
-* **Źródło impulsu:** 🇵🇱 Historia Realna (Piotr Zychowicz) / Nowa Konfederacja
-* **Wątek źródłowy:** Dokumenty sztabowe z maja 1939 r.; dlaczego sojusze bez tożsamych interesów geopolitycznych stają się fikcją na papierze.
+* **Źródło impulsu:** 🇵🇱 Dudek o Historii / Historia Realna (Piotr Zychowicz)
+* **Wątek źródłowy:** Analiza prof. Dudka i dokumenty sztabowe z maja 1939 r.; dlaczego sojusze bez tożsamych interesów geopolitycznych stają się fikcją na papierze.
 * **Proponowana grafika:** https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=1200&q=80
 * **Koncepcja wizualna:** Zabytkowe mapy, pieczęcie woskowe i manuskrypty w ciepłym, muzealnym oświetleniu.
 * **Prompt AI dla grafiki:** `Editorial museum photograph of ancient diplomatic treaty parchment, brass antique compass, warm library chiaroscuro lighting, 8k.`

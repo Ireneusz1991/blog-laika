@@ -86,7 +86,7 @@ Dlaczego politycy wszystkich opcji tak chętnie obiecują dopłaty do zakupów, 
 * **Kategoria:** `historia`
 * **Data wyszukania:** 27 października 2026 r.
 * **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
-* **Źródło impulsu:** 🇺🇸 ACOUP (Dr. Bret Devereaux) / 🇵🇱 Dzieje.pl
+* **Źródło impulsu:** 🇵🇱 Ciekawe Historie / 🇺🇸 ACOUP (Dr. Bret Devereaux)
 * **Wątek źródłowy:** Twarde kalkulacje kalorii i transportu wozami; jak zerwanie szlaków z Afryki Północnej zagłodziło stolicę imperium.
 * **Proponowana grafika:** https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=1200&q=80
 * **Koncepcja wizualna:** Zabytkowe mapy, pieczęcie woskowe i manuskrypty w ciepłym, muzealnym oświetleniu.

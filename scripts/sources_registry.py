@@ -382,20 +382,104 @@ EDITORIAL_SOURCES = [
         "drawer_name": "Historia & Lekcje Dziejów",
         "blog_category": "historia",
         "region": "Polska",
-        "scope": "Polska / Życie codzienne",
+        "scope": "Starożytność / Polska / Europa / Życie codzienne",
         "lang": "PL",
         "flag": "🇵🇱",
-        "type": "Portal historii narracyjnej i obyczajowej (Wyd. Znak)",
+        "type": "Portal historii narracyjnej & Najpopularniejszy fanpage FB",
         "url": "https://ciekawostkihistoryczne.pl",
         "rss": "https://ciekawostkihistoryczne.pl/feed/",
         "social": {
             "x": "https://x.com/CiekawostkiHist",
             "facebook": "https://www.facebook.com/CiekawostkiHistoryczne"
         },
-        "topics": ["Życie codzienne", "Medycyna dawna", "Prywatne życie władców", "Higiena", "Technologie przeszłości"],
-        "desc": "Historia widziana z perspektywy człowieka z krwi i kości. Pokazuje, jak w praktyce wyglądało życie przed erą elektryczności i antybiotyków.",
-        "takeaway": "Humanizowanie wielkiej historii; pokazywanie detali codzienności, które decydowały o przetrwaniu ludzi.",
+        "topics": ["Starożytność", "Historia Polski", "Historia Europy", "Życie codzienne", "Obyczaje dawne", "Sensacje"],
+        "desc": "Najpopularniejszy polski profil na Facebooku w tej kategorii, agregujący przekrojowe artykuły o starożytności, historii Polski i Europy w bardzo przystępnej formie.",
+        "takeaway": "Przekrojowa popularyzacja dziejów, docieranie do szerokiego grona czytelników przez nieoczywiste wątki obyczajowe i mechanizmy dawnego życia.",
         "best_essay": "„Dzień, w którym zgasły światła: Jak wyglądało życie w średniowiecznym mieście bez bieżącej wody i zegara”"
+    },
+    {
+        "id": "ciekawe_historie",
+        "name": "Ciekawe Historie (Tomasz Czukiewski)",
+        "drawer": "SZUFLADA_HISTORIA",
+        "drawer_name": "Historia & Lekcje Dziejów",
+        "blog_category": "historia",
+        "region": "Polska",
+        "scope": "Dokument / Społeczeństwo / Gospodarka / PRL",
+        "lang": "PL",
+        "flag": "🇵🇱",
+        "type": "Kanał filmów dokumentalnych YouTube",
+        "url": "https://www.youtube.com/@CiekaweHistorie",
+        "social": {
+            "youtube": "https://www.youtube.com/@CiekaweHistorie",
+            "facebook": "https://www.facebook.com/ciekawehistorie"
+        },
+        "topics": ["Filmy dokumentalne", "Transformacja ustrojowa", "Procesy społeczne", "Gospodarka", "Reportaż śledczy"],
+        "desc": "Tworzy świetnie zrealizowane filmy dokumentalne z dogłębną analizą procesów społecznych i gospodarczych, przyciągając miliony widzów szukających rzetelnego kontekstu.",
+        "takeaway": "Dogłębna analiza procesów społecznych i gospodarczych, rzetelny research archiwalny i poszukiwanie przyczynowo-skutkowego kontekstu bez taniej sensacji.",
+        "best_essay": "„Anatomia polskiej biedy lat 90.: Jak upadek zakładów pracy i hiperinflacja ukształtowały współczesne podziały społeczne”"
+    },
+    {
+        "id": "dudek_o_historii",
+        "name": "Dudek o Historii (prof. Antoni Dudek)",
+        "drawer": "SZUFLADA_HISTORIA",
+        "drawer_name": "Historia & Lekcje Dziejów",
+        "blog_category": "historia",
+        "region": "Polska",
+        "scope": "Historia najnowsza / Polityka / PRL & III RP",
+        "lang": "PL",
+        "flag": "🇵🇱",
+        "type": "Kanał analityczno-akademicki & Podcast",
+        "url": "https://www.youtube.com/@DudekoHistorii",
+        "social": {
+            "youtube": "https://www.youtube.com/@DudekoHistorii",
+            "facebook": "https://www.facebook.com/dudekohistorii"
+        },
+        "topics": ["Historia najnowsza", "PRL", "Okrągły Stół", "Transformacja ustrojowa", "Kulisy władzy", "Politologia"],
+        "desc": "Kanał prowadzony przez prof. Antoniego Dudka to doskonałe źródło analitycznej, akademickiej wiedzy o historii najnowszej podanej bez zbędnych ozdobników.",
+        "takeaway": "Chłodny, akademicki obiektywizm, precyzyjne odróżnianie udokumentowanych faktów od mitów politycznych i badanie mechanizmów podejmowania decyzji na szczytach władzy.",
+        "best_essay": "„Kulisy transformacji ustrojowej: Kto naprawdę rządził Polską w czasie przełomu 1989 roku i dlaczego kompromis był konieczny”"
+    },
+    {
+        "id": "thrashing_mad_pl",
+        "name": "ThrashingMadPL",
+        "drawer": "SZUFLADA_HISTORIA",
+        "drawer_name": "Historia & Lekcje Dziejów",
+        "blog_category": "historia",
+        "region": "Polska",
+        "scope": "Kartografia historyczna / Konflikty / Dzieje Europy i Polski",
+        "lang": "PL",
+        "flag": "🇵🇱",
+        "type": "Autorski kanał animowanych map historycznych YouTube",
+        "url": "https://www.youtube.com/@ThrashingMadPL",
+        "social": {
+            "youtube": "https://www.youtube.com/@ThrashingMadPL",
+            "facebook": "https://www.facebook.com/ThrashingMadPL"
+        },
+        "topics": ["Animowane mapy", "Dzieje Polski", "Wojny europejskie", "Zmiany granic", "Geografia militarna"],
+        "desc": "Skupia się na dziejach Europy i Polski, używając autorskich, animowanych map do precyzyjnego, krok po kroku, wizualizowania zmian terytorialnych i konfliktów zbrojnych.",
+        "takeaway": "Przedstawianie historii w wymiarze dynamicznym i przestrzennym: jak ukształtowanie terenu, rzeki i przesunięcia granic determinowały przetrwanie państw.",
+        "best_essay": "„Geografia jako wyrok: Dlaczego nizinne położenie między Odrą a Dnieprem skazało Rzeczpospolitą na permanentną czujność geopolityczną”"
+    },
+    {
+        "id": "historia_bez_cenzury",
+        "name": "Historia Bez Cenzury",
+        "drawer": "SZUFLADA_HISTORIA",
+        "drawer_name": "Historia & Lekcje Dziejów",
+        "blog_category": "historia",
+        "region": "Polska",
+        "scope": "Historia masowa / Popkultura / Postacie",
+        "lang": "PL",
+        "flag": "🇵🇱",
+        "type": "Największy polski kanał rozrywkowo-historyczny YouTube & FB",
+        "url": "https://www.youtube.com/@HistoriaBezCenzuryMB",
+        "social": {
+            "youtube": "https://www.youtube.com/@HistoriaBezCenzuryMB",
+            "facebook": "https://www.facebook.com/HistoriaBezCenzury"
+        },
+        "topics": ["Władcy Polski", "Wojny", "Ciekawostki obyczajowe", "Mity historyczne", "Odsłanianie tabu"],
+        "desc": "Zdecydowanie największy polski gigant historyczny, który dociera do masowego odbiorcy dzięki ostremu, rozrywkowemu językowi i dynamicznemu montażowi.",
+        "takeaway": "Dynamika przekazu, bezpośredni język trafiający do milionów odbiorców oraz przełamywanie podręcznikowego patosu na rzecz opowiadania o ludziach z krwi i kości.",
+        "best_essay": "„Władcy bez retuszu i bez korony: Prawdziwe, niecenzurowane motywacje polskich monarchów, o których milczały szkolne podręczniki”"
     },
     {
         "id": "historia_realna",
@@ -905,9 +989,9 @@ def get_curated_social_bundles():
     }
 
 def export_sources_to_csv(filepath: str):
-    """Eksportuje pełną listę źródeł wraz z szufladami, profilami X, LinkedIn, Substack i strategią 'co podkraść' do CSV."""
+    """Eksportuje pełną listę źródeł wraz z szufladami, profilami X, LinkedIn, YouTube, Facebook i strategią 'co podkraść' do CSV."""
     fieldnames = [
-        "Nazwa", "Szuflada_Dzial", "Kategoria_Bloga", "Region", "Zasieg", "Typ_Medium", "X_Twitter", "LinkedIn", "Substack_WWW", "Kanal_RSS", "Kluczowa_Wartosc_Dla_Laika", "Co_Zaadaptowac_Pod_Katem_Laika", "Wzorcowy_Esej_Na_Start"
+        "Nazwa", "Szuflada_Dzial", "Kategoria_Bloga", "Region", "Zasieg", "Typ_Medium", "YouTube", "Facebook", "X_Twitter", "LinkedIn", "Substack_WWW", "Kanal_RSS", "Kluczowa_Wartosc_Dla_Laika", "Co_Zaadaptowac_Pod_Katem_Laika", "Wzorcowy_Esej_Na_Start"
     ]
     with open(filepath, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -921,6 +1005,8 @@ def export_sources_to_csv(filepath: str):
                 "Region": s.get("region", "Polska"),
                 "Zasieg": s.get("scope", ""),
                 "Typ_Medium": s.get("type", ""),
+                "YouTube": soc.get("youtube", ""),
+                "Facebook": soc.get("facebook", ""),
                 "X_Twitter": soc.get("x", ""),
                 "LinkedIn": soc.get("linkedin", ""),
                 "Substack_WWW": soc.get("substack", s.get("url", "")),

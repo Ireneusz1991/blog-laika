@@ -231,7 +231,7 @@ HISTORICAL_TOPICS_POOL = [
         },
         "hist": {
             "title": "Żelazo, chleb i logistyka: Dlaczego starożytny Rzym upadł nie od ciosów barbarzyńców, lecz przez paraliż dostaw zboża",
-            "source": "🇺🇸 ACOUP (Dr. Bret Devereaux) / 🇵🇱 Dzieje.pl",
+            "source": "🇵🇱 Ciekawe Historie / 🇺🇸 ACOUP (Dr. Bret Devereaux)",
             "note": "Twarde kalkulacje kalorii i transportu wozami; jak zerwanie szlaków z Afryki Północnej zagłodziło stolicę imperium."
         },
         "pol": {
@@ -293,8 +293,8 @@ HISTORICAL_TOPICS_POOL = [
         },
         "hist": {
             "title": "Iluzja gwarancji z 1939 roku: Czego lekcja z Londynu i Paryża uczy Polskę o granicach traktatów sojuszniczych",
-            "source": "🇵🇱 Historia Realna (Piotr Zychowicz) / Nowa Konfederacja",
-            "note": "Dokumenty sztabowe z maja 1939 r.; dlaczego sojusze bez tożsamych interesów geopolitycznych stają się fikcją na papierze."
+            "source": "🇵🇱 Dudek o Historii / Historia Realna (Piotr Zychowicz)",
+            "note": "Analiza prof. Dudka i dokumenty sztabowe z maja 1939 r.; dlaczego sojusze bez tożsamych interesów geopolitycznych stają się fikcją na papierze."
         },
         "pol": {
             "title": "Obrona cywilna w ruinie: Dlaczego Polska ma nowoczesne czołgi, a nie ma schronów dla obywateli",
@@ -324,8 +324,8 @@ HISTORICAL_TOPICS_POOL = [
         },
         "hist": {
             "title": "Ekonomiczna implozja imperium: Jak spadek cen ropy w latach 80. dobił ZSRR szybciej niż wyścig zbrojeń",
-            "source": "🇵🇱 Wiek Dwudziesty / 🇬🇧 The Financial Times History",
-            "note": "Raporty Gosplanu z lat 1985-1989; jak uzależnienie Moskwy od petrodolarów przesądziło o upadku bloku wschodniego."
+            "source": "🇵🇱 ThrashingMadPL / Wiek Dwudziesty",
+            "note": "Kartograficzna i ekonomiczna analiza upadku bloku wschodniego; jak uzależnienie Moskwy od petrodolarów przesądziło o implozji."
         },
         "pol": {
             "title": "Zmierzch paktu migracyjnego? Dlaczego państwa UE przywracają kontrole na granicach Schengen",
@@ -355,8 +355,8 @@ HISTORICAL_TOPICS_POOL = [
         },
         "hist": {
             "title": "Pieniądz i wojna trzydziestoletnia: Dlaczego dewaluacja monety (Kipperzeit) zrujnowała społeczeństwo bardziej niż armie",
-            "source": "🇵🇱 Historia.org.pl / 🇨🇦 Farnam Street",
-            "note": "Pierwsza wielka hiperinflacja nowożytnej Europy (1619-1623); psucie monety przez książąt Rzeszy."
+            "source": "🇵🇱 Historia Bez Cenzury / Historia.org.pl",
+            "note": "Pierwsza wielka hiperinflacja nowożytnej Europy (1619-1623); psucie monety przez książąt Rzeszy i bezlitosne mechanizmy wzbogacania się elit."
         },
         "pol": {
             "title": "Polska dyplomacja na rozdrożu: Czy stać nas na asertywność bez silnej gospodarki",
