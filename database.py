@@ -45,7 +45,17 @@ def calculate_read_time(text: str) -> int:
     minutes = max(1, round(words / 200))
     return minutes
 
+def extract_summary(md_text: str) -> str:
+    cleaned = re.sub(r'^#+\s+.*$', '', md_text, flags=re.MULTILINE)
+    cleaned = re.sub(r'^>\s+.*$', '', cleaned, flags=re.MULTILINE)
+    cleaned = re.sub(r'^---+\s*$', '', cleaned, flags=re.MULTILINE)
+    cleaned = re.sub(r'[\*_`\[\]\(\)]', '', cleaned)
+    cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+    return (cleaned[:220].rstrip() + "...") if len(cleaned) > 220 else cleaned
+
 def render_markdown(md_text: str) -> str:
+    # Strip leading H1 title if present to avoid duplicating the page header H1
+    cleaned_md = re.sub(r'^\s*#\s+[^\n]+\n*', '', md_text, count=1)
     extensions = [
         'extra',
         'codehilite',
@@ -54,7 +64,7 @@ def render_markdown(md_text: str) -> str:
         'fenced_code',
         'nl2br'
     ]
-    return markdown.markdown(md_text, extensions=extensions)
+    return markdown.markdown(cleaned_md, extensions=extensions)
 
 def create_post(title: str, content_markdown: str, category: str, summary: str = "", 
                 slug: str = "", tags: str = "", cover_image: str = "", 
@@ -76,8 +86,7 @@ def create_post(title: str, content_markdown: str, category: str, summary: str =
         counter += 1
         
     if not summary:
-        plain_text = re.sub(r'#+\s+|[\*_`\[\]\(\)]', '', content_markdown)
-        summary = plain_text.strip()[:220] + "..."
+        summary = extract_summary(content_markdown)
         
     content_html = render_markdown(content_markdown)
     read_time = calculate_read_time(content_markdown)
@@ -113,8 +122,7 @@ def update_post(post_id: int, title: str, content_markdown: str, category: str, 
         counter += 1
         
     if not summary:
-        plain_text = re.sub(r'#+\s+|[\*_`\[\]\(\)]', '', content_markdown)
-        summary = plain_text.strip()[:220] + "..."
+        summary = extract_summary(content_markdown)
         
     content_html = render_markdown(content_markdown)
     read_time = calculate_read_time(content_markdown)
@@ -218,6 +226,7 @@ def get_featured_post() -> Optional[Dict[str, Any]]:
 def set_baseline_views_if_zero():
     """Przypisuje logiczne, realistyczne wartości bazowe odsłon na podstawie wieku i tematu wpisu."""
     baseline_map = {
+        "kondensat-wielkie-sprzezenie-zwrotne": 1680,
         "architektura-uwagi-czy-ai-mysli": 1420,
         "zludzenie-taniego-kapitalu-zerowe-stopy": 1180,
         "nowy-koncert-mocarstw-geopolityka": 980,
@@ -228,6 +237,13 @@ def set_baseline_views_if_zero():
     cursor = conn.cursor()
     for slug, views in baseline_map.items():
         cursor.execute("UPDATE posts SET views = ? WHERE slug = ? AND (views = 0 OR views IS NULL)", (views, slug))
+    
+    # Fallback for any post not in baseline_map that has 0 views
+    cursor.execute("SELECT id, slug FROM posts WHERE views = 0 OR views IS NULL")
+    for row in cursor.fetchall():
+        fallback_views = 520 + (abs(hash(row["slug"])) % 360)
+        cursor.execute("UPDATE posts SET views = ? WHERE id = ?", (fallback_views, row["id"]))
+
     conn.commit()
     conn.close()
 
@@ -410,8 +426,7 @@ def sync_markdown_files(posts_dir: str = None):
         category = meta.get("category", "eseje")
         summary = meta.get("summary", "")
         if not summary:
-            plain_text = re.sub(r'#+\s+|[\*_`\[\]\(\)]', '', body)
-            summary = plain_text.strip()[:220] + "..."
+            summary = extract_summary(body)
         tags = meta.get("tags", "")
         cover_image = meta.get("cover_image", "")
         featured = 1 if str(meta.get("featured", "0")).lower() in ("1", "true", "yes") else 0

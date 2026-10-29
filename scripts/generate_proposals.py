@@ -648,5 +648,13 @@ def main():
         retained = proposals_manager.enforce_retention(d, max_days=7)
         print(f"[Rotacja] Zachowano {len(retained)} zestawów (7 dni x 5 tematów = 35 propozycji z gotowymi szkicami) w {d}")
 
+    # Automatyczna integracja 6. pozycji (Dział Kondensatów)
+    try:
+        from scripts.build_kondensaty_into_proposals import inject_kondensaty
+        inject_kondensaty()
+        print("[Kondensaty] Pomyślnie zintegrowano 6. pozycję (Kondensat) we wszystkich zestawach!")
+    except Exception as e:
+        print(f"[Kondensaty] Błąd integracji kondensatów: {e}")
+
 if __name__ == "__main__":
     main()

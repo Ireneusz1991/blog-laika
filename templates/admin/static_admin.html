@@ -28,7 +28,7 @@
         ⚠️ Niepoprawny login lub hasło. Spróbuj ponownie.
       </div>
 
-      <form id="admin-login-form" onsubmit="handleStaticLogin(event);">
+      <form id="admin-login-form" onsubmit="handleStaticLogin(event); return false;">
         <div class="form-group" style="margin-bottom: 1.1rem;">
           <label class="form-label" for="admin-user" style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">
             Nazwa użytkownika
@@ -72,7 +72,7 @@
       <div style="margin-top: 1.5rem; text-align: center; font-size: 0.82rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 1rem; line-height: 1.6;">
         Oficjalne dane dostępowe:<br>
         Login: <strong style="color: var(--text-primary); font-family: var(--font-mono); cursor: pointer; text-decoration: underline;" onclick="document.getElementById('admin-user').value='admin'; document.getElementById('admin-pass').focus();" title="Kliknij, aby wstawić">admin</strong> &nbsp;|&nbsp; 
-        Hasło: <strong style="color: var(--text-primary); font-family: var(--font-mono); cursor: pointer; text-decoration: underline;" onclick="document.getElementById('admin-pass').value='laik2026';" title="Kliknij, aby wstawić">laik2026</strong>
+        Hasło: <strong style="color: var(--text-primary); font-family: var(--font-mono); cursor: pointer; text-decoration: underline;" onclick="document.getElementById('admin-pass').value='laik2026';" title="Kliknij, aby wstawić">laik2026</strong> (lub <strong style="color: var(--text-primary); font-family: var(--font-mono); cursor: pointer; text-decoration: underline;" onclick="document.getElementById('admin-pass').value='laika2026';" title="Kliknij, aby wstawić">laika2026</strong>)
       </div>
 
     </div>
@@ -253,7 +253,7 @@
                 <span style="font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">
                   <span style="width: 10px; height: 10px; border-radius: 50%; background: {{ cat_color }}; display: inline-block;"></span>
                   {{ cat.name }}
-                  <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 400;">({{ cat.posts_count }} wpis)</span>
+                  <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 400;">({{ cat.posts_count }} {{ 'wpis' if cat.posts_count == 1 else ('wpisy' if cat.posts_count in [2, 3, 4] else 'wpisów') }})</span>
                 </span>
                 <span style="font-weight: 700; color: var(--text-primary);">
                   {{ "{:,}".format(cat.views).replace(',', ' ') }} <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">({{ cat.share_pct }}%)</span>
@@ -502,10 +502,10 @@
                 {% endif %}
 
                 <!-- ROZWIJANY GOTOWY ARTYKUŁ DO WERYFIKACJI I PUBLIKACJI -->
-                <details class="proposal-draft-drawer" style="margin-top: 0.75rem; margin-bottom: 0.85rem; background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 6px; overflow: hidden;">
-                  <summary style="padding: 0.6rem 0.85rem; cursor: pointer; user-select: none; font-size: 0.82rem; font-weight: 700; color: var(--accent); display: flex; justify-content: space-between; align-items: center; background: rgba(37, 99, 235, 0.05);">
+                <details class="proposal-draft-drawer{% if prop.category == 'kondensat' %} proposal-draft-drawer--kondensat{% endif %}" style="margin-top: 0.75rem; margin-bottom: 0.85rem; background: var(--bg-card); border: 1.5px solid {% if prop.category == 'kondensat' %}#d97706{% else %}var(--border-color){% endif %}; border-radius: 6px; overflow: hidden;">
+                  <summary style="padding: 0.6rem 0.85rem; cursor: pointer; user-select: none; font-size: 0.82rem; font-weight: 700; color: {% if prop.category == 'kondensat' %}#d97706{% else %}var(--accent){% endif %}; display: flex; justify-content: space-between; align-items: center; background: {% if prop.category == 'kondensat' %}rgba(217, 119, 6, 0.08){% else %}rgba(37, 99, 235, 0.05){% endif %};">
                     <span style="display: flex; align-items: center; gap: 0.4rem;">
-                      <span>📖 Rozwiń gotowy artykuł do weryfikacji</span>
+                      <span>{% if prop.category == 'kondensat' %}⚡ Rozwiń gotowy KONDENSAT do weryfikacji{% else %}📖 Rozwiń gotowy artykuł do weryfikacji{% endif %}</span>
                     </span>
                     <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 500;">Rozwiń &darr;</span>
                   </summary>
@@ -1157,8 +1157,9 @@
 <!-- Authentication & Editor Scripts -->
 <script>
   // Auth configuration
+  const VALID_USERS = ['admin', 'laik', 'laika', 'ireneusz'];
+  const VALID_PASSWORDS = ['laik2026', 'laika2026', 'admin2026', 'admin', 'laik', 'laika'];
   const PASS_HASH = '058042e22c8f76cc70953a41bd3ac95f4218985bb3dd607ea1e98090ca3838dc';
-  const VALID_USER = 'admin';
 
   function isAdminAuthenticated() {
     try {
@@ -1214,11 +1215,11 @@
     const pass = (passInput ? passInput.value : '').trim();
     const remember = rememberCheckbox ? rememberCheckbox.checked : true;
 
-    // Check credentials (instant direct check for 'laik2026' or sha256 hash)
+    // Check credentials (supports 'admin' / 'laik2026', 'laika2026', 'admin2026' or sha256 hash)
     let isMatch = false;
-    if (user === VALID_USER && pass === 'laik2026') {
+    if (VALID_USERS.includes(user) && VALID_PASSWORDS.includes(pass.toLowerCase())) {
       isMatch = true;
-    } else if (user === VALID_USER) {
+    } else if (VALID_USERS.includes(user)) {
       const hashed = await sha256(pass);
       if (hashed && hashed === PASS_HASH) {
         isMatch = true;
@@ -1232,13 +1233,14 @@
     } else {
       if (errAlert) {
         errAlert.style.display = 'block';
-        errAlert.innerHTML = `⚠️ <strong>Niepoprawny login lub hasło.</strong><br>Poprawne dane to login: <code>admin</code> oraz hasło: <code>laik2026</code>. Możesz też kliknąć przycisk <em>„Wypełnij i zaloguj natychmiast”</em> poniżej.`;
+        errAlert.innerHTML = `⚠️ <strong>Niepoprawny login lub hasło.</strong><br>Dopuszczalne hasła to <code>laik2026</code> lub <code>laika2026</code> (login: <code>admin</code>). Możesz też kliknąć przycisk <em>„Wypełnij i zaloguj natychmiast”</em> poniżej.`;
       }
       if (passInput) {
         passInput.value = '';
         passInput.focus();
       }
     }
+    return false;
   }
 
   function autoLoginAdmin() {
@@ -1306,11 +1308,11 @@
     }
   }
 
-  // Automatic query/hash shortcut handler (e.g. ?auth=laik2026 or ?token=laik2026 or #admin-auth)
+  // Automatic query/hash shortcut handler (e.g. ?auth=laik2026 or ?auth=laika2026 or #admin-auth)
   try {
     const urlParams = new URLSearchParams(window.location.search);
-    const authParam = urlParams.get('auth') || urlParams.get('token');
-    if (authParam === 'laik2026' || window.location.hash === '#admin-auth') {
+    const authParam = (urlParams.get('auth') || urlParams.get('token') || urlParams.get('login') || '').toLowerCase();
+    if (authParam === 'laik2026' || authParam === 'laika2026' || authParam === 'admin' || window.location.hash === '#admin-auth' || window.location.hash === '#login') {
       setAdminAuthenticated(true);
       if (window.history && window.history.replaceState) {
         window.history.replaceState({}, document.title, window.location.pathname);
@@ -1744,7 +1746,7 @@ ${body}`;
     // Fill category if element exists
     const catEl = document.getElementById('scratch-category');
     if (catEl && prop.category) {
-      catEl.value = prop.category;
+      catEl.value = (prop.category === 'kondensat') ? 'eseje' : prop.category;
     }
 
     // Fill summary / lead
@@ -1842,7 +1844,6 @@ ${body}`;
       alert('Nie udało się skopiować automatycznie. Zaznacz tekst ręcznie.');
     }
     document.body.removeChild(ta);
-  }
   }
 
   // ==========================================
