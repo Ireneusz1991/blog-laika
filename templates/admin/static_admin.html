@@ -375,9 +375,12 @@
         <div>
           <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
             <span style="font-size: 1.1rem;">💡</span>
-            <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.6px;">Archiwum Redakcyjne AI (Tydzień: 5 × 7 = 35 tematów z gotowymi artykułami)</span>
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.6px;">Archiwum Redakcyjne AI (Tydzień: 6 pozycji dziennie [5 szuflad + KONDENSAT] = 42 tematy z gotowymi artykułami)</span>
             <span class="badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; font-weight: 700;">
               Łącznie: {{ weekly_proposals.total_proposals }} propozycji z ostatnich {{ weekly_proposals.total_days }} dni
+            </span>
+            <span class="badge" style="background: linear-gradient(135deg, rgba(217, 119, 6, 0.2), rgba(124, 58, 237, 0.2)); color: #d97706; font-weight: 700; border: 1px solid #d97706;">
+              ⚡ Dział Kondensatów: Super Złożone Konglomeraty
             </span>
             <span class="badge" style="background: rgba(59, 130, 246, 0.12); color: #3b82f6; font-weight: 600;">
               Rotacja: nowe nadpisują starsze niż 7 dni
@@ -387,7 +390,7 @@
             Bank tematów z rozwijanymi artykułami do weryfikacji
           </h2>
           <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
-            Wybierz dzień tygodnia poniżej, aby przejrzeć 5 propozycji (technologia, gospodarka, historia, polityka, inne eseje), rozwinąć pełny artykuł do weryfikacji i jednym kliknięciem załadować go do edytora.
+            Wybierz dzień tygodnia poniżej, aby przejrzeć 6 propozycji (technologia, gospodarka, historia, polityka, inne eseje oraz <strong>KONDENSAT</strong> łączący wszystkie wątki w super złożoną syntezę), rozwinąć pełny artykuł do weryfikacji i jednym kliknięciem załadować go do edytora.
           </p>
         </div>
         <div id="active-day-download-container">
@@ -428,7 +431,7 @@
 
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
             {% for prop in pkg.proposals %}
-            <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition); overflow: hidden;">
+            <div style="{% if prop.category == 'kondensat' %}background: linear-gradient(135deg, rgba(217, 119, 6, 0.08), rgba(124, 58, 237, 0.08)); border: 2px solid #d97706; box-shadow: 0 4px 14px rgba(217, 119, 6, 0.15);{% else %}background: var(--bg-surface); border: 1.5px solid var(--border-color);{% endif %} border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition); overflow: hidden;">
               <div>
                 {% if prop.image_url %}
                 <div style="position: relative; height: 140px; margin: -1.25rem -1.25rem 0.85rem -1.25rem; background: #0f172a; overflow: hidden;">
@@ -436,12 +439,23 @@
                   <div style="position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; backdrop-filter: blur(4px); display: flex; align-items: center; gap: 4px;">
                     <span>📷 Dobrana grafika</span>
                   </div>
+                  {% if prop.category == 'kondensat' %}
+                  <div style="position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #d97706, #7c3aed); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.4); text-transform: uppercase;">
+                    ⚡ KONDENSAT
+                  </div>
+                  {% endif %}
                 </div>
                 {% endif %}
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.3rem;">
                   <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+                    {% if prop.category == 'kondensat' %}
+                    <span style="background: linear-gradient(135deg, #d97706, #7c3aed); color: #fff; font-size: 0.7rem; font-weight: 800; padding: 2px 7px; border-radius: 4px; text-transform: uppercase;">
+                      ⚡ KONDENSAT (SUPER ZŁOŻONY)
+                    </span>
+                    {% else %}
                     <span class="post-category-tag" style="font-size: 0.75rem;">{{ prop.category|upper }}</span>
+                    {% endif %}
                     <span style="background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.25); font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px;" title="{{ prop.samokreacja }}">
                       🛡️ 100% Samokreacja
                     </span>

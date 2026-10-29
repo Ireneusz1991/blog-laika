@@ -185,3 +185,43 @@ Filozofia dociekliwego laika opiera się na odwrocie od tej histerii. Polega na 
 Czy technologia, która miała zaoszczędzić nasz czas, dała nam choć jedną dodatkową godzinę spokoju w tygodniu, czy tylko wypełniła każdą wolną szczelinę dnia nowymi obowiązkami?
 
 ---
+
+
+---
+
+## Temat 6: Kondensat V: Wojna asymetryczna w cieśninach — jak drony za 20 tysięcy dolarów niszczą logistykę wartą biliony
+* **Kategoria:** `kondensat`
+* **Data wyszukania:** 2026-10-24 r.
+* **Model powstawania:** ⚡ KONDENSAT / SUPER ZŁOŻONA SYNTEZA (4 WĘZŁY: Technologia • Gospodarka • Historia • Polityka)
+* **Źródło impulsu:** 🌍 Synteza Wielowątkowa: Naval News / OSW / ThrashingMadPL / Dudek o Historii
+* **Wątek źródłowy:** Interdyscyplinarny konglomerat łączący węzły: tanią broń precyzyjną i drony kamikadze, koszt frachtu morskiego i ubezpieczeń Lloyd's, blokadę kontynentalną Napoleona (1806) i geografię cieśnin Mandab i Malakka.
+* **Proponowana grafika:** https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80
+* **Koncepcja wizualna:** Nocny kadr morski z flarami oświetlającymi kontenerowiec i śladem lecącego nisko drona.
+* **Prompt AI dla grafiki:** `High-intensity nighttime documentary photograph of container ship on narrow strait under searchlights, distant drone silhouette, cold sea mist, 8k.`
+* **Lead:** Gdy pocisk wystrzelony przez niszczyciel kosztuje 3 miliony dolarów, a celem jest chałupniczy dron za 20 tysięcy, arytmetyka wojny morskiej staje się bezlitosna. Synteza pokazująca, jak wąskie punkty geograficzne obalają mit nietykalności globalnego handlu.
+* **Kluczowa teza wpisu:** Model globalizacji Just-In-Time opierał się na bezpłatnym bezpieczeństwie szlaków morskich gwarantowanym przez US Navy. Era taniej broni asymetrycznej oznacza, że każdy lokalny aktor może trwale sparaliżować 15% światowego handlu, generując inflację w sercu Europy.
+* **Konspekt argumentacji:**
+    * Węzeł Technologiczny: Asymetria kosztowa — dlaczego tradycyjne floty wojenne nie są w stanie ekonomicznie wygrać wojny na wyczerpanie z rojami dronów.
+    * Węzeł Gospodarczy: Pętla ubezpieczeń morskich — jak stawki war-risk klubu Lloyd's decydują o zmianie tras handlowych wokół Afryki i podbijają ceny paliw.
+    * Węzeł Historyczny: Blokada kontynentalna Napoleona (1806) — dlaczego próba odcięcia wroga od szlaków handlowych zawsze dewastuje gospodarkę inicjatora.
+    * Węzeł Geopolityczny: Wąskie gardła świata — Cieśnina Bab al-Mandab, Ormuz i Malakka jako punkty podparcia nowej dźwigni szantażu mocarstw.
+    * Pytanie dociekliwego laika: Skoro kilka tanich dronów potrafi zmusić największe floty świata do opłynięcia całego kontynentu, to czy bajka o 'nieograniczonym globalnym rynku' nie była tylko chwilowym uśpieniem czujności?
+
+### 📝 Gotowy szkic wpisu do weryfikacji i publikacji
+Przez ponad pół wieku po II wojnie światowej światowy handel morski funkcjonował w luksusowych warunkach. Załogi kontenerowców płynących z Szanghaju do Rotterdamu nie obawiały się ostrzału rakietowego ani abordażu. Morza były wolne i bezpieczne, ponieważ gwarantem tego bezpieczeństwa była potęga Marynarki Wojennej Stanów Zjednoczonych, która bezpłatnie patrolowała kluczowe szlaki handlowe.
+
+W oparciu o to założenie stworzono współczesny model logistyczny Just-In-Time: magazyny zlikwidowano, a fabryki w Europie i USA zaczęły polegać na częściach docierających dokładnie co do godziny z Azji.
+
+### Arytmetyka absurdu na Morzu Czerwonym
+
+W 2024 roku ten fundament pękł. Bojownicy Huti w Jemenie udowodnili, że do zablokowania 15% światowego handlu płynącego przez Kanał Sueski nie potrzeba floty pancerników ani atomowych okrętów podwodnych. Wystarczyły tanie drony kamikadze i stare rakiety przeciwokrętowe dostarczone z Iranu.
+
+Powstał paradoks asymetrii kosztowej: aby zestrzelić drona wartego 15 000 – 20 000 dolarów, zachodni niszczyciel musi odpalić rakietę przeciwlotniczą Aster-30 lub SM-2 kosztującą od 2 do 4 milionów dolarów. Taka wojna na wyczerpanie jest z góry przegrana finansowo i magazynowo.
+
+### Pętla ubezpieczeniowa i powrót wokół Afryki
+
+To nie generałowie zamknęli szlak przez Morze Czerwone – zrobili to ubezpieczyciele z londyńskiego City. Gdy stawki ubezpieczenia statków od ryzyka wojennego (war-risk premiums) wzrosły dziesięciokrotnie, armatorom bardziej opłaciło się skierować gigantyczne kontenerowce na trasę wokół Przylądka Dobrej Nadziei w Afryce. Dodatkowe 10–14 dni żeglugi, setki ton spalonego mazutu i opóźnienia w dostawach stały się nowym podatkiem inflacyjnym płaconym przez każdego konsumenta w Europie.
+
+### Wniosek pierwszych zasad dociekliwego laika
+
+Geografia nie umarła. Możemy mieć najbardziej zaawansowane giełdy i algorytmy sztucznej inteligencji, ale wystarczy zamknąć dwie cieśniny o szerokości kilkunastu kilometrów, by fabryki samochodów w Niemczech wstrzymały produkcję z braku wiązek kablowych. Złożoność bez odporności na wstrząsy to proszenie się o katastrofę.
