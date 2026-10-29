@@ -927,6 +927,52 @@ EDITORIAL_SOURCES = [
         "desc": "Ta wrażliwsza, filozoficzna strona polskiego eseju. Łączy chrześcijańską wrażliwość społeczną z krytycznym namysłem nad kapitalizmem.",
         "takeaway": "Zadawanie pytań o moralny sens procedur rynkowych i poszukiwanie wspólnoty w zatomizowanym świecie.",
         "best_essay": "„Samotność w epoce algorytmów: Dlaczego zatomizowane społeczeństwo traci zdolność do zaufania”"
+    },
+    # =========================================================================
+    # SZUFLADA 6: DZIAŁ KONDENSATÓW & KONGLOMERATY WIELOWĄTKOWE (Dział: kondensat)
+    # =========================================================================
+    {
+        "id": "konglomerat_makro",
+        "name": "Węzeł Makroanalityczny Bloga Laika (Konglomerat)",
+        "drawer": "SZUFLADA_KONDENSAT",
+        "drawer_name": "Dział Kondensatów & Konglomeraty Wielowątkowe",
+        "blog_category": "kondensat",
+        "region": "Globalny / Polska",
+        "scope": "Interdyscyplinarny / Pierwsze Zasady",
+        "lang": "PL",
+        "flag": "⚡",
+        "type": "Syntetyczny węzeł analityczny łączący 4 dziedziny",
+        "url": "https://blog-laika.com/kategoria/kondensat/",
+        "rss": "https://blog-laika.com/feed.xml",
+        "social": {
+            "x": "https://x.com/blog_laika",
+            "linkedin": "https://www.linkedin.com/in/ireneusz-machowiec/"
+        },
+        "topics": ["Kondensat", "Konglomerat", "Sprzężenie zwrotne", "Makroekonomia długu", "Fizyka krzemu", "Logistyka wojen", "Architektura uwagi"],
+        "desc": "Autorski format Bloga Laika: bezkompromisowe łączenie zjawisk technologicznych, finansowych, historycznych i geopolitycznych w jedną spójną analizę przyczynowo-skutkową.",
+        "takeaway": "Przełamywanie silosów specjalistycznych: patrzenie na świat z perspektywy całego ekosystemu zamiast izolowanych wycinków.",
+        "best_essay": "„Kondensat I: Wielkie sprzężenie zwrotne — jak kryzys energetyczny, drogi kapitał i wąskie gardła geopolityki zderzają się z cyfrowym postępem”"
+    },
+    {
+        "id": "konglomerat_energia_krzem",
+        "name": "Węzeł Technologiczno-Surowcowy (Kondensat)",
+        "drawer": "SZUFLADA_KONDENSAT",
+        "drawer_name": "Dział Kondensatów & Konglomeraty Wielowątkowe",
+        "blog_category": "kondensat",
+        "region": "Globalny",
+        "scope": "Termodynamika, Rynki & Geopolityka",
+        "lang": "PL",
+        "flag": "⚡",
+        "type": "Interdyscyplinarna monografia surowcowa",
+        "url": "https://blog-laika.com/kategoria/kondensat/",
+        "rss": "https://blog-laika.com/feed.xml",
+        "social": {
+            "x": "https://x.com/blog_laika"
+        },
+        "topics": ["Termodynamika AI", "Sieci przesyłowe", "Miedź i lit", "Dług skarbowy", "Cieśniny morskie"],
+        "desc": "Zderzenie wirtualnych modeli sztucznej inteligencji z twardą ścianą fizyki, przepustowością starych sieci energetycznych i kosztami rolowania długu państwowego.",
+        "takeaway": "Zadawanie prostych pytań o fizyczny nośnik cyfrowych utopii: skąd wziąć prąd, kto zbuduje transformatory i ile kosztuje kapitał.",
+        "best_essay": "„Kondensat II: Paradoks Energetyczny AI — kiedy wirtualne modele zderzają się z siecią przesyłową, miedzią i kosztami długu”"
     }
 ]
 
@@ -963,6 +1009,11 @@ def get_curated_social_bundles():
             "title": "🔭 Szuflada 5: Filozofia Laika, Postęp & Inne Eseje",
             "category": "eseje",
             "desc": "Wielka Czwórka światowego eseju — postęp materialny, racjonalizm, modele mentalne i pochwała dociekliwości."
+        },
+        "SZUFLADA_KONDENSAT": {
+            "title": "⚡ Szuflada 6: Dział Kondensatów & Konglomeraty Wielowątkowe",
+            "category": "kondensat",
+            "desc": "Super złożone syntezy interdyscyplinarne łączące technologię, gospodarkę, historię i geopolitykę w wielowątkowe konglomeraty analityczne."
         }
     }
 

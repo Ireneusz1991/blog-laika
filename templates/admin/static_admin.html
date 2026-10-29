@@ -473,6 +473,37 @@
         {% endfor %}
       </div>
 
+      <!-- Quick category & conglomerate filter bar -->
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 1.5rem; background: var(--bg-card); border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 0.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
+          <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-right: 0.3rem;">Filtr działu:</span>
+          <button type="button" onclick="filterProposalCards('all');" class="btn btn-primary filter-prop-btn active" data-filter="all" style="font-size: 0.74rem; padding: 0.25rem 0.65rem; border-radius: var(--radius-full);">
+            Wszystkie (6)
+          </button>
+          <button type="button" onclick="filterProposalCards('kondensat');" class="btn btn-secondary filter-prop-btn" data-filter="kondensat" style="font-size: 0.74rem; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); background: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(124, 58, 237, 0.15)); border-color: #d97706; color: #b45309; font-weight: 800;">
+            ⚡ Tylko KONDENSATY (Konglomeraty)
+          </button>
+          <button type="button" onclick="filterProposalCards('technologia');" class="btn btn-secondary filter-prop-btn" data-filter="technologia" style="font-size: 0.74rem; padding: 0.25rem 0.65rem; border-radius: var(--radius-full);">
+            💻 Technologia
+          </button>
+          <button type="button" onclick="filterProposalCards('gospodarka');" class="btn btn-secondary filter-prop-btn" data-filter="gospodarka" style="font-size: 0.74rem; padding: 0.25rem 0.65rem; border-radius: var(--radius-full);">
+            📈 Gospodarka
+          </button>
+          <button type="button" onclick="filterProposalCards('historia');" class="btn btn-secondary filter-prop-btn" data-filter="historia" style="font-size: 0.74rem; padding: 0.25rem 0.65rem; border-radius: var(--radius-full);">
+            🏛️ Historia
+          </button>
+          <button type="button" onclick="filterProposalCards('polityka');" class="btn btn-secondary filter-prop-btn" data-filter="polityka" style="font-size: 0.74rem; padding: 0.25rem 0.65rem; border-radius: var(--radius-full);">
+            🛡️ Polityka
+          </button>
+          <button type="button" onclick="filterProposalCards('eseje');" class="btn btn-secondary filter-prop-btn" data-filter="eseje" style="font-size: 0.74rem; padding: 0.25rem 0.65rem; border-radius: var(--radius-full);">
+            📖 Inne eseje
+          </button>
+        </div>
+        <div style="font-size: 0.76rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem;">
+          <span>⚡ <strong>Konglomerat:</strong> synteza 4 węzłów w 1 wielowątkowy esej</span>
+        </div>
+      </div>
+
       <!-- Daily proposal packages containers -->
       <div style="padding: 1.5rem;">
         {% for pkg in weekly_proposals.packages %}
@@ -487,7 +518,7 @@
 
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
             {% for prop in pkg.proposals %}
-            <div style="{% if prop.category == 'kondensat' %}background: linear-gradient(135deg, rgba(217, 119, 6, 0.08), rgba(124, 58, 237, 0.08)); border: 2px solid #d97706; box-shadow: 0 4px 14px rgba(217, 119, 6, 0.15);{% else %}background: var(--bg-surface); border: 1.5px solid var(--border-color);{% endif %} border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition); overflow: hidden;">
+            <div class="proposal-card-item proposal-card-{{ prop.category }}" data-category="{{ prop.category }}" style="{% if prop.category == 'kondensat' %}background: linear-gradient(135deg, rgba(217, 119, 6, 0.08), rgba(124, 58, 237, 0.08)); border: 2px solid #d97706; box-shadow: 0 4px 14px rgba(217, 119, 6, 0.15);{% else %}background: var(--bg-surface); border: 1.5px solid var(--border-color);{% endif %} border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition); overflow: hidden;">
               <div>
                 {% if prop.image_url %}
                 <div style="position: relative; height: 140px; margin: -1.25rem -1.25rem 0.85rem -1.25rem; background: #0f172a; overflow: hidden;">
@@ -601,10 +632,10 @@
         <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
           <span style="font-size: 1.3rem;">📡</span>
           <span style="font-family: var(--font-serif); font-size: 1.18rem; font-weight: 700;">
-            Katalog Inspiracji Redakcyjnych & RSS Feeds ({{ editorial_sources|length }} źródeł w 5 szufladach)
+            Katalog Inspiracji Redakcyjnych & RSS Feeds ({{ editorial_sources|length }} źródeł w 5 szufladach + Dział Kondensatów)
           </span>
           <span class="badge" style="background: rgba(59, 130, 246, 0.12); color: #2563eb; font-weight: 600;">
-            Inteligentny Laikat &bull; 5 Szuflad &bull; OPML &bull; CSV
+            Inteligentny Laikat &bull; 5 Szuflad + Kondensaty &bull; OPML &bull; CSV
           </span>
         </div>
         <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
@@ -686,6 +717,9 @@
           </button>
           <button type="button" class="source-filter-btn" onclick="filterSources('SZUFLADA_ESEJE', this);" style="background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; cursor: pointer;">
             🔭 5. Inne eseje & Filozofia Laika
+          </button>
+          <button type="button" class="source-filter-btn" onclick="filterSources('SZUFLADA_KONDENSAT', this);" style="background: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(124, 58, 237, 0.15)); color: #b45309; border: 1.5px solid #d97706; padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.78rem; font-weight: 700; cursor: pointer;">
+            ⚡ 6. Kondensaty & Konglomeraty
           </button>
         </div>
 
@@ -1752,6 +1786,8 @@ ${body}`;
   const WEEKLY_PROPOSALS = {{ weekly_proposals_json|safe if weekly_proposals_json else 'null' }};
   const PROPOSALS_DATA = {{ latest_proposals_json|safe if latest_proposals_json else '[]' }};
 
+  let activeCategoryFilter = 'all';
+
   function switchProposalDay(dayIndex) {
     if (!WEEKLY_PROPOSALS || !WEEKLY_PROPOSALS.packages) return;
     
@@ -1782,6 +1818,47 @@ ${body}`;
       dlBtn.href = `{{ base_url }}/propozycje-tematow/${pkg.filename}`;
       dlBtn.textContent = `📥 Pobierz plik .md (${pkg.formatted_date})`;
     }
+
+    // Reapply category filter for the newly active package
+    if (activeCategoryFilter !== 'all') {
+      filterProposalCards(activeCategoryFilter);
+    }
+  }
+
+  function filterProposalCards(cat) {
+    activeCategoryFilter = cat;
+    
+    // Update button styles
+    document.querySelectorAll('.filter-prop-btn').forEach(b => {
+      const bCat = b.getAttribute('data-filter');
+      if (bCat === cat) {
+        b.classList.add('active');
+        if (cat === 'kondensat') {
+          b.style.boxShadow = '0 0 0 2px #d97706';
+        } else {
+          b.classList.add('btn-primary');
+          b.classList.remove('btn-secondary');
+          b.style.boxShadow = 'none';
+        }
+      } else {
+        b.classList.remove('active');
+        b.style.boxShadow = 'none';
+        if (bCat !== 'kondensat') {
+          b.classList.remove('btn-primary');
+          b.classList.add('btn-secondary');
+        }
+      }
+    });
+
+    // Show/hide cards across all packages
+    document.querySelectorAll('.proposal-card-item').forEach(card => {
+      const cardCat = card.getAttribute('data-category');
+      if (cat === 'all' || cardCat === cat) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
   }
 
   function loadProposalIntoEditor(dayIndexOrIndex, propIndex) {

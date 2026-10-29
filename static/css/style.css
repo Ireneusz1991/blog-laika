@@ -690,6 +690,7 @@ header.site-header {
 .dot-historia { background-color: var(--cat-hist); }
 .dot-polityka { background-color: var(--cat-pol); }
 .dot-eseje { background-color: var(--cat-essay); }
+.dot-kondensat { background: linear-gradient(135deg, #d97706, #7c3aed); }
 
 /* Main Content Area */
 main {
