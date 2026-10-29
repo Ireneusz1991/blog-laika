@@ -782,21 +782,36 @@
         {% if curated_social and curated_social.starter_essays %}
         <details style="margin-top: 1.75rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
           <summary style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); cursor: pointer; user-select: none;">
-            📚 Rekomendowana Biblioteczka: Najlepsze eseje na start w 4 szufladach (Rozwiń listę lektur) &darr;
+            📚 Rekomendowana Biblioteczka i Bank Wiedzy: Najlepsze eseje i węzły analityczne w 5 szufladach + Kondensaty (Rozwiń listę lektur) &darr;
           </summary>
-          <div style="margin-top: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+          <div style="margin-top: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.25rem;">
             {% for cat in curated_social.starter_essays %}
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.9rem;">
-              <h5 style="font-size: 0.86rem; font-weight: 700; color: var(--accent); margin: 0 0 0.65rem 0;">
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.9rem; display: flex; flex-direction: column;">
+              <h5 style="font-size: 0.86rem; font-weight: 700; color: var(--accent); margin: 0 0 0.65rem 0; border-bottom: 1px dashed var(--border-color); padding-bottom: 0.35rem;">
                 {{ cat.category_title }}
               </h5>
-              <ul style="margin: 0; padding-left: 1.15rem; font-size: 0.78rem; line-height: 1.5; color: var(--text-secondary);">
+              <ul style="margin: 0; padding-left: 1.15rem; font-size: 0.78rem; line-height: 1.5; color: var(--text-secondary); flex-grow: 1;">
                 {% for essay in cat.essays %}
-                <li style="margin-bottom: 0.45rem;">
-                  <strong>{{ essay.source }}:</strong> 
-                  <a href="{{ essay.url }}" target="_blank" rel="noopener" style="color: var(--text-primary); text-decoration: underline;">
-                    {{ essay.title }}
-                  </a>
+                <li style="margin-bottom: 0.65rem;">
+                  <div style="margin-bottom: 0.25rem;">
+                    <strong>{{ essay.source }}:</strong> 
+                    <a href="{{ essay.url }}" target="_blank" rel="noopener" style="color: var(--text-primary); text-decoration: underline;">
+                      {{ essay.title }}
+                    </a>
+                  </div>
+                  <div>
+                    <button type="button" 
+                            data-source="{{ essay.source }}" 
+                            data-title="{{ essay.title }}" 
+                            data-category="{{ cat.category }}" 
+                            data-url="{{ essay.url }}" 
+                            onclick="loadLibraryEssayFromBtn(this);" 
+                            class="btn btn-secondary" 
+                            style="font-size: 0.7rem; padding: 0.2rem 0.55rem; display: inline-flex; align-items: center; gap: 4px; border-color: var(--border-color); cursor: pointer;" 
+                            title="Załaduj konspekt tego eseju z Biblioteczki do edytora online">
+                      ⚡ Załaduj do edytora
+                    </button>
+                  </div>
                 </li>
                 {% endfor %}
               </ul>
@@ -1856,6 +1871,93 @@ ${body}`;
     if (notif) {
       notif.style.display = 'block';
       notif.innerHTML = `🛡️ <strong>Gotowy artykuł załadowany do edytora:</strong> "${prop.title}". Tytuł, lead, kategoria, grafika okładkowa oraz pełna treść są gotowe do weryfikacji i publikacji!`;
+      setTimeout(() => { notif.style.display = 'none'; }, 6000);
+    }
+  }
+
+  function loadLibraryEssayFromBtn(btn) {
+    if (!btn) return;
+    const source = btn.getAttribute('data-source') || '';
+    const title = btn.getAttribute('data-title') || '';
+    const category = btn.getAttribute('data-category') || 'eseje';
+    const url = btn.getAttribute('data-url') || '';
+    loadLibraryEssayIntoEditor(source, title, category, url);
+  }
+
+  function loadLibraryEssayIntoEditor(source, title, category, url) {
+    if (!title) return;
+
+    // Fill title and generate slug
+    const titleEl = document.getElementById('scratch-title');
+    const slugEl = document.getElementById('scratch-slug');
+    if (titleEl) titleEl.value = title;
+    if (slugEl) slugEl.value = slugify(title);
+    slugManuallyEdited = true;
+
+    // Fill category
+    const catEl = document.getElementById('scratch-category');
+    if (catEl && category) {
+      catEl.value = category;
+    }
+
+    // Default summary
+    const sumEl = document.getElementById('scratch-summary');
+    if (sumEl) {
+      sumEl.value = `Autorska synteza problemowa inspirowana publikacją "${title}" (${source}). Analiza fundamentalnych mechanizmów z perspektywy dociekliwego laika.`;
+    }
+
+    // Set matching cover image based on category
+    const imgEl = document.getElementById('scratch-image');
+    if (imgEl) {
+      const catImages = {
+        'technologia': 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+        'gospodarka': 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80',
+        'historia': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80',
+        'polityka': 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80',
+        'eseje': 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=1200&q=80',
+        'kondensat': 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80'
+      };
+      imgEl.value = catImages[category] || 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80';
+    }
+
+    // Build substantive structured essay outline from First Principles
+    let body = `# ${title}\n\n`;
+    body += `> 📚 **Źródło inspiracji z Banku Wiedzy Bloga Laika:** ${source} ([Oryginalna publikacja](${url}))\n`;
+    body += `> 🛡️ **Model Samokreacji:** 100% autorska rekonstrukcja zagadnienia z perspektywy dociekliwego laika. Zero bezmyślnego powielania cudzych tez — badanie pierwszych zasad (First Principles Thinking).\n\n`;
+    body += `W świecie przeładowanym powierzchownymi nagłówkami i agresywnym marketingiem narracyjnym, powrót do fundamentalnych pytań staje się jedyną skuteczną tarczą analityczną. Analiza problemu postawionego przez ${source} pozwala spojrzeć głębiej na strukturę zjawiska, które w debacie publicznej bywa sprowadzane do pustych haseł.\n\n`;
+    body += `### Kluczowa teza i punkt wyjścia\n\n`;
+    body += `To, co opinia publiczna uważa za przypadkowe wahanie rynkowe lub nagły kryzys, jest w rzeczywistości logiczną konsekwencją długoterminowych bodźców ekonomicznych, praw fizyki i struktury zależności instytucjonalnych.\n\n`;
+    body += `### 1. Anatomia zjawiska: Co naprawdę kryje się pod powierzchnią\n\n`;
+    body += `Zrozumienie mechanizmu wymaga rozebrania problemu na czynniki pierwsze. Zamiast pytać „kto ma rację w sporze”, dociekliwy laik pyta: **kto na tym zyskuje, jakie są ukryte koszty alternatywne i gdzie leżą fizyczne ograniczenia systemu?**\n\n`;
+    body += `- **Struktura bodźców:** Jakie interesy i mechanizmy rynkowe napędzają opisywane zjawisko?\n`;
+    body += `- **Asymetria informacji:** Dlaczego przeciętny odbiorca widzi jedynie fasadowy PR zamiast twardych liczb?\n`;
+    body += `- **Wąskie gardła:** Gdzie znajduje się punkt krytyczny, którego pęknięcie paraliżuje całą układankę?\n\n`;
+    body += `### 2. Zderzenie modelu teoretycznego z realiami\n\n`;
+    body += `Każda teoria brzmi elegancko na papierze dopóki nie zderzy się z twardą rzeczywistością kapitału, energii i ludzkiej natury. Prawdziwa weryfikacja następuje w momentach napięć i kryzysów, gdy ujawniają się rzeczywiste koszty funkcjonowania dotychczasowych monopoli czy układów sojuszniczych.\n\n`;
+    body += `### 3. Wnioski pierwszych zasad dla dociekliwego laika\n\n`;
+    body += `Ostatecznym celem analizy nie jest powtarzanie akademickiego żargonu, lecz wyrobienie praktycznej odporności poznawczej. Co z tego wynika dla naszej codzienności, bezpieczeństwa finansowego i rozumienia otaczającego świata?\n\n`;
+    body += `---\n\n`;
+    body += `*Autor artykułu: Ireneusz Machowiec*\n`;
+
+    const bodyEl = document.getElementById('scratch-body');
+    if (bodyEl) bodyEl.value = body;
+
+    // Open editor if collapsed
+    const box = document.getElementById('online-editor-box');
+    if (box && box.style.display === 'none') {
+      toggleOnlineEditor();
+    } else if (box) {
+      box.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Update preview
+    updateLivePreview();
+
+    // Show friendly notification
+    const notif = document.getElementById('import-notification');
+    if (notif) {
+      notif.style.display = 'block';
+      notif.innerHTML = `📚 <strong>Esej z Biblioteczki załadowany do edytora:</strong> "${title}" (${source}). Schemat analityczny z Pierwszych Zasad został przygotowany!`;
       setTimeout(() => { notif.style.display = 'none'; }, 6000);
     }
   }

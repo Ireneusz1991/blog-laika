@@ -1052,6 +1052,16 @@ def get_curated_social_bundles():
                     {"source": "Farnam Street", "title": "Mental Models: The Best Way to Make Intelligent Decisions Without Being an Expert", "url": "https://fs.blog"},
                     {"source": "Persuasion", "title": "The Identity Trap: Why Groupthink Corrodes Liberal Institutions", "url": "https://www.persuasion.community"}
                 ]
+            },
+            {
+                "category": "kondensat",
+                "category_title": "6. Dział Kondensatów & Konglomeraty Wielowątkowe",
+                "essays": [
+                    {"source": "Syntetyczny Węzeł Analityczny", "title": "Cena Suwerenności i Architektura Zależności: Od Łańcuchów Półprzewodników po Dług Publiczny", "url": "https://blog-laika.com/category/kondensat/"},
+                    {"source": "Węzeł Technologiczno-Energetyczny", "title": "Paradoks Energetyczny AI: Kiedy Wirtualne Modele Zderzają się z Fizyczną Siecią Przesyłową i Geopolityką Miedzi", "url": "https://blog-laika.com/category/kondensat/"},
+                    {"source": "Węzeł Historyczno-Instytucjonalny", "title": "Pęknięcia na Peryferiach: Lekcja z Upadku Dawnych Imperiów Handlowych dla Współczesnej Architektury Bezpieczeństwa", "url": "https://blog-laika.com/category/kondensat/"},
+                    {"source": "Konglomerat Społeczno-Cyfrowy", "title": "Monopolizacja Rzeczywistości: Jak Algorytmy Rekomendacyjne i Finansyzacja Gospodarki Przedefiniowały Wolną Wolę", "url": "https://blog-laika.com/category/kondensat/"}
+                ]
             }
         ]
     }
