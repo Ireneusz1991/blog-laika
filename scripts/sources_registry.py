@@ -398,6 +398,70 @@ EDITORIAL_SOURCES = [
         "best_essay": "„Dzień, w którym zgasły światła: Jak wyglądało życie w średniowiecznym mieście bez bieżącej wody i zegara”"
     },
     {
+        "id": "wielka_historia",
+        "name": "WielkaHistoria.pl",
+        "drawer": "SZUFLADA_HISTORIA",
+        "drawer_name": "Historia & Lekcje Dziejów",
+        "blog_category": "historia",
+        "region": "Polska",
+        "scope": "Starożytność / Egipt / Mezopotamia / Europa / Polska",
+        "lang": "PL",
+        "flag": "🇵🇱",
+        "type": "Czołowy portal historyczny & Gigant zasięgowy FB",
+        "url": "https://wielkahistoria.pl",
+        "rss": "https://wielkahistoria.pl/feed/",
+        "social": {
+            "facebook": "https://www.facebook.com/wielkahistoriapl"
+        },
+        "topics": ["Starożytny Egipt", "Mezopotamia", "Średniowiecze", "Historia Polski", "Wielkie imperia", "Archeologia"],
+        "desc": "Obecnie jeden z największych graczy na polskim Facebooku w kategorii historycznej. Generują milionowe zasięgi. Portal publikuje codziennie artykuły przekrojowe – od dziejów starożytnego Egiptu i Mezopotamii, przez historię Europy, aż po szczegółowe analizy dotyczące historii Polski.",
+        "takeaway": "Przekrojowość tematyczna od starożytnych cywilizacji rzecznych po czasy nowożytne oraz umiejętność generowania wielomilionowych zasięgów i zaangażowania czytelników.",
+        "best_essay": "„Narodziny cywilizacji nad Nilem i Eufratem: Jak gospodarka irygacyjna stworzyła pierwsze biurokracje i podatki w dziejach”"
+    },
+    {
+        "id": "histmag_org",
+        "name": "Histmag.org",
+        "drawer": "SZUFLADA_HISTORIA",
+        "drawer_name": "Historia & Lekcje Dziejów",
+        "blog_category": "historia",
+        "region": "Polska",
+        "scope": "Historia powszechna / Polska / Recenzje / Długie formy",
+        "lang": "PL",
+        "flag": "🇵🇱",
+        "type": "Renomowany internetowy magazyn historyczny (od 2001 r.)",
+        "url": "https://histmag.org",
+        "rss": "https://histmag.org/rss",
+        "social": {
+            "facebook": "https://www.facebook.com/histmag",
+            "x": "https://x.com/histmag"
+        },
+        "topics": ["Długie formy", "Historia regionalna", "Recenzje opracowań", "Wywiady z historykami", "Źródła akademickie"],
+        "desc": "Jeden z najstarszych i najbardziej renomowanych portali historycznych w Polsce. Ich społeczność na Facebooku to setki tysięcy zaangażowanych czytelników. To doskonałe miejsce do czytania dłuższych, dobrze udokumentowanych tekstów, często pisanych przez historyków, recenzji wielotomowych opracowań oraz artykułów o historii regionalnej.",
+        "takeaway": "Wzorzec rzetelnego, pogłębionego tekstu historycznego z bogatą bibliografią, recenzje фундаментальных dzieł i szacunek dla źródeł pisanych.",
+        "best_essay": "„Polska dzielnicowa i narodziny tożsamości narodowej: Jak rozbicie państwa paradoksalnie wzmocniło poczucie wspólnoty”"
+    },
+    {
+        "id": "tytus_edu_pl",
+        "name": "Tytus.edu.pl",
+        "drawer": "SZUFLADA_HISTORIA",
+        "drawer_name": "Historia & Lekcje Dziejów",
+        "blog_category": "historia",
+        "region": "Polska",
+        "scope": "Polityka / Wojny / Kultura dawnych wieków / Viral historyczny",
+        "lang": "PL",
+        "flag": "🇵🇱",
+        "type": "Portal popularyzatorski & Aktywny fanpage FB",
+        "url": "https://tytus.edu.pl",
+        "rss": "https://tytus.edu.pl/feed/",
+        "social": {
+            "facebook": "https://www.facebook.com/tytus.edu"
+        },
+        "topics": ["Polityka dawna", "Wojny i dyplomacja", "Kultura dawnych wieków", "Popularyzacja dziejów", "Wirusowe eseje"],
+        "desc": "Portal i bardzo aktywny fanpage, który świetnie radzi sobie z popularyzacją historii. Oferują merytoryczne teksty, które często stają się viralami w mediach społecznościowych, skupiając się na polityce, wojnach i kulturze dawnych wieków.",
+        "takeaway": "Zdolność do tworzenia merytorycznych, a zarazem viralowych formatów publicystycznych, które przyciągają dziesiątki tysięcy reakcji bez utraty rzetelności.",
+        "best_essay": "„Kulisy dawnych wojen i traktatów: Jak dyplomatyczne intrygi i sojusze z papieru decydowały o losach koronowanych głów”"
+    },
+    {
         "id": "ciekawe_historie",
         "name": "Ciekawe Historie (Tomasz Czukiewski)",
         "drawer": "SZUFLADA_HISTORIA",
@@ -957,6 +1021,10 @@ def get_curated_social_bundles():
                 "category_title": "3. Historia & Lekcje Dziejów",
                 "essays": [
                     {"source": "Dzieje.pl", "title": "Anatomia polskich powstań narodowych: Rachunek zysków i strat z perspektywy suwerenności", "url": "https://dzieje.pl"},
+                    {"source": "WielkaHistoria.pl", "title": "Narodziny cywilizacji nad Nilem i Eufratem: Jak gospodarka irygacyjna stworzyła pierwsze podatki", "url": "https://wielkahistoria.pl"},
+                    {"source": "Histmag.org", "title": "Polska dzielnicowa i narodziny tożsamości: Jak rozbicie państwa wzmocniło poczucie wspólnoty", "url": "https://histmag.org"},
+                    {"source": "Ciekawe Historie", "title": "Anatomia polskiej biedy lat 90.: Jak transformacja ustrojowa ukształtowała współczesne podziały", "url": "https://www.youtube.com/@CiekaweHistorie"},
+                    {"source": "Tytus.edu.pl", "title": "Kulisy dawnych traktatów: Jak dyplomatyczne intrygi i sojusze decydowały o losach koron", "url": "https://tytus.edu.pl"},
                     {"source": "Historia.org.pl", "title": "Pieniądz i wojna: Jak finanse królów decydowały o losach bitew nowożytnej Europy", "url": "https://historia.org.pl"},
                     {"source": "Historia Realna", "title": "Mit niezwyciężonych sojuszy: Lekcja z września 1939 roku dla współczesnej Polski w NATO", "url": "https://www.youtube.com/@HistoriaRealna"},
                     {"source": "ACOUP (Bret Devereaux)", "title": "The Logistics of Iron and Bread: Why Ancient Empires Fell When Wheat Supply Lines Broke", "url": "https://acoup.blog"},
