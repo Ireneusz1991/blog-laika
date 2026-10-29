@@ -893,6 +893,7 @@
             {% for cat in categories %}
             <option value="{{ cat.slug }}">{{ cat.name }}</option>
             {% endfor %}
+            <option value="kondensat">⚡ Kondensat (Konglomerat Wielowątkowy)</option>
           </select>
         </div>
         <div>
@@ -1796,7 +1797,7 @@ ${body}`;
     // Fill category if element exists
     const catEl = document.getElementById('scratch-category');
     if (catEl && prop.category) {
-      catEl.value = (prop.category === 'kondensat') ? 'eseje' : prop.category;
+      catEl.value = prop.category;
     }
 
     // Fill summary / lead
