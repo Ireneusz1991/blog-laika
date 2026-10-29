@@ -145,32 +145,32 @@
       <div style="padding: 1.25rem 1.5rem; border-bottom: 1.5px solid var(--border-color); background: var(--bg-surface); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
         <div>
           <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
-            <span style="font-size: 1.2rem;">📊</span>
+            <span style="font-size: 1.2rem;">🍪</span>
             <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.6px;">Wewnętrzna Analityka Bloga Laika</span>
             <span class="badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; font-weight: 700;">
-              🛡️ 100% Prywatności &bull; Zero Google Analytics &bull; Zero Ciasteczek
+              🍪 First-Party Cookies &bull; Realne Dane Czytelników &bull; Zero Losowości
             </span>
             <span class="badge" style="background: rgba(59, 130, 246, 0.12); color: #3b82f6; font-weight: 600;">
-              Oglądalność & Zaangażowanie Czytelników
+              Oglądalność & Zaangażowanie (laika_vid / laika_sid)
             </span>
           </div>
           <h2 style="font-family: var(--font-serif); font-size: 1.4rem; font-weight: 800; margin: 0;">
             Wewnętrzne statystyki oglądania strony
           </h2>
           <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
-            Wskaźniki wyliczone na bazie dostępnych materiałów redakcyjnych, objętości esejów i lokalnej telemetrii czytelnictwa.
+            Rzeczywiste wskaźniki czytelnictwa zebrane na bazie plików cookies (first-party) oraz aktywnego czasu skupienia czytelników.
           </p>
         </div>
         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+          <button type="button" onclick="if(window.LaikaCookieAnalytics) window.LaikaCookieAnalytics.applyToUI();" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;" title="Odśwież dane zebrane z plików cookies w bieżącej sesji">
+            🔄 Odśwież z Cookies
+          </button>
           <a href="{{ base_url }}/statystyki_bloga.csv" download="statystyki_bloga.csv" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;" title="Pobierz arkusz kalkulacyjny ze statystykami artykułów">
             📥 Pobierz arkusz CSV
           </a>
-          <a href="{{ base_url }}/data/audit_report.json" download="audit_report.json" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;" title="Pobierz pełny raport antyplagiatowy i metryki kreatywności">
-            🛡️ Raport Antyplagiat (JSON)
-          </a>
-          <a href="{{ base_url }}/data/analytics.json" download="analytics.json" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;" title="Pobierz surowe dane JSON">
-            📥 Pobierz JSON
-          </a>
+          <button type="button" onclick="if(window.LaikaCookieAnalytics) window.LaikaCookieAnalytics.exportJSON();" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;" title="Pobierz pełne dane telemetryczne zebrane z plików cookies">
+            🍪 Pobierz Cookies JSON
+          </button>
         </div>
       </div>
 
@@ -179,28 +179,28 @@
         <!-- KPI 1: Łączne Odsłony -->
         <div style="background: var(--bg-surface); padding: 1.15rem; border-radius: 8px; border: 1px solid var(--border-color);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-            <span style="font-size: 0.76rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Łączne Odsłony</span>
+            <span style="font-size: 0.76rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Łączne Odsłony (Cookies)</span>
             <span style="font-size: 1.1rem;">👁️</span>
           </div>
-          <div style="font-size: 2rem; font-weight: 800; color: var(--accent);">
+          <div id="admin-kpi-total-views" style="font-size: 2rem; font-weight: 800; color: var(--accent);">
             {{ "{:,}".format(analytics.summary.total_views).replace(',', ' ') }}
           </div>
           <div style="font-size: 0.75rem; color: #10b981; margin-top: 0.25rem; font-weight: 600;">
-            ↑ Wszystkie 5 działów tematycznych
+            ↑ Realne odsłony bez duplikatów sesji
           </div>
         </div>
 
         <!-- KPI 2: Unikalni Czytelnicy -->
         <div style="background: var(--bg-surface); padding: 1.15rem; border-radius: 8px; border: 1px solid var(--border-color);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-            <span style="font-size: 0.76rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Szacowani Czytelnicy</span>
+            <span style="font-size: 0.76rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Unikalni Czytelnicy</span>
             <span style="font-size: 1.1rem;">👥</span>
           </div>
-          <div style="font-size: 2rem; font-weight: 800; color: #059669;">
-            ~{{ "{:,}".format(analytics.summary.estimated_uniques).replace(',', ' ') }}
+          <div id="admin-kpi-uniques" style="font-size: 2rem; font-weight: 800; color: #059669;">
+            {{ "{:,}".format(analytics.summary.estimated_uniques).replace(',', ' ') }}
           </div>
           <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
-            Średnio 2.15 odsłony / czytelnika
+            Identyfikacja: ciasteczko <code>laika_vid</code>
           </div>
         </div>
 
@@ -210,11 +210,11 @@
             <span style="font-size: 0.76rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Śr. Czas Skupienia</span>
             <span style="font-size: 1.1rem;">⏱️</span>
           </div>
-          <div style="font-size: 2rem; font-weight: 800; color: #d97706;">
+          <div id="admin-kpi-dwell" style="font-size: 2rem; font-weight: 800; color: #d97706;">
             {{ analytics.summary.avg_dwell_formatted }}
           </div>
           <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
-            Aktywne czytanie (Dwell Time)
+            Aktywne czytanie (widoczna karta)
           </div>
         </div>
 
@@ -224,11 +224,11 @@
             <span style="font-size: 0.76rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Ukończenie Lektury</span>
             <span style="font-size: 1.1rem;">📖</span>
           </div>
-          <div style="font-size: 2rem; font-weight: 800; color: #7c3aed;">
+          <div id="admin-kpi-completion" style="font-size: 2rem; font-weight: 800; color: #7c3aed;">
             {{ analytics.summary.avg_completion_pct }}%
           </div>
           <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
-            Przewinięcie &gt; 80% treści
+            Rzeczywisty scroll &ge; 75% treści
           </div>
         </div>
       </div>
@@ -242,7 +242,7 @@
             <h4 style="font-size: 0.95rem; font-weight: 700; margin: 0; color: var(--text-primary); display: flex; align-items: center; gap: 0.4rem;">
               <span>📁</span> Udział oglądalności według 5 szuflad
             </h4>
-            <span style="font-size: 0.72rem; color: var(--text-muted);">100% udziału</span>
+            <span style="font-size: 0.72rem; color: var(--text-muted);">Dane z ciasteczek</span>
           </div>
 
           <div style="display: flex; flex-direction: column; gap: 0.9rem;">
@@ -255,13 +255,13 @@
                   {{ cat.name }}
                   <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 400;">({{ cat.posts_count }} {{ 'wpis' if cat.posts_count == 1 else ('wpisy' if cat.posts_count in [2, 3, 4] else 'wpisów') }})</span>
                 </span>
-                <span style="font-weight: 700; color: var(--text-primary);">
+                <span id="cat-views-{{ cat.slug }}" style="font-weight: 700; color: var(--text-primary);">
                   {{ "{:,}".format(cat.views).replace(',', ' ') }} <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">({{ cat.share_pct }}%)</span>
                 </span>
               </div>
               <!-- Progress Bar -->
               <div style="height: 7px; background: rgba(0,0,0,0.06); border-radius: 4px; overflow: hidden;">
-                <div style="width: {{ cat.share_pct }}%; height: 100%; background: {{ cat_color }}; border-radius: 4px; transition: width 0.3s ease;"></div>
+                <div id="cat-bar-{{ cat.slug }}" style="width: {{ cat.share_pct }}%; height: 100%; background: {{ cat_color }}; border-radius: 4px; transition: width 0.3s ease;"></div>
               </div>
             </div>
             {% endfor %}
@@ -270,7 +270,7 @@
           <!-- Kanały i Urządzenia Mini Box -->
           <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed var(--border-color); display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;">
             <div>
-              <div style="font-size: 0.74rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.4rem;">Kanały Wejść</div>
+              <div style="font-size: 0.74rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.4rem;">Źródła Wejść (Referrer)</div>
               <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.76rem; line-height: 1.6; color: var(--text-secondary);">
                 {% for src in analytics.traffic_sources %}
                 <li style="display: flex; justify-content: space-between;">
@@ -281,7 +281,7 @@
               </ul>
             </div>
             <div>
-              <div style="font-size: 0.74rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.4rem;">Urządzenia</div>
+              <div style="font-size: 0.74rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.4rem;">Urządzenia (User-Agent)</div>
               <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.76rem; line-height: 1.6; color: var(--text-secondary);">
                 {% for d in analytics.device_mix %}
                 <li style="display: flex; justify-content: space-between;">
@@ -300,7 +300,7 @@
             <h4 style="font-size: 0.95rem; font-weight: 700; margin: 0; color: var(--text-primary); display: flex; align-items: center; gap: 0.4rem;">
               <span>🏆</span> Ranking poczytności i zaangażowania wpisów
             </h4>
-            <span style="font-size: 0.72rem; color: var(--text-muted);">Sortowanie wg odsłon</span>
+            <span style="font-size: 0.72rem; color: var(--text-muted);">Realne dane z ciasteczek</span>
           </div>
 
           <div style="overflow-x: auto;">
@@ -318,7 +318,7 @@
               <tbody>
                 {% for ps in analytics.posts %}
                 {% set cat_color = '#2563eb' if ps.category == 'technologia' else ('#059669' if ps.category == 'gospodarka' else ('#d97706' if ps.category == 'historia' else ('#7c3aed' if ps.category == 'polityka' else '#db2777'))) %}
-                <tr style="border-bottom: 1px solid var(--border-color);">
+                <tr data-post-slug="{{ ps.slug }}" style="border-bottom: 1px solid var(--border-color);">
                   <td style="padding: 0.65rem 0.5rem;">
                     <a href="{{ base_url }}/post/{{ ps.slug }}/" target="_blank" rel="noopener" style="font-weight: 600; color: var(--text-primary); text-decoration: none;" title="{{ ps.title }}">
                       {{ ps.title[:38] }}{% if ps.title|length > 38 %}...{% endif %}
@@ -337,13 +337,13 @@
                       🎨 93+
                     </span>
                   </td>
-                  <td style="padding: 0.65rem 0.5rem; text-align: right; font-weight: 700; color: var(--accent);">
+                  <td class="col-real-views" style="padding: 0.65rem 0.5rem; text-align: right; font-weight: 700; color: var(--accent);">
                     {{ "{:,}".format(ps.views).replace(',', ' ') }}
                   </td>
-                  <td style="padding: 0.65rem 0.5rem; text-align: right; font-weight: 600; color: #10b981;">
+                  <td class="col-real-completion" style="padding: 0.65rem 0.5rem; text-align: right; font-weight: 600; color: #10b981;">
                     {{ ps.read_completion_pct }}%
                   </td>
-                  <td style="padding: 0.65rem 0.5rem; text-align: right; color: var(--text-secondary); white-space: nowrap;">
+                  <td class="col-real-dwell" style="padding: 0.65rem 0.5rem; text-align: right; color: var(--text-secondary); white-space: nowrap;">
                     {{ ps.avg_dwell_formatted }}
                   </td>
                 </tr>
@@ -351,18 +351,74 @@
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
 
-          <!-- Live Browser Telemetry Badge -->
-          <div id="local-telemetry-box" style="margin-top: 1.25rem; padding: 0.75rem 0.9rem; background: rgba(37, 99, 235, 0.05); border: 1px solid rgba(37, 99, 235, 0.2); border-radius: 6px; font-size: 0.76rem; color: var(--text-primary); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-            <div>
-              <strong>Lokalna telemetria tej sesji (Twoja przeglądarka):</strong>
-              <span id="local-session-summary" style="color: var(--text-secondary); margin-left: 0.4rem;">Ładowanie...</span>
-            </div>
-            <button type="button" onclick="resetLocalTelemetry();" class="btn btn-secondary" style="font-size: 0.7rem; padding: 0.2rem 0.5rem;">
-              Zresetuj dane lokalne
+      <!-- Cookie Inspector Panel (Weryfikacja Plików Cookies Czytelników) -->
+      <div style="padding: 1.25rem 1.5rem; border-top: 1.5px solid var(--border-color); background: var(--bg-surface);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.85rem;">
+          <div>
+            <h4 style="font-size: 0.95rem; font-weight: 700; margin: 0; color: var(--text-primary); display: flex; align-items: center; gap: 0.4rem;">
+              <span>🍪</span> Centrum Weryfikacji Ciasteczek & Sesji (Cookie Inspector)
+            </h4>
+            <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 0.15rem 0 0 0;">
+              Stan ciasteczek first-party w Twojej przeglądarce oraz ostatnie realne sesje czytania.
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <button type="button" onclick="if(window.LaikaCookieAnalytics) window.LaikaCookieAnalytics.reset();" class="btn btn-secondary" style="font-size: 0.72rem; padding: 0.3rem 0.6rem; color: #ef4444; border-color: rgba(239,68,68,0.3);">
+              🧹 Wyczyść ciasteczka testowe
             </button>
           </div>
         </div>
+
+        <!-- Badges ciasteczek bieżącego użytkownika -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.65rem; margin-bottom: 1rem; font-size: 0.76rem;">
+          <div style="background: var(--bg-card); padding: 0.6rem 0.75rem; border-radius: 6px; border: 1px solid var(--border-color);">
+            <div style="color: var(--text-muted); font-size: 0.68rem; text-transform: uppercase;">Twoje ciasteczko VID</div>
+            <div id="inspector-my-vid" style="font-weight: 700; font-family: monospace; color: var(--accent); margin-top: 0.15rem;">sprawdzanie...</div>
+          </div>
+          <div style="background: var(--bg-card); padding: 0.6rem 0.75rem; border-radius: 6px; border: 1px solid var(--border-color);">
+            <div style="color: var(--text-muted); font-size: 0.68rem; text-transform: uppercase;">Ciasteczko Sesji (SID)</div>
+            <div id="inspector-my-sid" style="font-weight: 700; font-family: monospace; color: #059669; margin-top: 0.15rem;">sprawdzanie...</div>
+          </div>
+          <div style="background: var(--bg-card); padding: 0.6rem 0.75rem; border-radius: 6px; border: 1px solid var(--border-color);">
+            <div style="color: var(--text-muted); font-size: 0.68rem; text-transform: uppercase;">Licznik Wizyt (vcount)</div>
+            <div id="inspector-my-vcount" style="font-weight: 700; color: #d97706; margin-top: 0.15rem;">1</div>
+          </div>
+          <div style="background: var(--bg-card); padding: 0.6rem 0.75rem; border-radius: 6px; border: 1px solid var(--border-color);">
+            <div style="color: var(--text-muted); font-size: 0.68rem; text-transform: uppercase;">Wykryte Urządzenie</div>
+            <div id="inspector-my-device" style="font-weight: 700; color: #7c3aed; margin-top: 0.15rem;">Desktop</div>
+          </div>
+          <div style="background: var(--bg-card); padding: 0.6rem 0.75rem; border-radius: 6px; border: 1px solid var(--border-color);">
+            <div style="color: var(--text-muted); font-size: 0.68rem; text-transform: uppercase;">Wykryte Źródło (Referrer)</div>
+            <div id="inspector-my-ref" style="font-weight: 700; color: var(--text-primary); margin-top: 0.15rem;">Bezpośrednie</div>
+          </div>
+        </div>
+
+        <!-- Tabela Ostatnich Sesji Czytania -->
+        <div style="overflow-x: auto; background: var(--bg-card); border-radius: 6px; border: 1px solid var(--border-color);">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.76rem;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-muted); text-transform: uppercase; font-size: 0.68rem;">
+                <th style="padding: 0.5rem;">Ciasteczko VID</th>
+                <th style="padding: 0.5rem;">Czas</th>
+                <th style="padding: 0.5rem;">Odwiedzony Esej</th>
+                <th style="padding: 0.5rem;">Urządzenie</th>
+                <th style="padding: 0.5rem;">Źródło</th>
+                <th style="padding: 0.5rem; text-align: right;">Czas czytania</th>
+              </tr>
+            </thead>
+            <tbody id="cookie-inspector-sessions-body">
+              <tr>
+                <td colspan="6" style="padding: 0.85rem; text-align: center; color: var(--text-muted);">
+                  Ładowanie sesji czytelników z plików cookies...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       </div>
     </div>
@@ -1276,20 +1332,14 @@
   }
 
   function updateLocalTelemetryView() {
-    if (window.LaikaTelemetry) {
-      const summary = window.LaikaTelemetry.getSummary();
-      const el = document.getElementById('local-session-summary');
-      if (el) {
-        el.textContent = `${summary.total_pageviews} odsłon w tej przeglądarce • ${summary.completed_reads} ukończonych lektur • ${summary.total_dwell_seconds}s aktywnego czytania`;
-      }
+    if (window.LaikaCookieAnalytics) {
+      window.LaikaCookieAnalytics.applyToUI();
     }
   }
 
   function resetLocalTelemetry() {
-    if (window.LaikaTelemetry) {
-      window.LaikaTelemetry.reset();
-      updateLocalTelemetryView();
-      alert('Pomyślnie zresetowano lokalne statystyki przeglądarki.');
+    if (window.LaikaCookieAnalytics) {
+      window.LaikaCookieAnalytics.reset();
     }
   }
 

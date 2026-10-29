@@ -1,4 +1,7 @@
 import os
+import json
+import secrets
+import re
 import hashlib
 import hmac
 from datetime import datetime
@@ -123,7 +126,90 @@ async def read_post(slug: str, request: Request):
         raise HTTPException(status_code=404, detail="Esej nie został odnaleziony.")
     
     ctx["post"] = enrich_post(post)
-    return render(request, "post.html", ctx)
+    response = render(request, "post.html", ctx)
+    
+    # Zarządzanie First-Party Cookies i realną analityką
+    vid = request.cookies.get("laika_vid")
+    if not vid:
+        vid = f"vid_{int(datetime.now().timestamp())}_{secrets.token_hex(4)}"
+        response.set_cookie("laika_vid", vid, max_age=31536000, samesite="lax")
+    
+    sid = request.cookies.get("laika_sid")
+    if not sid:
+        sid = f"sid_{int(datetime.now().timestamp())}_{secrets.token_hex(4)}"
+        response.set_cookie("laika_sid", sid, max_age=1800, samesite="lax")
+        
+    seen = request.cookies.get("laika_seen", "")
+    seen_slugs = [s.strip() for s in seen.split(",") if s.strip()]
+    if slug not in seen_slugs and not is_admin:
+        ref_header = request.headers.get("referer", "")
+        ref_type = "Wejścia Bezpośrednie & Zakładki"
+        ref_lower = ref_header.lower()
+        if any(eng in ref_lower for eng in ["google.", "bing.", "duckduckgo.", "ecosia."]):
+            ref_type = "Wyszukiwarki (Organic Search)"
+        elif any(soc in ref_lower for soc in ["twitter.", "x.com", "t.co", "facebook.", "linkedin.", "wykop.pl", "reddit."]):
+            ref_type = "Media Społecznościowe & Dyskusje"
+        elif any(rss in ref_lower for rss in ["feedly", "inoreader"]):
+            ref_type = "Czytniki RSS & Agregatory"
+            
+        ua = request.headers.get("user-agent", "")
+        dev_type = "Komputery (Desktop)"
+        if re.search(r'iPad|Tablet|(Android(?!.*Mobile))', ua, re.I):
+            dev_type = "Tablety"
+        elif re.search(r'Mobile|iPhone|Android', ua, re.I):
+            dev_type = "Smartfony (Mobile)"
+            
+        database.record_cookie_pageview(
+            visitor_id=vid,
+            session_id=sid,
+            post_slug=slug,
+            category=post.get("category", ""),
+            referrer=ref_header,
+            referrer_type=ref_type,
+            device_type=dev_type
+        )
+        seen_slugs.append(slug)
+        response.set_cookie("laika_seen", ",".join(seen_slugs), max_age=1800, samesite="lax")
+        
+    return response
+
+# Endpointy API do asynchronicznej telemetrii z przeglądarki
+@app.post("/api/analytics/collect")
+async def api_analytics_collect(request: Request):
+    try:
+        data = await request.json()
+        vid = data.get("vid") or request.cookies.get("laika_vid")
+        sid = data.get("sid") or request.cookies.get("laika_sid")
+        slug = data.get("slug", "")
+        cat = data.get("cat", "")
+        ref = data.get("ref", "Wejścia Bezpośrednie & Zakładki")
+        dev = data.get("dev", "Komputery (Desktop)")
+        if vid and sid and slug:
+            database.record_cookie_pageview(
+                visitor_id=vid, session_id=sid, post_slug=slug, category=cat,
+                referrer="", referrer_type=ref, device_type=dev
+            )
+        return {"status": "ok"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+@app.post("/api/analytics/heartbeat")
+async def api_analytics_heartbeat(request: Request):
+    try:
+        data = await request.json()
+        vid = data.get("vid") or request.cookies.get("laika_vid")
+        sid = data.get("sid") or request.cookies.get("laika_sid")
+        slug = data.get("slug", "")
+        dwell = int(data.get("dwell_seconds", 0))
+        scroll = int(data.get("scroll_depth", 0))
+        if vid and sid and slug:
+            database.record_cookie_dwell(
+                visitor_id=vid, session_id=sid, post_slug=slug,
+                dwell_seconds=dwell, scroll_depth=scroll
+            )
+        return {"status": "ok"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 @app.get("/kategoria/{slug}", response_class=HTMLResponse)
 async def category_view(slug: str, request: Request):

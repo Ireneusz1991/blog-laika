@@ -37,6 +37,27 @@ def init_db():
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_posts_category ON posts(category)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_posts_status ON posts(status)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_posts_created ON posts(created_at)")
+
+    # Realna tabela analityki opartej na plikach cookies czytelników (zero losowych danych)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS analytics_events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            visitor_id TEXT NOT NULL,
+            session_id TEXT NOT NULL,
+            event_type TEXT NOT NULL,
+            post_slug TEXT,
+            category TEXT,
+            referrer TEXT,
+            referrer_type TEXT,
+            device_type TEXT,
+            dwell_seconds INTEGER DEFAULT 0,
+            scroll_depth INTEGER DEFAULT 0,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_analytics_vid ON analytics_events(visitor_id)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_analytics_slug ON analytics_events(post_slug)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_analytics_event ON analytics_events(event_type)")
     conn.commit()
     conn.close()
 
@@ -148,7 +169,7 @@ def delete_post(post_id: int) -> bool:
     conn.close()
     return True
 
-def get_post_by_slug(slug: str, include_drafts: bool = False) -> Optional[Dict[str, Any]]:
+def get_post_by_slug(slug: str, include_drafts: bool = False, count_view: bool = False) -> Optional[Dict[str, Any]]:
     conn = get_db()
     cursor = conn.cursor()
     if include_drafts:
@@ -156,8 +177,7 @@ def get_post_by_slug(slug: str, include_drafts: bool = False) -> Optional[Dict[s
     else:
         cursor.execute("SELECT * FROM posts WHERE slug = ? AND status = 'published'", (slug,))
     row = cursor.fetchone()
-    if row and not include_drafts:
-        # Increment view count
+    if row and not include_drafts and count_view:
         cursor.execute("UPDATE posts SET views = views + 1 WHERE id = ?", (row["id"],))
         conn.commit()
     conn.close()
@@ -223,38 +243,56 @@ def get_featured_post() -> Optional[Dict[str, Any]]:
     conn.close()
     return dict(row) if row else None
 
-def set_baseline_views_if_zero():
-    """Przypisuje logiczne, realistyczne wartości bazowe odsłon na podstawie wieku i tematu wpisu."""
-    baseline_map = {
-        "kondensat-wielkie-sprzezenie-zwrotne": 1680,
-        "architektura-uwagi-czy-ai-mysli": 1420,
-        "zludzenie-taniego-kapitalu-zerowe-stopy": 1180,
-        "nowy-koncert-mocarstw-geopolityka": 980,
-        "kryzys-sueski-1956-lekcja-historii": 860,
-        "pochwala-dociekliwego-laika": 640
-    }
+def record_cookie_pageview(visitor_id: str, session_id: str, post_slug: str, category: str = "",
+                           referrer: str = "", referrer_type: str = "Wejścia Bezpośrednie", device_type: str = "Desktop") -> bool:
+    """Rejestruje realną odsłonę czytelnika na bazie ciasteczek laika_vid i laika_sid.
+    Chroni przed sztucznym nabijaniem (unikalna wizyta per sesja)."""
+    if not visitor_id or not session_id:
+        return False
     conn = get_db()
     cursor = conn.cursor()
-    for slug, views in baseline_map.items():
-        cursor.execute("UPDATE posts SET views = ? WHERE slug = ? AND (views = 0 OR views IS NULL)", (views, slug))
     
-    # Fallback for any post not in baseline_map that has 0 views
-    cursor.execute("SELECT id, slug FROM posts WHERE views = 0 OR views IS NULL")
-    for row in cursor.fetchall():
-        fallback_views = 520 + (abs(hash(row["slug"])) % 360)
-        cursor.execute("UPDATE posts SET views = ? WHERE id = ?", (fallback_views, row["id"]))
+    # Sprawdzenie czy w tej 30-minutowej sesji ta strona była już zarejestrowana
+    cursor.execute("""
+        SELECT id FROM analytics_events 
+        WHERE session_id = ? AND post_slug = ? AND event_type = 'pageview'
+    """, (session_id, post_slug))
+    already_recorded = cursor.fetchone()
+    
+    if not already_recorded:
+        cursor.execute("""
+            INSERT INTO analytics_events (visitor_id, session_id, event_type, post_slug, category, referrer, referrer_type, device_type)
+            VALUES (?, ?, 'pageview', ?, ?, ?, ?, ?)
+        """, (visitor_id, session_id, post_slug, category, referrer, referrer_type, device_type))
+        if post_slug:
+            cursor.execute("UPDATE posts SET views = views + 1 WHERE slug = ?", (post_slug,))
+        conn.commit()
+        conn.close()
+        return True
+    
+    conn.close()
+    return False
 
+def record_cookie_dwell(visitor_id: str, session_id: str, post_slug: str, dwell_seconds: int, scroll_depth: int):
+    """Aktualizuje rzeczywisty czas aktywnego czytania i głębokość przewinięcia na bazie ciasteczek."""
+    if not visitor_id or not session_id or not post_slug:
+        return
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("""
+        UPDATE analytics_events 
+        SET dwell_seconds = MAX(dwell_seconds, ?), scroll_depth = MAX(scroll_depth, ?)
+        WHERE session_id = ? AND post_slug = ? AND event_type = 'pageview'
+    """, (dwell_seconds, scroll_depth, session_id, post_slug))
     conn.commit()
     conn.close()
 
 def get_internal_analytics() -> Dict[str, Any]:
-    """Generuje pełny pakiet wewnętrznych statystyk oglądalności, zaangażowania i podziału na szuflady."""
-    set_baseline_views_if_zero()
+    """Generuje pakiet REALNYCH statystyk zebranych na podstawie plików cookies i sesji czytelników (zero losowych danych)."""
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM posts WHERE status = 'published' ORDER BY views DESC")
     posts = [dict(row) for row in cursor.fetchall()]
-    conn.close()
 
     total_views = sum(p.get("views", 0) for p in posts)
     total_words = 0
@@ -273,6 +311,18 @@ def get_internal_analytics() -> Dict[str, Any]:
 
     cat_views = {cat_slug: 0 for cat_slug in CATEGORY_MAP}
 
+    # Pobierz z bazy realne dane zagregowane ze zdarzeń cookies
+    cursor.execute("""
+        SELECT post_slug, 
+               COUNT(*) as real_views,
+               AVG(dwell_seconds) as avg_dwell,
+               SUM(CASE WHEN scroll_depth >= 75 THEN 1 ELSE 0 END) as completions
+        FROM analytics_events
+        WHERE event_type = 'pageview' AND post_slug IS NOT NULL AND post_slug != ''
+        GROUP BY post_slug
+    """)
+    slug_events = {row["post_slug"]: dict(row) for row in cursor.fetchall()}
+
     for p in posts:
         slug = p["slug"]
         views = p.get("views", 0)
@@ -283,11 +333,15 @@ def get_internal_analytics() -> Dict[str, Any]:
         words = len(re.findall(r'\w+', content))
         total_words += words
         
-        # Realistyczny czas czytania i wskaźnik ukończenia
-        read_time_calc = max(2, round(words / 180))
-        completion_pct = min(92, max(72, 94 - (read_time_calc * 3) + (abs(hash(slug)) % 6)))
+        read_time_calc = max(1, round(words / 200))
         
-        avg_dwell_sec = int(read_time_calc * 60 * (completion_pct / 100.0) * 0.95)
+        # Realne metryki ze zdarzeń cookies
+        ev = slug_events.get(slug, {})
+        avg_dwell_sec = round(ev.get("avg_dwell") or 0)
+        completions = ev.get("completions") or 0
+        ev_views = ev.get("real_views") or views
+        completion_pct = round((completions / ev_views * 100)) if ev_views > 0 else 0
+        
         dwell_min = avg_dwell_sec // 60
         dwell_s = avg_dwell_sec % 60
         dwell_formatted = f"{dwell_min}m {dwell_s:02d}s"
@@ -324,28 +378,109 @@ def get_internal_analytics() -> Dict[str, Any]:
 
     category_analytics.sort(key=lambda x: x["views"], reverse=True)
 
-    estimated_uniques = round(total_views / 2.15) if total_views > 0 else 0
-    avg_completion = round(sum(p["read_completion_pct"] for p in post_stats) / len(post_stats), 1) if post_stats else 0
-    avg_dwell_total_sec = round(sum(p["avg_dwell_sec"] for p in post_stats) / len(post_stats)) if post_stats else 0
+    # Realna liczba unikalnych czytelników (unikalne ciasteczka laika_vid)
+    cursor.execute("SELECT COUNT(DISTINCT visitor_id) FROM analytics_events WHERE visitor_id != ''")
+    row_uniques = cursor.fetchone()
+    real_uniques = row_uniques[0] if (row_uniques and row_uniques[0] is not None) else 0
+
+    # Realny średni czas skupienia czytelnika
+    cursor.execute("SELECT AVG(dwell_seconds) FROM analytics_events WHERE dwell_seconds > 0")
+    row_avg_dwell = cursor.fetchone()
+    avg_dwell_total_sec = round(row_avg_dwell[0]) if (row_avg_dwell and row_avg_dwell[0] is not None) else 0
     avg_dwell_total_fmt = f"{avg_dwell_total_sec // 60}m {avg_dwell_total_sec % 60:02d}s"
 
-    traffic_sources = [
-        {"name": "Wyszukiwarki (Organic Search)", "share_pct": 42.5, "icon": "🔍", "desc": "Google, Bing, DuckDuckGo"},
-        {"name": "Media Społecznościowe & Dyskusje", "share_pct": 31.0, "icon": "🌐", "desc": "X / Twitter, LinkedIn, Wykop"},
-        {"name": "Wejścia Bezpośrednie & Zakładki", "share_pct": 18.5, "icon": "🔖", "desc": "Wpisywanie adresu URL, polecenia"},
-        {"name": "Czytniki RSS & Agregatory", "share_pct": 8.0, "icon": "📡", "desc": "Feedly, Inoreader, NetNewsWire"}
-    ]
+    # Realny wskaźnik ukończenia lektury
+    cursor.execute("""
+        SELECT COUNT(*), SUM(CASE WHEN scroll_depth >= 75 THEN 1 ELSE 0 END)
+        FROM analytics_events WHERE event_type = 'pageview'
+    """)
+    row_compl = cursor.fetchone()
+    if row_compl and row_compl[0] and row_compl[0] > 0:
+        avg_completion = round(((row_compl[1] or 0) / row_compl[0]) * 100, 1)
+    else:
+        avg_completion = 0.0
 
-    device_mix = [
-        {"device": "Smartfony (Mobile)", "share_pct": 61.2, "icon": "📱"},
-        {"device": "Komputery (Desktop)", "share_pct": 34.6, "icon": "💻"},
-        {"device": "Tablety", "share_pct": 4.2, "icon": "📟"}
-    ]
+    # Realne źródła wejść na bazie referrera z ciasteczek
+    cursor.execute("""
+        SELECT referrer_type, COUNT(*) as cnt
+        FROM analytics_events
+        WHERE event_type = 'pageview' AND referrer_type IS NOT NULL AND referrer_type != ''
+        GROUP BY referrer_type
+        ORDER BY cnt DESC
+    """)
+    ref_rows = cursor.fetchall()
+    total_refs = sum(r["cnt"] for r in ref_rows)
+    
+    icon_map = {
+        "Wyszukiwarki (Organic Search)": "🔍",
+        "Wyszukiwarki": "🔍",
+        "Media Społecznościowe & Dyskusje": "🌐",
+        "Media Społecznościowe": "🌐",
+        "Wejścia Bezpośrednie & Zakładki": "🔖",
+        "Wejścia Bezpośrednie": "🔖",
+        "Czytniki RSS & Agregatory": "📡",
+        "Czytniki RSS": "📡",
+        "Inne": "🔗"
+    }
+
+    traffic_sources = []
+    if total_refs > 0:
+        for r in ref_rows:
+            share = round((r["cnt"] / total_refs * 100), 1)
+            traffic_sources.append({
+                "name": r["referrer_type"],
+                "count": r["cnt"],
+                "share_pct": share,
+                "icon": icon_map.get(r["referrer_type"], "🌐"),
+                "desc": f"Rzeczywiste wejścia zidentyfikowane ciasteczkiem: {r['cnt']}"
+            })
+    else:
+        traffic_sources = [
+            {"name": "Wejścia Bezpośrednie & Zakładki", "count": 0, "share_pct": 100.0, "icon": "🔖", "desc": "Wpisywanie adresu URL, brak zewnętrznego referrera"}
+        ]
+
+    # Realny podział urządzeń (z navigator.userAgent / device_type)
+    cursor.execute("""
+        SELECT device_type, COUNT(*) as cnt
+        FROM analytics_events
+        WHERE event_type = 'pageview' AND device_type IS NOT NULL AND device_type != ''
+        GROUP BY device_type
+        ORDER BY cnt DESC
+    """)
+    dev_rows = cursor.fetchall()
+    total_devs = sum(r["cnt"] for r in dev_rows)
+    dev_icon = {"Mobile": "📱", "Smartfony (Mobile)": "📱", "Desktop": "💻", "Komputery (Desktop)": "💻", "Tablety": "📟", "Tablet": "📟"}
+    
+    device_mix = []
+    if total_devs > 0:
+        for r in dev_rows:
+            share = round((r["cnt"] / total_devs * 100), 1)
+            device_mix.append({
+                "device": r["device_type"],
+                "count": r["cnt"],
+                "share_pct": share,
+                "icon": dev_icon.get(r["device_type"], "💻")
+            })
+    else:
+        device_mix = [
+            {"device": "Komputery (Desktop)", "count": 0, "share_pct": 100.0, "icon": "💻"}
+        ]
+
+    # Ostatnie 15 realnych sesji z ciasteczek
+    cursor.execute("""
+        SELECT visitor_id, session_id, post_slug, referrer_type, device_type, dwell_seconds, scroll_depth, created_at
+        FROM analytics_events
+        WHERE event_type = 'pageview'
+        ORDER BY created_at DESC
+        LIMIT 15
+    """)
+    recent_sessions = [dict(r) for r in cursor.fetchall()]
+    conn.close()
 
     return {
         "summary": {
             "total_views": total_views,
-            "estimated_uniques": estimated_uniques,
+            "estimated_uniques": real_uniques,
             "avg_completion_pct": avg_completion,
             "avg_dwell_formatted": avg_dwell_total_fmt,
             "avg_dwell_sec": avg_dwell_total_sec,
@@ -355,7 +490,8 @@ def get_internal_analytics() -> Dict[str, Any]:
         "posts": post_stats,
         "categories": category_analytics,
         "traffic_sources": traffic_sources,
-        "device_mix": device_mix
+        "device_mix": device_mix,
+        "recent_sessions": recent_sessions
     }
 
 def get_stats() -> Dict[str, Any]:
