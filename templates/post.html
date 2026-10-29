@@ -101,7 +101,7 @@
         {{ post.category_name }}
       </a>
       <span>•</span>
-      <span>Autor: <strong style="color: var(--accent);">{{ post.author or blog_author }}</strong></span>
+      <span>Autor artykułu: <strong style="color: var(--accent);">{{ post.author or blog_author }}</strong></span>
       <span>•</span>
       <span>⏱️ {{ post.read_time }} min czytania</span>
       <span>•</span>
@@ -168,14 +168,14 @@
   <div class="author-card">
     <div class="author-avatar">IM</div>
     <div class="author-info">
-      <h4>Autor eseju: {{ blog_author }}</h4>
+      <h4>Autor artykułu: {{ blog_author }}</h4>
       <p>{{ blog_author_bio }}</p>
     </div>
   </div>
 
   <!-- Back to Home -->
   <div style="max-width: var(--max-w-content); margin: 2.5rem auto 0 auto; text-align: center;">
-    <a href="{{ base_url }}/" class="btn btn-secondary">&larr; Powrót do listy esejów</a>
+    <a href="{{ base_url }}/" class="btn btn-secondary">&larr; Powrót do listy artykułów</a>
   </div>
 
 </article>
