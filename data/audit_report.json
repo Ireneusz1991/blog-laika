@@ -1,0 +1,344 @@
+[
+  {
+    "title": "Architektura uwagi: Czy modele AI naprawdę myślą, czy tylko bezbłędnie zgadują?",
+    "filepath": "G:\\Mój dysk\\blog-laika\\posts\\architektura-uwagi-czy-ai-mysli.md",
+    "audit_timestamp": "2026-10-29 01:29:31",
+    "verdict": "100% CZYSTA SAMOKREACJA (BRAK PLAGIATU, WYSOKA KREATYWNOŚĆ)",
+    "originality_web_score": 100.0,
+    "is_plagiarism_free": true,
+    "creativity_score": 93.5,
+    "creativity_metrics": {
+      "total_words": 204,
+      "unique_words": 180,
+      "type_token_ratio": 0.882,
+      "guiraud_index": 12.6,
+      "lexical_score": 100,
+      "sentences_count": 10,
+      "avg_sentence_length": 21.3,
+      "sentence_length_std_dev": 16.58,
+      "burstiness_score": 100,
+      "ai_cliches_found": [
+        "jedno jest pewne:"
+      ],
+      "ai_cliche_score": 85,
+      "rhetorical_questions_count": 1,
+      "voice_score": 90,
+      "overall_creativity_score": 93.5
+    },
+    "plagiarism_details": {
+      "tested_shingles_count": 5,
+      "external_duplicates_count": 0,
+      "originality_web_score": 100.0,
+      "is_clean": true,
+      "details": [
+        {
+          "phrase": "Kiedy po raz pierwszy prowadzimy dłuższą rozmowę z",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "zaawansowana statystyka a zaczyna rozumienie Kluczowy przełom nastąpił",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "całym dokumencie jednocześnie Kontekst dynamiczny Słowo zamek w",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "emergentne właściwości wyłaniające się nagle przy odpowiedniej skali",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "prawdopodobieństwa wystąpienia kolejnego tokena Z drugiej strony zwolennicy",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        }
+      ]
+    }
+  },
+  {
+    "title": "Złudzenie taniego kapitału: Dlaczego dekada zerowych stóp procentowych zmieniła wszystko",
+    "filepath": "G:\\Mój dysk\\blog-laika\\posts\\zludzenie-taniego-kapitalu-zerowe-stopy.md",
+    "audit_timestamp": "2026-10-29 01:29:39",
+    "verdict": "100% CZYSTA SAMOKREACJA (BRAK PLAGIATU, WYSOKA KREATYWNOŚĆ)",
+    "originality_web_score": 100.0,
+    "is_plagiarism_free": true,
+    "creativity_score": 84.5,
+    "creativity_metrics": {
+      "total_words": 184,
+      "unique_words": 160,
+      "type_token_ratio": 0.87,
+      "guiraud_index": 11.8,
+      "lexical_score": 100,
+      "sentences_count": 11,
+      "avg_sentence_length": 17.7,
+      "sentence_length_std_dev": 4.59,
+      "burstiness_score": 54.1,
+      "ai_cliches_found": [],
+      "ai_cliche_score": 100,
+      "rhetorical_questions_count": 0,
+      "voice_score": 80,
+      "overall_creativity_score": 84.5
+    },
+    "plagiarism_details": {
+      "tested_shingles_count": 5,
+      "external_duplicates_count": 0,
+      "originality_web_score": 100.0,
+      "is_clean": true,
+      "details": [
+        {
+          "phrase": "Przez ponad lat po kryzysie finansowym z 2008",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "obserwatora brzmiało to jak złoty wiek tanie kredyty",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "1 Firmy zombie Podmioty które w normalnych warunkach",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "do rynków nieruchomości akcji technologicznych czy kryptowalut 3",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "gwałtowne podwyżki stóp wielu uczestników rynku przeżyło szok",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        }
+      ]
+    }
+  },
+  {
+    "title": "Nowy koncert mocarstw: Od wolnego handlu do geopolitycznej autarkii",
+    "filepath": "G:\\Mój dysk\\blog-laika\\posts\\nowy-koncert-mocarstw-geopolityka.md",
+    "audit_timestamp": "2026-10-29 01:29:47",
+    "verdict": "100% CZYSTA SAMOKREACJA (BRAK PLAGIATU, WYSOKA KREATYWNOŚĆ)",
+    "originality_web_score": 100.0,
+    "is_plagiarism_free": true,
+    "creativity_score": 96.0,
+    "creativity_metrics": {
+      "total_words": 183,
+      "unique_words": 154,
+      "type_token_ratio": 0.842,
+      "guiraud_index": 11.38,
+      "lexical_score": 100,
+      "sentences_count": 10,
+      "avg_sentence_length": 19.1,
+      "sentence_length_std_dev": 15.98,
+      "burstiness_score": 100,
+      "ai_cliches_found": [],
+      "ai_cliche_score": 100,
+      "rhetorical_questions_count": 0,
+      "voice_score": 80,
+      "overall_creativity_score": 96.0
+    },
+    "plagiarism_details": {
+      "tested_shingles_count": 5,
+      "external_duplicates_count": 0,
+      "originality_web_score": 100.0,
+      "is_clean": true,
+      "details": [
+        {
+          "phrase": "Początek lat 90 przyniósł słynną tezę Francisa Fukuyamy",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "zmiana poprzez handel była sztandarową doktryną tego okresu",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "ciasnych powiązań kluczowa staje się kontrola nad tzw",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "rzadkich lit kobalt i grafit bez nich transformacja",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "określanym jako de-risking i friendshoring Państwa nie rezygnują",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        }
+      ]
+    }
+  },
+  {
+    "title": "Anatomia kryzysu sueskiego 1956: Dzień, w którym Europa zrozumiała, że nie jest już centrum świata",
+    "filepath": "G:\\Mój dysk\\blog-laika\\posts\\kryzys-sueski-1956-lekcja-historii.md",
+    "audit_timestamp": "2026-10-29 01:30:04",
+    "verdict": "100% CZYSTA SAMOKREACJA (BRAK PLAGIATU, WYSOKA KREATYWNOŚĆ)",
+    "originality_web_score": 100.0,
+    "is_plagiarism_free": true,
+    "creativity_score": 98.0,
+    "creativity_metrics": {
+      "total_words": 261,
+      "unique_words": 222,
+      "type_token_ratio": 0.851,
+      "guiraud_index": 13.74,
+      "lexical_score": 100,
+      "sentences_count": 11,
+      "avg_sentence_length": 25.0,
+      "sentence_length_std_dev": 22.18,
+      "burstiness_score": 100,
+      "ai_cliches_found": [],
+      "ai_cliche_score": 100,
+      "rhetorical_questions_count": 1,
+      "voice_score": 90,
+      "overall_creativity_score": 98.0
+    },
+    "plagiarism_details": {
+      "tested_shingles_count": 5,
+      "external_duplicates_count": 0,
+      "originality_web_score": 100.0,
+      "is_clean": true,
+      "details": [
+        {
+          "phrase": "Jesienią 1956 roku rządy Wielkiej Brytanii i Francji",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "zaledwie kilkudziesięciu godzin dumne europejskie mocarstwa zostały zmuszone",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "szantaż rezerwami kapitałowymi 1 Atak na funta szterlinga",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "MFW Administracja USA zablokowała brytyjski wniosek o pożyczkę",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "cenę w rezerwach Nie można niezależnej polityki zagranicznej",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        }
+      ]
+    }
+  },
+  {
+    "title": "Pochwała dociekliwego laika: Dlaczego w epoce wąskich specjalizacji najbardziej potrzebujemy spojrzenia z zewnątrz",
+    "filepath": "G:\\Mój dysk\\blog-laika\\posts\\pochwala-dociekliwego-laika.md",
+    "audit_timestamp": "2026-10-29 01:30:58",
+    "verdict": "100% CZYSTA SAMOKREACJA (BRAK PLAGIATU, WYSOKA KREATYWNOŚĆ)",
+    "originality_web_score": 100.0,
+    "is_plagiarism_free": true,
+    "creativity_score": 94.0,
+    "creativity_metrics": {
+      "total_words": 224,
+      "unique_words": 189,
+      "type_token_ratio": 0.844,
+      "guiraud_index": 12.63,
+      "lexical_score": 100,
+      "sentences_count": 12,
+      "avg_sentence_length": 19.6,
+      "sentence_length_std_dev": 17.04,
+      "burstiness_score": 100,
+      "ai_cliches_found": [],
+      "ai_cliche_score": 100,
+      "rhetorical_questions_count": 1,
+      "voice_score": 70,
+      "overall_creativity_score": 94.0
+    },
+    "plagiarism_details": {
+      "tested_shingles_count": 5,
+      "external_duplicates_count": 0,
+      "originality_web_score": 100.0,
+      "is_clean": true,
+      "details": [
+        {
+          "phrase": "Współczesny świat nagradza hiper-specjalizację Od inżynierów oprogramowania przez",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "między poszczególnymi dziedzinami Właśnie w tym miejscu pojawia",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "ich bo stanowią fundament Twojej dyscypliny Dociekliwy laik",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "jedno założenie wyjściowe okaże się błędne Największe innowacje",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        },
+        {
+          "phrase": "połączoną z odmową biernej konsumpcji gotowych haseł Oznacza",
+          "matches_count": 0,
+          "external_matches_count": 0,
+          "external_matches": [],
+          "verdict": "CZYSTY / UNIKALNY"
+        }
+      ]
+    }
+  }
+]

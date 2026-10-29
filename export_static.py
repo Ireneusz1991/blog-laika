@@ -247,14 +247,17 @@ def build_static(output_dir="dist", base_url=None):
         f.write(json.dumps(analytics_data, indent=2, ensure_ascii=False))
 
     # 3d. Raport z audytu antyplagiatowego i analizy kreatywności
-    audit_file = os.path.join(output_dir, "data", "audit_report.json")
+    root_dir = os.path.dirname(os.path.abspath(__file__))
+    master_audit_file = os.path.join(root_dir, "data", "audit_report.json")
+    dist_audit_file = os.path.join(output_dir, "data", "audit_report.json")
     audit_data = []
-    if os.path.exists(audit_file):
+    if os.path.exists(master_audit_file):
         try:
-            with open(audit_file, "r", encoding="utf-8") as af:
+            with open(master_audit_file, "r", encoding="utf-8") as af:
                 audit_data = json.load(af)
+            shutil.copy2(master_audit_file, dist_audit_file)
         except Exception as e:
-            print(f"    [!] Błąd odczytu audit_report.json: {e}")
+            print(f"    [!] Błąd odczytu/kopiowania audit_report.json: {e}")
     ctx_admin["audit_reports"] = audit_data
     ctx_admin["audit_summary"] = {
         "all_clean": all(a.get("is_plagiarism_free", True) for a in audit_data) if audit_data else True,
