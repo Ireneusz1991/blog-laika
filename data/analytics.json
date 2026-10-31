@@ -1,0 +1,165 @@
+{
+  "summary": {
+    "total_views": 0,
+    "estimated_uniques": 0,
+    "avg_completion_pct": 0.0,
+    "avg_dwell_formatted": "0m 00s",
+    "avg_dwell_sec": 0,
+    "total_posts": 6,
+    "total_words": 2295
+  },
+  "posts": [
+    {
+      "id": 2,
+      "title": "Architektura uwagi: Czy modele AI naprawdę myślą, czy tylko bezbłędnie zgadują?",
+      "slug": "architektura-uwagi-czy-ai-mysli",
+      "category": "technologia",
+      "category_name": "Technologia",
+      "views": 0,
+      "views_share_pct": 0,
+      "words": 245,
+      "read_time": 1,
+      "read_completion_pct": 0,
+      "avg_dwell_sec": 0,
+      "avg_dwell_formatted": "0m 00s",
+      "created_at": "2026-10-27"
+    },
+    {
+      "id": 3,
+      "title": "Złudzenie taniego kapitału: Dlaczego dekada zerowych stóp procentowych zmieniła wszystko",
+      "slug": "zludzenie-taniego-kapitalu-zerowe-stopy",
+      "category": "gospodarka",
+      "category_name": "Gospodarka",
+      "views": 0,
+      "views_share_pct": 0,
+      "words": 212,
+      "read_time": 1,
+      "read_completion_pct": 0,
+      "avg_dwell_sec": 0,
+      "avg_dwell_formatted": "0m 00s",
+      "created_at": "2026-10-27"
+    },
+    {
+      "id": 4,
+      "title": "Nowy koncert mocarstw: Od wolnego handlu do geopolitycznej autarkii",
+      "slug": "nowy-koncert-mocarstw-geopolityka",
+      "category": "polityka",
+      "category_name": "Polityka",
+      "views": 0,
+      "views_share_pct": 0,
+      "words": 207,
+      "read_time": 1,
+      "read_completion_pct": 0,
+      "avg_dwell_sec": 0,
+      "avg_dwell_formatted": "0m 00s",
+      "created_at": "2026-10-27"
+    },
+    {
+      "id": 5,
+      "title": "Anatomia kryzysu sueskiego 1956: Dzień, w którym Europa zrozumiała, że nie jest już centrum świata",
+      "slug": "kryzys-sueski-1956-lekcja-historii",
+      "category": "historia",
+      "category_name": "Historia",
+      "views": 0,
+      "views_share_pct": 0,
+      "words": 289,
+      "read_time": 1,
+      "read_completion_pct": 0,
+      "avg_dwell_sec": 0,
+      "avg_dwell_formatted": "0m 00s",
+      "created_at": "2026-10-29"
+    },
+    {
+      "id": 6,
+      "title": "Pochwała dociekliwego laika: Dlaczego w epoce wąskich specjalizacji najbardziej potrzebujemy spojrzenia z zewnątrz",
+      "slug": "pochwala-dociekliwego-laika",
+      "category": "eseje",
+      "category_name": "Inne eseje",
+      "views": 0,
+      "views_share_pct": 0,
+      "words": 247,
+      "read_time": 1,
+      "read_completion_pct": 0,
+      "avg_dwell_sec": 0,
+      "avg_dwell_formatted": "0m 00s",
+      "created_at": "2026-10-29"
+    },
+    {
+      "id": 7,
+      "title": "Kondensat I: Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu",
+      "slug": "kondensat-wielkie-sprzezenie-zwrotne",
+      "category": "kondensat",
+      "category_name": "⚡ Kondensaty",
+      "views": 0,
+      "views_share_pct": 0,
+      "words": 1095,
+      "read_time": 5,
+      "read_completion_pct": 0,
+      "avg_dwell_sec": 0,
+      "avg_dwell_formatted": "0m 00s",
+      "created_at": "2026-10-29"
+    }
+  ],
+  "categories": [
+    {
+      "slug": "technologia",
+      "name": "Technologia",
+      "views": 0,
+      "share_pct": 0,
+      "posts_count": 1
+    },
+    {
+      "slug": "gospodarka",
+      "name": "Gospodarka",
+      "views": 0,
+      "share_pct": 0,
+      "posts_count": 1
+    },
+    {
+      "slug": "historia",
+      "name": "Historia",
+      "views": 0,
+      "share_pct": 0,
+      "posts_count": 1
+    },
+    {
+      "slug": "polityka",
+      "name": "Polityka",
+      "views": 0,
+      "share_pct": 0,
+      "posts_count": 1
+    },
+    {
+      "slug": "eseje",
+      "name": "Inne eseje",
+      "views": 0,
+      "share_pct": 0,
+      "posts_count": 1
+    },
+    {
+      "slug": "kondensat",
+      "name": "⚡ Kondensaty",
+      "views": 0,
+      "share_pct": 0,
+      "posts_count": 1
+    }
+  ],
+  "traffic_sources": [
+    {
+      "name": "Wejścia Bezpośrednie & Zakładki",
+      "count": 0,
+      "share_pct": 100.0,
+      "icon": "🔖",
+      "desc": "Wpisywanie adresu URL, brak zewnętrznego referrera"
+    }
+  ],
+  "device_mix": [
+    {
+      "device": "Komputery (Desktop)",
+      "count": 0,
+      "share_pct": 100.0,
+      "icon": "💻"
+    }
+  ],
+  "recent_sessions": []
+}
