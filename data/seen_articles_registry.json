@@ -1,0 +1,410 @@
+{
+  "published_articles": [
+    {
+      "id": 7,
+      "title": "Kondensat I: Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu",
+      "slug": "kondensat-wielkie-sprzezenie-zwrotne",
+      "category": "kondensat"
+    },
+    {
+      "id": 6,
+      "title": "Pochwała dociekliwego laika: Dlaczego w epoce wąskich specjalizacji najbardziej potrzebujemy spojrzenia z zewnątrz",
+      "slug": "pochwala-dociekliwego-laika",
+      "category": "eseje"
+    },
+    {
+      "id": 5,
+      "title": "Anatomia kryzysu sueskiego 1956: Dzień, w którym Europa zrozumiała, że nie jest już centrum świata",
+      "slug": "kryzys-sueski-1956-lekcja-historii",
+      "category": "historia"
+    },
+    {
+      "id": 2,
+      "title": "Architektura uwagi: Czy modele AI naprawdę myślą, czy tylko bezbłędnie zgadują?",
+      "slug": "architektura-uwagi-czy-ai-mysli",
+      "category": "technologia"
+    },
+    {
+      "id": 3,
+      "title": "Złudzenie taniego kapitału: Dlaczego dekada zerowych stóp procentowych zmieniła wszystko",
+      "slug": "zludzenie-taniego-kapitalu-zerowe-stopy",
+      "category": "gospodarka"
+    },
+    {
+      "id": 4,
+      "title": "Nowy koncert mocarstw: Od wolnego handlu do geopolitycznej autarkii",
+      "slug": "nowy-koncert-mocarstw-geopolityka",
+      "category": "polityka"
+    }
+  ],
+  "proposed_history": [
+    {
+      "date": "2026-10-25",
+      "category": "technologia",
+      "title": "Koniec dyktatu gigantycznych chmur? Dlaczego małe modele (SLM) wkraczają na telefony i laptopy",
+      "url": ""
+    },
+    {
+      "date": "2026-10-25",
+      "category": "gospodarka",
+      "title": "Dług publiczny w pułapce wyższych stóp: Dlaczego obsługa zadłużenia zjada budżety na edukację i zdrowie",
+      "url": ""
+    },
+    {
+      "date": "2026-10-25",
+      "category": "historia",
+      "title": "Logistyka żelaza i chleba: Dlaczego starożytne imperia upadały nie od ciosów barbarzyńców, lecz przez paraliż dostaw",
+      "url": ""
+    },
+    {
+      "date": "2026-10-25",
+      "category": "polityka",
+      "title": "Geopolityka Bałtyku i przesmyku suwalskiego: Nowa architektura odstraszania na wschodniej flance NATO",
+      "url": ""
+    },
+    {
+      "date": "2026-10-25",
+      "category": "eseje",
+      "title": "Plemiona w wieżach z kości słoniowej: Dlaczego Polacy przestali rozmawiać i zaczęli na siebie krzyczeć",
+      "url": ""
+    },
+    {
+      "date": "2026-10-25",
+      "category": "kondensat",
+      "title": "Kondensat II: Krzemowy imperatyw przetrwania — dlaczego litografia ASML, wojny XVII wieku i ucieczka od dolara tworzą jeden teatr zmagań",
+      "url": ""
+    },
+    {
+      "date": "2026-10-26",
+      "category": "technologia",
+      "title": "Krzemowa suwerenność: Dlaczego maszyny litograficzne ASML są ważniejsze niż bazy wojskowe",
+      "url": ""
+    },
+    {
+      "date": "2026-10-26",
+      "category": "gospodarka",
+      "title": "Cena obietnicy zeroemisyjnej: Dlaczego rewolucja w sieciach przesyłowych kosztuje więcej niż same wiatraki i fotowoltaika",
+      "url": ""
+    },
+    {
+      "date": "2026-10-26",
+      "category": "historia",
+      "title": "Gorączka tulipanowa i anatomia rynkowej psychozy: Czego Amsterdam z 1637 roku uczy współczesnych inwestorów",
+      "url": ""
+    },
+    {
+      "date": "2026-10-26",
+      "category": "polityka",
+      "title": "Architektura półprzewodnikowej dyplomacji: Jak mały Tajwan zbudował najskuteczniejszą tarczę geopolityczną XXI wieku",
+      "url": ""
+    },
+    {
+      "date": "2026-10-26",
+      "category": "eseje",
+      "title": "Pułapka natychmiastowej gratyfikacji: Dlaczego algorytmy skracania uwagi niszczą naszą zdolność do głębokiego myślenia",
+      "url": ""
+    },
+    {
+      "date": "2026-10-26",
+      "category": "kondensat",
+      "title": "Kondensat III: Paradoks zielonej autarkii — dlaczego transformacja energetyczna wymaga nowej fali górnictwa, drogiego długu i imperialnych protektoratów",
+      "url": ""
+    },
+    {
+      "date": "2026-10-27",
+      "category": "technologia",
+      "title": "Era modeli fizycznych: Dlaczego sztuczna inteligencja musi nauczyć się praw grawitacji i tarcia, by wyjść poza ekrany komputerów",
+      "url": ""
+    },
+    {
+      "date": "2026-10-27",
+      "category": "gospodarka",
+      "title": "Kryzys mieszkaniowy to kryzys obfitości: Dlaczego dopłaty do kredytów pompują bańkę cenową",
+      "url": ""
+    },
+    {
+      "date": "2026-10-27",
+      "category": "historia",
+      "title": "Klątwa hiszpańskiego srebra: Jak nieprzebrane bogactwa Potosí zniszczyły gospodarkę imperium Habsburgów",
+      "url": ""
+    },
+    {
+      "date": "2026-10-27",
+      "category": "polityka",
+      "title": "Państwo z kartonu: Anatomia instytucjonalnej bezsilności i dlaczego procedury zastąpiły sprawczość",
+      "url": ""
+    },
+    {
+      "date": "2026-10-27",
+      "category": "eseje",
+      "title": "Dlaczego przestaliśmy tworzyć rzeczy materialne: Wielka stagnacja i ucieczka do cyfrowych halucynacji",
+      "url": ""
+    },
+    {
+      "date": "2026-10-27",
+      "category": "kondensat",
+      "title": "Kondensat IV: Architektura cyfrowego posłuszeństwa — jak portfele tożsamości, programowalny pieniądz i erozja zaufania tworzą nowy model kontroli",
+      "url": ""
+    },
+    {
+      "date": "2026-10-28",
+      "category": "technologia",
+      "title": "Zmierzch tradycyjnych wyszukiwarek: Jak generatywne silniki odpowiedzi (RAG) burzą dwudziestoletni model biznesowy internetu",
+      "url": ""
+    },
+    {
+      "date": "2026-10-28",
+      "category": "gospodarka",
+      "title": "Powrót twardej polityki przemysłowej: Dlaczego sama inżynieria finansowa nie zastąpi fizycznych fabryk",
+      "url": ""
+    },
+    {
+      "date": "2026-10-28",
+      "category": "historia",
+      "title": "Mit niezwyciężonych sojuszy: Lekcja z września 1939 roku dla współczesnej Polski w strukturach NATO",
+      "url": ""
+    },
+    {
+      "date": "2026-10-28",
+      "category": "polityka",
+      "title": "Obrona cywilna w ruinie: Dlaczego Polska modernizuje armię, ale zapomniała o schronach i procedurach dla obywateli",
+      "url": ""
+    },
+    {
+      "date": "2026-10-28",
+      "category": "eseje",
+      "title": "Kryzys czytelnictwa długich form: Co tracimy jako cywilizacja, gdy zamieniamy książki na 30-sekundowe rolki",
+      "url": ""
+    },
+    {
+      "date": "2026-10-28",
+      "category": "kondensat",
+      "title": "Kondensat V: Geopolityka Wąskich Gardeł — jak cieśniny morskie, kable podmorskie, litografia krzemowa i deficyt miedzi zbiegają się w jeden węzeł",
+      "url": ""
+    },
+    {
+      "date": "2026-10-29",
+      "category": "technologia",
+      "title": "Teoria Agregacji i architektura monopolu: Jak cyfrowe platformy przejęły kontrolę nad uwagą i zyskiem",
+      "url": ""
+    },
+    {
+      "date": "2026-10-29",
+      "category": "gospodarka",
+      "title": "Geonomia surowców krytycznych: Dlaczego bez litu, grafitu i metali ziem rzadkich zielona rewolucja ugrzęźnie w deficycie",
+      "url": ""
+    },
+    {
+      "date": "2026-10-29",
+      "category": "historia",
+      "title": "Złoto Galicji i narodziny naftowego świata: Jak Ignacy Łukasiewicz i polscy nafciarze stworzyli podwaliny nowoczesnej energetyki",
+      "url": ""
+    },
+    {
+      "date": "2026-10-29",
+      "category": "polityka",
+      "title": "Wielka gra o cieśninę Malakka i szlaki morskie: Kiedy globalizacja zderza się z wąskim gardłem światowego handlu",
+      "url": ""
+    },
+    {
+      "date": "2026-10-29",
+      "category": "eseje",
+      "title": "Cyfrowy detoks czy ucieczka od rzeczywistości: Jak odzyskać kontrolę nad własnym czasem w epoce ekonomii uwagi",
+      "url": ""
+    },
+    {
+      "date": "2026-10-29",
+      "category": "kondensat",
+      "title": "Kondensat VI: Nowy Merkantylizm i Reindustrializacja — dlaczego fabryki baterii i stali wracają do Europy kosztem wolnego rynku",
+      "url": ""
+    },
+    {
+      "date": "2026-10-30",
+      "category": "technologia",
+      "title": "Kryptografia postkwantowa: Dlaczego algorytm Shora zmusi banki i rządy do wymiany całego szyfrowania",
+      "url": ""
+    },
+    {
+      "date": "2026-10-30",
+      "category": "gospodarka",
+      "title": "Pułapka demograficzna Europy Środkowej: Kiedy zabraknie rąk do pracy przy taśmie i w szpitalach",
+      "url": ""
+    },
+    {
+      "date": "2026-10-30",
+      "category": "historia",
+      "title": "Narodziny państwa nad Nilem i Eufratem: Jak gospodarka irygacyjna stworzyła pierwsze podatki, pismo i scentralizowaną biurokrację",
+      "url": ""
+    },
+    {
+      "date": "2026-10-30",
+      "category": "polityka",
+      "title": "Koniec prawa weta w Unii Europejskiej? Dlaczego małe i średnie kraje obawiają się dominacji osi Berlin-Paryż",
+      "url": ""
+    },
+    {
+      "date": "2026-10-30",
+      "category": "eseje",
+      "title": "Modele myślowe dociekliwego laika: Jak podejmować trafne decyzje bez bycia wąskim specjalistą w każdej dziedzinie",
+      "url": ""
+    },
+    {
+      "date": "2026-10-30",
+      "category": "kondensat",
+      "title": "Kondensat VII: Logistyka Chleba, Żelaza i Krzemu — dlaczego upadają imperia handlowe, gdy pękają wąskie gardła zaopatrzenia",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "technologia",
+      "title": "Prawo do naprawy w epoce procesorów zintegrowanych: Walka o suwerenność użytkownika przeciwko planowanemu starzeniu sprzętu",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "gospodarka",
+      "title": "Iluzja deglobalizacji: Dlaczego łańcuchy dostaw wydłużyły się przez kraje trzecie zamiast powrócić do domu",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "historia",
+      "title": "Kompaniowy kapitalizm VOC: Jak Holenderska Kompania Wschodnioindyjska połączyła giełdę akcji z prywatną armią kolonialną",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "polityka",
+      "title": "Czy Trójmorze może zrównoważyć Europę Zachodnią? Infrastrukturalne realia osi Północ-Południe",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "eseje",
+      "title": "Toxoplasma wściekłości: Dlaczego algorytmy mediów społecznościowych nagradzają oburzenie i jak nie dać się zainfekować",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "kondensat",
+      "title": "Kondensat VIII: Monopolizacja Uwagi i Finansjalizacja Społeczeństwa — jak architektura platform cyfrowych i dług publiczny przedefiniowały wolną wolę",
+      "url": ""
+    },
+    {
+      "date": "2026-10-27",
+      "category": "unknown",
+      "title": "Wielowątkowa Synteza Analityczna: „Kondensat IV: Architektura cyfrowego posłuszeństwa — jak portfele tożsamości, programowalny pieniądz i erozja zaufania tworzą nowy model kontroli",
+      "url": ""
+    },
+    {
+      "date": "2026-10-26",
+      "category": "unknown",
+      "title": "Wielowątkowa Synteza Analityczna: „Kondensat III: Paradoks zielonej autarkii — dlaczego transformacja energetyczna wymaga nowej fali górnictwa, drogiego długu i imperialnych protektoratów",
+      "url": ""
+    },
+    {
+      "date": "2026-10-25",
+      "category": "unknown",
+      "title": "Wielowątkowa Synteza Analityczna: „Kondensat II: Krzemowy imperatyw przetrwania — dlaczego litografia ASML, wojny XVII wieku i ucieczka od dolara tworzą jeden teatr zmagań",
+      "url": ""
+    },
+    {
+      "date": "2026-10-28",
+      "category": "unknown",
+      "title": "Wielowątkowa Synteza Analityczna: „Kondensat V: Geopolityka Wąskich Gardeł — jak cieśniny morskie, kable podmorskie, litografia krzemowa i deficyt miedzi zbiegają się w jeden węzeł",
+      "url": ""
+    },
+    {
+      "date": "2026-10-29",
+      "category": "unknown",
+      "title": "Wielowątkowa Synteza Analityczna: „Kondensat VI: Nowy Merkantylizm i Reindustrializacja — dlaczego fabryki baterii i stali wracają do Europy kosztem wolnego rynku",
+      "url": ""
+    },
+    {
+      "date": "2026-10-30",
+      "category": "unknown",
+      "title": "Wielowątkowa Synteza Analityczna: „Kondensat VII: Logistyka Chleba, Żelaza i Krzemu — dlaczego upadają imperia handlowe, gdy pękają wąskie gardła zaopatrzenia",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "unknown",
+      "title": "Wielowątkowa Synteza Analityczna: „Kondensat VIII: Monopolizacja Uwagi i Finansjalizacja Społeczeństwa — jak architektura platform cyfrowych i dług publiczny przedefiniowały wolną wolę",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "technologia",
+      "title": "Prawo do naprawy w epoce procesorów zintegrowanych: Walka o suwerenność użytkownika przeciwko planowanemu starzeniu sprzętu",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "gospodarka",
+      "title": "Iluzja deglobalizacji: Dlaczego łańcuchy dostaw wydłużyły się przez kraje trzecie zamiast powrócić do domu",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "historia",
+      "title": "Kompaniowy kapitalizm VOC: Jak Holenderska Kompania Wschodnioindyjska połączyła giełdę akcji z prywatną armią kolonialną",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "polityka",
+      "title": "Czy Trójmorze może zrównoważyć Europę Zachodnią? Infrastrukturalne realia osi Północ-Południe",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "eseje",
+      "title": "Toxoplasma wściekłości: Dlaczego algorytmy mediów społecznościowych nagradzają oburzenie i jak nie dać się zainfekować",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "kondensat",
+      "title": "Kondensat VIII: Monopolizacja Uwagi i Finansjalizacja Społeczeństwa — jak architektura platform cyfrowych i dług publiczny przedefiniowały wolną wolę",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "technologia",
+      "title": "Prawo do naprawy w epoce procesorów zintegrowanych: Walka o suwerenność użytkownika przeciwko planowanemu starzeniu sprzętu",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "gospodarka",
+      "title": "Iluzja deglobalizacji: Dlaczego łańcuchy dostaw wydłużyły się przez kraje trzecie zamiast powrócić do domu",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "historia",
+      "title": "Kompaniowy kapitalizm VOC: Jak Holenderska Kompania Wschodnioindyjska połączyła giełdę akcji z prywatną armią kolonialną",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "polityka",
+      "title": "Czy Trójmorze może zrównoważyć Europę Zachodnią? Infrastrukturalne realia osi Północ-Południe",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "eseje",
+      "title": "Toxoplasma wściekłości: Dlaczego algorytmy mediów społecznościowych nagradzają oburzenie i jak nie dać się zainfekować",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "kondensat",
+      "title": "Kondensat VIII: Monopolizacja Uwagi i Finansjalizacja Społeczeństwa — jak architektura platform cyfrowych i dług publiczny przedefiniowały wolną wolę",
+      "url": ""
+    }
+  ],
+  "seen_rss_urls": {},
+  "last_updated": "2026-10-31T18:37:11.960868"
+}
