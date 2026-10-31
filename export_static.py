@@ -132,6 +132,7 @@ def build_static(output_dir="dist", base_url=None):
     ctx = get_common_context()
     ctx["active_page"] = "home"
     ctx["posts"] = feed_posts
+    ctx["feed_posts"] = feed_posts
     ctx["featured_post"] = featured
     ctx["current_category"] = None
     ctx["canonical_url"] = f"{site_domain}{base_url}/"

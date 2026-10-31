@@ -134,13 +134,82 @@
       </div>
       {% endif %}
 
-      <!-- Przycisk rozwijania sekcji z wpisami -->
-      <div class="editorial-more-bar">
-        <button id="btn-toggle-catalog" type="button" class="btn-editorial-outline" onclick="toggleCatalog(this)" aria-expanded="false">
-          <span class="catalog-btn-expand">Więcej wpisów &darr;</span>
+      <!-- Kolejne wpisy w strumieniu głównym (rozwijane płynnie w miejscu bez przeskakiwania strony) -->
+      {% set stream_posts = posts[2:] if featured_post else (posts[3:] if posts|length > 3 else []) %}
+      {% if stream_posts and stream_posts|length > 0 %}
+      <div id="extra-articles-stream" class="extra-articles-stream" style="display: none; margin-top: 1.5rem;">
+        <div class="editorial-subgrid-2col">
+          {% for post in stream_posts %}
+          <article class="editorial-sub-card" id="post-extra-{{ post.slug }}" style="{% if post.category == 'kondensat' %}background: linear-gradient(135deg, rgba(217, 119, 6, 0.05), rgba(124, 58, 237, 0.05)); border: 1.5px solid #d97706;{% endif %}">
+            {% if post.cover_image %}
+            <div style="position: relative; height: 160px; margin: -1.25rem -1.25rem 0.85rem -1.25rem; overflow: hidden; border-radius: 4px 4px 0 0;">
+              <a href="{{ base_url }}/post/{{ post.slug }}">
+                <img src="{{ post.cover_image }}" alt="{{ post.title }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+              </a>
+              {% if post.category == 'kondensat' %}
+              <div style="position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #d97706, #7c3aed); color: #fff; font-size: 0.7rem; font-weight: 800; padding: 2px 7px; border-radius: 4px; text-transform: uppercase;">
+                ⚡ KONDENSAT
+              </div>
+              {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="editorial-sub-meta">
+              <a href="{{ base_url }}/kategoria/{{ post.category }}" class="editorial-cat-tag">
+                {{ post.category_name }}
+              </a>
+              <span class="editorial-read-min">⏱️ {{ post.read_time }} min</span>
+            </div>
+
+            <h3 class="editorial-sub-title">
+              <a href="{{ base_url }}/post/{{ post.slug }}">{{ post.title }}</a>
+            </h3>
+
+            <div class="editorial-author-byline">
+              <span class="byline-author-name">Autor artykułu: Ireneusz Machowiec</span>
+            </div>
+
+            <!-- Teaser / Zajawka -->
+            <p class="editorial-sub-excerpt excerpt-preview">
+              {{ post.summary }}
+            </p>
+
+            <!-- Rozwinięta treść wpisu -->
+            <div class="full-content" style="display: none;">
+              <div class="editorial-full-prose">
+                {{ post.content_html|safe }}
+              </div>
+              <div style="margin: 0.85rem 0 0.5rem 0;">
+                <a href="{{ base_url }}/post/{{ post.slug }}" style="font-size: 0.82rem; font-weight: 700; color: var(--accent); text-decoration: none;">
+                  Przejdź do pełnej treści wpisu &rarr;
+                </a>
+              </div>
+            </div>
+
+            <div class="sub-card-actions" style="margin-top: 0.75rem; display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+              <button type="button" class="btn-sub-expand btn-toggle-expand"
+                      onclick="togglePostExpand('post-extra-{{ post.slug }}', this)"
+                      aria-expanded="false">
+                <span class="btn-label-expand">Czytaj więcej &darr;</span>
+                <span class="btn-label-collapse" style="display: none;">Zwiń wpis &uarr;</span>
+              </button>
+              <a href="{{ base_url }}/post/{{ post.slug }}" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: none;">
+                Otwórz wpis &rarr;
+              </a>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Przycisk rozwijania sekcji z wpisami w miejscu (bez przeskakiwania strony) -->
+      <div class="editorial-more-bar" style="margin-top: 1.5rem;">
+        <button id="btn-toggle-catalog" type="button" class="btn-editorial-outline" onclick="toggleExtraPosts(this)" aria-expanded="false">
+          <span class="catalog-btn-expand">Więcej wpisów ({{ stream_posts|length }}) &darr;</span>
           <span class="catalog-btn-collapse" style="display: none;">Zwiń listę wpisów &uarr;</span>
         </button>
       </div>
+      {% endif %}
 
     </div>
 

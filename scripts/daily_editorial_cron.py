@@ -976,10 +976,35 @@ def run_daily_cron(target_date_str=None, deploy=False):
             if os.path.exists(prop_src):
                 shutil.copytree(prop_src, prop_dst, dirs_exist_ok=True)
 
-            subprocess.run(["git", "add", "propozycje-tematow", "dist"], cwd=local_git_repo, check=True)
-            subprocess.run(["git", "commit", "-m", f"chore(cron): codzienne propozycje tematów i kondensatów ({date_str}) [skip ci]"], cwd=local_git_repo)
-            subprocess.run(["git", "push", "origin", "main"], cwd=local_git_repo)
-            print("✅ Pomyślnie wypchnięto zmiany do GitHub!")
+            subprocess.run(["git", "add", "propozycje-tematow"], cwd=local_git_repo, check=True)
+            status_res = subprocess.run(["git", "status", "--porcelain"], cwd=local_git_repo, capture_output=True, text=True)
+            if status_res.stdout.strip():
+                subprocess.run(["git", "commit", "-m", f"chore(cron): codzienne propozycje tematów i kondensatów ({date_str}) [skip ci]"], cwd=local_git_repo)
+                subprocess.run(["git", "push", "origin", "main"], cwd=local_git_repo)
+                print("✅ Pomyślnie wypchnięto zmiany do gałęzi main na GitHub!")
+            else:
+                print("ℹ️ Gałąź main jest aktualna (brak nowych zmian w propozycjach).")
+
+            # Wypchnięcie skompilowanego dist/ na gałąź produkcyjną gh-pages
+            print("🚀 [GitHub Pages] Publikacja skompilowanego serwisu na gałęzi gh-pages...")
+            git_exe = r"C:\Users\irene\AppData\Local\Programs\Git\cmd\git.exe"
+            if not os.path.exists(git_exe):
+                git_exe = "git"
+            temp_dir = os.environ.get("TEMP", r"C:\Users\irene\AppData\Local\Temp")
+            dist_tmp = os.path.join(temp_dir, "blog-laika-gh-pages")
+
+            if os.path.exists(dist_tmp):
+                subprocess.run(f'rmdir /s /q "{dist_tmp}"', shell=True)
+            shutil.copytree(dist_src, dist_tmp, dirs_exist_ok=True)
+
+            subprocess.run('git init -b gh-pages', cwd=dist_tmp, shell=True, check=True)
+            subprocess.run('git config user.name "Blog Laika Cron"', cwd=dist_tmp, shell=True, check=True)
+            subprocess.run('git config user.email "kontakt@blog-laika.com"', cwd=dist_tmp, shell=True, check=True)
+            subprocess.run('git add -A', cwd=dist_tmp, shell=True, check=True)
+            subprocess.run(f'git commit -m "Automatyczna publikacja codziennego crona ({date_str})"', cwd=dist_tmp, shell=True, check=True)
+            subprocess.run('git remote add origin https://github.com/Ireneusz1991/blog-laika.git', cwd=dist_tmp, shell=True, check=True)
+            subprocess.run('git push origin gh-pages --force', cwd=dist_tmp, shell=True, check=True)
+            print("✅ Pomyślnie zaktualizowano gałąź produkcyjną gh-pages (blog-laika.com)!")
         except Exception as e:
             print(f"⚠️ Błąd podczas pushowania do gita: {e}")
 

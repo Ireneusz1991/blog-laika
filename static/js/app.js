@@ -151,7 +151,32 @@ function togglePostExpand(containerId, btn) {
   }
 }
 
-// --- Catalog Section Expander (Rozwijanie kolejnych wpisów) ---
+// --- In-place Articles Stream Expander (Rozwijanie kolejnych wpisów w strumieniu bez skakania po stronie) ---
+function toggleExtraPosts(btn) {
+  const stream = document.getElementById('extra-articles-stream');
+  if (!stream) {
+    toggleCatalog(btn);
+    return;
+  }
+  const isExpanded = stream.style.display !== 'none';
+  const expandLabel = btn ? btn.querySelector('.catalog-btn-expand') : null;
+  const collapseLabel = btn ? btn.querySelector('.catalog-btn-collapse') : null;
+
+  if (isExpanded) {
+    stream.style.display = 'none';
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+    if (expandLabel) expandLabel.style.display = 'inline';
+    if (collapseLabel) collapseLabel.style.display = 'none';
+    if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } else {
+    stream.style.display = 'block';
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+    if (expandLabel) expandLabel.style.display = 'none';
+    if (collapseLabel) collapseLabel.style.display = 'inline';
+  }
+}
+
+// --- Catalog Section Expander (Zabezpieczony fallback bez niechcianych skoków) ---
 function toggleCatalog(btn) {
   const catalog = document.getElementById('katalog-publikacji');
   if (!catalog) return;
@@ -169,11 +194,11 @@ function toggleCatalog(btn) {
     if (btn) btn.setAttribute('aria-expanded', 'true');
     if (expandLabel) expandLabel.style.display = 'none';
     if (collapseLabel) collapseLabel.style.display = 'inline';
-    catalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 
 window.togglePostExpand = togglePostExpand;
+window.toggleExtraPosts = toggleExtraPosts;
 window.toggleCatalog = toggleCatalog;
 
 // Auto-expand catalog if direct anchor in URL
