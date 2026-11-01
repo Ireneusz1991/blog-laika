@@ -139,7 +139,7 @@
 
       <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
         <div style="position: relative; flex: 1; min-width: 260px; display: flex; align-items: center;">
-          <input type="password" id="cms-pat-input" class="form-input" placeholder="Wklej lub edytuj token: ghp_... lub github_pat_..." style="width: 100%; font-family: var(--font-mono, monospace); font-size: 0.85rem; padding-right: 5.5rem;">
+          <input type="password" id="cms-pat-input" class="form-input" placeholder="Wklej token zaczynający się od ghp_... lub github_pat_... (nie hasło laik2026)" style="width: 100%; font-family: var(--font-mono, monospace); font-size: 0.85rem; padding-right: 5.5rem;">
           <button type="button" onclick="toggleCmsPatVisibility();" id="btn-toggle-pat-vis" style="position: absolute; right: 8px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 2px 8px; font-size: 0.72rem; cursor: pointer; color: var(--text-secondary); font-weight: 600;">
             👁️ Pokaż
           </button>
@@ -1888,12 +1888,22 @@ ${body}`;
           const liveObj = JSON.parse(rawScript.textContent);
           if (liveObj && liveObj.slug) {
             post = Object.assign({}, post || {}, liveObj);
-            const idx = posts.findIndex(p => p.slug === slug);
-            if (idx > -1) posts[idx] = post;
           }
         }
       }
     } catch (e) {}
+
+    // Jeśli wpis był edytowany przed chwilą (zanim wygaśnie 10-minutowy cache CDN), nałóż najświeższą wersję lokalną
+    if (window.LaikaDirectSync && typeof window.LaikaDirectSync.getRecentEdit === 'function') {
+      const recentEd = window.LaikaDirectSync.getRecentEdit(slug);
+      if (recentEd) {
+        post = Object.assign({}, post || {}, recentEd);
+      }
+    }
+    if (post) {
+      const idx = posts.findIndex(p => p.slug === slug);
+      if (idx > -1) posts[idx] = post;
+    }
 
     if (!post) {
       alert('Nie znaleziono wpisu o slug: ' + slug);
@@ -3599,13 +3609,20 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
       return;
     }
 
-    localStorage.setItem('blog_laika_gh_pat', val);
-    refreshCmsTokenUi();
+    if (val.length < 20 || ['laik2026', 'laika2026', 'admin', 'admin2026'].includes(val.toLowerCase())) {
+      if (fb) fb.innerHTML = '<span style="color:#dc2626; font-weight:700;">⚠️ Wpisano hasło logowania CMS zamiast tokena GitHub! Hasło <code>laik2026</code> służy tylko do logowania do panelu. Kliknij przycisk „🔗 Wygeneruj Token na GitHubie” po prawej i wklej wygenerowany kod zaczynający się od <code>ghp_...</code> lub <code>github_pat_...</code>.</span>';
+      return;
+    }
 
     if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Weryfikacja tokena...'; }
     if (fb) fb.innerHTML = '⏳ Sprawdzanie połączenia z repozytorium <code>Ireneusz1991/blog-laika</code>...';
 
-    await verifyCurrentCmsPat();
+    localStorage.setItem('blog_laika_gh_pat', val);
+    const ok = await verifyCurrentCmsPat();
+    if (!ok) {
+      localStorage.removeItem('blog_laika_gh_pat');
+    }
+    refreshCmsTokenUi();
 
     if (btn) { btn.disabled = false; btn.innerHTML = '💾 Zapisz / Zaktualizuj Token'; }
   }
@@ -3754,6 +3771,20 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     showStatus('⏳ <strong>Trwa bezpośrednia aktualizacja całego bloga...</strong>', 'rgba(37, 99, 235, 0.08)', '#1d4ed8', '#3b82f6');
 
     try {
+      // Jeśli użytkownik wkleił nowy token w pole #cms-pat-input i od razu kliknął Zapisz poniżej — zweryfikuj go i zapisz automatycznie!
+      const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      const typedPat = (document.getElementById('cms-pat-input')?.value || '').trim();
+      const storedPat = window.LaikaDirectSync.getToken();
+      if (!isLocal && typedPat && typedPat !== storedPat) {
+        showStatus('⏳ <strong>Weryfikacja wpisanego tokena...</strong>', 'rgba(124, 58, 237, 0.08)', '#6d28d9', '#7c3aed');
+        const check = await window.LaikaDirectSync.verifyToken(typedPat);
+        if (!check.ok) {
+          throw new Error(check.message || check.reason);
+        }
+        window.LaikaDirectSync.setToken(typedPat);
+        refreshCmsTokenUi();
+      }
+
       const result = await window.LaikaDirectSync.saveArticleEverywhere({
         slug,
         title,
@@ -3792,21 +3823,37 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
       }
       currentEditingSlug = slug;
 
+      // Natychmiast odśwież wiersz w tabeli opublikowanych wpisów w CMS
+      document.querySelectorAll('.admin-table tbody tr').forEach(row => {
+        const a = row.querySelector('td a');
+        if (!a) return;
+        const h = (a.getAttribute('href') || '').split('?')[0].replace(/\/+$/, '');
+        if (h === `/post/${slug}` || h.endsWith(`/post/${slug}`)) {
+          a.textContent = title;
+          const catSpan = row.querySelector('.post-category-tag');
+          if (catSpan) catSpan.textContent = result.publicCategoryName;
+          const cells = row.querySelectorAll('td');
+          if (cells[2]) cells[2].textContent = `⏱️ ${result.readTime} min`;
+        }
+      });
+
       showStatus(
-        `✅ <strong>Zapisano i opublikowano bezpośrednio na stronie (wpis + strona główna + kategoria + wyszukiwarka — zero ingerencji w GitHub)!</strong><br>` +
-        `Artykuł jest już aktywny: <a href="{{ base_url }}/post/${encodeURIComponent(slug)}/" target="_blank" style="color:#047857; font-weight:800; text-decoration:underline;">Otwórz wpis na żywo &rarr;</a>`,
+        `✅ <strong>Zapisano na stałe i opublikowano na całym blogu (wpis + strona główna + kategoria + wyszukiwarka)!</strong><br>` +
+        `Zmiany są już widoczne natychmiast po odświeżeniu: <a href="{{ base_url }}/post/${encodeURIComponent(slug)}/" target="_blank" style="color:#047857; font-weight:800; text-decoration:underline;">Otwórz wpis na żywo &rarr;</a>`,
         'rgba(16, 185, 129, 0.12)', '#065f46', '#10b981'
       );
     } catch (err) {
       if (err && err.code === 'MISSING_TOKEN') {
         toggleCmsTokenPanel(true);
+        const patInp = document.getElementById('cms-pat-input');
+        if (patInp) patInp.focus();
         showStatus(
-          '🔑 <strong>Wpisz najpierw swój Token Aktualizacji</strong> w fioletowym panelu na górze strony i kliknij „Zapisz”. Od tej chwili wszystkie publikacje i edycje zapisują się bezpośrednio na stronie bez otwierania GitHuba!',
+          '🔑 <strong>Jednorazowa konfiguracja (20 sekund):</strong> Aby strona <code>blog-laika.com</code> mogła zapisywać edycje na serwerze, kliknij przycisk <strong>„🔗 Wygeneruj Token na GitHubie”</strong> w fioletowym panelu na górze strony, skopiuj wygenerowany kod <code>ghp_...</code>, wklej go w pole Tokena i kliknij Zapisz. Zrobisz to tylko raz — przeglądarka zapamięta go na stałe!',
           'rgba(124, 58, 237, 0.08)', '#6d28d9', '#7c3aed'
         );
       } else {
         showStatus(
-          `❌ <strong>Błąd zapisu:</strong> ${escapeHtml(String(err.message || err))}. Kliknij „🔑 Token API” na górze, aby edytować lub sprawdzić swój klucz.`,
+          `❌ <strong>Błąd zapisu:</strong> ${escapeHtml(String(err.message || err))}`,
           'rgba(239, 68, 68, 0.1)', '#991b1b', '#ef4444'
         );
       }

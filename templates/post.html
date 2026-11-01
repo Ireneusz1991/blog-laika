@@ -288,7 +288,7 @@
 
       <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
         <button type="button" id="btn-inpage-token" onclick="toggleInpageTokenBar();" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.35rem 0.65rem; border-color: #7c3aed; color: #6d28d9; font-weight: 700;">
-          🔑 Klucz Zapisu
+          🔑 Token Aktualizacji
         </button>
         <a href="{{ base_url }}/admin/?edit={{ post.slug }}" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.35rem 0.65rem;" title="Otwórz w pełnym kokpicie administratora">
           ⚙️ Pełny CMS ↗
@@ -299,26 +299,29 @@
       </div>
     </div>
 
-    <!-- Pasek edycji Klucza Aktualizacji bezpośrednio w edytorze na stronie -->
-    <div id="inpage-token-bar" style="display: none; padding: 0.85rem 1.5rem; background: rgba(124, 58, 237, 0.06); border-bottom: 1.5px solid #7c3aed;">
+    <!-- Pasek jednorazowej konfiguracji Tokena Aktualizacji w przeglądarce -->
+    <div id="inpage-token-bar" style="display: none; padding: 0.9rem 1.5rem; background: rgba(124, 58, 237, 0.07); border-bottom: 1.5px solid #7c3aed;">
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.45rem;">
         <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">
-          🔑 Klucz Autoryzacji Zapisu Bezpośredniego (wspólny z panelem CMS — zapisany w przeglądarce, zero ingerencji w GitHub)
+          🔑 Jednorazowy Token Aktualizacji (kod <code>ghp_...</code> — wpisujesz raz w przeglądarce i edytujesz zawsze bezpośrednio na stronie)
         </span>
+        <a href="https://github.com/settings/tokens/new?description=Blog+Laika+Edycja+Bezposrednia&scopes=repo" target="_blank" rel="noopener" style="font-size: 0.76rem; color: #6d28d9; font-weight: 700; text-decoration: underline;">
+          Pobierz kod tokena ghp_... (15 sek., zaznaczone: repo) ↗
+        </a>
       </div>
       <div style="display: flex; gap: 0.45rem; align-items: center; flex-wrap: wrap;">
-        <input type="password" id="inpage-pat-input" class="form-input" placeholder="Wklej lub edytuj klucz aktualizacji..." style="flex: 1; min-width: 240px; font-family: monospace; font-size: 0.82rem;">
+        <input type="password" id="inpage-pat-input" class="form-input" placeholder="Wklej tutaj kod ghp_... lub github_pat_... (nie hasło laik2026)" style="flex: 1; min-width: 240px; font-family: monospace; font-size: 0.82rem;">
         <button type="button" onclick="const i=document.getElementById('inpage-pat-input'); i.type=(i.type==='password'?'text':'password');" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.4rem 0.65rem;">
           👁️ Pokaż/Ukryj
         </button>
-        <button type="button" onclick="saveInpagePat();" class="btn btn-primary" style="background: #7c3aed; border-color: #6d28d9; font-size: 0.78rem; padding: 0.4rem 0.85rem; font-weight: 700;">
-          💾 Zapisz Klucz
+        <button type="button" id="btn-save-inpage-pat" onclick="saveInpagePat();" class="btn btn-primary" style="background: #7c3aed; border-color: #6d28d9; font-size: 0.78rem; padding: 0.4rem 0.85rem; font-weight: 700;">
+          💾 Zapisz i Zweryfikuj Token
         </button>
         <button type="button" onclick="clearInpagePat();" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.4rem 0.65rem; color: #dc2626;">
           🗑️ Usuń
         </button>
       </div>
-      <div id="inpage-pat-feedback" style="font-size: 0.76rem; color: var(--text-secondary); margin-top: 0.35rem;"></div>
+      <div id="inpage-pat-feedback" style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.45;"></div>
     </div>
 
     <div id="inpage-save-status" style="display: none; padding: 0.7rem 1.5rem; font-size: 0.83rem; border-bottom: 1px solid var(--border-color);"></div>
@@ -429,9 +432,6 @@
     <!-- Modal Footer Actions -->
     <div style="padding: 1rem 1.5rem; background: var(--bg-surface); border-top: 1.5px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
       <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-        <button type="button" onclick="applyInpageToCurrentPage();" class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.4rem 0.75rem; border-color: var(--accent); color: var(--accent); font-weight: 600;" title="Podmień treść na tej otwartej stronie, aby zobaczyć efekt w szablonie bloga">
-          👁️ Zastosuj na otwartej stronie
-        </button>
         <button type="button" onclick="copyInpageMarkdown();" class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.4rem 0.75rem;">
           📋 Kopiuj Markdown
         </button>
@@ -444,8 +444,8 @@
         <button type="button" onclick="closeInPageEditor();" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.85rem;">
           Anuluj
         </button>
-        <button type="button" id="btn-inpage-direct-save" onclick="saveInpageToGitHub();" class="btn btn-primary" style="font-size: 0.88rem; padding: 0.5rem 1.25rem; font-weight: 800; background: #059669; border-color: #047857; box-shadow: 0 4px 12px rgba(5,150,105,0.3);">
-          ⚡ Zapisz i zaktualizuj bezpośrednio na blogu
+        <button type="button" id="btn-inpage-direct-save" onclick="saveInpageToGitHub();" class="btn btn-primary" style="font-size: 0.9rem; padding: 0.55rem 1.35rem; font-weight: 800; background: #059669; border-color: #047857; box-shadow: 0 4px 12px rgba(5,150,105,0.3);">
+          ⚡ Zapisz zmiany na stałe na blogu
         </button>
       </div>
     </div>
@@ -466,6 +466,7 @@
     const rawEl = document.getElementById('post-raw-data');
     if (rawEl && rawEl.textContent) {
       currentPostData = JSON.parse(rawEl.textContent);
+      window.currentPostData = currentPostData;
     }
   } catch(e) {
     console.warn('Nie udało się załadować danych post-raw-data:', e);
@@ -537,6 +538,13 @@
   function openInPageEditorModal() {
     const m = document.getElementById('inpage-editor-modal');
     if (!m) return;
+
+    if (currentPostData && window.LaikaDirectSync && typeof window.LaikaDirectSync.getRecentEdit === 'function') {
+      const recentEd = window.LaikaDirectSync.getRecentEdit(currentPostData.slug);
+      if (recentEd) {
+        Object.assign(currentPostData, recentEd);
+      }
+    }
 
     if (currentPostData) {
       document.getElementById('inp-title').value = currentPostData.title || '';
@@ -744,13 +752,13 @@ ${body}`;
       if (btn) {
         btn.style.borderColor = '#10b981';
         btn.style.color = '#059669';
-        btn.innerHTML = '🟢 Klucz Zapisu Aktywny';
+        btn.innerHTML = '🟢 Token Aktywny (Edytuj)';
       }
       if (inp && document.activeElement !== inp) inp.value = pat;
     } else if (btn) {
       btn.style.borderColor = '#7c3aed';
       btn.style.color = '#6d28d9';
-      btn.innerHTML = '🔑 Ustaw Klucz Zapisu';
+      btn.innerHTML = '🔑 Ustaw Token Aktualizacji';
     }
   }
 
@@ -766,17 +774,27 @@ ${body}`;
     }
   }
 
-  function saveInpagePat() {
+  async function saveInpagePat() {
     const inp = document.getElementById('inpage-pat-input');
     const fb = document.getElementById('inpage-pat-feedback');
+    const saveBtn = document.getElementById('btn-save-inpage-pat');
     const val = inp ? inp.value.trim() : '';
-    if (!val) {
-      if (fb) fb.innerHTML = '<span style="color:#dc2626;">Wklej poprawny klucz aktualizacji.</span>';
-      return;
+
+    if (saveBtn) { saveBtn.disabled = true; saveBtn.innerHTML = '⏳ Sprawdzanie...'; }
+    if (fb) fb.innerHTML = '⏳ Weryfikacja tokena i uprawnień zapisu...';
+
+    const check = await window.LaikaDirectSync.verifyToken(val);
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = '💾 Zapisz i Zweryfikuj Token'; }
+
+    if (!check.ok) {
+      if (fb) fb.innerHTML = `<span style="color:#dc2626; font-weight:700;">⚠️ ${escapeHtmlPost(check.message)}</span>`;
+      refreshInpageTokenUi();
+      return false;
     }
-    localStorage.setItem('blog_laika_gh_pat', val);
+
     refreshInpageTokenUi();
-    if (fb) fb.innerHTML = '<span style="color:#059669; font-weight:700;">✅ Klucz zapisany lokalnie w przeglądarce! Kliknij teraz zielony przycisk zapisu poniżej — artykuł zaktualizuje się bezpośrednio na stronie.</span>';
+    if (fb) fb.innerHTML = '<span style="color:#059669; font-weight:700;">✅ Token zweryfikowany i zapisany w przeglądarce! Kliknij teraz zielony przycisk „⚡ Zapisz zmiany na stałe na blogu” na dole okna.</span>';
+    return true;
   }
 
   function clearInpagePat() {
@@ -784,7 +802,7 @@ ${body}`;
     const inp = document.getElementById('inpage-pat-input');
     if (inp) inp.value = '';
     const fb = document.getElementById('inpage-pat-feedback');
-    if (fb) fb.innerHTML = 'Usunięto klucz z pamięci przeglądarki.';
+    if (fb) fb.innerHTML = 'Usunięto token z pamięci przeglądarki.';
     refreshInpageTokenUi();
   }
 
@@ -801,11 +819,32 @@ ${body}`;
       st.innerHTML = html;
     };
 
+    // Jeśli użytkownik wkleił token do pola #inpage-pat-input i od razu kliknął główny przycisk zapisu — zweryfikuj i zapisz go automatycznie!
+    const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    const typedPat = document.getElementById('inpage-pat-input')?.value?.trim() || '';
+    const storedPat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+    if (!isLocal && typedPat && typedPat !== storedPat) {
+      const ok = await saveInpagePat();
+      if (!ok) {
+        setSt('⚠️ <strong>Sprawdź wpisany powyżej Token Aktualizacji</strong> (musi zaczynać się od <code>ghp_...</code> lub <code>github_pat_...</code>, nie hasło <code>laik2026</code>).', 'rgba(239, 68, 68, 0.1)', '#991b1b');
+        return;
+      }
+    }
+
+    // Jeśli w pamięci jest przypadkowo zapisane hasło zamiast tokena — wyłap od razu
+    const activePat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+    if (!isLocal && activePat && activePat.length < 20) {
+      localStorage.removeItem('blog_laika_gh_pat');
+      toggleInpageTokenBar(true);
+      setSt('⚠️ <strong>W polu tokena było wpisane hasło logowania zamiast Tokena Aktualizacji (<code>ghp_...</code>).</strong> Kliknij powyżej <em>„Pobierz kod tokena ghp_...”</em>, wklej go i kliknij zapisz.', 'rgba(239, 68, 68, 0.1)', '#991b1b');
+      return;
+    }
+
     updateInpageLivePreview();
     const { doc, slug, title, category, tags, body, summary, cover } = buildInpageMarkdownDocument();
     const oldCategory = (currentPostData && currentPostData.category) ? currentPostData.category : 'eseje';
 
-    if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Aktualizowanie artykułu na żywo...'; }
+    if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Zapisywanie na całym blogu...'; }
     setSt('⏳ <strong>Trwa bezpośrednia aktualizacja artykułu na blogu...</strong>', 'rgba(37, 99, 235, 0.08)', '#1d4ed8');
 
     try {
@@ -836,23 +875,30 @@ ${body}`;
         currentPostData.read_time = result.readTime;
         currentPostData.content_markdown = body;
         currentPostData.content_html = result.renderedHtml;
+        window.currentPostData = currentPostData;
         const rawEl = document.getElementById('post-raw-data');
         if (rawEl) {
           rawEl.textContent = JSON.stringify(currentPostData).replace(/<\/script>/gi, '<\\/script>');
         }
       }
 
-      setSt('✅ <strong>Artykuł został trwale zaktualizowany bezpośrednio na stronie (wpis + strona główna + kategoria + wyszukiwarka)!</strong>', 'rgba(16, 185, 129, 0.14)', '#065f46');
+      setSt('✅ <strong>Artykuł został trwale zapisany (wpis + strona główna + kategoria + wyszukiwarka)!</strong>', 'rgba(16, 185, 129, 0.14)', '#065f46');
       applyInpageToCurrentPage(true, result.renderedHtml, result.readTime, result.publicCategory, result.publicCategoryName);
     } catch (err) {
       if (err && err.code === 'MISSING_TOKEN') {
         toggleInpageTokenBar(true);
-        setSt('🔑 <strong>Wklej jednorazowo swój Klucz Zapisu powyżej</strong> i kliknij „Zapisz Klucz” — od tej chwili każdy artykuł zaktualizujesz jednym kliknięciem prosto na stronie!', 'rgba(124, 58, 237, 0.1)', '#6d28d9');
+        setSt(
+          '🔑 <strong>Jednorazowa aktywacja zapisu (30 sekund):</strong><br>' +
+          '1️⃣ Kliknij w fioletowym pasku powyżej link <strong>„Pobierz kod tokena ghp_...”</strong> i na otwartej stronie kliknij na dole zielone <em>Generate token</em>.<br>' +
+          '2️⃣ Skopiuj wygenerowany kod <code>ghp_...</code>, wklej go powyżej i kliknij <strong>„⚡ Zapisz zmiany na stałe na blogu”</strong> — robisz to tylko jeden raz!',
+          'rgba(124, 58, 237, 0.1)', '#5b21b6'
+        );
       } else {
-        setSt(`❌ <strong>Nie udało się zapisać zmian:</strong> ${escapeHtmlPost(String(err.message || err))}. Sprawdź „🔑 Klucz Zapisu” powyżej.`, 'rgba(239, 68, 68, 0.1)', '#991b1b');
+        toggleInpageTokenBar(true);
+        setSt(`❌ <strong>Nie udało się zapisać zmian:</strong> ${escapeHtmlPost(String(err.message || err))}. Sprawdź lub odśwież powyżej swój Token Aktualizacji (<code>ghp_...</code>).`, 'rgba(239, 68, 68, 0.1)', '#991b1b');
       }
     } finally {
-      if (btn) { btn.disabled = false; btn.innerHTML = '⚡ Zapisz i zaktualizuj bezpośrednio na blogu'; }
+      if (btn) { btn.disabled = false; btn.innerHTML = '⚡ Zapisz zmiany na stałe na blogu'; }
     }
   }
 
