@@ -4,7 +4,7 @@
       "id": 7,
       "title": "Kondensat I: Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu",
       "slug": "kondensat-wielkie-sprzezenie-zwrotne",
-      "category": "kondensat"
+      "category": "eseje"
     },
     {
       "id": 6,
@@ -70,7 +70,7 @@
     },
     {
       "date": "2026-10-25",
-      "category": "kondensat",
+      "category": "eseje",
       "title": "Kondensat II: Krzemowy imperatyw przetrwania — dlaczego litografia ASML, wojny XVII wieku i ucieczka od dolara tworzą jeden teatr zmagań",
       "url": ""
     },
@@ -106,7 +106,7 @@
     },
     {
       "date": "2026-10-26",
-      "category": "kondensat",
+      "category": "eseje",
       "title": "Kondensat III: Paradoks zielonej autarkii — dlaczego transformacja energetyczna wymaga nowej fali górnictwa, drogiego długu i imperialnych protektoratów",
       "url": ""
     },
@@ -142,7 +142,7 @@
     },
     {
       "date": "2026-10-27",
-      "category": "kondensat",
+      "category": "eseje",
       "title": "Kondensat IV: Architektura cyfrowego posłuszeństwa — jak portfele tożsamości, programowalny pieniądz i erozja zaufania tworzą nowy model kontroli",
       "url": ""
     },
@@ -178,7 +178,7 @@
     },
     {
       "date": "2026-10-28",
-      "category": "kondensat",
+      "category": "eseje",
       "title": "Kondensat V: Geopolityka Wąskich Gardeł — jak cieśniny morskie, kable podmorskie, litografia krzemowa i deficyt miedzi zbiegają się w jeden węzeł",
       "url": ""
     },
@@ -214,7 +214,7 @@
     },
     {
       "date": "2026-10-29",
-      "category": "kondensat",
+      "category": "eseje",
       "title": "Kondensat VI: Nowy Merkantylizm i Reindustrializacja — dlaczego fabryki baterii i stali wracają do Europy kosztem wolnego rynku",
       "url": ""
     },
@@ -250,7 +250,7 @@
     },
     {
       "date": "2026-10-30",
-      "category": "kondensat",
+      "category": "eseje",
       "title": "Kondensat VII: Logistyka Chleba, Żelaza i Krzemu — dlaczego upadają imperia handlowe, gdy pękają wąskie gardła zaopatrzenia",
       "url": ""
     },
@@ -286,49 +286,49 @@
     },
     {
       "date": "2026-10-31",
-      "category": "kondensat",
+      "category": "eseje",
       "title": "Kondensat VIII: Monopolizacja Uwagi i Finansjalizacja Społeczeństwa — jak architektura platform cyfrowych i dług publiczny przedefiniowały wolną wolę",
       "url": ""
     },
     {
       "date": "2026-10-27",
-      "category": "unknown",
+      "category": "eseje",
       "title": "Wielowątkowa Synteza Analityczna: „Kondensat IV: Architektura cyfrowego posłuszeństwa — jak portfele tożsamości, programowalny pieniądz i erozja zaufania tworzą nowy model kontroli",
       "url": ""
     },
     {
       "date": "2026-10-26",
-      "category": "unknown",
+      "category": "eseje",
       "title": "Wielowątkowa Synteza Analityczna: „Kondensat III: Paradoks zielonej autarkii — dlaczego transformacja energetyczna wymaga nowej fali górnictwa, drogiego długu i imperialnych protektoratów",
       "url": ""
     },
     {
       "date": "2026-10-25",
-      "category": "unknown",
+      "category": "eseje",
       "title": "Wielowątkowa Synteza Analityczna: „Kondensat II: Krzemowy imperatyw przetrwania — dlaczego litografia ASML, wojny XVII wieku i ucieczka od dolara tworzą jeden teatr zmagań",
       "url": ""
     },
     {
       "date": "2026-10-28",
-      "category": "unknown",
+      "category": "eseje",
       "title": "Wielowątkowa Synteza Analityczna: „Kondensat V: Geopolityka Wąskich Gardeł — jak cieśniny morskie, kable podmorskie, litografia krzemowa i deficyt miedzi zbiegają się w jeden węzeł",
       "url": ""
     },
     {
       "date": "2026-10-29",
-      "category": "unknown",
+      "category": "eseje",
       "title": "Wielowątkowa Synteza Analityczna: „Kondensat VI: Nowy Merkantylizm i Reindustrializacja — dlaczego fabryki baterii i stali wracają do Europy kosztem wolnego rynku",
       "url": ""
     },
     {
       "date": "2026-10-30",
-      "category": "unknown",
+      "category": "eseje",
       "title": "Wielowątkowa Synteza Analityczna: „Kondensat VII: Logistyka Chleba, Żelaza i Krzemu — dlaczego upadają imperia handlowe, gdy pękają wąskie gardła zaopatrzenia",
       "url": ""
     },
     {
       "date": "2026-10-31",
-      "category": "unknown",
+      "category": "eseje",
       "title": "Wielowątkowa Synteza Analityczna: „Kondensat VIII: Monopolizacja Uwagi i Finansjalizacja Społeczeństwa — jak architektura platform cyfrowych i dług publiczny przedefiniowały wolną wolę",
       "url": ""
     },
@@ -364,7 +364,7 @@
     },
     {
       "date": "2026-10-31",
-      "category": "kondensat",
+      "category": "eseje",
       "title": "Kondensat VIII: Monopolizacja Uwagi i Finansjalizacja Społeczeństwa — jak architektura platform cyfrowych i dług publiczny przedefiniowały wolną wolę",
       "url": ""
     },
@@ -400,11 +400,89 @@
     },
     {
       "date": "2026-10-31",
-      "category": "kondensat",
+      "category": "eseje",
       "title": "Kondensat VIII: Monopolizacja Uwagi i Finansjalizacja Społeczeństwa — jak architektura platform cyfrowych i dług publiczny przedefiniowały wolną wolę",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "technologia",
+      "title": "Prawo do naprawy w epoce procesorów zintegrowanych: Walka o suwerenność użytkownika przeciwko planowanemu starzeniu sprzętu",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "gospodarka",
+      "title": "Iluzja deglobalizacji: Dlaczego łańcuchy dostaw wydłużyły się przez kraje trzecie zamiast powrócić do domu",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "historia",
+      "title": "Kompaniowy kapitalizm VOC: Jak Holenderska Kompania Wschodnioindyjska połączyła giełdę akcji z prywatną armią kolonialną",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "polityka",
+      "title": "Czy Trójmorze może zrównoważyć Europę Zachodnią? Infrastrukturalne realia osi Północ-Południe",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "eseje",
+      "title": "Toxoplasma wściekłości: Dlaczego algorytmy mediów społecznościowych nagradzają oburzenie i jak nie dać się zainfekować",
+      "url": ""
+    },
+    {
+      "date": "2026-10-31",
+      "category": "eseje",
+      "title": "Kondensat VIII: Monopolizacja Uwagi i Finansjalizacja Społeczeństwa — jak architektura platform cyfrowych i dług publiczny przedefiniowały wolną wolę",
+      "url": ""
+    },
+    {
+      "date": "2026-11-01",
+      "category": "technologia",
+      "title": "Podmorskie kable światłowodowe: Niewidzialny krwioobieg globalnego internetu i jego podatność na sabotaż",
+      "url": ""
+    },
+    {
+      "date": "2026-11-01",
+      "category": "gospodarka",
+      "title": "Frakcjonowanie zaufania: Dlaczego system bankowy oparty na rezerwie cząstkowej panikuje w dobie natychmiastowych przelewów mobilnych",
+      "url": ""
+    },
+    {
+      "date": "2026-11-01",
+      "category": "historia",
+      "title": "Wojna o guano i saletrę: Kiedy nawóz i proch strzelniczy decydowały o losach narodów i potędze imperiów",
+      "url": ""
+    },
+    {
+      "date": "2026-11-01",
+      "category": "polityka",
+      "title": "Zmierzch petrodolara i narodziny walut surowcowych: Jak sankcje przyspieszyły dedolaryzację rezerw banków centralnych",
+      "url": ""
+    },
+    {
+      "date": "2026-11-01",
+      "category": "eseje",
+      "title": "Cena wygody: Jak outsourcing elementarnych umiejętności życiowych do aplikacji czyni nas bezradnymi",
+      "url": ""
+    },
+    {
+      "date": "2026-11-01",
+      "category": "eseje",
+      "title": "Kondensat IX: Cyfrowy Lewiatan i Prawo Własności — dlaczego w epoce chmury, subskrypcji i AI przestajemy być właścicielami czegokolwiek",
+      "url": ""
+    },
+    {
+      "date": "2026-11-01",
+      "category": "eseje",
+      "title": "Wielowątkowa Synteza Analityczna: „Kondensat IX: Cyfrowy Lewiatan i Prawo Własności — dlaczego w epoce chmury, subskrypcji i AI przestajemy być właścicielami czegokolwiek",
       "url": ""
     }
   ],
   "seen_rss_urls": {},
-  "last_updated": "2026-10-31T18:37:11.960868"
+  "last_updated": "2026-11-01T13:06:55.440577"
 }

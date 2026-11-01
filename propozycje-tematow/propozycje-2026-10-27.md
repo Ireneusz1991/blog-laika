@@ -208,9 +208,9 @@ Jeśli wirtualna rzeczywistość i media społecznościowe nie potrafią nas nak
 
 ---
 
-## 6. Temat 6 (Kondensat): Wielowątkowa Synteza Analityczna: „Kondensat IV: Architektura cyfrowego posłuszeństwa — jak portfele tożsamości, programowalny pieniądz i erozja zaufania tworzą nowy model kontroli”
+## 6. Inne eseje / Kondensat (Wielowątkowa Synteza Analityczna): „Kondensat IV: Architektura cyfrowego posłuszeństwa — jak portfele tożsamości, programowalny pieniądz i erozja zaufania tworzą nowy model kontroli”
 
-* **Kategoria:** `kondensat`
+* **Kategoria:** `eseje`
 * **Data wyszukania:** 27 października 2026 r.
 * **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
 * **Źródło impulsu:** 🌐 Konglomerat Analityczny: CBDC + Digital ID + Wolność Obywatelska + Psychologia Społeczna

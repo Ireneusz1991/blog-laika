@@ -191,9 +191,9 @@ Czy nie najwyższy czas uznać algorytmiczne podżeganie do gniewu za formę zan
 
 ---
 
-## 6. Temat 6 (Kondensat): Wielowątkowa Synteza Analityczna: „Kondensat VIII: Monopolizacja Uwagi i Finansjalizacja Społeczeństwa — jak architektura platform cyfrowych i dług publiczny przedefiniowały wolną wolę”
+## 6. Inne eseje / Kondensat (Wielowątkowa Synteza Analityczna): „Kondensat VIII: Monopolizacja Uwagi i Finansjalizacja Społeczeństwa — jak architektura platform cyfrowych i dług publiczny przedefiniowały wolną wolę”
 
-* **Kategoria:** `kondensat`
+* **Kategoria:** `eseje`
 * **Data wyszukania:** 31 października 2026 r.
 * **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
 * **Źródło impulsu:** 🏛️ Wielowątkowa Synteza Analityczna: Eseje + Gospodarka + Technologia

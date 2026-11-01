@@ -321,6 +321,24 @@ def build_static(output_dir="dist", base_url=None):
             f.write(cat_tmpl.render(**ctx_cat))
     print(f"    [OK] Wygenerowano widoki {len(config.CATEGORIES)} kategorii w /kategoria/<slug>/")
 
+    # Przekierowanie legacy /kategoria/kondensat/ -> /kategoria/eseje/
+    legacy_kondensat_dir = os.path.join(output_dir, "kategoria", "kondensat")
+    os.makedirs(legacy_kondensat_dir, exist_ok=True)
+    redirect_html = f"""<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <title>Przekierowanie do kategorii Inne eseje</title>
+  <meta http-equiv="refresh" content="0; url={base_url}/kategoria/eseje/">
+  <link rel="canonical" href="{site_domain}{base_url}/kategoria/eseje/">
+</head>
+<body>
+  <p>Kondensaty znajdują się teraz w kategorii <a href="{base_url}/kategoria/eseje/">Inne eseje</a>. Przekierowywanie...</p>
+</body>
+</html>"""
+    with open(os.path.join(legacy_kondensat_dir, "index.html"), "w", encoding="utf-8") as f:
+        f.write(redirect_html)
+
     # 6. Indeks wyszukiwania JSON (search-index.json)
     search_index = [
         {

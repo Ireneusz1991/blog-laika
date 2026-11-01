@@ -203,9 +203,9 @@ Jeśli największe dzieła literatury, filozofii i nauki powstały w warunkach g
 
 ---
 
-## 6. Temat 6 (Kondensat): Wielowątkowa Synteza Analityczna: „Kondensat III: Paradoks zielonej autarkii — dlaczego transformacja energetyczna wymaga nowej fali górnictwa, drogiego długu i imperialnych protektoratów”
+## 6. Inne eseje / Kondensat (Wielowątkowa Synteza Analityczna): „Kondensat III: Paradoks zielonej autarkii — dlaczego transformacja energetyczna wymaga nowej fali górnictwa, drogiego długu i imperialnych protektoratów”
 
-* **Kategoria:** `kondensat`
+* **Kategoria:** `eseje`
 * **Data wyszukania:** 26 października 2026 r.
 * **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
 * **Źródło impulsu:** 🌐 Konglomerat Analityczny: Surowce Krytyczne + Transformacja OZE + Geopolityka Afryki i Ameryki Południowej

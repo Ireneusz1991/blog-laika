@@ -203,9 +203,9 @@ Czy naprawdę chcemy stać się pierwszym pokoleniem w nowożytnej historii, kt�
 
 ---
 
-## 6. Temat 6 (Kondensat): Wielowątkowa Synteza Analityczna: „Kondensat V: Geopolityka Wąskich Gardeł — jak cieśniny morskie, kable podmorskie, litografia krzemowa i deficyt miedzi zbiegają się w jeden węzeł”
+## 6. Inne eseje / Kondensat (Wielowątkowa Synteza Analityczna): „Kondensat V: Geopolityka Wąskich Gardeł — jak cieśniny morskie, kable podmorskie, litografia krzemowa i deficyt miedzi zbiegają się w jeden węzeł”
 
-* **Kategoria:** `kondensat`
+* **Kategoria:** `eseje`
 * **Data wyszukania:** 28 października 2026 r.
 * **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
 * **Źródło impulsu:** 🌐 Konglomerat Analityczny: Choke Points + Rurociągi Bałtyckie + Szlaki Półprzewodnikowe

@@ -110,8 +110,7 @@
         "gospodarka": 0,
         "historia": 0,
         "polityka": 0,
-        "eseje": 0,
-        "kondensat": 0
+        "eseje": 0
       },
       traffic_sources: {},
       devices: {},
@@ -251,7 +250,6 @@
       else if (catSlug.indexOf('gosp') !== -1) catSlug = 'gospodarka';
       else if (catSlug.indexOf('hist') !== -1) catSlug = 'historia';
       else if (catSlug.indexOf('polit') !== -1) catSlug = 'polityka';
-      else if (catSlug.indexOf('konden') !== -1) catSlug = 'kondensat';
       else catSlug = 'eseje';
 
       stats.categories[catSlug] = (stats.categories[catSlug] || 0) + 1;

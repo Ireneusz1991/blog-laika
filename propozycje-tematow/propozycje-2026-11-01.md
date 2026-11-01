@@ -191,9 +191,9 @@ Czy wygoda nie stała się nowoczesną formą niewolnictwa? Prawdziwa satysfakcj
 
 ---
 
-## 6. Temat 6 (Kondensat): Wielowątkowa Synteza Analityczna: „Kondensat IX: Cyfrowy Lewiatan i Prawo Własności — dlaczego w epoce chmury, subskrypcji i AI przestajemy być właścicielami czegokolwiek”
+## 6. Inne eseje / Kondensat (Wielowątkowa Synteza Analityczna): „Kondensat IX: Cyfrowy Lewiatan i Prawo Własności — dlaczego w epoce chmury, subskrypcji i AI przestajemy być właścicielami czegokolwiek”
 
-* **Kategoria:** `kondensat`
+* **Kategoria:** `eseje`
 * **Data wyszukania:** 1 listopada 2026 r.
 * **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
 * **Źródło impulsu:** 🏛️ Wielowątkowa Synteza Analityczna: Prawo + Technologia + Eseje

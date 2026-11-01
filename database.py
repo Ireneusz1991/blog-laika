@@ -306,8 +306,7 @@ def get_internal_analytics() -> Dict[str, Any]:
             "gospodarka": "Gospodarka",
             "historia": "Historia",
             "polityka": "Polityka",
-            "eseje": "Inne eseje",
-            "kondensat": "⚡ Kondensaty"
+            "eseje": "Inne eseje"
         }
 
     cat_views = {cat_slug: 0 for cat_slug in CATEGORY_MAP}

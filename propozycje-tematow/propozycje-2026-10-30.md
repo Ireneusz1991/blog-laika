@@ -193,9 +193,9 @@ Czy dociekliwość nie jest najcenniejszą formą odwagi intelektualnej? Nie bó
 
 ---
 
-## 6. Temat 6 (Kondensat): Wielowątkowa Synteza Analityczna: „Kondensat VII: Logistyka Chleba, Żelaza i Krzemu — dlaczego upadają imperia handlowe, gdy pękają wąskie gardła zaopatrzenia”
+## 6. Inne eseje / Kondensat (Wielowątkowa Synteza Analityczna): „Kondensat VII: Logistyka Chleba, Żelaza i Krzemu — dlaczego upadają imperia handlowe, gdy pękają wąskie gardła zaopatrzenia”
 
-* **Kategoria:** `kondensat`
+* **Kategoria:** `eseje`
 * **Data wyszukania:** 30 października 2026 r.
 * **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
 * **Źródło impulsu:** 🏛️ Wielowątkowa Synteza Analityczna: Historia + Technologia + Bezpieczeństwo

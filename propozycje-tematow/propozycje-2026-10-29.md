@@ -193,9 +193,9 @@ Co stoi na przeszkodzie, by wyłączyć powiadomienia, usunąć algorytmiczne ap
 
 ---
 
-## 6. Temat 6 (Kondensat): Wielowątkowa Synteza Analityczna: „Kondensat VI: Nowy Merkantylizm i Reindustrializacja — dlaczego fabryki baterii i stali wracają do Europy kosztem wolnego rynku”
+## 6. Inne eseje / Kondensat (Wielowątkowa Synteza Analityczna): „Kondensat VI: Nowy Merkantylizm i Reindustrializacja — dlaczego fabryki baterii i stali wracają do Europy kosztem wolnego rynku”
 
-* **Kategoria:** `kondensat`
+* **Kategoria:** `eseje`
 * **Data wyszukania:** 29 października 2026 r.
 * **Model powstawania:** 100% Samokreacja (autorska synteza faktów, zero zapożyczeń)
 * **Źródło impulsu:** 🏛️ Wielowątkowa Synteza Analityczna: Gospodarka + Historia + Technologia

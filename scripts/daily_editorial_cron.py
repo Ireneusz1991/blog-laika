@@ -84,13 +84,19 @@ def build_daily_proposals_md(date_str, date_pl, day_name, topics):
         "historia": "Historia / Węzłowe Lekcje Dziejów",
         "polityka": "Polityka / Geopolityka & Bezpieczeństwo",
         "eseje": "Inne eseje / Społeczeństwo & Filozofia Laika",
-        "kondensat": "Temat 6 (Kondensat): Wielowątkowa Synteza Analityczna"
+        "kondensat": "Inne eseje / Kondensat (Wielowątkowa Synteza Analityczna)"
     }
 
     sections_md = []
     for i, t in enumerate(topics, 1):
-        cat = t.get("category", "technologia")
-        cat_label = category_labels.get(cat, cat.capitalize())
+        raw_cat = t.get("category", "technologia")
+        is_kondensat = raw_cat == "kondensat" or t.get("section_type") == "kondensat" or "kondensat" in t.get("title", "").lower()
+        if is_kondensat:
+            cat_label = "Inne eseje / Kondensat (Wielowątkowa Synteza Analityczna)"
+            cat = "eseje"
+        else:
+            cat_label = category_labels.get(raw_cat, raw_cat.capitalize())
+            cat = raw_cat
 
         points_fmt = "\n".join([f"  {idx}. {p}" for idx, p in enumerate(t.get('points', []), 1)])
 
@@ -170,6 +176,9 @@ def run_daily_cron(target_date_str=None, deploy=False):
             selected_item["category"] = cat
 
         if selected_item:
+            if cat == "kondensat":
+                selected_item["section_type"] = "kondensat"
+                selected_item["category"] = "eseje"
             topics.append(selected_item)
 
     print(f"\n✅ Skomponowano {len(topics)} w 100% UNIKALNYCH propozycji ze szkicami esejów:")

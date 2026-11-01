@@ -15,8 +15,7 @@ CATEGORIES = [
     {"slug": "gospodarka", "name": "Gospodarka", "color": "#059669", "icon": "trending-up", "desc": "Makroekonomia, rynki finansowe, energetyka i trendy globalne"},
     {"slug": "historia", "name": "Historia", "color": "#d97706", "icon": "landmark", "desc": "Węzłowe punkty dziejów, mechanizmy upadku imperiów, historia gospodarcza i lekcje dla teraźniejszości"},
     {"slug": "polityka", "name": "Polityka", "color": "#dc2626", "icon": "shield", "desc": "Geopolityka, mechanizmy władzy, instytucje i przemiany społeczne"},
-    {"slug": "eseje", "name": "Inne eseje", "color": "#7c3aed", "icon": "book-open", "desc": "Filozofia codzienności, kultura, książki i refleksje o świecie"},
-    {"slug": "kondensat", "name": "⚡ Kondensaty", "color": "#d97706", "icon": "zap", "desc": "Wielowątkowe konglomeraty analityczne łączące technologię, makroekonomię, historię i geopolitykę w jedną spójną syntezę"}
+    {"slug": "eseje", "name": "Inne eseje", "color": "#7c3aed", "icon": "book-open", "desc": "Filozofia codzienności, kultura, książki i refleksje o świecie"}
 ]
 CATEGORY_MAP = {c["slug"]: c["name"] for c in CATEGORIES}
 
