@@ -96,7 +96,7 @@
 <article class="container">
   
   <header class="article-header">
-    <div class="post-meta" style="justify-content: center; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.5rem;">
+    <div class="post-meta" style="justify-content: center; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
       <a href="{{ base_url }}/kategoria/{{ post.category }}" class="post-category-tag">
         {{ post.category_name }}
       </a>
@@ -114,23 +114,27 @@
       </span>
       <span>•</span>
       <span>{{ post.created_date }}</span>
+      <span>•</span>
+      <button type="button" onclick="triggerInPageEdit();" class="in-page-edit-pill" style="background: rgba(37, 99, 235, 0.08); border: 1.5px solid var(--accent); color: var(--accent); border-radius: var(--radius-sm); padding: 0.15rem 0.6rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" title="Edytuj ten esej bezpośrednio z poziomu strony">
+        ✏️ Edytuj wpis
+      </button>
     </div>
 
-    <h1 class="article-title">{{ post.title }}</h1>
+    <h1 class="article-title" id="article-page-title">{{ post.title }}</h1>
 
     {% if post.summary %}
-    <p class="article-lead">{{ post.summary }}</p>
+    <p class="article-lead" id="article-page-lead">{{ post.summary }}</p>
     {% endif %}
   </header>
 
   {% if post.cover_image %}
-  <div class="article-cover">
+  <div class="article-cover" id="article-page-cover">
     <img src="{{ post.cover_image }}" alt="{{ post.title }}">
   </div>
   {% endif %}
 
   <!-- Body Content -->
-  <div class="article-body">
+  <div class="article-body" id="article-page-body">
     {{ post.content_html|safe }}
   </div>
 
@@ -148,20 +152,46 @@
       {% endif %}
     </div>
 
-    <div style="display: flex; gap: 0.75rem; align-items: center;">
+    <!-- Sekcja Podziel się: Kopiuj link, Facebook, X, LinkedIn -->
+    <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
       <span style="font-size: 0.85rem; color: var(--text-muted);">Podziel się:</span>
       <button id="btn-share" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
         Kopiuj link
       </button>
+      
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/sharer/sharer.php?u={{ (page_url or (request.url if request else ''))|urlencode }}" 
+         target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; display: inline-flex; align-items: center; justify-content: center;" title="Udostępnij na Facebooku">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      </a>
+
+      <!-- X / Twitter -->
       <a href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ (page_url or (request.url if request else ''))|urlencode }}" 
          target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 0.35rem 0.65rem;" title="Udostępnij na X">
         𝕏
       </a>
+
+      <!-- LinkedIn -->
       <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ (page_url or (request.url if request else ''))|urlencode }}" 
          target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 0.35rem 0.65rem;" title="Udostępnij na LinkedIn">
         in
       </a>
     </div>
+  </div>
+
+  <!-- Pasek autorski pod artykułem -->
+  <div style="max-width: var(--max-w-content); margin: 1.25rem auto 0 auto; display: flex; justify-content: flex-end; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+    <button type="button" onclick="triggerInPageEdit();" class="btn btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.82rem; border: 1.5px dashed var(--accent); color: var(--accent); font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+      ✏️ Edytuj treść tego artykułu na stronie
+    </button>
+    <a href="{{ base_url }}/admin/?edit={{ post.slug }}" class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.82rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.35rem;" title="Otwórz wpis w pełnym panelu CMS">
+      ⚙️ Panel CMS
+    </a>
+    <a href="https://github.com/Ireneusz1991/blog-laika/edit/main/posts/{{ post.slug }}.md" target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.82rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.35rem;" title="Edytuj plik posts/{{ post.slug }}.md na GitHubie">
+      🐙 GitHub ↗
+    </a>
   </div>
 
   <!-- Author Bio Card -->
@@ -179,4 +209,583 @@
   </div>
 
 </article>
+
+<!-- Pływający Dok Autorski (Floating Quick Dock) w prawym dolnym rogu -->
+<div id="author-floating-dock" style="position: fixed; bottom: 22px; right: 22px; z-index: 9999; display: flex; align-items: center; gap: 0.5rem; background: var(--bg-card); border: 1.5px solid var(--accent); border-radius: var(--radius-full); padding: 0.35rem 0.8rem; box-shadow: 0 8px 24px rgba(0,0,0,0.18); backdrop-filter: blur(8px);">
+  <span style="font-size: 0.78rem; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 0.35rem;">
+    <span style="width: 7px; height: 7px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+    Autor:
+  </span>
+  <button type="button" onclick="triggerInPageEdit();" class="btn btn-primary" style="padding: 0.25rem 0.65rem; font-size: 0.78rem; border-radius: var(--radius-full); font-weight: 600;">
+    ✏️ Edytuj na stronie
+  </button>
+  <a href="{{ base_url }}/admin/?edit={{ post.slug }}" class="btn btn-secondary" style="padding: 0.25rem 0.55rem; font-size: 0.78rem; border-radius: var(--radius-full);" title="Otwórz wpis w pełnym panelu CMS">
+    ⚙️ CMS
+  </a>
+</div>
+
+<!-- ======================================================== -->
+<!-- MODAL 1: Szybka autoryzacja autora (jeśli niezalogowany) -->
+<!-- ======================================================== -->
+<div id="inpage-auth-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px); z-index: 20000; overflow-y: auto; padding: 2rem 1rem;">
+  <div style="max-width: 440px; margin: 3rem auto; background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-lg);">
+    <div style="text-align: center; margin-bottom: 1.5rem;">
+      <div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, var(--accent), #4338ca); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; color: #fff; font-size: 1.4rem;">
+        🔐
+      </div>
+      <h3 style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 800; margin: 0 0 0.35rem 0;">
+        Autoryzacja Autorska
+      </h3>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
+        Wprowadź hasło dostępu, aby edytować artykuły bezpośrednio z poziomu strony.
+      </p>
+    </div>
+
+    <div id="inpage-auth-error" style="display: none; background: #fee2e2; border: 1.5px solid #f87171; color: #991b1b; padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.85rem;">
+      ⚠️ Niepoprawne hasło. Domyślne hasło to: <code>laik2026</code>
+    </div>
+
+    <form onsubmit="handleInPageAuth(event); return false;">
+      <div style="margin-bottom: 1.25rem;">
+        <label for="inpage-auth-pass" style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">
+          Hasło administratora:
+        </label>
+        <input type="password" id="inpage-auth-pass" class="form-input" placeholder="laik2026" required autofocus style="width: 100%;">
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+        <button type="submit" class="btn btn-primary" style="flex: 1; justify-content: center; padding: 0.65rem; font-weight: 700;">
+          Zaloguj i odblokuj edycję &rarr;
+        </button>
+        <button type="button" onclick="closeInPageAuthModal();" class="btn btn-secondary" style="padding: 0.65rem 0.95rem;">
+          Anuluj
+        </button>
+      </div>
+
+      <button type="button" onclick="quickFillInPageAuth();" class="btn btn-secondary" style="width: 100%; justify-content: center; font-size: 0.8rem; border: 1.5px dashed var(--accent); color: var(--accent); padding: 0.5rem;">
+        ⚡ Wypełnij natychmiast (laik2026)
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ======================================================== -->
+<!-- MODAL 2: Pełny Edytor Artykułu Bezpośrednio na Stronie   -->
+<!-- ======================================================== -->
+<div id="inpage-editor-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(6px); z-index: 20000; overflow-y: auto; padding: 1.25rem 1rem;">
+  <div style="max-width: 1100px; margin: 1rem auto 2.5rem auto; background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); overflow: hidden; display: flex; flex-direction: column;">
+    
+    <!-- Modal Header -->
+    <div style="padding: 1.1rem 1.5rem; border-bottom: 1.5px solid var(--border-color); background: var(--bg-surface); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.3rem;">✍️</span>
+          <h2 style="font-family: var(--font-serif); font-size: 1.3rem; font-weight: 800; margin: 0; color: var(--text-primary);">
+            Edycja Artykułu z Poziomu Strony
+          </h2>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+          Plik źródłowy: <code>posts/{{ post.slug }}.md</code> &bull; Autor: <strong>{{ post.author or blog_author }}</strong>
+        </p>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <a href="{{ base_url }}/admin/?edit={{ post.slug }}" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.35rem 0.65rem;" title="Otwórz w pełnym kokpicie administratora">
+          ⚙️ Pełny CMS ↗
+        </a>
+        <button type="button" onclick="closeInPageEditor();" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">
+          ✕ Zamknij
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Form Body -->
+    <div style="padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+      
+      <!-- Metadata Row: Tytuł, Kategoria, Slug -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+        <div>
+          <label class="form-label" for="inp-title" style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">
+            Tytuł wpisu *
+          </label>
+          <input type="text" id="inp-title" class="form-input" style="width: 100%; font-weight: 600;" oninput="updateInpageLivePreview();">
+        </div>
+
+        <div>
+          <label class="form-label" for="inp-category" style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">
+            Kategoria *
+          </label>
+          <select id="inp-category" class="form-select" style="width: 100%;">
+            {% for cat in categories %}
+            <option value="{{ cat.slug }}">{{ cat.name }}</option>
+            {% endfor %}
+            <option value="kondensat">⚡ Kondensat (Konglomerat Wielowątkowy)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label" for="inp-tags" style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">
+            Tagi (po przecinku)
+          </label>
+          <input type="text" id="inp-tags" class="form-input" style="width: 100%;" placeholder="technologia, ai, esej">
+        </div>
+      </div>
+
+      <!-- Lead i Okładka -->
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
+        <div>
+          <label class="form-label" for="inp-summary" style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">
+            Lead / Podsumowanie artykułu
+          </label>
+          <textarea id="inp-summary" class="form-input" rows="2" style="width: 100%; resize: vertical;" placeholder="1-2 zdania wprowadzenia do wpisu..."></textarea>
+        </div>
+
+        <div>
+          <label class="form-label" for="inp-cover" style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">
+            Adres URL okładki (Unsplash / obraz)
+          </label>
+          <input type="text" id="inp-cover" class="form-input" style="width: 100%;" placeholder="https://images.unsplash.com/..." oninput="updateInpageLivePreview();">
+        </div>
+      </div>
+
+      <!-- Formatting Toolbar -->
+      <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.45rem 0.65rem; display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; justify-content: space-between;">
+        <div style="display: flex; flex-wrap: wrap; gap: 0.3rem; align-items: center;">
+          <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-right: 0.25rem;">Narzędzia:</span>
+          <button type="button" onclick="formatInpage('bold')" class="editor-tool-btn" title="Pogrubienie (**tekst**)"><strong>B</strong></button>
+          <button type="button" onclick="formatInpage('italic')" class="editor-tool-btn" title="Kursywa (*tekst*)"><em>I</em></button>
+          <button type="button" onclick="formatInpage('h2')" class="editor-tool-btn" title="Nagłówek sekcji (## Tytuł)">H2</button>
+          <button type="button" onclick="formatInpage('h3')" class="editor-tool-btn" title="Śródtytuł (### Tytuł)">H3</button>
+          <button type="button" onclick="formatInpage('quote')" class="editor-tool-btn" title="Cytat (> Treść)">❝</button>
+          <button type="button" onclick="formatInpage('ul')" class="editor-tool-btn" title="Lista punktowana (- Punkt)">• Lista</button>
+          <button type="button" onclick="formatInpage('ol')" class="editor-tool-btn" title="Lista numerowana (1. Punkt)">1. Numer</button>
+          <button type="button" onclick="formatInpage('code')" class="editor-tool-btn" title="Blok kodu (```code```)">&lt;/&gt;</button>
+          <button type="button" onclick="applyInpageTypographer();" class="editor-tool-btn" style="background: rgba(16, 185, 129, 0.1); border-color: #10b981; color: #065f46; font-weight: 700;" title="Zastosuj polską typografię drukarską (cudzysłowy „ ”, półpauzy –, spacje twarde po spójnikach)">
+            🪄 Popraw typografię
+          </button>
+        </div>
+
+        <!-- Tryby widoku: Edytor / Podgląd / Podzielony -->
+        <div style="display: flex; gap: 0.25rem; align-items: center;">
+          <button type="button" id="btn-view-editor" onclick="switchInpageView('editor');" class="btn btn-primary" style="padding: 0.25rem 0.55rem; font-size: 0.75rem;">
+            ✏️ Edytor
+          </button>
+          <button type="button" id="btn-view-preview" onclick="switchInpageView('preview');" class="btn btn-secondary" style="padding: 0.25rem 0.55rem; font-size: 0.75rem;">
+            👁️ Podgląd
+          </button>
+          <button type="button" id="btn-view-split" onclick="switchInpageView('split');" class="btn btn-secondary" style="padding: 0.25rem 0.55rem; font-size: 0.75rem;">
+            ⚡ Podzielony
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Editor / Preview Panes -->
+      <div id="inpage-panes-container" style="display: grid; grid-template-columns: 1fr; gap: 1rem; min-height: 400px;">
+        <!-- Pane 1: Markdown Textarea -->
+        <div id="inpage-editor-pane" style="display: flex; flex-direction: column;">
+          <textarea id="inp-body" class="form-input" style="width: 100%; height: 420px; font-family: var(--font-mono, monospace); font-size: 0.88rem; line-height: 1.6; resize: vertical; padding: 1rem;" placeholder="Wpisz lub edytuj treść artykułu w formacie Markdown..." oninput="updateInpageLivePreview();"></textarea>
+        </div>
+
+        <!-- Pane 2: Live HTML Preview -->
+        <div id="inpage-preview-pane" style="display: none; height: 420px; overflow-y: auto; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.25rem;">
+          <div id="inpage-rendered-preview" class="article-body" style="max-width: 100%;">
+            <em style="color: var(--text-muted);">Trwa generowanie podglądu...</em>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Bar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 0.65rem;">
+        <span id="inpage-stats">Liczba słów: 0 &bull; Czas czytania: ~1 min</span>
+        <span style="font-size: 0.75rem; color: var(--text-muted);">Markdown &bull; Blog Laika Samokreacja</span>
+      </div>
+
+    </div>
+
+    <!-- Modal Footer Actions -->
+    <div style="padding: 1rem 1.5rem; background: var(--bg-surface); border-top: 1.5px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+      <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+        <button type="button" onclick="applyInpageToCurrentPage();" class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.4rem 0.75rem; border-color: var(--accent); color: var(--accent); font-weight: 600;" title="Podmień treść na tej otwartej stronie, aby zobaczyć efekt w szablonie bloga">
+          👁️ Zastosuj na otwartej stronie
+        </button>
+        <button type="button" onclick="copyInpageMarkdown();" class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.4rem 0.75rem;">
+          📋 Kopiuj Markdown
+        </button>
+        <button type="button" onclick="downloadInpageMarkdown();" class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.4rem 0.75rem;">
+          💾 Pobierz .md
+        </button>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <button type="button" onclick="closeInPageEditor();" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.85rem;">
+          Anuluj
+        </button>
+        <button type="button" onclick="saveInpageToGitHub();" class="btn btn-primary" style="font-size: 0.88rem; padding: 0.5rem 1.25rem; font-weight: 700; box-shadow: 0 4px 12px rgba(37,99,235,0.35);">
+          🚀 Zapisz na GitHubie (Commit 1 kliknięciem) &rarr;
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Raw Post JSON Data Storage for in-page logic -->
+<script type="application/json" id="post-raw-data">
+{{ post_json|safe if post_json else (post|tojson|safe) }}
+</script>
+
+<!-- Logika Szybkiej Edycji Artykułu Bezpośrednio na Stronie -->
+<script>
+  let currentPostData = null;
+
+  try {
+    const rawEl = document.getElementById('post-raw-data');
+    if (rawEl && rawEl.textContent) {
+      currentPostData = JSON.parse(rawEl.textContent);
+    }
+  } catch(e) {
+    console.warn('Nie udało się załadować danych post-raw-data:', e);
+  }
+
+  function isAuthorAuthenticated() {
+    try {
+      return localStorage.getItem('blog_laika_admin_auth') === 'authenticated' ||
+             sessionStorage.getItem('blog_laika_admin_auth') === 'authenticated';
+    } catch(e) {
+      return false;
+    }
+  }
+
+  function triggerInPageEdit() {
+    if (isAuthorAuthenticated()) {
+      openInPageEditorModal();
+    } else {
+      openInPageAuthModal();
+    }
+  }
+
+  // --- Modal 1: Auth Handlers ---
+  function openInPageAuthModal() {
+    const m = document.getElementById('inpage-auth-modal');
+    if (m) {
+      m.style.display = 'block';
+      const passIn = document.getElementById('inpage-auth-pass');
+      if (passIn) {
+        passIn.value = '';
+        passIn.focus();
+      }
+    }
+  }
+
+  function closeInPageAuthModal() {
+    const m = document.getElementById('inpage-auth-modal');
+    if (m) m.style.display = 'none';
+  }
+
+  function quickFillInPageAuth() {
+    const passIn = document.getElementById('inpage-auth-pass');
+    if (passIn) passIn.value = 'laik2026';
+    handleInPageAuth();
+  }
+
+  function handleInPageAuth(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const passIn = document.getElementById('inpage-auth-pass');
+    const val = (passIn ? passIn.value : '').trim().toLowerCase();
+    const valid = ['laik2026', 'laika2026', 'admin2026', 'admin', 'laik', 'laika'];
+
+    if (valid.includes(val)) {
+      try {
+        localStorage.setItem('blog_laika_admin_auth', 'authenticated');
+        sessionStorage.setItem('blog_laika_admin_auth', 'authenticated');
+      } catch(err) {}
+      closeInPageAuthModal();
+      openInPageEditorModal();
+    } else {
+      const err = document.getElementById('inpage-auth-error');
+      if (err) err.style.display = 'block';
+    }
+  }
+
+  // --- Modal 2: In-Page Editor Handlers ---
+  function openInPageEditorModal() {
+    const m = document.getElementById('inpage-editor-modal');
+    if (!m) return;
+
+    if (currentPostData) {
+      document.getElementById('inp-title').value = currentPostData.title || '';
+      document.getElementById('inp-category').value = currentPostData.category || 'eseje';
+      document.getElementById('inp-tags').value = currentPostData.tags || '';
+      document.getElementById('inp-summary').value = currentPostData.summary || '';
+      document.getElementById('inp-cover').value = currentPostData.cover_image || '';
+      document.getElementById('inp-body').value = currentPostData.content_markdown || '';
+    }
+
+    m.style.display = 'block';
+    updateInpageLivePreview();
+  }
+
+  function closeInPageEditor() {
+    const m = document.getElementById('inpage-editor-modal');
+    if (m) m.style.display = 'none';
+  }
+
+  // View Switcher (editor, preview, split)
+  function switchInpageView(mode) {
+    const container = document.getElementById('inpage-panes-container');
+    const editorPane = document.getElementById('inpage-editor-pane');
+    const previewPane = document.getElementById('inpage-preview-pane');
+    const btnEd = document.getElementById('btn-view-editor');
+    const btnPr = document.getElementById('btn-view-preview');
+    const btnSp = document.getElementById('btn-view-split');
+
+    [btnEd, btnPr, btnSp].forEach(b => {
+      b.classList.remove('btn-primary');
+      b.classList.add('btn-secondary');
+    });
+
+    if (mode === 'editor') {
+      btnEd.classList.add('btn-primary');
+      btnEd.classList.remove('btn-secondary');
+      container.style.gridTemplateColumns = '1fr';
+      editorPane.style.display = 'flex';
+      previewPane.style.display = 'none';
+    } else if (mode === 'preview') {
+      btnPr.classList.add('btn-primary');
+      btnPr.classList.remove('btn-secondary');
+      container.style.gridTemplateColumns = '1fr';
+      editorPane.style.display = 'none';
+      previewPane.style.display = 'block';
+      updateInpageLivePreview();
+    } else if (mode === 'split') {
+      btnSp.classList.add('btn-primary');
+      btnSp.classList.remove('btn-secondary');
+      container.style.gridTemplateColumns = '1fr 1fr';
+      editorPane.style.display = 'flex';
+      previewPane.style.display = 'block';
+      updateInpageLivePreview();
+    }
+  }
+
+  // Formatting Toolbar Helper
+  function formatInpage(type) {
+    const ta = document.getElementById('inp-body');
+    if (!ta) return;
+
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+    const selected = ta.value.substring(start, end);
+    let repl = '';
+
+    switch (type) {
+      case 'bold':
+        repl = selected ? `**${selected}**` : '**pogrubiony tekst**';
+        break;
+      case 'italic':
+        repl = selected ? `*${selected}*` : '*pochylony tekst*';
+        break;
+      case 'h2':
+        repl = `\n\n## ${selected || 'Tytuł sekcji'}\n\n`;
+        break;
+      case 'h3':
+        repl = `\n\n### ${selected || 'Śródtytuł'}\n\n`;
+        break;
+      case 'quote':
+        repl = `\n\n> ${selected || 'Ważny cytat lub myśl przewodnia'}\n\n`;
+        break;
+      case 'ul':
+        repl = `\n\n- ${selected || 'Punkt pierwszy'}\n- Punkt drugi\n\n`;
+        break;
+      case 'ol':
+        repl = `\n\n1. ${selected || 'Krok pierwszy'}\n2. Krok drugi\n\n`;
+        break;
+      case 'code':
+        repl = selected ? `\`${selected}\`` : '`kod`';
+        break;
+    }
+
+    ta.focus();
+    ta.setRangeText(repl, start, end, 'end');
+    updateInpageLivePreview();
+  }
+
+  // Typographic Cleaner for Polish Punctuation
+  function applyInpageTypographer() {
+    const ta = document.getElementById('inp-body');
+    if (!ta) return;
+
+    let text = ta.value;
+
+    // 1. Zamiana prostych cudzysłowów na polskie drukarskie „ ”
+    text = text.replace(/(^|[\s\(\[\{])"([^\"]+)"/g, '$1„$2”');
+    text = text.replace(/„([^”]+)"/g, '„$1”');
+
+    // 2. Zamiana dywizów pomiędzy spacjami na półpauzy –
+    text = text.replace(/(\s)-(\s)/g, '$1–$2');
+    text = text.replace(/(\s)--(\s)/g, '$1–$2');
+
+    // 3. Spójniki sierotki na końcu wierszy (a, i, o, u, w, z) -> twarda spacja \u00A0
+    text = text.replace(/(^|[\s\(\[])([aAiIoOuUwWzZ])\s+/g, '$1$2\u00A0');
+
+    ta.value = text;
+    updateInpageLivePreview();
+    alert('✅ Zastosowano polskie reguły typograficzne (cudzysłowy „ ”, półpauzy – oraz twarde spacje po spójnikach).');
+  }
+
+  // Real-time Preview & Word Count
+  function updateInpageLivePreview() {
+    const text = (document.getElementById('inp-body') ? document.getElementById('inp-body').value : '');
+    const title = (document.getElementById('inp-title') ? document.getElementById('inp-title').value : '');
+    const cover = (document.getElementById('inp-cover') ? document.getElementById('inp-cover').value.trim() : '');
+
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const min = Math.max(1, Math.ceil(words / 190));
+    const statsEl = document.getElementById('inpage-stats');
+    if (statsEl) {
+      statsEl.textContent = `Liczba słów: ${words} • Szacowany czas czytania: ~${min} min`;
+    }
+
+    const prevEl = document.getElementById('inpage-rendered-preview');
+    if (!prevEl) return;
+
+    let html = '';
+    if (cover) {
+      html += `<div style="margin-bottom: 1.25rem; border-radius: var(--radius-md); overflow: hidden; max-height: 240px;"><img src="${escapeHtmlPost(cover)}" style="width: 100%; height: 240px; object-fit: cover;" onerror="this.style.display='none';"></div>`;
+    }
+    if (title) {
+      html += `<h1 style="font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 1rem;">${escapeHtmlPost(title)}</h1>`;
+    }
+
+    const lines = text.split('\n');
+    let inUl = false;
+
+    lines.forEach(line => {
+      let l = escapeHtmlPost(line);
+      if (l.startsWith('# ')) {
+        if (inUl) { html += '</ul>'; inUl = false; }
+        html += `<h1>${l.substring(2)}</h1>`;
+      } else if (l.startsWith('## ')) {
+        if (inUl) { html += '</ul>'; inUl = false; }
+        html += `<h2>${l.substring(3)}</h2>`;
+      } else if (l.startsWith('### ')) {
+        if (inUl) { html += '</ul>'; inUl = false; }
+        html += `<h3>${l.substring(4)}</h3>`;
+      } else if (l.startsWith('&gt; ')) {
+        if (inUl) { html += '</ul>'; inUl = false; }
+        html += `<blockquote>${l.substring(5)}</blockquote>`;
+      } else if (l.startsWith('- ') || l.startsWith('* ')) {
+        if (!inUl) { html += '<ul>'; inUl = true; }
+        html += `<li>${l.substring(2)}</li>`;
+      } else if (l.trim() === '') {
+        if (inUl) { html += '</ul>'; inUl = false; }
+      } else {
+        if (inUl) { html += '</ul>'; inUl = false; }
+        l = l.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        l = l.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        l = l.replace(/`(.*?)`/g, '<code>$1</code>');
+        html += `<p>${l}</p>`;
+      }
+    });
+
+    if (inUl) html += '</ul>';
+    prevEl.innerHTML = html;
+  }
+
+  function escapeHtmlPost(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // Build Full Markdown with YAML frontmatter
+  function buildInpageMarkdownDocument() {
+    const title = (document.getElementById('inp-title') ? document.getElementById('inp-title').value : '').trim() || (currentPostData ? currentPostData.title : 'Artykuł');
+    const slug = (currentPostData ? currentPostData.slug : 'post');
+    const category = (document.getElementById('inp-category') ? document.getElementById('inp-category').value : 'eseje');
+    const tags = (document.getElementById('inp-tags') ? document.getElementById('inp-tags').value : '');
+    const summary = (document.getElementById('inp-summary') ? document.getElementById('inp-summary').value : '').trim();
+    const cover = (document.getElementById('inp-cover') ? document.getElementById('inp-cover').value : '').trim();
+    const body = (document.getElementById('inp-body') ? document.getElementById('inp-body').value : '').trim();
+    const author = (currentPostData && currentPostData.author ? currentPostData.author : 'Ireneusz Machowiec');
+
+    const doc = `---
+title: "${title.replace(/"/g, '\\"')}"
+slug: "${slug}"
+category: "${category}"
+tags: "${tags.replace(/"/g, '\\"')}"
+cover_image: "${cover}"
+summary: "${summary.replace(/"/g, '\\"')}"
+author: "${author}"
+featured: 0
+---
+
+${body}`;
+
+    return { doc, slug, title, body, summary, cover };
+  }
+
+  // 1. Zapisz / Commit na GitHubie
+  function saveInpageToGitHub() {
+    const { doc, slug } = buildInpageMarkdownDocument();
+    
+    // Kopiuj do schowka
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(doc).catch(() => {});
+    }
+
+    const editUrl = `https://github.com/Ireneusz1991/blog-laika/edit/main/posts/${slug}.md`;
+    alert(`✅ Zaktualizowany artykuł został skopiowany do schowka!\n\nW nowo otwartej karcie GitHuba wklej nową treść i kliknij zielony przycisk "Commit changes", aby opublikować zmiany na blogu.`);
+    window.open(editUrl, '_blank');
+  }
+
+  // 2. Pobierz plik .md
+  function downloadInpageMarkdown() {
+    const { doc, slug } = buildInpageMarkdownDocument();
+    const blob = new Blob([doc], { type: 'text/markdown;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `${slug}.md`;
+    a.click();
+  }
+
+  // 3. Kopiuj pełny Markdown
+  function copyInpageMarkdown() {
+    const { doc } = buildInpageMarkdownDocument();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(doc).then(() => {
+        alert('✅ Pełny artykuł Markdown wraz z metadanymi YAML został skopiowany do schowka!');
+      });
+    }
+  }
+
+  // 4. Podmień na otwartej stronie (DOM Live Preview)
+  function applyInpageToCurrentPage() {
+    const { title, summary, cover } = buildInpageMarkdownDocument();
+    const rendered = document.getElementById('inpage-rendered-preview');
+
+    const titleEl = document.getElementById('article-page-title');
+    if (titleEl) titleEl.textContent = title;
+
+    const leadEl = document.getElementById('article-page-lead');
+    if (leadEl) leadEl.textContent = summary;
+
+    const bodyEl = document.getElementById('article-page-body');
+    if (bodyEl && rendered) {
+      bodyEl.innerHTML = rendered.innerHTML;
+    }
+
+    const coverImg = document.querySelector('#article-page-cover img');
+    if (coverImg && cover) {
+      coverImg.src = cover;
+    }
+
+    closeInPageEditor();
+    
+    // Wyświetl komunikat sukcesu
+    const toast = document.createElement('div');
+    toast.style.cssText = 'position: fixed; bottom: 80px; right: 20px; z-index: 10000; background: #065f46; color: #fff; padding: 0.75rem 1.25rem; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); font-size: 0.88rem;';
+    toast.innerHTML = '✅ Zastosowano zmiany w podglądzie na tej stronie! Możesz przejrzeć artykuł, a następnie kliknąć „Edytuj na stronie”, aby zatwierdzić na GitHubie.';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 5000);
+  }
+</script>
 {% endblock %}

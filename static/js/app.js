@@ -69,6 +69,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // --- Quick Edit Link for Authenticated Author ---
+  try {
+    const isAuth = localStorage.getItem('blog_laika_admin_auth') === 'authenticated' ||
+                   sessionStorage.getItem('blog_laika_admin_auth') === 'authenticated';
+    if (isAuth) {
+      document.querySelectorAll('.admin-quick-edit-link').forEach(el => el.style.display = 'inline-flex');
+    }
+  } catch(e) {}
+
   // --- Responsive Hamburger Menu Toggle ---
   const hamburgerBtn = document.getElementById('hamburger-btn');
   const mobileDrawer = document.getElementById('mobile-nav-drawer');

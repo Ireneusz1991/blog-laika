@@ -1113,10 +1113,13 @@
                 {{ post.created_date }}
               </td>
               <td style="padding: 1rem 1.25rem; text-align: right; white-space: nowrap;">
+                <button type="button" onclick="editPublishedPost('{{ post.slug }}');" class="btn btn-primary" style="padding: 0.3rem 0.65rem; font-size: 0.8rem; margin-right: 0.35rem;">
+                  ✏️ Edytuj
+                </button>
                 <a href="{{ base_url }}/post/{{ post.slug }}/" target="_blank" class="btn btn-secondary" style="padding: 0.3rem 0.65rem; font-size: 0.8rem; margin-right: 0.35rem;">
                   Podgląd ↗
                 </a>
-                <a href="https://github.com/Ireneusz1991/blog-laika/tree/main" target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 0.3rem 0.65rem; font-size: 0.8rem;">
+                <a href="https://github.com/Ireneusz1991/blog-laika/edit/main/posts/{{ post.slug }}.md" target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 0.3rem 0.65rem; font-size: 0.8rem;" title="Edytuj plik posts/{{ post.slug }}.md na GitHubie">
                   GitHub ↗
                 </a>
               </td>
@@ -1424,6 +1427,19 @@
 
   // Render immediately if script executes after DOM is ready
   renderView();
+
+  // Automatic edit loader if ?edit=<slug> query param is present
+  try {
+    const editUrlParams = new URLSearchParams(window.location.search);
+    const editSlugParam = editUrlParams.get('edit');
+    if (editSlugParam) {
+      setTimeout(() => {
+        editPublishedPost(editSlugParam);
+      }, 200);
+    }
+  } catch(err) {
+    console.warn('URL auto-edit error:', err);
+  }
 
   function toggleOnlineEditor() {
     const box = document.getElementById('online-editor-box');
@@ -1734,12 +1750,78 @@ ${body}`;
     return { doc, title, slug };
   }
 
-  // One-Click Travel Publish to GitHub Web Editor
+  let currentEditingSlug = null;
+
+  // One-Click Travel Publish to GitHub Web Editor (handles both new and edited posts)
   function publishViaGitHubWeb() {
     const { doc, slug } = buildFullMarkdownDocument();
     const encodedContent = encodeURIComponent(doc);
-    const targetUrl = `https://github.com/Ireneusz1991/blog-laika/new/main?filename=posts/${slug}.md&value=${encodedContent}`;
-    window.open(targetUrl, '_blank');
+
+    navigator.clipboard.writeText(doc).catch(() => {});
+
+    if (currentEditingSlug) {
+      const targetUrl = `https://github.com/Ireneusz1991/blog-laika/edit/main/posts/${currentEditingSlug}.md`;
+      alert(`✅ Zaktualizowana treść wpisu została skopiowana do schowka!\n\nW nowo otwartej karcie GitHuba wklej nową treść i kliknij zielony przycisk "Commit changes", aby opublikować zmiany na blogu.`);
+      window.open(targetUrl, '_blank');
+    } else {
+      const targetUrl = `https://github.com/Ireneusz1991/blog-laika/new/main?filename=posts/${slug}.md&value=${encodedContent}`;
+      window.open(targetUrl, '_blank');
+    }
+  }
+
+  function editPublishedPost(slug) {
+    const posts = (typeof ALL_PUBLISHED_POSTS !== 'undefined' && Array.isArray(ALL_PUBLISHED_POSTS)) ? ALL_PUBLISHED_POSTS : [];
+    const post = posts.find(p => p.slug === slug);
+    if (!post) {
+      alert('Nie znaleziono wpisu o slug: ' + slug);
+      return;
+    }
+
+    currentEditingSlug = slug;
+
+    const titleInput = document.getElementById('scratch-title');
+    if (titleInput) titleInput.value = post.title || '';
+
+    const slugInput = document.getElementById('scratch-slug');
+    if (slugInput) slugInput.value = post.slug || '';
+    slugManuallyEdited = true;
+
+    const catInput = document.getElementById('scratch-category');
+    if (catInput) {
+      if (post.is_kondensat || post.category === 'kondensat') {
+        catInput.value = 'kondensat';
+      } else {
+        catInput.value = post.category || 'eseje';
+      }
+    }
+
+    const summaryInput = document.getElementById('scratch-summary');
+    if (summaryInput) summaryInput.value = post.summary || '';
+
+    const imgInput = document.getElementById('scratch-image');
+    if (imgInput) imgInput.value = post.cover_image || '';
+
+    const bodyInput = document.getElementById('scratch-body');
+    if (bodyInput) bodyInput.value = post.content_markdown || '';
+
+    const box = document.getElementById('online-editor-box');
+    const headerTitle = box ? box.querySelector('h3') : null;
+    if (headerTitle) {
+      headerTitle.innerHTML = `✏️ Edycja opublikowanego wpisu: <span style="color: var(--accent);">${escapeHtml(post.title)}</span>`;
+    }
+    const headerDesc = box ? box.querySelector('p') : null;
+    if (headerDesc) {
+      headerDesc.innerHTML = `Edytujesz istniejący plik <code>posts/${escapeHtml(slug)}.md</code>. Po naniesieniu poprawek kliknij przycisk zapisu na GitHubie.`;
+    }
+
+    if (box) {
+      box.style.display = 'block';
+      const btnToggle = document.getElementById('btn-toggle-editor');
+      if (btnToggle) btnToggle.textContent = '✕ Zwiń edytor';
+      box.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    updateLivePreview();
   }
 
   function copyScratchMarkdown() {
@@ -1781,6 +1863,9 @@ ${body}`;
       btn.style.fontWeight = '700';
     }
   }
+
+  // All published posts data for immediate in-admin editing
+  const ALL_PUBLISHED_POSTS = {{ posts_json|safe if posts_json else '[]' }};
 
   // Load scraped proposal directly into scratch editor
   const WEEKLY_PROPOSALS = {{ weekly_proposals_json|safe if weekly_proposals_json else 'null' }};

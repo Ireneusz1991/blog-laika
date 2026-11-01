@@ -207,6 +207,7 @@ def build_static(output_dir="dist", base_url=None):
             ap["category_color"] = "#d97706"
         admin_posts.append(ap)
     ctx_admin["posts"] = admin_posts
+    ctx_admin["posts_json"] = json.dumps(admin_posts, ensure_ascii=False).replace("</script>", "<\\/script>")
     ctx_admin["categories"] = [
         {"slug": "technologia", "name": "Technologia", "color": "#2563eb", "icon": "cpu"},
         {"slug": "gospodarka", "name": "Gospodarka", "color": "#059669", "icon": "trending-up"},
@@ -331,6 +332,7 @@ def build_static(output_dir="dist", base_url=None):
         ctx_post["request"] = None
         ctx_post["canonical_url"] = f"{site_domain}{base_url}/post/{p['slug']}/"
         ctx_post["page_url"] = f"{site_domain}{base_url}/post/{p['slug']}/"
+        ctx_post["post_json"] = json.dumps(p, ensure_ascii=False).replace("</script>", "<\\/script>")
         with open(os.path.join(post_dir, "index.html"), "w", encoding="utf-8") as f:
             f.write(post_tmpl.render(**ctx_post))
     print(f"    [OK] Wygenerowano {len(posts)} stron wpisów w /post/<slug>/")

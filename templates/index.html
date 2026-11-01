@@ -73,6 +73,9 @@
             <a href="{{ base_url }}/post/{{ lead_post.slug }}" style="font-size: 0.85rem; color: var(--text-muted); text-decoration: none; font-weight: 600;">
               Otwórz wpis &rarr;
             </a>
+            <a href="{{ base_url }}/admin/?edit={{ lead_post.slug }}" class="admin-quick-edit-link" style="display: none; font-size: 0.85rem; color: var(--accent); text-decoration: underline; font-weight: 600;" title="Edytuj ten esej w Panelu CMS">
+              ✏️ Edytuj
+            </a>
           </div>
         </div>
       </article>
@@ -127,6 +130,9 @@
             </button>
             <a href="{{ base_url }}/post/{{ post.slug }}" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: none;">
               Otwórz wpis &rarr;
+            </a>
+            <a href="{{ base_url }}/admin/?edit={{ post.slug }}" class="admin-quick-edit-link" style="display: none; font-size: 0.8rem; color: var(--accent); text-decoration: underline; font-weight: 600;" title="Edytuj ten esej w Panelu CMS">
+              ✏️ Edytuj
             </a>
           </div>
         </article>
@@ -190,6 +196,9 @@
               </button>
               <a href="{{ base_url }}/post/{{ post.slug }}" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: none;">
                 Otwórz wpis &rarr;
+              </a>
+              <a href="{{ base_url }}/admin/?edit={{ post.slug }}" class="admin-quick-edit-link" style="display: none; font-size: 0.8rem; color: var(--accent); text-decoration: underline; font-weight: 600;" title="Edytuj ten esej w Panelu CMS">
+                ✏️ Edytuj
               </a>
             </div>
           </article>
@@ -309,6 +318,9 @@
               </button>
               <a href="{{ base_url }}/post/{{ post.slug }}" style="text-decoration: none; font-weight: 700; color: var(--accent); font-size: 0.85rem;">
                 Otwórz wpis &rarr;
+              </a>
+              <a href="{{ base_url }}/admin/?edit={{ post.slug }}" class="admin-quick-edit-link" style="display: none; font-size: 0.85rem; color: var(--accent); text-decoration: underline; font-weight: 600;" title="Edytuj ten esej w Panelu CMS">
+                ✏️ Edytuj
               </a>
             </div>
           </div>
