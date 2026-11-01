@@ -150,9 +150,14 @@ def parse_proposals_file(filepath: str) -> list:
         # Convert full draft to HTML for inline reading accordion
         full_draft_html = markdown.markdown(full_draft, extensions=['extra', 'tables', 'fenced_code', 'nl2br'])
 
+        # W panelu admina kierujemy kondensaty jako osobną kategorię 'kondensat'
+        is_kond = "kondensat" in title.lower() or "kondensat" in first_line.lower() or category == "kondensat"
+        admin_cat = "kondensat" if is_kond else category
+
         proposals.append({
             "title": title,
-            "category": category,
+            "category": admin_cat,
+            "is_kondensat": is_kond,
             "search_date": search_date,
             "image_url": image_url,
             "image_concept": image_concept,

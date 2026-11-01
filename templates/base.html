@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
-  <title>{% block title %}{{ blog_title }} — {{ blog_tagline }} | {{ blog_author_name }}{% endblock %}</title>
+  <title>{% block title %}{{ blog_title }} — {{ blog_description }}{% endblock %}</title>
   <meta name="description" content="{% block description %}{{ blog_description }}{% endblock %}">
   <meta name="author" content="{{ blog_author_name }}">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <meta name="keywords" content="sztuczna inteligencja, AI, technologia, gospodarka, geopolityka, blog laika, ireneusz machowiec, publicystyka, transformery, półprzewodniki, stopy procentowe">
+  <meta name="keywords" content="sztuczna inteligencja, AI, technologia, gospodarka, geopolityka, blog laika, publicystyka, transformery, półprzewodniki, stopy procentowe, eseje, historia gospodarcza">
   <link rel="canonical" href="{% block canonical_url %}{{ canonical_url or site_domain ~ base_url ~ '/' }}{% endblock %}">
 
   <!-- Open Graph / Facebook / Messenger / WhatsApp / LinkedIn -->
   <meta property="og:site_name" content="{{ blog_title }}">
   <meta property="og:type" content="{% block og_type %}website{% endblock %}">
-  <meta property="og:title" content="{% block og_title %}{{ blog_title }} — {{ blog_tagline }}{% endblock %}">
+  <meta property="og:title" content="{% block og_title %}{{ blog_title }} — {{ blog_description }}{% endblock %}">
   <meta property="og:description" content="{% block og_description %}{{ blog_description }}{% endblock %}">
   <meta property="og:url" content="{% block og_url %}{{ canonical_url or site_domain ~ base_url ~ '/' }}{% endblock %}">
   <meta property="og:locale" content="pl_PL">
@@ -24,15 +24,15 @@
   <meta property="og:image:width" content="{% block og_image_width %}1200{% endblock %}">
   <meta property="og:image:height" content="{% block og_image_height %}630{% endblock %}">
   <meta property="og:image:type" content="image/jpeg">
-  <meta property="og:image:alt" content="{% block og_image_alt %}{{ blog_title }} — {{ blog_tagline }}{% endblock %}">
+  <meta property="og:image:alt" content="{% block og_image_alt %}{{ blog_title }} — {{ blog_description }}{% endblock %}">
   {% block og_extra %}{% endblock %}
 
   <!-- Twitter / X Cards -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{% block twitter_title %}{{ blog_title }} — {{ blog_tagline }}{% endblock %}">
+  <meta name="twitter:title" content="{% block twitter_title %}{{ blog_title }} — {{ blog_description }}{% endblock %}">
   <meta name="twitter:description" content="{% block twitter_description %}{{ blog_description }}{% endblock %}">
   <meta name="twitter:image" content="{% block twitter_image %}{{ site_domain ~ base_url }}/static/images/og-cover.jpg{% endblock %}">
-  <meta name="twitter:image:alt" content="{% block twitter_image_alt %}{{ blog_title }} — {{ blog_tagline }}{% endblock %}">
+  <meta name="twitter:image:alt" content="{% block twitter_image_alt %}{{ blog_title }} — {{ blog_description }}{% endblock %}">
 
   <!-- Mobile Theme & PWA -->
   <meta name="theme-color" content="#2563eb" media="(prefers-color-scheme: light)">
@@ -66,8 +66,8 @@
         "name": "{{ blog_title }}",
         "description": "{{ blog_description }}",
         "publisher": {
-          "@type": "Person",
-          "name": "{{ blog_author_name }}",
+          "@type": "Organization",
+          "name": "{{ blog_title }}",
           "url": "{{ site_domain ~ base_url }}/"
         },
         "inLanguage": "pl-PL"
