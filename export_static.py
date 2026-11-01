@@ -87,8 +87,15 @@ def build_static(output_dir="dist", base_url=None):
     def enrich_post(p: dict) -> dict:
         if not p:
             return p
-        cat_slug = p.get("category", "")
-        cat_info = CATEGORY_MAP.get(cat_slug, {"name": cat_slug.capitalize(), "color": "#2563eb"})
+        raw_cat = p.get("category", "")
+        is_kond = raw_cat == "kondensat" or "kondensat" in p.get("title", "").lower()
+        p["is_kondensat"] = is_kond
+        
+        # Na publicznej stronie kondensaty należą do 'eseje' (Inne eseje) bez osobnego oznaczenia
+        public_cat = "eseje" if is_kond else raw_cat
+        p["category"] = public_cat
+        
+        cat_info = CATEGORY_MAP.get(public_cat, {"name": "Inne eseje" if is_kond else public_cat.capitalize(), "color": "#7c3aed"})
         p["category_name"] = cat_info["name"]
         p["category_color"] = cat_info["color"]
         p["created_date"] = format_date_pl(p.get("created_at", ""))
@@ -189,7 +196,25 @@ def build_static(output_dir="dist", base_url=None):
 
     # 3b. Panel CMS dla administratora (admin/index.html)
     ctx_admin = get_common_context()
-    ctx_admin["posts"] = posts
+    
+    # W panelu admina kondensaty funkcjonują jako osobna kategoria
+    admin_posts = []
+    for p in posts:
+        ap = dict(p)
+        if ap.get("is_kondensat"):
+            ap["category"] = "kondensat"
+            ap["category_name"] = "⚡ Kondensat"
+            ap["category_color"] = "#d97706"
+        admin_posts.append(ap)
+    ctx_admin["posts"] = admin_posts
+    ctx_admin["categories"] = [
+        {"slug": "technologia", "name": "Technologia", "color": "#2563eb", "icon": "cpu"},
+        {"slug": "gospodarka", "name": "Gospodarka", "color": "#059669", "icon": "trending-up"},
+        {"slug": "historia", "name": "Historia", "color": "#d97706", "icon": "landmark"},
+        {"slug": "polityka", "name": "Polityka", "color": "#dc2626", "icon": "shield"},
+        {"slug": "eseje", "name": "Inne eseje", "color": "#7c3aed", "icon": "book-open"},
+        {"slug": "kondensat", "name": "⚡ Kondensaty", "color": "#d97706", "icon": "zap"}
+    ]
     ctx_admin["canonical_url"] = f"{site_domain}{base_url}/admin/"
 
     # Kopiowanie i ładowanie propozycji tematów (rotacja 7 dni = 4x7 = 28 propozycji)
@@ -240,6 +265,10 @@ def build_static(output_dir="dist", base_url=None):
 
     # 3c. Wewnętrzne statystyki oglądalności i zaangażowania (100% prywatne)
     analytics_data = database.get_internal_analytics()
+    for ps in analytics_data.get("posts", []):
+        if "kondensat" in ps.get("title", "").lower() or ps.get("category") == "kondensat":
+            ps["category"] = "kondensat"
+            ps["category_name"] = "⚡ Kondensat"
     ctx_admin["analytics"] = analytics_data
     ctx_admin["analytics_json"] = json.dumps(analytics_data, ensure_ascii=False)
 

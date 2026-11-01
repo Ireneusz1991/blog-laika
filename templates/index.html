@@ -140,17 +140,12 @@
       <div id="extra-articles-stream" class="extra-articles-stream" style="display: none; margin-top: 1.5rem;">
         <div class="editorial-subgrid-2col">
           {% for post in stream_posts %}
-          <article class="editorial-sub-card" id="post-extra-{{ post.slug }}" style="{% if 'kondensat' in post.title.lower() %}background: linear-gradient(135deg, rgba(217, 119, 6, 0.05), rgba(124, 58, 237, 0.05)); border: 1.5px solid #d97706;{% endif %}">
+          <article class="editorial-sub-card" id="post-extra-{{ post.slug }}">
             {% if post.cover_image %}
             <div style="position: relative; height: 160px; margin: -1.25rem -1.25rem 0.85rem -1.25rem; overflow: hidden; border-radius: 4px 4px 0 0;">
               <a href="{{ base_url }}/post/{{ post.slug }}">
                 <img src="{{ post.cover_image }}" alt="{{ post.title }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
               </a>
-              {% if 'kondensat' in post.title.lower() %}
-              <div style="position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #d97706, #7c3aed); color: #fff; font-size: 0.7rem; font-weight: 800; padding: 2px 7px; border-radius: 4px; text-transform: uppercase;">
-                ⚡ KONDENSAT
-              </div>
-              {% endif %}
             </div>
             {% endif %}
 
