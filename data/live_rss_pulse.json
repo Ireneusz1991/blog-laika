@@ -1,0 +1,237 @@
+{
+  "last_run_iso": "2026-11-01T21:53:06.881806+01:00",
+  "last_run_pl": "1 listopada 2026 r., godz. 21:53:06",
+  "last_run_date": "2026-11-01",
+  "trigger_label": "Inicjalizacja Live RSS Cron",
+  "feeds_checked": 39,
+  "feeds_online": 30,
+  "total_items_scraped": 295,
+  "generated_topics_count": 6,
+  "live_wire": [
+    {
+      "category": "technologia",
+      "source_name": "Crazy Nauka",
+      "source_flag": "🇵🇱",
+      "title": "Licznik Geigera – co tu się liczy?",
+      "link": "https://crazynauka.pl/licznik-geigera-co-tu-sie-liczy/",
+      "summary": "Co potrafi zmierzyć licznik Geigera, co to dla nas oznacza i na co zwrócić uwagę? Tekst jest elementem płatnej współpracy ze sklepem srtech.pl Włączasz licznik. Klik. Po trzech, czterech sekundach następny dźwięk,… Artyk",
+      "is_pl": true
+    },
+    {
+      "category": "technologia",
+      "source_name": "Kwantowo.pl",
+      "source_flag": "🇵🇱",
+      "title": "Najgorsza przyszłość to ta, do której przywykniemy",
+      "link": "https://www.kwantowo.pl/2026/10/24/octavia-butler-najgorsza-przyszlosc/",
+      "summary": "U Octavii Butler cywilizacja nie upada z hukiem. Po prostu któregoś dnia okazuje się, że nie ma już czego ratować.",
+      "is_pl": true
+    },
+    {
+      "category": "technologia",
+      "source_name": "Ars Technica",
+      "source_flag": "🇺🇸",
+      "title": "Seabirds racing home over the ocean can get jet-lagged",
+      "link": "https://arstechnica.com/science/2026/10/seabirds-racing-home-over-the-ocean-can-get-jet-lagged/",
+      "summary": "A long flight home from feeding grounds messes with birds' internal clocks.",
+      "is_pl": false
+    },
+    {
+      "category": "technologia",
+      "source_name": "Hacker News (Y Combinator)",
+      "source_flag": "🇺🇸",
+      "title": "Nurses Sound Alarm as 'Uber for Nursing' Apps Push to Deregulate Healthcare",
+      "link": "https://nurse.org/news/uber-for-nursing-gig-apps-report/",
+      "summary": "Article URL: https://nurse.org/news/uber-for-nursing-gig-apps-report/ Comments URL: https://news.ycombinator.com/item?id=50328487 Points: 112 # Comments: 109",
+      "is_pl": false
+    },
+    {
+      "category": "technologia",
+      "source_name": "LessWrong",
+      "source_flag": "🇺🇸",
+      "title": "A Taxonomy of Agency",
+      "link": "https://www.lesswrong.com/posts/EfvG2LqhvoeuhqGTy/a-taxonomy-of-agency",
+      "summary": "Epistemic status: a rough write-up of a taxonomy of agency I developed during my PIBBSS fellowship this summer. A few people have since asked me to write it up, so this is mainly so I have something to point to; it is ex",
+      "is_pl": false
+    },
+    {
+      "category": "gospodarka",
+      "source_name": "8000 (Osiem tysięcy / osiemtysiecy.pl)",
+      "source_flag": "🇵🇱",
+      "title": "Czy RPP zdecyduje się na zmianę stóp procentowych? Listopadowa decyzja poparta nową projekcją inflacyjną",
+      "link": "https://www.bankier.pl/wiadomosc/Czy-RPP-zdecyduje-sie-na-zmiane-stop-procentowych-Listopadowa-decyzja-poparta-nowa-projekcja-inflacyjna-9221238.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "summary": "Początek listopada przyniesie decyzję Rady Polityki Pieniężnej i tradycyjną konferencję prezesa Adama Glapińskiego, a także wysyp wyników finansowych z warszawskiego parkietu z PKO BP, Orlenem i Dino na czele. Globalne n",
+      "is_pl": true
+    },
+    {
+      "category": "gospodarka",
+      "source_name": "Investing.com",
+      "source_flag": "🌍",
+      "title": "Raymond James obniża cenę docelową akcji Oil States",
+      "link": "https://pl.investing.com/news/analyst-ratings/raymond-james-obniza-cene-docelowa-akcji-oil-states-93CH-1628658",
+      "summary": "",
+      "is_pl": true
+    },
+    {
+      "category": "gospodarka",
+      "source_name": "Noahpinion (Noah Smith)",
+      "source_flag": "🇺🇸",
+      "title": "Farewell, my Captain",
+      "link": "https://www.noahpinion.blog/p/farewell-my-captain",
+      "summary": "A TV character gave us a glimpse of what humanity might become.",
+      "is_pl": false
+    },
+    {
+      "category": "gospodarka",
+      "source_name": "Slow Boring (Matt Yglesias)",
+      "source_flag": "🇺🇸",
+      "title": "Sunday Thread",
+      "link": "https://www.slowboring.com/p/sunday-thread-mailbag-d12",
+      "summary": "Ask your questions below.",
+      "is_pl": false
+    },
+    {
+      "category": "gospodarka",
+      "source_name": "The Financial Times (FT)",
+      "source_flag": "🇬🇧",
+      "title": "Junk debt rout sparks ‘bloodbath’ for credit investors",
+      "link": "https://www.ft.com/content/fdc9a85d-d2c4-465f-99ca-609d68b6d443?syn-25a6b1a6=1",
+      "summary": "Aggressive tactics to shift assets beyond reach of creditors have added fuel to sell-off",
+      "is_pl": false
+    },
+    {
+      "category": "historia",
+      "source_name": "CiekawostkiHistoryczne.pl",
+      "source_flag": "🇵🇱",
+      "title": "Nowe Imperium Rzymskie. Przebudzenie Wschodu. Historia Bizancjum. Tom I",
+      "link": "https://ciekawostkihistoryczne.pl/2026/10/31/nowe-imperium-rzymskie-przebudzenie-wschodu-historia-bizancjum-tom-i/",
+      "summary": "Nowa historia Bizancjum. Nowa historia Rzymu. The post Nowe Imperium Rzymskie. Przebudzenie Wschodu. Historia Bizancjum. Tom I first appeared on CiekawostkiHistoryczne.pl .",
+      "is_pl": true
+    },
+    {
+      "category": "historia",
+      "source_name": "Dzieje.pl (PAP & Muzeum Historii Polski)",
+      "source_flag": "🇵🇱",
+      "title": "We Wszystkich Świętych i Zaduszki zacierała się granica między światem żywych i zmarłych",
+      "link": "https://dzieje.pl/wiadomosci/we-wszystkich-swietych-i-zaduszki-zacierala-sie-granica-miedzy-swiatem-zywych-i-zmarlych",
+      "summary": "Zostawianie jedzenia duszom zmarłych, pieczenie chlebów dla żebraków i gesty pojednania składały się na obchody Wszystkich Świętych i Zaduszek w tradycji ludowej. Według dawnych wierzeń w te dni zacierała się granica mię",
+      "is_pl": true
+    },
+    {
+      "category": "historia",
+      "source_name": "Histmag.org",
+      "source_flag": "🇵🇱",
+      "title": "Znani, którzy odeszli w 2026 roku",
+      "link": "https://histmag.org/Znani-ktorzy-odeszli-w-2026-roku-29515",
+      "summary": "Okres Wszystkich Świętych to czas zadumy i refleksji nad przemijającym życiem i zmieniającym się światem. Wspominamy osoby znane i cenione, które zmarły w 2026 roku.",
+      "is_pl": true
+    },
+    {
+      "category": "historia",
+      "source_name": "Historia.org.pl",
+      "source_flag": "🇵🇱",
+      "title": "Historia Black Friday. Skąd wziął się Czarny Piątek?",
+      "link": "https://historia.org.pl/2026/11/01/historia-black-friday-skad-wzial-sie-czarny-piatek/",
+      "summary": "Dziś Black Friday kojarzy się z promocjami, tłumami w sklepach i polowaniem na okazje. Mało kto zastanawia się jednak, skąd wzięła się sama nazwa. Co ciekawe, jej historia nie zaczęła się od wyprzedaży, a wcześniejsze wy",
+      "is_pl": true
+    },
+    {
+      "category": "historia",
+      "source_name": "Wiek Dwudziesty (Portal Historyczny)",
+      "source_flag": "🇵🇱",
+      "title": "Škoda Spider B5 (1972) i Škoda Spider II (1975): Prototypy stworzone z myślą o torach wyścigowych",
+      "link": "https://wiekdwudziesty.pl/skoda-spider-b5-1972-i-skoda-spider-ii-1975-prototypy-stworzone-z-mysla-o-torach-wyscigowych/",
+      "summary": "W 1972 roku Międzynarodowa Federacja Samochodowa (FIA) połączyła klasy B5 i B6 w jedną klasę B5, przeznaczoną dla samochodów o pojemności silnika do 3000 cm³. W mistrzostwach Czechosłowacji limit pojemności silnika zmien",
+      "is_pl": true
+    },
+    {
+      "category": "polityka",
+      "source_name": "Klub Jagielloński",
+      "source_flag": "🇵🇱",
+      "title": "Kult świętych to bałwochwalstwo? Prawdziwy sens 1 listopada",
+      "link": "https://klubjagiellonski.pl/2026/11/01/kult-swietych-to-balwochwalstwo-prawdziwy-sens-1-listopada/",
+      "summary": "Współczesny „autentyczny człowiek” udaje, że nie naśladuje nikogo. Wydaje się mu, że jest źródłem i przyczyną swoich pragnień. To nieprawda. Mimetyzm jest nieodwołalnie wpisany w ludzką naturę. Zawsze kogoś naśladujemy. ",
+      "is_pl": true
+    },
+    {
+      "category": "polityka",
+      "source_name": "Krytyka Polityczna",
+      "source_flag": "🇵🇱",
+      "title": "Uchodźczynie z Afganistanu: „Nie zamkną nam ust. Ani groźbami, ani nawet kwasem”",
+      "link": "https://krytykapolityczna.pl/swiat/afganistan-uciekly-przed-mezami-i-talibami/",
+      "summary": "Dwie Afganki. Dwa różne doświadczenia przemocy ze strony mężczyzn, którzy nie są zainteresowani wolnością – bo ją mają. Jedna wiara – w siłę kobiet, i jedno przesłanie dla świata: „Przestańcie wspierać talibów”. The post",
+      "is_pl": true
+    },
+    {
+      "category": "polityka",
+      "source_name": "Kultura Liberalna",
+      "source_flag": "🇵🇱",
+      "title": "Trybunał od dawna działał. Ale jako polityczny łup prawicy, a nie jak sąd",
+      "link": "https://kulturaliberalna.pl/2026/10/31/skrzydlowska-kalukin-trybunal-od-dawna-dzialal-ale-jako-polityczny-lup-prawicy-a-nie-jak-sad/",
+      "summary": "To prawda, że trudno będzie odbudować dawną wiarygodność i autorytet Trybunału Konstytucyjnego. Jednak nie z powodu piątkowych wydarzeń. Kryzys trwa od dziesięciu lat. Artykuł Trybunał od dawna działał. Ale jako politycz",
+      "is_pl": true
+    },
+    {
+      "category": "polityka",
+      "source_name": "Nowa Konfederacja",
+      "source_flag": "🇵🇱",
+      "title": "Rosja wraca na salony: Ławrow w Atlancie, Moskwa chce rozmów o Ukrainie bez Europy | Niezbędnik Zagraniczny NK 23–30 października 2026",
+      "link": "https://nowakonfederacja.pl/rosja-wraca-na-salony-lawrow-w-atlancie-moskwa-chce-rozmow-o-ukrainie-bez-europy-niezbednik-zagraniczny-nk-23-30-pazdziernika-2026/",
+      "summary": "Rozmowy ws. Ukrainy bez Europy. Doradca Putina ds. polityki zagranicznej Jurij Uszakow poinformował, że przedstawiciele państw europejskich nie wezmą udziału […] Artykuł Rosja wraca na salony: Ławrow w Atlancie, Moskwa c",
+      "is_pl": true
+    },
+    {
+      "category": "polityka",
+      "source_name": "Ośrodek Studiów Wschodnich (OSW)",
+      "source_flag": "🇵🇱",
+      "title": "Eksport złota z Rosji – Azja zastąpiła Europę",
+      "link": "https://www.osw.waw.pl/pl/publikacje/analizy/2026-10-30/eksport-zlota-z-rosji-azja-zastapila-europe",
+      "summary": "Mimo obowiązującego od połowy 2022 r. w państwach G7, Unii Europejskiej i Szwajcarii zakazu importu rosyjskiego złota, Rosji udaje się znaleźć nabywców. Potwierdzają to niepełne statystyki lustrzane pochodzące od jej par",
+      "is_pl": true
+    },
+    {
+      "category": "eseje",
+      "source_name": "Magazyn Kontakt",
+      "source_flag": "🇵🇱",
+      "title": "Serbscy studenci zwyciężyli! Czy faktycznie odmienią kraj?",
+      "link": "https://magazynkontakt.pl/serbscy-studenci-zwyciezyli-czy-faktycznie-odmienia-kraj/",
+      "summary": "25 października w Serbii stała się rzecz bezprecedensowa. Opozycyjna „lista studentów” pokonała Zjednoczoną Serbię pod przewodnictwem niedawnego prezydenta Aleksandra Vučića, który w praktyce od 2014 roku rządził krajem.",
+      "is_pl": true
+    },
+    {
+      "category": "eseje",
+      "source_name": "Astral Codex Ten (Scott Alexander)",
+      "source_flag": "🇺🇸",
+      "title": "Your Book Review: The History And Adventures Of An Atom",
+      "link": "https://www.astralcodexten.com/p/your-book-review-the-history-and",
+      "summary": "Finalist #14 in the Book Review Contest",
+      "is_pl": false
+    },
+    {
+      "category": "eseje",
+      "source_name": "Persuasion (Yascha Mounk)",
+      "source_flag": "🇺🇸",
+      "title": "Episode 194: D. J. Taylor on J. R. R. Tolkien",
+      "link": "https://www.persuasion.community/p/episode-194-d-j-taylor-on-j-r-r-tolkien",
+      "summary": "Bookstack at Persuasion is delivered to you every other Sunday at 6am EST.",
+      "is_pl": false
+    },
+    {
+      "category": "eseje",
+      "source_name": "The Roots of Progress (Jason Crawford)",
+      "source_flag": "🇺🇸",
+      "title": "Progress in Medicine, the Roots of Progress Institute’s new summer career exploration program, has started",
+      "link": "https://rootsofprogress.org/progress-in-medicine-the-roots-of-progress-institutes-new-summer-career-exploration-program-has-started/",
+      "summary": "30 high school students are learning about the history and future of medicine, biotech, health Starting June 15th, the Roots of Progress team brought together 30 teenagers to learn about Progress in Medicine. These talen",
+      "is_pl": false
+    },
+    {
+      "category": "eseje",
+      "source_name": "Works in Progress Magazine",
+      "source_flag": "🇬🇧",
+      "title": "Join us at Building Abundance: How Britain can flourish in the age of AI",
+      "link": "https://www.worksinprogress.news/p/join-us-at-building-abundance-how",
+      "summary": "A Works in Progress conference on growth, state capacity and AI at the London School of Economics on December 3rd.",
+      "is_pl": false
+    }
+  ]
+}

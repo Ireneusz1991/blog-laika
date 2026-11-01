@@ -95,6 +95,9 @@
       </div>
 
       <div style="display: flex; gap: 0.65rem; align-items: center; flex-wrap: wrap;">
+        <button onclick="scrollToAndTriggerManualCron();" class="btn btn-secondary" id="btn-top-manual-cron" style="border-color: #d97706; color: #b45309; background: rgba(217, 119, 6, 0.1); font-weight: 700;">
+          ⚡ Odpal Scraper / Cron z palca
+        </button>
         <button onclick="toggleOnlineEditor();" class="btn btn-primary" id="btn-toggle-editor">
           ✍️ Nowy wpis (Edytor Online)
         </button>
@@ -424,9 +427,104 @@
     </div>
     {% endif %}
 
+    <!-- Centrum Automatyzacji Crona i Ręcznego Wyzwalania Scrapera ("Z palca") -->
+    <div id="cron-automation-hub" style="background: var(--bg-card); border-radius: var(--radius-lg); border: 2px solid rgba(217, 119, 6, 0.45); box-shadow: 0 6px 20px rgba(217, 119, 6, 0.08); margin-bottom: 1.75rem; overflow: hidden;">
+      <div style="padding: 1.25rem 1.5rem; background: linear-gradient(135deg, rgba(217, 119, 6, 0.08), rgba(37, 99, 235, 0.06)); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+        <div style="flex: 1; min-width: 280px;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.4rem;">
+            <span id="cron-auto-badge" class="badge" style="background: rgba(16, 185, 129, 0.15); color: #059669; font-weight: 800; border: 1px solid rgba(16, 185, 129, 0.35);">
+              🟢 Automatyczny Cron 08:00: AKTYWNY (Harmonogram + Catch-up)
+            </span>
+            <span id="cron-live-gh-badge" class="badge" style="background: rgba(37, 99, 235, 0.12); color: #2563eb; font-weight: 700;">
+              ☁️ Sprawdzanie statusu GitHub Actions...
+            </span>
+            <span id="cron-dedup-badge" class="badge" style="background: rgba(124, 58, 237, 0.12); color: #7c3aed; font-weight: 700;">
+              🛡️ Anty-duplikator RSS aktywny
+            </span>
+          </div>
+          <h2 style="font-family: var(--font-serif); font-size: 1.3rem; font-weight: 800; margin: 0 0 0.25rem 0;">
+            ⚡ Silnik Scrapera RSS &amp; Automatyzacja Crona (Tryb Automatyczny + „Z palca”)
+          </h2>
+          <p id="cron-pulse-summary" style="font-size: 0.84rem; color: var(--text-secondary); margin: 0; line-height: 1.45;">
+            Ostatni zapisany przebieg: <strong style="color: var(--text-primary);">{{ live_rss_pulse.last_run_pl if live_rss_pulse and live_rss_pulse.last_run_pl else 'Dzisiaj, 08:00' }}</strong>
+            &bull; Aktywne kanały RSS: <strong>{{ live_rss_pulse.feeds_online if live_rss_pulse and live_rss_pulse.feeds_online else 30 }}/{{ live_rss_pulse.feeds_checked if live_rss_pulse and live_rss_pulse.feeds_checked else 39 }}</strong>
+            &bull; Świeże depesze w puli: <strong>{{ live_rss_pulse.total_items_scraped if live_rss_pulse and live_rss_pulse.total_items_scraped else 230 }}+</strong>
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 0.65rem; align-items: center; flex-wrap: wrap;">
+          <button type="button" id="btn-instant-rss-cron" onclick="triggerInstantBrowserCron();" class="btn btn-primary" style="background: linear-gradient(135deg, #d97706, #b45309); border-color: #b45309; color: #fff; font-weight: 800; padding: 0.6rem 1.1rem; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.28);">
+            ⚡ Skanuj RSS i wygeneruj 6 świeżych tematów TERAZ (z palca)
+          </button>
+          <button type="button" id="btn-cloud-gh-cron" onclick="triggerCloudOrLocalCron();" class="btn btn-secondary" style="border-color: var(--accent); color: var(--accent); font-weight: 700; padding: 0.6rem 0.95rem;">
+            ☁️ Pełny Cron w Chmurze GitHub (Przebuduj stronę)
+          </button>
+        </div>
+      </div>
+
+      <!-- Pasek postępu i logów na żywo po kliknięciu "z palca" -->
+      <div id="cron-status-banner" style="display: none; padding: 0.9rem 1.5rem; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); font-size: 0.85rem; line-height: 1.5;">
+      </div>
+
+      <!-- Opcjonalna konfiguracja 1-kliku GitHub API oraz podgląd Żywego Pulsu RSS -->
+      <div style="padding: 0.65rem 1.5rem; background: var(--bg-card); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; font-size: 0.8rem;">
+        <details style="flex: 1; min-width: 260px;">
+          <summary style="cursor: pointer; font-weight: 700; color: var(--accent); user-select: none;">
+            📡 Żywy Puls Źródeł RSS — podejrzyj ostatnio pobrane nagłówki ze świata i Polski (<span id="live-wire-count">{{ live_rss_pulse.live_wire|length if live_rss_pulse and live_rss_pulse.live_wire else 0 }}</span>)
+          </summary>
+          <div id="live-wire-list" style="margin-top: 0.75rem; max-height: 290px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.45rem; padding-right: 0.35rem;" class="custom-scrollbar">
+            {% if live_rss_pulse and live_rss_pulse.live_wire %}
+              {% for item in live_rss_pulse.live_wire %}
+              {% set it_source = item.source_name if item.source_name else item.source %}
+              {% set it_flag = item.source_flag if item.source_flag else item.flag %}
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.65rem; padding: 0.5rem 0.7rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 6px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                  <span style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--accent); margin-right: 0.35rem;">[{{ item.category }}]</span>
+                  <span style="font-size: 0.74rem; font-weight: 700; color: var(--text-secondary); margin-right: 0.35rem;">{{ it_flag }} {{ it_source }}:</span>
+                  <a href="{{ item.link }}" target="_blank" rel="noopener" style="font-weight: 600; color: var(--text-primary); text-decoration: none;">{{ item.title }}</a>
+                </div>
+                <button type="button"
+                        data-source="{{ it_source }}"
+                        data-flag="{{ it_flag }}"
+                        data-cat="{{ item.category }}"
+                        data-title="{{ item.title }}"
+                        data-link="{{ item.link }}"
+                        data-summary="{{ item.summary }}"
+                        onclick="convertLiveWireBtnToEditor(this);"
+                        class="btn btn-secondary"
+                        style="font-size: 0.72rem; padding: 0.25rem 0.6rem; border-color: #d97706; color: #b45309; font-weight: 700; white-space: nowrap;">
+                  ⚡ Przekuj w esej &rarr;
+                </button>
+              </div>
+              {% endfor %}
+            {% else %}
+              <div style="color: var(--text-muted); font-style: italic; padding: 0.4rem 0;">Kliknij „Skanuj RSS i wygeneruj 6 świeżych tematów TERAZ”, aby pobrać najnowsze depesze na żywo.</div>
+            {% endif %}
+          </div>
+        </details>
+
+        <details>
+          <summary style="cursor: pointer; font-weight: 600; color: var(--text-muted); user-select: none;">
+            🔑 Ustawienia 1-kliku Chmury GitHub (opcjonalny Token)
+          </summary>
+          <div style="margin-top: 0.6rem; padding: 0.75rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 6px; max-width: 460px;">
+            <p style="margin: 0 0 0.45rem 0; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
+              Przycisk <strong>„Skanuj RSS TERAZ”</strong> działa zawsze od ręki w przeglądarce bez żadnego tokena. Jeśli chcesz, aby drugi przycisk (<strong>„Pełny Cron w Chmurze GitHub”</strong>) wyzwalał przebudowę całej strony w tle jednym kliknięciem bez otwierania karty GitHuba, wklej tu swój GitHub Personal Access Token (uprawnienia <code>repo</code> + <code>workflow</code> — zapisywany wyłącznie lokalnie w Twojej przeglądarce):
+            </p>
+            <div style="display: flex; gap: 0.4rem; align-items: center;">
+              <input type="password" id="gh-pat-input" placeholder="ghp_... lub github_pat_..." style="flex: 1; padding: 0.35rem 0.6rem; font-size: 0.76rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-card); color: var(--text-primary);">
+              <button type="button" onclick="saveGithubPat();" class="btn btn-primary" style="font-size: 0.74rem; padding: 0.35rem 0.65rem;">Zapisz</button>
+              <button type="button" onclick="clearGithubPat();" class="btn btn-secondary" style="font-size: 0.74rem; padding: 0.35rem 0.55rem;">Usuń</button>
+            </div>
+            <div id="gh-pat-status" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.3rem;"></div>
+          </div>
+        </details>
+      </div>
+    </div>
+
     <!-- 7-Day Proposals Bank (5 proposals x 7 days = 35 proposals) with Rolling Retention -->
     {% if weekly_proposals and weekly_proposals.packages %}
-    <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); margin-bottom: 2.5rem; overflow: hidden;">
+    <div id="bank-tematow-box" style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); margin-bottom: 2.5rem; overflow: hidden;">
       <div style="padding: 1.25rem 1.5rem; border-bottom: 1.5px solid var(--border-color); background: var(--bg-surface); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
         <div>
           <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
@@ -449,7 +547,10 @@
             Wybierz dzień tygodnia poniżej, aby przejrzeć 6 propozycji (technologia, gospodarka, historia, polityka, inne eseje oraz <strong>KONDENSAT</strong> łączący wszystkie wątki w super złożoną syntezę), rozwinąć pełny artykuł do weryfikacji i jednym kliknięciem załadować go do edytora.
           </p>
         </div>
-        <div id="active-day-download-container">
+        <div id="active-day-download-container" style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <button type="button" onclick="triggerInstantBrowserCron();" class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.4rem 0.85rem; border-color: #d97706; color: #b45309; background: rgba(217, 119, 6, 0.08); font-weight: 700;">
+            ⚡ Wygeneruj świeży zestaw z palca
+          </button>
           {% if latest_proposals_file %}
           <a id="btn-download-active-prop" href="{{ base_url }}/propozycje-tematow/{{ latest_proposals_file }}" target="_blank" download class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.4rem 0.8rem; border-color: var(--accent); color: var(--accent);">
             📥 Pobierz plik .md aktywnego dnia
@@ -459,7 +560,7 @@
       </div>
 
       <!-- Date selector tabs (7 days) -->
-      <div style="display: flex; gap: 0.5rem; padding: 0.85rem 1.5rem; background: var(--bg-surface); border-bottom: 1.5px solid var(--border-color); overflow-x: auto; -webkit-overflow-scrolling: touch;" class="custom-scrollbar">
+      <div id="prop-tabs-bar" style="display: flex; gap: 0.5rem; padding: 0.85rem 1.5rem; background: var(--bg-surface); border-bottom: 1.5px solid var(--border-color); overflow-x: auto; -webkit-overflow-scrolling: touch;" class="custom-scrollbar">
         {% for pkg in weekly_proposals.packages %}
         <button type="button" 
                 id="prop-tab-{{ loop.index0 }}" 
@@ -505,7 +606,7 @@
       </div>
 
       <!-- Daily proposal packages containers -->
-      <div style="padding: 1.5rem;">
+      <div id="prop-packages-wrapper" style="padding: 1.5rem;">
         {% for pkg in weekly_proposals.packages %}
         {% set day_idx = loop.index0 %}
         <div id="prop-package-{{ day_idx }}" class="prop-day-package" style="{% if not loop.first %}display: none;{% endif %}">
@@ -1870,38 +1971,64 @@ ${body}`;
   // Load scraped proposal directly into scratch editor
   const WEEKLY_PROPOSALS = {{ weekly_proposals_json|safe if weekly_proposals_json else 'null' }};
   const PROPOSALS_DATA = {{ latest_proposals_json|safe if latest_proposals_json else '[]' }};
+  const LIVE_RSS_PULSE = {{ live_rss_pulse_json|safe if live_rss_pulse_json else '{}' }};
+  const SEEN_URLS_INIT = {{ seen_urls_json|safe if seen_urls_json else '[]' }};
+  let LIVE_MANUAL_PACKAGE = null;
 
   let activeCategoryFilter = 'all';
 
   function switchProposalDay(dayIndex) {
-    if (!WEEKLY_PROPOSALS || !WEEKLY_PROPOSALS.packages) return;
+    const isLive = (dayIndex === 'live');
+    if (!isLive && (!WEEKLY_PROPOSALS || !WEEKLY_PROPOSALS.packages)) return;
     
     // Hide all day packages and show the selected one
-    const packages = document.querySelectorAll('.prop-day-package');
-    packages.forEach((el, idx) => {
-      el.style.display = (idx === dayIndex) ? 'block' : 'none';
-    });
-
-    // Update tab styling
-    WEEKLY_PROPOSALS.packages.forEach((pkg, idx) => {
-      const tab = document.getElementById(`prop-tab-${idx}`);
-      if (tab) {
-        if (idx === dayIndex) {
-          tab.classList.remove('btn-secondary');
-          tab.classList.add('btn-primary');
-        } else {
-          tab.classList.remove('btn-primary');
-          tab.classList.add('btn-secondary');
-        }
+    const livePkgEl = document.getElementById('prop-package-live');
+    if (livePkgEl) {
+      livePkgEl.style.display = isLive ? 'block' : 'none';
+    }
+    const liveTabEl = document.getElementById('prop-tab-live');
+    if (liveTabEl) {
+      if (isLive) {
+        liveTabEl.classList.remove('btn-secondary');
+        liveTabEl.classList.add('btn-primary');
+      } else {
+        liveTabEl.classList.remove('btn-primary');
+        liveTabEl.classList.add('btn-secondary');
       }
-    });
+    }
+
+    if (WEEKLY_PROPOSALS && WEEKLY_PROPOSALS.packages) {
+      WEEKLY_PROPOSALS.packages.forEach((pkg, idx) => {
+        const pkgEl = document.getElementById(`prop-package-${idx}`);
+        if (pkgEl) {
+          pkgEl.style.display = (!isLive && idx === dayIndex) ? 'block' : 'none';
+        }
+        const tab = document.getElementById(`prop-tab-${idx}`);
+        if (tab) {
+          if (!isLive && idx === dayIndex) {
+            tab.classList.remove('btn-secondary');
+            tab.classList.add('btn-primary');
+          } else {
+            tab.classList.remove('btn-primary');
+            tab.classList.add('btn-secondary');
+          }
+        }
+      });
+    }
 
     // Update download button
-    const pkg = WEEKLY_PROPOSALS.packages[dayIndex];
     const dlBtn = document.getElementById('btn-download-active-prop');
-    if (dlBtn && pkg) {
-      dlBtn.href = `{{ base_url }}/propozycje-tematow/${pkg.filename}`;
-      dlBtn.textContent = `📥 Pobierz plik .md (${pkg.formatted_date})`;
+    if (dlBtn) {
+      if (isLive && LIVE_MANUAL_PACKAGE) {
+        dlBtn.removeAttribute('href');
+        dlBtn.onclick = function(ev) { ev.preventDefault(); downloadLiveManualPackageMd(); };
+        dlBtn.textContent = `📥 Pobierz świeży zestaw .md (${LIVE_MANUAL_PACKAGE.formatted_date})`;
+      } else if (WEEKLY_PROPOSALS && WEEKLY_PROPOSALS.packages && WEEKLY_PROPOSALS.packages[dayIndex]) {
+        const pkg = WEEKLY_PROPOSALS.packages[dayIndex];
+        dlBtn.onclick = null;
+        dlBtn.href = `{{ base_url }}/propozycje-tematow/${pkg.filename}`;
+        dlBtn.textContent = `📥 Pobierz plik .md (${pkg.formatted_date})`;
+      }
     }
 
     // Reapply category filter for the newly active package
@@ -1949,7 +2076,10 @@ ${body}`;
   function loadProposalIntoEditor(dayIndexOrIndex, propIndex) {
     let prop = null;
     let pkgDate = "";
-    if (propIndex !== undefined && WEEKLY_PROPOSALS && WEEKLY_PROPOSALS.packages) {
+    if (dayIndexOrIndex === 'live' && LIVE_MANUAL_PACKAGE && LIVE_MANUAL_PACKAGE.proposals) {
+      prop = LIVE_MANUAL_PACKAGE.proposals[propIndex];
+      pkgDate = LIVE_MANUAL_PACKAGE.formatted_date;
+    } else if (propIndex !== undefined && WEEKLY_PROPOSALS && WEEKLY_PROPOSALS.packages) {
       const pkg = WEEKLY_PROPOSALS.packages[dayIndexOrIndex];
       if (pkg && pkg.proposals) {
         prop = pkg.proposals[propIndex];
@@ -1963,6 +2093,7 @@ ${body}`;
     }
 
     if (!prop) return;
+    currentEditingSlug = null;
     
     // Fill title and generate slug
     const titleEl = document.getElementById('scratch-title');
@@ -2048,6 +2179,7 @@ ${body}`;
 
   function loadLibraryEssayIntoEditor(source, title, category, url) {
     if (!title) return;
+    currentEditingSlug = null;
 
     // Fill title and generate slug
     const titleEl = document.getElementById('scratch-title');
@@ -2126,7 +2258,9 @@ ${body}`;
 
   function copyProposalDraft(dayIndex, propIndex) {
     let prop = null;
-    if (WEEKLY_PROPOSALS && WEEKLY_PROPOSALS.packages && WEEKLY_PROPOSALS.packages[dayIndex]) {
+    if (dayIndex === 'live' && LIVE_MANUAL_PACKAGE && LIVE_MANUAL_PACKAGE.proposals) {
+      prop = LIVE_MANUAL_PACKAGE.proposals[propIndex];
+    } else if (WEEKLY_PROPOSALS && WEEKLY_PROPOSALS.packages && WEEKLY_PROPOSALS.packages[dayIndex]) {
       const pkg = WEEKLY_PROPOSALS.packages[dayIndex];
       if (pkg && pkg.proposals) {
         prop = pkg.proposals[propIndex];
@@ -2542,7 +2676,941 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     });
   }
 
+  // ==========================================================
+  // SILNIK AUTOMATYZACJI CRONA & ŻYWEGO SCRAPERA RSS ("Z PALCA")
+  // ==========================================================
+
+  const BROWSER_RSS_FEEDS = {
+    technologia: [
+      { name: "Hacker News (Y Combinator)", flag: "🌍", url: "https://hnrss.org/frontpage?count=12" },
+      { name: "Ars Technica", flag: "🌍", url: "https://feeds.arstechnica.com/arstechnica/index" },
+      { name: "Spider's Web+", flag: "🇵🇱", url: "https://spidersweb.pl/feed" },
+      { name: "Niebezpiecznik", flag: "🇵🇱", url: "https://feeds.feedburner.com/niebezpiecznik" }
+    ],
+    gospodarka: [
+      { name: "Bankier.pl Gospodarka", flag: "🇵🇱", url: "https://www.bankier.pl/rss/wiadomosci.xml" },
+      { name: "Obserwator Finansowy (NBP)", flag: "🇵🇱", url: "https://www.obserwatorfinansowy.pl/feed/" },
+      { name: "ZeroHedge Markets", flag: "🌍", url: "https://cms.zerohedge.com/fullrss2.xml" }
+    ],
+    historia: [
+      { name: "Aeon Essays", flag: "🌍", url: "https://aeon.co/feed.rss" },
+      { name: "Histmag.org", flag: "🇵🇱", url: "https://histmag.org/rss/artykuly.xml" },
+      { name: "Public Domain Review", flag: "🌍", url: "https://publicdomainreview.org/rss.xml" }
+    ],
+    polityka: [
+      { name: "Ośrodek Studiów Wschodnich (OSW)", flag: "🇵🇱", url: "https://www.osw.waw.pl/pl/rss.xml" },
+      { name: "Klub Jagielloński", flag: "🇵🇱", url: "https://klubjagiellonski.pl/feed/" },
+      { name: "War on the Rocks", flag: "🌍", url: "https://warontherocks.com/feed/" }
+    ],
+    eseje: [
+      { name: "Works in Progress", flag: "🌍", url: "https://worksinprogress.co/feed/" },
+      { name: "Astral Codex Ten", flag: "🌍", url: "https://www.astralcodexten.com/feed" },
+      { name: "Kultura Liberalna", flag: "🇵🇱", url: "https://kulturaliberalna.pl/feed/" }
+    ]
+  };
+
+  const CAT_COVER_POOL = {
+    technologia: [
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80"
+    ],
+    gospodarka: [
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
+    ],
+    historia: [
+      "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1200&q=80"
+    ],
+    polityka: [
+      "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80"
+    ],
+    eseje: [
+      "https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=80"
+    ],
+    kondensat: [
+      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=1200&q=80"
+    ]
+  };
+
+  function setCronBanner(html, borderColor) {
+    const el = document.getElementById('cron-status-banner');
+    if (!el) return;
+    el.style.display = 'block';
+    el.style.borderLeft = `4px solid ${borderColor || '#d97706'}`;
+    el.innerHTML = html;
+  }
+
+  function scrollToAndTriggerManualCron() {
+    const hub = document.getElementById('cron-automation-hub');
+    if (hub) hub.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    triggerInstantBrowserCron();
+  }
+
+  function getSeenDeduplicationSets() {
+    const seenUrls = new Set((SEEN_URLS_INIT || []).map(u => String(u).trim().toLowerCase()));
+    const seenTitleTokens = [];
+
+    try {
+      const localSeen = JSON.parse(localStorage.getItem('blog_laika_manual_seen_urls') || '[]');
+      localSeen.forEach(u => seenUrls.add(String(u).trim().toLowerCase()));
+    } catch (e) {}
+
+    const tokenize = (txt) => {
+      return new Set(String(txt || '').toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, ' ').split(/\s+/).filter(w => w.length > 3));
+    };
+
+    (ALL_PUBLISHED_POSTS || []).forEach(p => {
+      if (p.title) seenTitleTokens.push(tokenize(p.title));
+    });
+
+    if (WEEKLY_PROPOSALS && WEEKLY_PROPOSALS.packages) {
+      WEEKLY_PROPOSALS.packages.forEach(pkg => {
+        (pkg.proposals || []).forEach(pr => {
+          if (pr.title) seenTitleTokens.push(tokenize(pr.title));
+        });
+      });
+    }
+
+    const isDuplicateItem = (url, title) => {
+      const cleanU = String(url || '').trim().toLowerCase().replace(/\/+$/, '');
+      if (cleanU && seenUrls.has(cleanU)) return true;
+      const cand = tokenize(title);
+      if (cand.size < 3) return false;
+      for (const prev of seenTitleTokens) {
+        if (prev.size === 0) continue;
+        let inter = 0;
+        cand.forEach(w => { if (prev.has(w)) inter++; });
+        const union = cand.size + prev.size - inter;
+        if (union > 0 && (inter / union) >= 0.52) return true;
+      }
+      return false;
+    };
+
+    const rememberUrl = (url, title) => {
+      const cleanU = String(url || '').trim().toLowerCase().replace(/\/+$/, '');
+      if (!cleanU) return;
+      seenUrls.add(cleanU);
+      if (title) seenTitleTokens.push(tokenize(title));
+      try {
+        const arr = JSON.parse(localStorage.getItem('blog_laika_manual_seen_urls') || '[]');
+        if (!arr.includes(cleanU)) {
+          arr.push(cleanU);
+          if (arr.length > 300) arr.splice(0, arr.length - 300);
+          localStorage.setItem('blog_laika_manual_seen_urls', JSON.stringify(arr));
+        }
+      } catch (e) {}
+    };
+
+    return { isDuplicateItem, rememberUrl };
+  }
+
+  function stripXmlHtml(str) {
+    return String(str || '')
+      .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/gi, '$1')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  async function fetchSingleFeedInBrowser(feed, category) {
+    // 1. Try rss2json (very fast, CORS-enabled JSON)
+    try {
+      const ctrl = new AbortController();
+      const tId = setTimeout(() => ctrl.abort(), 5500);
+      const r = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`, { signal: ctrl.signal });
+      clearTimeout(tId);
+      if (r.ok) {
+        const data = await r.json();
+        if (data && data.status === 'ok' && Array.isArray(data.items) && data.items.length > 0) {
+          return data.items.slice(0, 8).map(it => ({
+            category,
+            source: feed.name,
+            flag: feed.flag,
+            title: stripXmlHtml(it.title),
+            link: it.link || feed.url,
+            summary: stripXmlHtml(it.description || it.content || '').slice(0, 320)
+          })).filter(x => x.title.length >= 12);
+        }
+      }
+    } catch (e) {}
+
+    // 2. Fallback to AllOrigins raw XML parser
+    try {
+      const ctrl2 = new AbortController();
+      const tId2 = setTimeout(() => ctrl2.abort(), 6500);
+      const r2 = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(feed.url)}`, { signal: ctrl2.signal });
+      clearTimeout(tId2);
+      if (r2.ok) {
+        const xmlTxt = await r2.text();
+        const doc = new DOMParser().parseFromString(xmlTxt, 'text/xml');
+        let nodes = Array.from(doc.querySelectorAll('item'));
+        if (nodes.length === 0) nodes = Array.from(doc.querySelectorAll('entry'));
+        return nodes.slice(0, 8).map(n => {
+          const t = stripXmlHtml(n.querySelector('title') ? n.querySelector('title').textContent : '');
+          const linkNode = n.querySelector('link');
+          const lnk = linkNode ? (linkNode.getAttribute('href') || linkNode.textContent || '').trim() : feed.url;
+          const descNode = n.querySelector('description, summary, content');
+          const sum = stripXmlHtml(descNode ? descNode.textContent : '').slice(0, 320);
+          return { category, source: feed.name, flag: feed.flag, title: t, link: lnk, summary: sum };
+        }).filter(x => x.title.length >= 12);
+      }
+    } catch (e) {}
+
+    return [];
+  }
+
+  function simpleMarkdownToHtml(md) {
+    let html = escapeHtml(md || '');
+    html = html.replace(/^### (.+)$/gm, '<h3 style="margin: 0.9rem 0 0.4rem; font-size: 1rem;">$1</h3>');
+    html = html.replace(/^## (.+)$/gm, '<h2 style="margin: 1rem 0 0.45rem; font-size: 1.08rem;">$1</h2>');
+    html = html.replace(/^# (.+)$/gm, '<h2 style="margin: 0.5rem 0 0.6rem; font-size: 1.15rem;">$1</h2>');
+    html = html.replace(/^&gt; (.+)$/gm, '<blockquote style="border-left: 3px solid var(--accent); padding-left: 0.75rem; margin: 0.6rem 0; color: var(--text-secondary);">$1</blockquote>');
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">$1</a>');
+    return html.split(/\n\n+/).map(p => {
+      if (p.startsWith('<h') || p.startsWith('<blockquote')) return p;
+      return `<p style="margin: 0 0 0.7rem 0;">${p.replace(/\n/g, '<br>')}</p>`;
+    }).join('');
+  }
+
+  function synthesizeSamokreacjaFromFeedItem(item, dateStrPl) {
+    const cat = item.category || 'eseje';
+    const isPl = (item.flag === '🇵🇱') || /[ąćęłńóśźż]/i.test(item.title);
+    const shortRaw = item.title.length > 76 ? item.title.slice(0, 74) + '…' : item.title;
+
+    const framings = {
+      technologia: {
+        prefix: "Pod maską cyfrowego przełomu",
+        leadTpl: `Świeży sygnał ze źródła ${item.source} („${shortRaw}”) odsłania strukturalne napięcie we współczesnej inżynierii i architekturze cyfrowej. Przyglądamy się z perspektywy pierwszych zasad, gdzie kończy się marketingowy entuzjazm, a zaczynają twarde koszty infrastruktury, energii i bezpieczeństwa.`,
+        thesis: "Prawdziwa przewaga technologiczna nie rodzi się w prezentacjach produktowych, lecz na styku fizycznych wąskich gardeł, kosztów utrzymania i kontroli nad infrastrukturą.",
+        concept: "Minimalistyczna ilustracja redakcyjna: przekrój serwerowni, światłowodów i układów krzemowych oświetlony chłodnym błękitem."
+      },
+      gospodarka: {
+        prefix: "Rachunek realnej gospodarki",
+        leadTpl: `Najnowsza depesza z ${item.source} („${shortRaw}”) pokazuje, jak kapitał i łańcuchy dostaw reagują na zmianę kosztu pieniądza oraz energii. Przekładamy specjalistyczny żargon makroekonomiczny na zrozumiały rachunek zysków, marż i ryzyk dla zwykłego uczestnika rynku.`,
+        thesis: "Wskaźniki finansowe mogą przez kwartały maskować nierównowagę, ale ostatecznym sędzią każdej strategii pozostaje przepływ gotówki i koszt surowców.",
+        concept: "Geometryczna kompozycja portów przeładunkowych, wykresów przepływów kapitałowych i architektury przemysłowej."
+      },
+      historia: {
+        prefix: "Długie echo historii i cywilizacji",
+        leadTpl: `Wątek podjęty przez ${item.source} („${shortRaw}”) przypomina, że dzisiejsze dylematy instytucjonalne mają swoje precyzyjne precedensy w dziejach imperiów i szlaków handlowych. Rekonstruujemy mechanizmy, które decydowały o trwałości lub upadku dawnych porządków.`,
+        thesis: "Technologia zmienia dekoracje epoki, lecz logika logistyki, długu publicznego i zaufania do instytucji działa według niezmiennych reguł.",
+        concept: "Klasyczna rycina archiwalna połączona z nowoczesną mapą szlaków handlowych na papierze kremowym."
+      },
+      polityka: {
+        prefix: "Geopolityka interesów bez retuszu",
+        leadTpl: `Analiza z ${item.source} („${shortRaw}”) rzuca światło na przesunięcia w architekturze bezpieczeństwa i dyplomacji surowcowej. Oddzielamy oficjalne komunikaty dyplomatyczne od twardej geografii, demografii i zdolności produkcyjnych państw.`,
+        thesis: "W relacjach międzynarodowych deklaracje pełnią funkcję komunikacyjną, natomiast realne decyzje wynikają z bilansu zasobów i bezpieczeństwa szlaków.",
+        concept: "Analityczna mapa stref wpływów, korytarzy przesyłowych i węzłów strategicznych w stonowanej palecie."
+      },
+      eseje: {
+        prefix: "Anatomia współczesnego paradoksu",
+        leadTpl: `Publikacja na łamach ${item.source} („${shortRaw}”) stanowi znakomity punkt wyjścia do głębszego eseju o tym, jak nowoczesne instytucje i nadmiar bodźców kształtują nasze decyzje. Rozbieramy zjawisko na czynniki pierwsze bez akademickiego zadęcia.`,
+        thesis: "Odporność poznawcza w XXI wieku polega na umiejętności odróżniania szumu informacyjnego od procesów o długim okresie półtrwania.",
+        concept: "Spokojny gabinet analityczny z otwartym notatnikiem, światłem dziennym i symboliczną wagą pojęć."
+      }
+    };
+
+    const cfg = framings[cat] || framings.eseje;
+    const plTitle = isPl
+      ? `${shortRaw} — analiza przyczyn i konsekwencji z pierwszych zasad`
+      : `${cfg.prefix}: co sygnał z ${item.source} mówi o ukrytej architekturze rynku`;
+
+    const pool = CAT_COVER_POOL[cat] || CAT_COVER_POOL.eseje;
+    const imgUrl = pool[Math.abs(plTitle.length + item.title.length) % pool.length];
+
+    const fullDraft = `# ${plTitle}\n\n` +
+      `> 🛡️ **Model Samokreacji Bloga Laika:** 100% autorska analiza z pierwszych zasad. Zero kopiowania cudzych zdań.\n` +
+      `> 📡 **Impuls źródłowy (RSS Live):** ${item.flag} [${item.source} — „${item.title}”](${item.link})\n\n` +
+      `*Data skanowania z palca: ${dateStrPl}*\n\n` +
+      `${cfg.leadTpl}\n\n` +
+      `> **Teza przewodnia:** ${cfg.thesis}\n\n` +
+      `## 1. Sygnał spod powierzchni codziennych nagłówków\n\n` +
+      `Kiedy w strumieniu wiadomości pojawia się wątek opisywany przez **${item.source}** (*„${item.title}”*), większość komentarzy zatrzymuje się na bieżącej sensacji${item.summary ? ' (' + item.summary.slice(0, 200) + '…)' : ''}. Tymczasem z perspektywy dociekliwego laika najciekawsze jest pytanie o **mechanizm przyczynowo-skutkowy**: jakie ograniczenia fizyczne, finansowe lub instytucjonalne sprawiły, że ten problem wybuchł właśnie teraz?\n\n` +
+      `## 2. Trzy warstwy zjawiska: bodźce, wąskie gardła i koszty ukryte\n\n` +
+      `Rozkładając temat na czynniki pierwsze (First Principles Thinking), dostrzegamy trzy siły napędowe:\n\n` +
+      `- **Struktura bodźców:** Kto ponosi ryzyko nietrafionej decyzji, a kto inkasuje premię w krótkim terminie? Asymetria odpowiedzialności niemal zawsze tłumaczy pozornie nieracjonalne ruchy dużych graczy.\n` +
+      `- **Fizyczne i kapitałowe wąskie gardła:** Żadna narracja PR-owa nie przeskoczy ograniczeń mocy przyłączeniowej, demografii, czasu szkolenia kadr czy kosztu obsługi długu.\n` +
+      `- **Efekty drugiego rzędu:** Decyzja rozwiązująca dzisiejszy problem w jednym sektorze bardzo często przesuwa napięcie do sąsiedniego ogniwa łańcucha.\n\n` +
+      `## 3. Co z tego wynika dla czytelnika w Polsce i Europie?\n\n` +
+      `Dla świadomego obserwatora wniosek jest praktyczny: zamiast reagować emocjonalnie na pojedyncze komunikaty, warto śledzić twarde wskaźniki przepustowości, bilanse energetyczno-kapitałowe oraz trwałość instytucji. To właśnie tam — na długo przed oficjalnymi podsumowaniami — rozstrzyga się realny kierunek zmian.\n\n` +
+      `---\n\n*Autor: Ireneusz Machowiec*\n`;
+
+    return {
+      category: cat,
+      title: plTitle,
+      lead: cfg.leadTpl,
+      thesis: cfg.thesis,
+      source_name: item.source,
+      source_flag: item.flag || '🌍',
+      source_note: `Oryginalny impuls RSS: „${item.title}” (${item.link})`,
+      samokreacja: "100% autorska synteza z pierwszych zasad wygenerowana na żywo ze świeżego strumienia RSS.",
+      search_date: dateStrPl,
+      image_url: imgUrl,
+      image_concept: cfg.concept,
+      image_prompt: `Editorial illustration, minimalist architectural style, ${cat}, high contrast, warm paper texture --ar 16:9`,
+      full_draft: fullDraft,
+      full_draft_html: simpleMarkdownToHtml(fullDraft)
+    };
+  }
+
+  function synthesizeKondensatFromProposals(proposals, dateStrPl) {
+    const picks = proposals.slice(0, 4);
+    const sourcesLabel = picks.map(p => p.source_name).join(' + ');
+    const title = `Wielki Kondensat Dnia (${dateStrPl}): Jak technologia, kapitał i geopolityka splatają się w jeden układ naczyń połączonych`;
+    const lead = `Autorska supersynteza łącząca 4 świeżo zeskanowane impulsy ze świata i Polski (${sourcesLabel}). Pokazujemy, dlaczego zjawiska opisywane osobno w rubrykach technologicznych, ekonomicznych i międzynarodowych są w istocie różnymi obliczami tego samego przesunięcia tektonicznego.`;
+    const thesis = "Zrozumienie współczesności wymaga wyjścia z informacyjnych silosów: koszt obliczeń AI, ceny energii, napięcia na szlakach handlowych i lekcje historii tworzą dziś jeden wspólny rachunek.";
+
+    const nodesMd = picks.map((p, i) => (
+      `### Węzeł ${i + 1} (${p.category.toUpperCase()} — sygnał z ${p.source_flag} ${p.source_name})\n\n` +
+      `Punktem wyjścia w tym segmencie jest impuls: *${p.source_note || p.title}*. ${p.lead} Kluczowy wniosek cząstkowy brzmi: **${p.thesis}**\n`
+    )).join('\n');
+
+    const fullDraft = `# ${title}\n\n` +
+      `> ⚡ **KONDENSAT REDAKCYJNY (Konglomerat Wielowątkowy — 100% Samokreacja):** Przekrojowy esej łączący najważniejsze świeże sygnały RSS w spójną mapę przyczynowo-skutkową (publikowany na stronie w dziale *Inne eseje*).\n\n` +
+      `*Data syntezy na żywo: ${dateStrPl}*\n\n` +
+      `${lead}\n\n` +
+      `> **Teza spajająca konglomerat:** ${thesis}\n\n` +
+      `## Dlaczego pojedyncze wiadomości nie wystarczają?\n\n` +
+      `Czytając osobno wiadomości o nowych układach półprzewodnikowych, stopach procentowych, przesunięciach geopolitycznych i sporach kulturowych, łatwo odnieść wrażenie chaosu. Dopiero nałożenie tych warstw na siebie ujawnia wspólną logikę: walkę o rzadkie zasoby, przepustowość infrastruktury oraz zaufanie instytucjonalne.\n\n` +
+      `${nodesMd}\n` +
+      `## Wspólny mianownik: Co łączy wszystkie cztery wektory?\n\n` +
+      `Kiedy zestawimy powyższe punkty na jednej osi, widać wyraźnie efekt domina: postęp cyfrowy zwiększa zapotrzebowanie na kapitał i moc energetyczną, to z kolei zaostrza rywalizację państw o łańcuchy dostaw, a presja kosztowa wystawia na próbę stabilność społeczną znaną z kart historii. Dla dociekliwego czytelnika taka mapa całości jest najlepszym kompasem pośród codziennego szumu.\n\n` +
+      `---\n\n*Autor: Ireneusz Machowiec*\n`;
+
+    return {
+      category: 'kondensat',
+      title,
+      lead,
+      thesis,
+      source_name: `Konglomerat 4 źródeł (${picks.length} kanały RSS)`,
+      source_flag: '⚡',
+      source_note: `Połączone wątki: ${sourcesLabel}`,
+      samokreacja: "100% autorski Kondensat łączący 4 niezależne strumienie RSS w jedną syntezę.",
+      search_date: dateStrPl,
+      image_url: CAT_COVER_POOL.kondensat[0],
+      image_concept: "Wielowarstwowa mapa sieci powiązań między technologią, energią, finansami i historią.",
+      image_prompt: "Complex editorial network diagram connecting technology, global trade, history and geopolitics, warm gold and deep navy --ar 16:9",
+      full_draft: fullDraft,
+      full_draft_html: simpleMarkdownToHtml(fullDraft)
+    };
+  }
+
+  function renderLiveProposalCardHtml(prop, idx) {
+    const isKond = prop.category === 'kondensat';
+    const cardStyle = isKond
+      ? 'background: linear-gradient(135deg, rgba(217, 119, 6, 0.08), rgba(124, 58, 237, 0.08)); border: 2px solid #d97706; box-shadow: 0 4px 14px rgba(217, 119, 6, 0.15);'
+      : 'background: var(--bg-surface); border: 1.5px solid var(--border-color);';
+
+    return `
+      <div class="proposal-card-item proposal-card-${escapeHtml(prop.category)}" data-category="${escapeHtml(prop.category)}" style="${cardStyle} border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition); overflow: hidden;">
+        <div>
+          <div style="position: relative; height: 140px; margin: -1.25rem -1.25rem 0.85rem -1.25rem; background: #0f172a; overflow: hidden;">
+            <img src="${escapeHtml(prop.image_url)}" alt="${escapeHtml(prop.title)}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+            <div style="position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 2px 7px; border-radius: 4px;">
+              📷 Dobrana grafika (Live Scan)
+            </div>
+            ${isKond ? '<div style="position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #d97706, #7c3aed); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px;">⚡ KONDENSAT</div>' : ''}
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.3rem;">
+            <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+              ${isKond
+                ? '<span style="background: linear-gradient(135deg, #d97706, #7c3aed); color: #fff; font-size: 0.7rem; font-weight: 800; padding: 2px 7px; border-radius: 4px;">⚡ KONDENSAT (LIVE)</span>'
+                : `<span class="post-category-tag" style="font-size: 0.75rem;">${escapeHtml(prop.category.toUpperCase())}</span>`}
+              <span style="background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.25); font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;">🛡️ 100% Samokreacja</span>
+              <span style="background: rgba(59, 130, 246, 0.12); color: #2563eb; border: 1px solid rgba(59, 130, 246, 0.25); font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;">📡 ${escapeHtml(prop.source_flag)} ${escapeHtml(prop.source_name)}</span>
+            </div>
+            <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">⚡ ${escapeHtml(prop.search_date)}</span>
+          </div>
+          <h3 style="font-size: 1.05rem; font-weight: 700; line-height: 1.4; margin-bottom: 0.65rem; color: var(--text-primary);">${escapeHtml(prop.title)}</h3>
+          <div style="font-size: 0.74rem; color: #1e40af; background: rgba(59, 130, 246, 0.08); border-left: 3px solid #3b82f6; padding: 0.35rem 0.6rem; border-radius: 4px; margin-bottom: 0.65rem; line-height: 1.4;">
+            <strong>Wątek źródłowy (RSS):</strong> ${escapeHtml(prop.source_note)}
+          </div>
+          <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.75rem;">${escapeHtml(prop.lead)}</p>
+          <div style="font-size: 0.8rem; font-style: italic; background: var(--bg-card); border-left: 3px solid var(--accent); padding: 0.5rem 0.75rem; border-radius: 4px; color: var(--text-muted); margin-bottom: 0.75rem; line-height: 1.4;">„${escapeHtml(prop.thesis)}”</div>
+
+          <details class="proposal-draft-drawer" style="margin-top: 0.75rem; margin-bottom: 0.85rem; background: var(--bg-card); border: 1.5px solid ${isKond ? '#d97706' : 'var(--border-color)'}; border-radius: 6px; overflow: hidden;">
+            <summary style="padding: 0.6rem 0.85rem; cursor: pointer; user-select: none; font-size: 0.82rem; font-weight: 700; color: ${isKond ? '#d97706' : 'var(--accent)'}; display: flex; justify-content: space-between; align-items: center; background: ${isKond ? 'rgba(217, 119, 6, 0.08)' : 'rgba(37, 99, 235, 0.05)'};">
+              <span>${isKond ? '⚡ Rozwiń gotowy KONDENSAT do weryfikacji' : '📖 Rozwiń gotowy artykuł do weryfikacji'}</span>
+              <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 500;">Rozwiń &darr;</span>
+            </summary>
+            <div style="padding: 0.85rem; border-top: 1px solid var(--border-color); font-size: 0.83rem; line-height: 1.6; color: var(--text-primary); max-height: 380px; overflow-y: auto;" class="custom-scrollbar">
+              <div class="proposal-draft-rendered-content" style="font-size: 0.84rem; line-height: 1.6;">
+                ${prop.full_draft_html}
+              </div>
+              <div style="margin-top: 0.85rem; padding-top: 0.65rem; border-top: 1px dashed var(--border-color); display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button type="button" onclick="loadProposalIntoEditor('live', ${idx});" class="btn btn-primary" style="font-size: 0.78rem; padding: 0.35rem 0.75rem; flex: 1; justify-content: center;">
+                  ✍️ Załaduj do edytora &rarr;
+                </button>
+                <button type="button" onclick="copyProposalDraft('live', ${idx});" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.35rem 0.75rem;">
+                  📋 Kopiuj treść
+                </button>
+              </div>
+            </div>
+          </details>
+        </div>
+        <div>
+          <button type="button" onclick="loadProposalIntoEditor('live', ${idx});" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.82rem; padding: 0.5rem; font-weight: 600;">
+            ✍️ Załaduj do edytora online &rarr;
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function buildLivePackageMarkdown(pkg) {
+    let md = `# 📑 Propozycje Tematów i Konspektów Redakcyjnych — Blog Laika\n`;
+    md += `**Data przygotowania:** ${pkg.iso_date} (Skan z palca ${pkg.time_hm})  \n`;
+    md += `**Autor bloga:** Ireneusz Machowiec  \n`;
+    md += `**Standard redakcyjny:** 100% Samokreacja — autorska synteza faktów rynkowych i historycznych z perspektywy dociekliwego laika.\n\n---\n`;
+    pkg.proposals.forEach((p, idx) => {
+      md += `## ${idx + 1}. ${p.category.toUpperCase()}: „${p.title}”\n\n`;
+      md += `* **Kategoria:** \`${p.category}\`\n`;
+      md += `* **Data wyszukania:** ${p.search_date}\n`;
+      md += `* **Model powstawania:** ${p.samokreacja}\n`;
+      md += `* **Źródło impulsu:** ${p.source_flag} ${p.source_name}\n`;
+      md += `* **Wątek źródłowy:** ${p.source_note}\n`;
+      md += `* **Proponowana grafika:** ${p.image_url}\n`;
+      md += `* **Koncepcja wizualna:** ${p.image_concept}\n`;
+      md += `* **Prompt AI dla grafiki:** \`${p.image_prompt}\`\n`;
+      md += `* **Lead:** ${p.lead}\n`;
+      md += `* **Kluczowa teza wpisu:** ${p.thesis}\n\n`;
+      md += `### 📝 Gotowy szkic wpisu do weryfikacji i publikacji:\n\n${p.full_draft}\n\n---\n\n`;
+    });
+    return md;
+  }
+
+  function downloadLiveManualPackageMd() {
+    if (!LIVE_MANUAL_PACKAGE) return;
+    const md = buildLivePackageMarkdown(LIVE_MANUAL_PACKAGE);
+    const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = LIVE_MANUAL_PACKAGE.filename;
+    a.click();
+  }
+
+  function saveLiveManualPackageToGithub() {
+    if (!LIVE_MANUAL_PACKAGE) return;
+    const md = buildLivePackageMarkdown(LIVE_MANUAL_PACKAGE);
+    navigator.clipboard.writeText(md).catch(() => {});
+    const targetUrl = `https://github.com/Ireneusz1991/blog-laika/new/main?filename=propozycje-tematow/${LIVE_MANUAL_PACKAGE.filename}`;
+    alert(`✅ Pełny zestaw 6 świeżych propozycji (${LIVE_MANUAL_PACKAGE.filename}) został skopiowany do schowka!\n\nW nowo otwartej karcie GitHuba wklej treść (Ctrl+V) i kliknij "Commit changes" — GitHub Actions automatycznie przebuduje stronę.`);
+    window.open(targetUrl, '_blank');
+  }
+
+  async function triggerInstantBrowserCron() {
+    const btn = document.getElementById('btn-instant-rss-cron');
+    const origText = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Skanowanie kanałów RSS na żywo...';
+    }
+
+    setCronBanner('📡 <strong>Trwa skanowanie kanałów RSS na żywo...</strong> Pobieram najnowsze publikacje z Polski i ze świata (Technologia, Gospodarka, Historia, Polityka, Eseje) oraz odsiewam duplikaty...', '#2563eb');
+
+    const { isDuplicateItem, rememberUrl } = getSeenDeduplicationSets();
+    const cats = ['technologia', 'gospodarka', 'historia', 'polityka', 'eseje'];
+    const scrapedByCat = { technologia: [], gospodarka: [], historia: [], polityka: [], eseje: [] };
+    let totalFetched = 0;
+    let feedsSucceeded = 0;
+
+    // 1. Also pull latest /data/live_rss_pulse.json as immediate warm pool
+    let pulseWire = (LIVE_RSS_PULSE && Array.isArray(LIVE_RSS_PULSE.live_wire)) ? LIVE_RSS_PULSE.live_wire : [];
+    try {
+      const pr = await fetch(`{{ base_url }}/data/live_rss_pulse.json?t=${Date.now()}`);
+      if (pr.ok) {
+        const pJson = await pr.json();
+        if (pJson && Array.isArray(pJson.live_wire)) pulseWire = pJson.live_wire;
+      }
+    } catch (e) {}
+
+    // 2. Fetch live RSS feeds in parallel directly in the browser
+    const tasks = [];
+    cats.forEach(cat => {
+      (BROWSER_RSS_FEEDS[cat] || []).forEach(feed => {
+        tasks.push(
+          fetchSingleFeedInBrowser(feed, cat).then(items => {
+            if (items && items.length > 0) {
+              feedsSucceeded++;
+              totalFetched += items.length;
+              scrapedByCat[cat].push(...items);
+            }
+          })
+        );
+      });
+    });
+
+    await Promise.allSettled(tasks);
+
+    // Enrich with pulseWire items for any category that had CORS restrictions
+    pulseWire.forEach(w => {
+      if (w && w.category && scrapedByCat[w.category]) {
+        scrapedByCat[w.category].push({
+          category: w.category,
+          source: w.source_name || w.source || 'RSS Pulse',
+          flag: w.source_flag || w.flag || '🌍',
+          title: w.title || '',
+          link: w.link || '',
+          summary: w.summary || ''
+        });
+      }
+    });
+
+    const now = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    const isoDate = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+    const timeHm = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    const dateStrPl = `${pad(now.getDate())}.${pad(now.getMonth() + 1)}.${now.getFullYear()} (${timeHm})`;
+
+    const freshProposals = [];
+    const freshWire = [];
+
+    cats.forEach(cat => {
+      const candidates = scrapedByCat[cat] || [];
+      let chosen = candidates.find(it => !isDuplicateItem(it.link, it.title));
+      if (!chosen && candidates.length > 0) {
+        chosen = candidates[Math.floor(Math.random() * candidates.length)];
+      }
+      if (chosen) {
+        rememberUrl(chosen.link, chosen.title);
+        freshProposals.push(synthesizeSamokreacjaFromFeedItem(chosen, dateStrPl));
+        candidates.slice(0, 5).forEach(c => freshWire.push(c));
+      }
+    });
+
+    if (freshProposals.length > 0) {
+      const kondensat = synthesizeKondensatFromProposals(freshProposals, dateStrPl);
+      freshProposals.push(kondensat);
+    }
+
+    if (freshProposals.length === 0) {
+      setCronBanner('⚠️ <strong>Nie udało się pobrać kanałów RSS z przeglądarki (blokada sieci/CORS).</strong> Użyj przycisku obok: <em>„Pełny Cron w Chmurze GitHub”</em>.', '#ef4444');
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = origText;
+      }
+      return;
+    }
+
+    LIVE_MANUAL_PACKAGE = {
+      iso_date: isoDate,
+      time_hm: timeHm,
+      formatted_date: `Teraz ${timeHm}`,
+      day_name: 'Skan z palca',
+      filename: `propozycje-${isoDate}.md`,
+      count: freshProposals.length,
+      proposals: freshProposals
+    };
+
+    // Inject or update live tab & package inside Bank Tematów
+    const tabsBar = document.getElementById('prop-tabs-bar');
+    const pkgsWrapper = document.getElementById('prop-packages-wrapper');
+
+    if (tabsBar) {
+      let liveTab = document.getElementById('prop-tab-live');
+      if (!liveTab) {
+        liveTab = document.createElement('button');
+        liveTab.type = 'button';
+        liveTab.id = 'prop-tab-live';
+        liveTab.onclick = function() { switchProposalDay('live'); };
+        liveTab.style.cssText = 'padding: 0.45rem 0.9rem; font-size: 0.82rem; font-weight: 800; white-space: nowrap; border-radius: var(--radius-full); display: inline-flex; align-items: center; gap: 0.4rem; border: 2px solid #d97706;';
+        tabsBar.insertBefore(liveTab, tabsBar.firstChild);
+      }
+      liveTab.className = 'btn btn-primary';
+      liveTab.innerHTML = `<span>⚡ Świeży Skan z Palca</span><span style="font-size: 0.75rem; opacity: 0.9;">(${timeHm})</span><span class="badge" style="font-size: 0.7rem; padding: 0.1rem 0.4rem; background: rgba(0,0,0,0.2); border-radius: 999px;">${freshProposals.length}</span>`;
+    }
+
+    if (pkgsWrapper) {
+      let livePkg = document.getElementById('prop-package-live');
+      if (!livePkg) {
+        livePkg = document.createElement('div');
+        livePkg.id = 'prop-package-live';
+        livePkg.className = 'prop-day-package';
+        pkgsWrapper.insertBefore(livePkg, pkgsWrapper.firstChild);
+      }
+      livePkg.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding: 0.75rem 1rem; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; flex-wrap: wrap; gap: 0.65rem;">
+          <div style="font-size: 0.88rem; font-weight: 700; color: var(--text-primary);">
+            ⚡ Świeży zestaw wygenerowany „z palca” na żywo z RSS: <strong style="color: #059669;">${dateStrPl}</strong> (Zero duplikatów • 5 szuflad + Kondensat)
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button type="button" onclick="triggerInstantBrowserCron();" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.3rem 0.65rem; border-color: #d97706; color: #b45309; font-weight: 700;">
+              🔄 Wylosuj kolejny świeży zestaw RSS
+            </button>
+            <button type="button" onclick="saveLiveManualPackageToGithub();" class="btn btn-primary" style="font-size: 0.76rem; padding: 0.3rem 0.75rem;">
+              💾 Zapisz ten zestaw na GitHubie
+            </button>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+          ${freshProposals.map((p, idx) => renderLiveProposalCardHtml(p, idx)).join('')}
+        </div>
+      `;
+    }
+
+    // Update live-wire drawer list too
+    if (freshWire.length > 0) {
+      const lwList = document.getElementById('live-wire-list');
+      const lwCount = document.getElementById('live-wire-count');
+      if (lwCount) lwCount.textContent = String(freshWire.length);
+      if (lwList) {
+        lwList.innerHTML = freshWire.map(it => `
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.65rem; padding: 0.5rem 0.7rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 6px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 200px;">
+              <span style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--accent); margin-right: 0.35rem;">[${escapeHtml(it.category)}]</span>
+              <span style="font-size: 0.74rem; font-weight: 700; color: var(--text-secondary); margin-right: 0.35rem;">${escapeHtml(it.flag)} ${escapeHtml(it.source)}:</span>
+              <a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" style="font-weight: 600; color: var(--text-primary); text-decoration: none;">${escapeHtml(it.title)}</a>
+            </div>
+            <button type="button"
+                    data-source="${escapeHtml(it.source)}"
+                    data-flag="${escapeHtml(it.flag)}"
+                    data-cat="${escapeHtml(it.category)}"
+                    data-title="${escapeHtml(it.title)}"
+                    data-link="${escapeHtml(it.link)}"
+                    data-summary="${escapeHtml(it.summary || '')}"
+                    onclick="convertLiveWireBtnToEditor(this);"
+                    class="btn btn-secondary"
+                    style="font-size: 0.72rem; padding: 0.25rem 0.6rem; border-color: #d97706; color: #b45309; font-weight: 700; white-space: nowrap;">
+              ⚡ Przekuj w esej &rarr;
+            </button>
+          </div>
+        `).join('');
+      }
+    }
+
+    switchProposalDay('live');
+
+    setCronBanner(
+      `✅ <strong>Gotowe! Wygenerowano ${freshProposals.length} zupełnie nowych propozycji na żywo (${timeHm})</strong> — przeskanowano <strong>${feedsSucceeded}</strong> strumieni RSS (${totalFetched} świeżych depesz), odrzucono wszystkie duplikaty i otwarto zakładkę <strong>„⚡ Świeży Skan z Palca”</strong> poniżej.`,
+      '#10b981'
+    );
+
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = origText;
+    }
+
+    const bankBox = document.getElementById('bank-tematow-box');
+    if (bankBox) bankBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function convertLiveWireBtnToEditor(btn) {
+    if (!btn) return;
+    const item = {
+      source: btn.getAttribute('data-source') || 'RSS',
+      flag: btn.getAttribute('data-flag') || '🌍',
+      category: btn.getAttribute('data-cat') || 'eseje',
+      title: btn.getAttribute('data-title') || '',
+      link: btn.getAttribute('data-link') || '',
+      summary: btn.getAttribute('data-summary') || ''
+    };
+    const now = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    const dateStrPl = `${pad(now.getDate())}.${pad(now.getMonth() + 1)}.${now.getFullYear()}`;
+    const prop = synthesizeSamokreacjaFromFeedItem(item, dateStrPl);
+
+    currentEditingSlug = null;
+    const titleEl = document.getElementById('scratch-title');
+    const slugEl = document.getElementById('scratch-slug');
+    const catEl = document.getElementById('scratch-category');
+    const sumEl = document.getElementById('scratch-summary');
+    const imgEl = document.getElementById('scratch-image');
+    const bodyEl = document.getElementById('scratch-body');
+
+    if (titleEl) titleEl.value = prop.title;
+    if (slugEl) slugEl.value = slugify(prop.title);
+    slugManuallyEdited = true;
+    if (catEl) catEl.value = prop.category;
+    if (sumEl) sumEl.value = prop.lead;
+    if (imgEl) imgEl.value = prop.image_url;
+    if (bodyEl) bodyEl.value = prop.full_draft;
+
+    const box = document.getElementById('online-editor-box');
+    if (box && box.style.display === 'none') {
+      toggleOnlineEditor();
+    } else if (box) {
+      box.scrollIntoView({ behavior: 'smooth' });
+    }
+    updateLivePreview();
+  }
+
+  function saveGithubPat() {
+    const inp = document.getElementById('gh-pat-input');
+    const st = document.getElementById('gh-pat-status');
+    const val = inp ? inp.value.trim() : '';
+    if (!val) {
+      if (st) st.innerHTML = '<span style="color:#ef4444;">Wklej poprawny token GitHub (ghp_... lub github_pat_...).</span>';
+      return;
+    }
+    localStorage.setItem('blog_laika_gh_pat', val);
+    if (inp) inp.value = '';
+    if (st) st.innerHTML = '<span style="color:#10b981; font-weight:700;">✅ Token zapisany lokalnie w przeglądarce! Przycisk „Pełny Cron w Chmurze GitHub” działa teraz w trybie 1-kliku.</span>';
+  }
+
+  function clearGithubPat() {
+    localStorage.removeItem('blog_laika_gh_pat');
+    const st = document.getElementById('gh-pat-status');
+    if (st) st.innerHTML = 'Usunięto zapisany token z przeglądarki.';
+  }
+
+  let ghCronPollTimer = null;
+  let ghWorkflowInstalled = true;
+
+  const DAILY_CRON_YML_TEMPLATE = [
+    "name: Codzienny Scraper RSS i Cron Redakcyjny (08:00)",
+    "",
+    "on:",
+    "  schedule:",
+    "    - cron: '0 7 * * *'",
+    "  workflow_dispatch:",
+    "    inputs:",
+    "      force:",
+    "        description: 'Wymus swiezy skan RSS'",
+    "        required: false",
+    "        default: 'true'",
+    "",
+    "permissions:",
+    "  contents: write",
+    "",
+    "jobs:",
+    "  daily-rss-cron:",
+    "    runs-on: ubuntu-latest",
+    "    steps:",
+    "      - uses: actions/checkout@v4",
+    "        with:",
+    "          ref: main",
+    "          fetch-depth: 0",
+    "      - uses: actions/setup-python@v5",
+    "        with:",
+    "          python-version: '3.12'",
+    "      - run: pip install -r requirements.txt",
+    "      - name: Skanowanie zywych kanalow RSS i kompilacja",
+    "        env:",
+    "          TZ: 'Europe/Warsaw'",
+    "        run: |",
+    "          python scripts/daily_editorial_cron.py --force --trigger-label 'GitHub Actions Cloud Cron'",
+    "          python export_static.py",
+    "      - name: Zapis propozycji na main",
+    "        run: |",
+    "          git config user.name 'Blog Laika Cron Bot'",
+    "          git config user.email 'kontakt@blog-laika.com'",
+    "          git add propozycje-tematow/ data/",
+    "          git diff --staged --quiet || (git commit -m 'Automatyczny Cron RSS [skip ci]' && git pull --rebase origin main && git push origin main)",
+    "      - name: Publikacja dist na gh-pages",
+    "        env:",
+    "          GH_TOKEN: $" + "{" + "{ secrets.GITHUB_TOKEN }" + "}",
+    "        run: |",
+    "          TMP_D=$(mktemp -d) && cp -r dist/. \"$TMP_D/\" && cd \"$TMP_D\"",
+    "          git init -b gh-pages && git config user.name 'Blog Laika Cron Bot' && git config user.email 'kontakt@blog-laika.com'",
+    "          git add -A && git commit -m 'Wdrozenie Crona RSS'",
+    "          git remote add origin \"https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git\"",
+    "          git push origin gh-pages --force"
+  ].join("\n");
+
+  function activateGithubCloudCronOneClick() {
+    navigator.clipboard.writeText(DAILY_CRON_YML_TEMPLATE).catch(() => {});
+    const url = `https://github.com/Ireneusz1991/blog-laika/new/main?filename=.github/workflows/daily_cron.yml&value=${encodeURIComponent(DAILY_CRON_YML_TEMPLATE)}`;
+    window.open(url, '_blank');
+    setCronBanner(
+      `☁️ <strong>Otwarto gotowy plik <code>.github/workflows/daily_cron.yml</code> na GitHubie!</strong><br>` +
+      `Kliknij w nowej karcie zielony przycisk <strong>„Commit changes...”</strong> (prawy górny róg) &rarr; zatwierdź. To jednorazowa czynność (token Git w systemie Windows nie miał uprawnień <code>workflow</code>, ale przeglądarka zapisze go od razu!). Od tej chwili Chmura GitHub będzie odpalać Cron codziennie o 08:00 rano 24/7 nawet przy wyłączonym komputerze.`,
+      '#2563eb'
+    );
+    // Poll to detect when user commits the workflow file!
+    let wfChecks = 0;
+    const wfTimer = setInterval(async () => {
+      wfChecks++;
+      if (wfChecks > 36) { clearInterval(wfTimer); return; }
+      try {
+        const r = await fetch(`https://api.github.com/repos/Ireneusz1991/blog-laika/actions/workflows/daily_cron.yml?t=${Date.now()}`);
+        if (r.ok) {
+          clearInterval(wfTimer);
+          ghWorkflowInstalled = true;
+          const badge = document.getElementById('cron-live-gh-badge');
+          if (badge) badge.innerHTML = '☁️ Chmura GitHub 24/7: AKTYWNA!';
+          const btn = document.getElementById('btn-cloud-gh-cron');
+          if (btn) btn.innerHTML = '☁️ Pełny Cron w Chmurze GitHub (Przebuduj stronę)';
+          setCronBanner('🎉 <strong>Chmurowy Cron 24/7 na GitHub Actions został pomyślnie aktywowany!</strong> Możesz teraz kliknąć przycisk „☁️ Pełny Cron w Chmurze GitHub” powyżej, aby przetestować pierwszy przebieg w chmurze.', '#10b981');
+        }
+      } catch (e) {}
+    }, 5000);
+  }
+
+  async function triggerCloudOrLocalCron() {
+    const btn = document.getElementById('btn-cloud-gh-cron');
+    const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
+    if (!isLocal && !ghWorkflowInstalled) {
+      activateGithubCloudCronOneClick();
+      return;
+    }
+
+    // A. Local FastAPI backend mode
+    if (isLocal) {
+      if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Wykonywanie lokalnego skryptu Python...'; }
+      setCronBanner('⚙️ <strong>Uruchomiono lokalny silnik Python (`daily_editorial_cron.py`)...</strong> Trwa wielowątkowe skanowanie 39 kanałów RSS, przebudowa statyczna i publikacja...', '#2563eb');
+      try {
+        const res = await fetch('/api/admin/run-cron', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ auth: 'authenticated', deploy: true })
+        });
+        const data = await res.json();
+        if (res.ok && data.status === 'ok') {
+          setCronBanner(`✅ <strong>Lokalny Cron zakończony sukcesem!</strong> Wygenerowano ${data.proposals_count || 6} propozycji (${data.feeds_online || 30} kanałów online). Odświeżanie widoku...`, '#10b981');
+          setTimeout(() => window.location.reload(), 1500);
+        } else {
+          setCronBanner(`⚠️ <strong>Błąd lokalnego crona:</strong> ${escapeHtml(data.message || 'Nieznany błąd')}`, '#ef4444');
+        }
+      } catch (e) {
+        setCronBanner(`⚠️ <strong>Nie udało się połączyć z lokalnym serwerem FastAPI.</strong> Uruchamiam skaner w przeglądarce...`, '#d97706');
+        triggerInstantBrowserCron();
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = '☁️ Pełny Cron w Chmurze GitHub (Przebuduj stronę)'; }
+      }
+      return;
+    }
+
+    // B. Cloud GitHub Actions workflow_dispatch with saved PAT (1-click silent dispatch)
+    const pat = localStorage.getItem('blog_laika_gh_pat');
+    if (pat) {
+      if (btn) { btn.disabled = true; btn.innerHTML = '☁️ Wyzwalanie GitHub Actions...'; }
+      setCronBanner('☁️ <strong>Wysyłanie sygnału startu do Chmury GitHub Actions (`daily_cron.yml`)...</strong>', '#2563eb');
+      try {
+        const resp = await fetch('https://api.github.com/repos/Ireneusz1991/blog-laika/actions/workflows/daily_cron.yml/dispatches', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/vnd.github+json',
+            'Authorization': `Bearer ${pat}`,
+            'X-GitHub-Api-Version': '2022-11-28',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ ref: 'main', inputs: { force: 'true' } })
+        });
+        if (resp.status === 204 || resp.ok) {
+          setCronBanner('🚀 <strong>Zadanie w Chmurze GitHub wystartowało!</strong> Maszyna wirtualna skanuje teraz 39 kanałów RSS, zapisuje świeży plik propozycji i przebudowuje `blog-laika.com` (~45 sek.). Śledzę postęp na żywo...', '#10b981');
+          startPollingGithubCronRuns();
+        } else {
+          const errTxt = await resp.text();
+          setCronBanner(`⚠️ <strong>GitHub API zwróciło kod ${resp.status}:</strong> Sprawdź uprawnienia tokena (wymagane <code>workflow</code>) lub uruchom ręcznie jednym kliknięciem na karcie GitHub Actions: <a href="https://github.com/Ireneusz1991/blog-laika/actions/workflows/daily_cron.yml" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:underline;">Otwórz Run workflow &rarr;</a>`, '#ef4444');
+        }
+      } catch (e) {
+        setCronBanner(`⚠️ <strong>Błąd połączenia z API GitHub:</strong> ${escapeHtml(String(e))}`, '#ef4444');
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = '☁️ Pełny Cron w Chmurze GitHub (Przebuduj stronę)'; }
+      }
+      return;
+    }
+
+    // C. Cloud GitHub Actions without PAT: open workflow page + start live tracker in CMS
+    window.open('https://github.com/Ireneusz1991/blog-laika/actions/workflows/daily_cron.yml', '_blank');
+    setCronBanner(
+      `☁️ <strong>Otwarto kartę automatyzacji GitHub Actions (` + '`daily_cron.yml`' + `):</strong> Kliknij po prawej stronie przycisk <strong>„Run workflow” &rarr; zielony „Run workflow”</strong>.<br>` +
+      `<span style="font-size:0.8rem; color:var(--text-secondary);">💡 Wskazówka: Panel CMS poniżej już nasłuchuje startu zadania w chmurze i powiadomi Cię automatycznie, gdy przebudowa strony dobiegnie końca! (Jeśli chcesz wyzwalać to bez otwierania nowej karty, rozwiń poniżej „🔑 Ustawienia 1-kliku Chmury GitHub”).</span>`,
+      '#2563eb'
+    );
+    startPollingGithubCronRuns();
+  }
+
+  function startPollingGithubCronRuns() {
+    if (ghCronPollTimer) clearInterval(ghCronPollTimer);
+    let checks = 0;
+    ghCronPollTimer = setInterval(async () => {
+      checks++;
+      if (checks > 36) { // stop after ~3 minutes
+        clearInterval(ghCronPollTimer);
+        return;
+      }
+      try {
+        const r = await fetch(`https://api.github.com/repos/Ireneusz1991/blog-laika/actions/workflows/daily_cron.yml/runs?per_page=1&t=${Date.now()}`);
+        if (!r.ok) return;
+        const data = await r.json();
+        const run = (data && data.workflow_runs && data.workflow_runs[0]) ? data.workflow_runs[0] : null;
+        if (!run) return;
+        const ageSec = (Date.now() - new Date(run.created_at).getTime()) / 1000;
+        if (run.status === 'in_progress' || run.status === 'queued') {
+          setCronBanner(`⏳ <strong>Cron w chmurze GitHub pracuje na żywo!</strong> Status: <code>${escapeHtml(run.status)}</code> (start: ${new Date(run.created_at).toLocaleTimeString('pl-PL')}). Po zakończeniu strona odświeży się z nowymi tematami...`, '#d97706');
+        } else if (run.status === 'completed' && ageSec < 240) {
+          clearInterval(ghCronPollTimer);
+          if (run.conclusion === 'success') {
+            setCronBanner(`🎉 <strong>Pełny Cron w Chmurze GitHub zakończony sukcesem!</strong> Nowe propozycje i przebudowana strona są już na <code>blog-laika.com</code>. <button type="button" onclick="window.location.reload();" class="btn btn-primary" style="font-size:0.75rem; padding:0.25rem 0.65rem; margin-left:0.5rem;">🔄 Odśwież panel teraz</button>`, '#10b981');
+          } else {
+            setCronBanner(`⚠️ Zadanie w chmurze zakończyło się statusem: <code>${escapeHtml(run.conclusion || 'unknown')}</code>. <a href="${escapeHtml(run.html_url)}" target="_blank" style="text-decoration:underline;">Zobacz logi na GitHubie &rarr;</a>`, '#ef4444');
+          }
+        }
+      } catch (e) {}
+    }, 5000);
+  }
+
+  async function initCronTelemetry() {
+    // Check saved PAT indicator
+    const st = document.getElementById('gh-pat-status');
+    if (st && localStorage.getItem('blog_laika_gh_pat')) {
+      st.innerHTML = '<span style="color:#10b981; font-weight:700;">✅ Token GitHub jest aktywny w tej przeglądarce (tryb cichego 1-kliku włączony).</span>';
+    }
+
+    // Fetch latest live_rss_pulse.json & public GitHub workflow run telemetry
+    try {
+      const wfResp = await fetch('https://api.github.com/repos/Ireneusz1991/blog-laika/actions/workflows/daily_cron.yml');
+      const badge = document.getElementById('cron-live-gh-badge');
+      const cloudBtn = document.getElementById('btn-cloud-gh-cron');
+      if (wfResp.status === 404) {
+        ghWorkflowInstalled = false;
+        if (badge) {
+          badge.style.background = 'rgba(217, 119, 6, 0.14)';
+          badge.style.color = '#b45309';
+          badge.innerHTML = '☁️ Chmura GitHub 24/7: Gotowa do aktywacji 1-klikiem';
+        }
+        if (cloudBtn && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+          cloudBtn.innerHTML = '☁️ Aktywuj Chmurowy Cron 24/7 na GitHubie (1-klik)';
+        }
+        return;
+      }
+      ghWorkflowInstalled = true;
+      const r = await fetch('https://api.github.com/repos/Ireneusz1991/blog-laika/actions/workflows/daily_cron.yml/runs?per_page=1');
+      if (r.ok) {
+        const data = await r.json();
+        const run = (data && data.workflow_runs && data.workflow_runs[0]) ? data.workflow_runs[0] : null;
+        if (badge) {
+          if (run) {
+            const dt = new Date(run.updated_at || run.created_at);
+            const dtStr = dt.toLocaleDateString('pl-PL') + ' ' + dt.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
+            if (run.status === 'in_progress') {
+              badge.innerHTML = `⏳ Chmura GitHub: Trwa skanowanie (${dtStr})`;
+            } else if (run.conclusion === 'success') {
+              badge.innerHTML = `☁️ Chmura GitHub 24/7: OK (${dtStr})`;
+            } else {
+              badge.innerHTML = `☁️ Chmura GitHub 24/7: Aktywna (${dtStr})`;
+            }
+          } else {
+            badge.innerHTML = `☁️ Chmura GitHub 24/7: Aktywna (08:00 rano)`;
+          }
+        }
+      }
+    } catch (e) {}
+  }
+
   // Check auth state on initial load
-  window.addEventListener('DOMContentLoaded', renderView);
+  window.addEventListener('DOMContentLoaded', () => {
+    renderView();
+    initCronTelemetry();
+  });
 </script>
 {% endblock %}

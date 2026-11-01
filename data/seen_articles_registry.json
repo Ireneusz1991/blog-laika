@@ -481,8 +481,70 @@
       "category": "eseje",
       "title": "Wielowątkowa Synteza Analityczna: „Kondensat IX: Cyfrowy Lewiatan i Prawo Własności — dlaczego w epoce chmury, subskrypcji i AI przestajemy być właścicielami czegokolwiek",
       "url": ""
+    },
+    {
+      "date": "2026-11-01",
+      "category": "technologia",
+      "title": "Pod maską przełomu: Licznik Geigera",
+      "url": "https://crazynauka.pl/licznik-geigera-co-tu-sie-liczy/"
+    },
+    {
+      "date": "2026-11-01",
+      "category": "gospodarka",
+      "title": "Czy RPP zdecyduje się na zmianę stóp procentowych? Listopadowa decyzja poparta nową projekcją inflacyjną — chłodny bilans z perspektywy dociekliwego laika",
+      "url": "https://www.bankier.pl/wiadomosc/Czy-RPP-zdecyduje-sie-na-zmiane-stop-procentowych-Listopadowa-decyzja-poparta-nowa-projekcja-inflacyjna-9221238.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci"
+    },
+    {
+      "date": "2026-11-01",
+      "category": "historia",
+      "title": "Mechanizmy dziejów: Nowe Imperium Rzymskie. Przebudzenie Wschodu. Historia Bizancjum. Tom I",
+      "url": "https://ciekawostkihistoryczne.pl/2026/10/31/nowe-imperium-rzymskie-przebudzenie-wschodu-historia-bizancjum-tom-i/"
+    },
+    {
+      "date": "2026-11-01",
+      "category": "polityka",
+      "title": "Kult świętych to bałwochwalstwo? Prawdziwy sens 1 listopada — chłodny bilans z perspektywy dociekliwego laika",
+      "url": "https://klubjagiellonski.pl/2026/11/01/kult-swietych-to-balwochwalstwo-prawdziwy-sens-1-listopada/"
+    },
+    {
+      "date": "2026-11-01",
+      "category": "eseje",
+      "title": "Serbscy studenci zwyciężyli! Czy faktycznie odmienią kraj? — chłodny bilans z perspektywy dociekliwego laika",
+      "url": "https://magazynkontakt.pl/serbscy-studenci-zwyciezyli-czy-faktycznie-odmienia-kraj/"
+    },
+    {
+      "date": "2026-11-01",
+      "category": "kondensat",
+      "title": "Kondensat (1 listopada 2026 r., wydanie 21:53): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów",
+      "url": ""
     }
   ],
-  "seen_rss_urls": {},
-  "last_updated": "2026-11-01T13:06:55.440577"
+  "seen_rss_urls": {
+    "https://crazynauka.pl/licznik-geigera-co-tu-sie-liczy/": {
+      "title": "Pod maską przełomu: Licznik Geigera",
+      "seen_date": "2026-11-01",
+      "category": "technologia"
+    },
+    "https://www.bankier.pl/wiadomosc/Czy-RPP-zdecyduje-sie-na-zmiane-stop-procentowych-Listopadowa-decyzja-poparta-nowa-projekcja-inflacyjna-9221238.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci": {
+      "title": "Czy RPP zdecyduje się na zmianę stóp procentowych? Listopadowa decyzja poparta nową projekcją inflacyjną — chłodny bilans z perspektywy dociekliwego laika",
+      "seen_date": "2026-11-01",
+      "category": "gospodarka"
+    },
+    "https://ciekawostkihistoryczne.pl/2026/10/31/nowe-imperium-rzymskie-przebudzenie-wschodu-historia-bizancjum-tom-i/": {
+      "title": "Mechanizmy dziejów: Nowe Imperium Rzymskie. Przebudzenie Wschodu. Historia Bizancjum. Tom I",
+      "seen_date": "2026-11-01",
+      "category": "historia"
+    },
+    "https://klubjagiellonski.pl/2026/11/01/kult-swietych-to-balwochwalstwo-prawdziwy-sens-1-listopada/": {
+      "title": "Kult świętych to bałwochwalstwo? Prawdziwy sens 1 listopada — chłodny bilans z perspektywy dociekliwego laika",
+      "seen_date": "2026-11-01",
+      "category": "polityka"
+    },
+    "https://magazynkontakt.pl/serbscy-studenci-zwyciezyli-czy-faktycznie-odmienia-kraj/": {
+      "title": "Serbscy studenci zwyciężyli! Czy faktycznie odmienią kraj? — chłodny bilans z perspektywy dociekliwego laika",
+      "seen_date": "2026-11-01",
+      "category": "eseje"
+    }
+  },
+  "last_updated": "2026-11-01T21:53:15.410761"
 }

@@ -12,6 +12,11 @@
     </div>
 
     <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+      <form action="/admin/uruchom-cron" method="post" style="display: inline;" onsubmit="const b=this.querySelector('button'); b.disabled=true; b.innerHTML='⏳ Skanowanie RSS i budowanie...'; return true;">
+        <button type="submit" class="btn btn-secondary" style="border-color: #d97706; color: #b45309; background: rgba(217, 119, 6, 0.08); font-weight: 700;">
+          ⚡ Uruchom Scraper / Cron z palca
+        </button>
+      </form>
       <form action="/admin/publikuj-github" method="post" style="display: inline;" onsubmit="return confirm('Czy chcesz skompilować bloga i wysłać najnowsze zmiany na GitHub Pages?');">
         <button type="submit" class="btn btn-secondary" style="border-color: var(--accent); color: var(--accent);">
           ☁️ Opublikuj na GitHub Pages
@@ -27,11 +32,24 @@
     </div>
   </div>
 
-  {% if msg == 'sukces_github' %}
+  {% if msg == 'sukces_cron' %}
+  <div style="background: #dcfce7; border: 1px solid #86efac; color: #166534; padding: 1rem 1.25rem; border-radius: var(--radius-md); margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <strong>⚡ Scraper i Cron wykonany pomyślnie!</strong> Świeże propozycje z kanałów RSS (5 szuflad + Kondensat) zostały wygenerowane i opublikowane.
+      <a href="https://blog-laika.com/admin/" target="_blank" style="color: #15803d; font-weight: 700; margin-left: 0.5rem; text-decoration: underline;">
+        Otwórz CMS online &rarr;
+      </a>
+    </div>
+  </div>
+  {% elif msg == 'blad_cron' %}
+  <div style="background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 1rem 1.25rem; border-radius: var(--radius-md); margin-bottom: 2rem;">
+    <strong>Uwaga:</strong> Wystąpił problem podczas ręcznego uruchamiania scrapera / crona. Sprawdź logi konsoli lub połączenie z siecią.
+  </div>
+  {% elif msg == 'sukces_github' %}
   <div style="background: #dcfce7; border: 1px solid #86efac; color: #166534; padding: 1rem 1.25rem; border-radius: var(--radius-md); margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
     <div>
       <strong>Sukces!</strong> Strona została zaktualizowana i opublikowana na GitHub Pages!
-      <a href="https://ireneusz1991.github.io/blog-laika/" target="_blank" style="color: #15803d; font-weight: 700; margin-left: 0.5rem; text-decoration: underline;">
+      <a href="https://blog-laika.com/" target="_blank" style="color: #15803d; font-weight: 700; margin-left: 0.5rem; text-decoration: underline;">
         Zobacz na żywo &rarr;
       </a>
     </div>

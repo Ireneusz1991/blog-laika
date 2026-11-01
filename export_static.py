@@ -297,6 +297,31 @@ def build_static(output_dir="dist", base_url=None):
         "posts_audited": len(audit_data)
     }
 
+    # 3e. Żywy puls RSS i telemetria ostatniego uruchomienia Crona
+    pulse_file = os.path.join(root_dir, "data", "live_rss_pulse.json")
+    dist_pulse_file = os.path.join(output_dir, "data", "live_rss_pulse.json")
+    pulse_data = {}
+    if os.path.exists(pulse_file):
+        try:
+            with open(pulse_file, "r", encoding="utf-8") as pf:
+                pulse_data = json.load(pf)
+            shutil.copy2(pulse_file, dist_pulse_file)
+        except Exception as e:
+            print(f"    [!] Błąd odczytu/kopiowania live_rss_pulse.json: {e}")
+    ctx_admin["live_rss_pulse"] = pulse_data
+    ctx_admin["live_rss_pulse_json"] = json.dumps(pulse_data, ensure_ascii=False).replace("</script>", "<\\/script>")
+
+    seen_reg_file = os.path.join(root_dir, "data", "seen_articles_registry.json")
+    seen_urls = []
+    if os.path.exists(seen_reg_file):
+        try:
+            with open(seen_reg_file, "r", encoding="utf-8") as sf:
+                sdata = json.load(sf)
+                seen_urls = list(sdata.get("seen_rss_urls", {}).keys())[-200:]
+        except Exception:
+            pass
+    ctx_admin["seen_urls_json"] = json.dumps(seen_urls, ensure_ascii=False).replace("</script>", "<\\/script>")
+
     stats_csv_file = os.path.join(output_dir, "statystyki_bloga.csv")
     with open(stats_csv_file, "w", encoding="utf-8", newline="") as f:
         writer = csv.writer(f)

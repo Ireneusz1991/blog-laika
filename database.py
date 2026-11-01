@@ -547,7 +547,7 @@ def sync_markdown_files(posts_dir: str = None):
                 for line in front.splitlines():
                     if ":" in line:
                         k, v = line.split(":", 1)
-                        meta[k.strip().lower()] = v.strip().strip('"\'')
+                        meta[k.strip().lower()] = v.strip().strip('"\'').replace('\\"', '"')
 
         title = meta.get("title")
         if not title:

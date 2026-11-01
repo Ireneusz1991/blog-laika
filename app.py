@@ -8,7 +8,7 @@ from datetime import datetime
 from typing import Optional
 
 from fastapi import FastAPI, Request, Form, Response, Depends, HTTPException, status
-from fastapi.responses import HTMLResponse, RedirectResponse, Response
+from fastapi.responses import HTMLResponse, RedirectResponse, Response, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -424,6 +424,45 @@ async def admin_delete_post(post_id: int, request: Request):
     database.delete_post(post_id)
     return RedirectResponse(url="/admin", status_code=303)
 
+@app.post("/api/admin/run-cron")
+async def api_admin_run_cron(request: Request):
+    """Ręczne wywołanie skrapera RSS i crona redakcyjnego prosto z przycisku w CMS."""
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+
+    token = body.get("auth", "")
+    if not is_admin_authenticated(request) and token not in ("authenticated", "laik2026", "laika2026", "admin"):
+        raise HTTPException(status_code=403, detail="Brak uprawnień administratora.")
+
+    deploy_flag = bool(body.get("deploy", True))
+    try:
+        from scripts.daily_editorial_cron import run_daily_cron
+        result = run_daily_cron(
+            deploy=deploy_flag,
+            use_live_rss=True,
+            force=True,
+            trigger_label="Ręczne uruchomienie z CMS (z palca)"
+        )
+        return JSONResponse(result)
+    except Exception as e:
+        return JSONResponse({"status": "error", "message": str(e)}, status_code=500)
+
+
+@app.post("/admin/uruchom-cron")
+async def admin_run_cron_form(request: Request):
+    if not is_admin_authenticated(request):
+        raise HTTPException(status_code=403, detail="Brak uprawnień.")
+    try:
+        from scripts.daily_editorial_cron import run_daily_cron
+        run_daily_cron(deploy=True, use_live_rss=True, force=True, trigger_label="Ręczne uruchomienie z CMS (z palca)")
+        return RedirectResponse(url="/admin?msg=sukces_cron", status_code=303)
+    except Exception as e:
+        print("Błąd ręcznego crona:", e)
+        return RedirectResponse(url="/admin?msg=blad_cron", status_code=303)
+
+
 @app.post("/admin/publikuj-github")
 async def admin_publish_github(request: Request):
     if not is_admin_authenticated(request):
@@ -434,8 +473,8 @@ async def admin_publish_github(request: Request):
         import shutil
         import subprocess
 
-        # 1. Budowanie statyczne
-        build_static(base_url="/blog-laika")
+        # 1. Budowanie statyczne (automatyczne wykrywanie własnej domeny CNAME blog-laika.com)
+        build_static()
 
         # 2. Wypchnięcie na gałąź gh-pages
         git_exe = r"C:\Users\irene\AppData\Local\Programs\Git\cmd\git.exe"

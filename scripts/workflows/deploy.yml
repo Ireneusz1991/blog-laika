@@ -1,0 +1,54 @@
+name: Automatyczna Kompilacja i Publikacja na blog-laika.com
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "blog-laika-cron-deploy"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pobranie repozytorium (main)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Konfiguracja Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalacja zależności
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Kompilacja statyczna dla domeny blog-laika.com
+        env:
+          TZ: 'Europe/Warsaw'
+        run: |
+          python export_static.py
+
+      - name: Publikacja folderu dist/ na gałąź gh-pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TMP_DEPLOY=$(mktemp -d)
+          cp -r dist/. "$TMP_DEPLOY/"
+          cd "$TMP_DEPLOY"
+          git init -b gh-pages
+          git config user.name "Blog Laika Deploy Bot"
+          git config user.email "kontakt@blog-laika.com"
+          git add -A
+          git commit -m "Automatyczne wdrożenie zmian z main ($(date +'%Y-%m-%d %H:%M'))"
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push origin gh-pages --force
