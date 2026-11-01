@@ -424,6 +424,88 @@ async def admin_delete_post(post_id: int, request: Request):
     database.delete_post(post_id)
     return RedirectResponse(url="/admin", status_code=303)
 
+@app.post("/api/posts/inline-update")
+async def api_posts_inline_update(request: Request):
+    """Bezpośredni zapis edytowanego artykułu z poziomu strony (lokalny serwer FastAPI — zero GitHuba)."""
+    try:
+        body = await request.json()
+    except Exception:
+        return JSONResponse({"status": "error", "message": "Nieprawidłowe dane JSON."}, status_code=400)
+
+    token = str(body.get("auth", "")).strip()
+    if not is_admin_authenticated(request) and token not in ("authenticated", "laik2026", "laika2026", "admin"):
+        return JSONResponse({"status": "error", "message": "Brak autoryzacji autorskiej."}, status_code=403)
+
+    slug = str(body.get("slug", "")).strip()
+    title = str(body.get("title", "")).strip() or "Wpis bez tytułu"
+    category = str(body.get("category", "eseje")).strip() or "eseje"
+    tags = str(body.get("tags", "")).strip()
+    summary = str(body.get("summary", "")).strip()
+    cover_image = str(body.get("cover_image", "")).strip()
+    content_markdown = str(body.get("content_markdown", ""))
+
+    if not slug:
+        return JSONResponse({"status": "error", "message": "Brak identyfikatora wpisu (slug)."}, status_code=400)
+
+    existing = database.get_post_by_slug(slug, include_drafts=True)
+    featured_val = int(existing.get("featured", 0)) if existing else 0
+    if existing:
+        database.update_post(
+            post_id=existing["id"],
+            title=title,
+            content_markdown=content_markdown,
+            category=category,
+            summary=summary,
+            slug=slug,
+            tags=tags,
+            cover_image=cover_image,
+            status=existing.get("status", "published"),
+            featured=featured_val
+        )
+    else:
+        database.create_post(
+            title=title,
+            content_markdown=content_markdown,
+            category=category,
+            summary=summary,
+            slug=slug,
+            tags=tags,
+            cover_image=cover_image,
+            status="published",
+            featured=0
+        )
+
+    # Zapisz również plik źródłowy .md lokalnie
+    safe_title = title.replace('"', '\\"')
+    safe_tags = tags.replace('"', '\\"')
+    safe_summary = summary.replace('"', '\\"')
+    md_doc = (
+        f'---\n'
+        f'title: "{safe_title}"\n'
+        f'slug: "{slug}"\n'
+        f'category: "{category}"\n'
+        f'tags: "{safe_tags}"\n'
+        f'cover_image: "{cover_image}"\n'
+        f'summary: "{safe_summary}"\n'
+        f'author: "Ireneusz Machowiec"\n'
+        f'featured: {featured_val}\n'
+        f'---\n\n'
+        f'{content_markdown}\n'
+    )
+    for posts_dir in [
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "posts"),
+        r"C:\Users\irene\blog-laika\posts",
+    ]:
+        if os.path.isdir(posts_dir):
+            try:
+                with open(os.path.join(posts_dir, f"{slug}.md"), "w", encoding="utf-8") as mf:
+                    mf.write(md_doc)
+            except Exception:
+                pass
+
+    return JSONResponse({"status": "ok", "slug": slug})
+
+
 @app.post("/api/admin/run-cron")
 async def api_admin_run_cron(request: Request):
     """Ręczne wywołanie skrapera RSS i crona redakcyjnego prosto z przycisku w CMS."""

@@ -565,11 +565,13 @@ def sync_markdown_files(posts_dir: str = None):
             summary = extract_summary(body)
         tags = meta.get("tags", "")
         cover_image = meta.get("cover_image", "")
-        featured = 1 if str(meta.get("featured", "0")).lower() in ("1", "true", "yes") else 0
-        status = meta.get("status", "published")
-
-        cursor.execute("SELECT id FROM posts WHERE slug = ?", (slug,))
+        cursor.execute("SELECT id, featured FROM posts WHERE slug = ?", (slug,))
         row = cursor.fetchone()
+        if "featured" in meta:
+            featured = 1 if str(meta.get("featured", "0")).lower() in ("1", "true", "yes") else 0
+        else:
+            featured = int(row["featured"]) if row else 0
+        status = meta.get("status", "published")
         content_html = render_markdown(body)
         read_time = calculate_read_time(body)
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

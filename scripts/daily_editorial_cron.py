@@ -334,6 +334,20 @@ def run_daily_cron(target_date_str=None, deploy=False, use_live_rss=True, force=
     # 4. Zapis telemetrii i żywego pulsu RSS (data/live_rss_pulse.json)
     pulse_payload = save_live_pulse_metadata(now, trigger_label, live_rss_result, topics)
 
+    # Przed kompilacją pobierz ewentualne edycje wpisów z main (zrobione bezpośrednio ze strony!)
+    if os.path.exists(local_git_repo) and deploy:
+        try:
+            subprocess.run(["git", "pull", "--rebase", "--autostash", "origin", "main"], cwd=local_git_repo, capture_output=True)
+            repo_posts = os.path.join(local_git_repo, "posts")
+            root_posts = os.path.join(ROOT_DIR, "posts")
+            if os.path.isdir(repo_posts) and os.path.normcase(repo_posts) != os.path.normcase(root_posts):
+                os.makedirs(root_posts, exist_ok=True)
+                for fn in os.listdir(repo_posts):
+                    if fn.endswith(".md"):
+                        shutil.copy2(os.path.join(repo_posts, fn), os.path.join(root_posts, fn))
+        except Exception as e:
+            print(f"⚠️ Uwaga przy synchronizacji posts/ przed kompilacją: {e}")
+
     # 5. Rekompilacja statyczna (export_static.py)
     print("\n⚙️ [Kompilacja] Uruchamianie export_static.py...")
     try:
@@ -357,7 +371,7 @@ def run_daily_cron(target_date_str=None, deploy=False, use_live_rss=True, force=
                 )
                 dist_src = os.path.join(local_git_repo, "dist")
 
-            subprocess.run(["git", "pull", "--rebase", "origin", "main"], cwd=local_git_repo, capture_output=True)
+            subprocess.run(["git", "pull", "--rebase", "--autostash", "origin", "main"], cwd=local_git_repo, capture_output=True)
             subprocess.run(["git", "add", "propozycje-tematow", "data"], cwd=local_git_repo, check=True)
             status_res = subprocess.run(["git", "status", "--porcelain"], cwd=local_git_repo, capture_output=True, text=True)
             if status_res.stdout.strip():

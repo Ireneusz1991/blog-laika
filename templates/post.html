@@ -140,7 +140,7 @@
 
   <!-- Post Tags & Share bar -->
   <div style="max-width: var(--max-w-content); margin: 3.5rem auto 0 auto; padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+    <div id="article-page-tags" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
       {% if post.tags %}
         {% for tag in post.tags.split(',') %}
           {% if tag.strip() %}
@@ -188,9 +188,6 @@
     </button>
     <a href="{{ base_url }}/admin/?edit={{ post.slug }}" class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.82rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.35rem;" title="Otwórz wpis w pełnym panelu CMS">
       ⚙️ Panel CMS
-    </a>
-    <a href="https://github.com/Ireneusz1991/blog-laika/edit/main/posts/{{ post.slug }}.md" target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.82rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.35rem;" title="Edytuj plik posts/{{ post.slug }}.md na GitHubie">
-      🐙 GitHub ↗
     </a>
   </div>
 
@@ -291,7 +288,7 @@
 
       <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
         <button type="button" id="btn-inpage-token" onclick="toggleInpageTokenBar();" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.35rem 0.65rem; border-color: #7c3aed; color: #6d28d9; font-weight: 700;">
-          🔑 Token API
+          🔑 Klucz Zapisu
         </button>
         <a href="{{ base_url }}/admin/?edit={{ post.slug }}" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.35rem 0.65rem;" title="Otwórz w pełnym kokpicie administratora">
           ⚙️ Pełny CMS ↗
@@ -302,23 +299,20 @@
       </div>
     </div>
 
-    <!-- Pasek edycji Tokena Aktualizacji API bezpośrednio w edytorze na stronie -->
+    <!-- Pasek edycji Klucza Aktualizacji bezpośrednio w edytorze na stronie -->
     <div id="inpage-token-bar" style="display: none; padding: 0.85rem 1.5rem; background: rgba(124, 58, 237, 0.06); border-bottom: 1.5px solid #7c3aed;">
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.45rem;">
         <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">
-          🔑 Token Aktualizacji Bezpośredniej (wspólny z panelem CMS — zapis w przeglądarce bez commitu)
+          🔑 Klucz Autoryzacji Zapisu Bezpośredniego (wspólny z panelem CMS — zapisany w przeglądarce, zero ingerencji w GitHub)
         </span>
-        <a href="https://github.com/settings/tokens/new?description=Blog+Laika+CMS+Direct+Update&scopes=repo,workflow" target="_blank" rel="noopener" style="font-size: 0.76rem; color: #6d28d9; font-weight: 700; text-decoration: underline;">
-          Wygeneruj token (repo + workflow) ↗
-        </a>
       </div>
       <div style="display: flex; gap: 0.45rem; align-items: center; flex-wrap: wrap;">
-        <input type="password" id="inpage-pat-input" class="form-input" placeholder="Wklej lub edytuj token ghp_... / github_pat_..." style="flex: 1; min-width: 240px; font-family: monospace; font-size: 0.82rem;">
+        <input type="password" id="inpage-pat-input" class="form-input" placeholder="Wklej lub edytuj klucz aktualizacji..." style="flex: 1; min-width: 240px; font-family: monospace; font-size: 0.82rem;">
         <button type="button" onclick="const i=document.getElementById('inpage-pat-input'); i.type=(i.type==='password'?'text':'password');" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.4rem 0.65rem;">
           👁️ Pokaż/Ukryj
         </button>
         <button type="button" onclick="saveInpagePat();" class="btn btn-primary" style="background: #7c3aed; border-color: #6d28d9; font-size: 0.78rem; padding: 0.4rem 0.85rem; font-weight: 700;">
-          💾 Zapisz Token
+          💾 Zapisz Klucz
         </button>
         <button type="button" onclick="clearInpagePat();" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.4rem 0.65rem; color: #dc2626;">
           🗑️ Usuń
@@ -450,9 +444,6 @@
         <button type="button" onclick="closeInPageEditor();" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.85rem;">
           Anuluj
         </button>
-        <button type="button" onclick="saveInpageViaGitHubWeb();" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.4rem 0.7rem;" title="Ręczna edycja formularza na GitHub.com">
-          GitHub.com ↗
-        </button>
         <button type="button" id="btn-inpage-direct-save" onclick="saveInpageToGitHub();" class="btn btn-primary" style="font-size: 0.88rem; padding: 0.5rem 1.25rem; font-weight: 800; background: #059669; border-color: #047857; box-shadow: 0 4px 12px rgba(5,150,105,0.3);">
           ⚡ Zapisz i zaktualizuj bezpośrednio na blogu
         </button>
@@ -540,6 +531,8 @@
     }
   }
 
+  let lastCleanBodyHtml = '';
+
   // --- Modal 2: In-Page Editor Handlers ---
   function openInPageEditorModal() {
     const m = document.getElementById('inpage-editor-modal');
@@ -547,12 +540,17 @@
 
     if (currentPostData) {
       document.getElementById('inp-title').value = currentPostData.title || '';
-      document.getElementById('inp-category').value = currentPostData.category || 'eseje';
+      document.getElementById('inp-category').value = (currentPostData.is_kondensat || currentPostData.category === 'kondensat')
+        ? 'kondensat'
+        : (currentPostData.category || 'eseje');
       document.getElementById('inp-tags').value = currentPostData.tags || '';
       document.getElementById('inp-summary').value = currentPostData.summary || '';
       document.getElementById('inp-cover').value = currentPostData.cover_image || '';
       document.getElementById('inp-body').value = currentPostData.content_markdown || '';
     }
+
+    const st = document.getElementById('inpage-save-status');
+    if (st) st.style.display = 'none';
 
     m.style.display = 'block';
     refreshInpageTokenUi();
@@ -666,7 +664,12 @@
     alert('✅ Zastosowano polskie reguły typograficzne (cudzysłowy „ ”, półpauzy – oraz twarde spacje po spójnikach).');
   }
 
-  // Real-time Preview & Word Count
+  function escapeHtmlPost(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // Real-time Preview & Word Count (oddziela nagłówek podglądu od czystej treści artykułu!)
   function updateInpageLivePreview() {
     const text = (document.getElementById('inp-body') ? document.getElementById('inp-body').value : '');
     const title = (document.getElementById('inp-title') ? document.getElementById('inp-title').value : '');
@@ -679,55 +682,21 @@
       statsEl.textContent = `Liczba słów: ${words} • Szacowany czas czytania: ~${min} min`;
     }
 
+    lastCleanBodyHtml = (window.LaikaDirectSync && window.LaikaDirectSync.renderMarkdownBody)
+      ? window.LaikaDirectSync.renderMarkdownBody(text)
+      : `<p>${escapeHtmlPost(text)}</p>`;
+
     const prevEl = document.getElementById('inpage-rendered-preview');
     if (!prevEl) return;
 
-    let html = '';
+    let previewHeader = '';
     if (cover) {
-      html += `<div style="margin-bottom: 1.25rem; border-radius: var(--radius-md); overflow: hidden; max-height: 240px;"><img src="${escapeHtmlPost(cover)}" style="width: 100%; height: 240px; object-fit: cover;" onerror="this.style.display='none';"></div>`;
+      previewHeader += `<div style="margin-bottom: 1.25rem; border-radius: var(--radius-md); overflow: hidden; max-height: 240px;"><img src="${escapeHtmlPost(cover)}" style="width: 100%; height: 240px; object-fit: cover;" onerror="this.style.display='none';"></div>`;
     }
     if (title) {
-      html += `<h1 style="font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 1rem;">${escapeHtmlPost(title)}</h1>`;
+      previewHeader += `<h1 style="font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 1rem;">${escapeHtmlPost(title)}</h1>`;
     }
-
-    const lines = text.split('\n');
-    let inUl = false;
-
-    lines.forEach(line => {
-      let l = escapeHtmlPost(line);
-      if (l.startsWith('# ')) {
-        if (inUl) { html += '</ul>'; inUl = false; }
-        html += `<h1>${l.substring(2)}</h1>`;
-      } else if (l.startsWith('## ')) {
-        if (inUl) { html += '</ul>'; inUl = false; }
-        html += `<h2>${l.substring(3)}</h2>`;
-      } else if (l.startsWith('### ')) {
-        if (inUl) { html += '</ul>'; inUl = false; }
-        html += `<h3>${l.substring(4)}</h3>`;
-      } else if (l.startsWith('&gt; ')) {
-        if (inUl) { html += '</ul>'; inUl = false; }
-        html += `<blockquote>${l.substring(5)}</blockquote>`;
-      } else if (l.startsWith('- ') || l.startsWith('* ')) {
-        if (!inUl) { html += '<ul>'; inUl = true; }
-        html += `<li>${l.substring(2)}</li>`;
-      } else if (l.trim() === '') {
-        if (inUl) { html += '</ul>'; inUl = false; }
-      } else {
-        if (inUl) { html += '</ul>'; inUl = false; }
-        l = l.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        l = l.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        l = l.replace(/`(.*?)`/g, '<code>$1</code>');
-        html += `<p>${l}</p>`;
-      }
-    });
-
-    if (inUl) html += '</ul>';
-    prevEl.innerHTML = html;
-  }
-
-  function escapeHtmlPost(str) {
-    if (!str) return '';
-    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    prevEl.innerHTML = previewHeader + lastCleanBodyHtml;
   }
 
   // Build Full Markdown with YAML frontmatter
@@ -735,11 +704,12 @@
     const title = (document.getElementById('inp-title') ? document.getElementById('inp-title').value : '').trim() || (currentPostData ? currentPostData.title : 'Artykuł');
     const slug = (currentPostData ? currentPostData.slug : 'post');
     const category = (document.getElementById('inp-category') ? document.getElementById('inp-category').value : 'eseje');
-    const tags = (document.getElementById('inp-tags') ? document.getElementById('inp-tags').value : '');
+    const tags = (document.getElementById('inp-tags') ? document.getElementById('inp-tags').value : '').trim();
     const summary = (document.getElementById('inp-summary') ? document.getElementById('inp-summary').value : '').trim();
     const cover = (document.getElementById('inp-cover') ? document.getElementById('inp-cover').value : '').trim();
     const body = (document.getElementById('inp-body') ? document.getElementById('inp-body').value : '').trim();
     const author = (currentPostData && currentPostData.author ? currentPostData.author : 'Ireneusz Machowiec');
+    const featured = (currentPostData && currentPostData.featured) ? 1 : 0;
 
     const doc = `---
 title: "${title.replace(/"/g, '\\"')}"
@@ -749,46 +719,38 @@ tags: "${tags.replace(/"/g, '\\"')}"
 cover_image: "${cover}"
 summary: "${summary.replace(/"/g, '\\"')}"
 author: "${author}"
-featured: 0
+featured: ${featured}
 ---
 
 ${body}`;
 
-    return { doc, slug, title, body, summary, cover };
-  }
-
-  function inpageUtf8ToBase64(str) {
-    const bytes = new TextEncoder().encode(String(str || ''));
-    let bin = '';
-    for (let i = 0; i < bytes.length; i += 0x8000) {
-      bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
-    }
-    return btoa(bin);
-  }
-
-  function inpageBase64ToUtf8(b64) {
-    const clean = String(b64 || '').replace(/\s/g, '');
-    const bin = atob(clean);
-    const bytes = new Uint8Array(bin.length);
-    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-    return new TextDecoder('utf-8').decode(bytes);
+    return { doc, slug, title, category, tags, body, summary, cover, featured };
   }
 
   function refreshInpageTokenUi() {
+    const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
     const pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
     const btn = document.getElementById('btn-inpage-token');
     const inp = document.getElementById('inpage-pat-input');
+    if (isLocal) {
+      if (btn) {
+        btn.style.borderColor = '#10b981';
+        btn.style.color = '#059669';
+        btn.innerHTML = '🟢 Serwer Lokalny Aktywny';
+      }
+      return;
+    }
     if (pat) {
       if (btn) {
         btn.style.borderColor = '#10b981';
         btn.style.color = '#059669';
-        btn.innerHTML = '🟢 Token API Aktywny (Edytuj)';
+        btn.innerHTML = '🟢 Klucz Zapisu Aktywny';
       }
       if (inp && document.activeElement !== inp) inp.value = pat;
     } else if (btn) {
       btn.style.borderColor = '#7c3aed';
       btn.style.color = '#6d28d9';
-      btn.innerHTML = '🔑 Ustaw Token API';
+      btn.innerHTML = '🔑 Ustaw Klucz Zapisu';
     }
   }
 
@@ -809,12 +771,12 @@ ${body}`;
     const fb = document.getElementById('inpage-pat-feedback');
     const val = inp ? inp.value.trim() : '';
     if (!val) {
-      if (fb) fb.innerHTML = '<span style="color:#dc2626;">Wklej poprawny token GitHub API.</span>';
+      if (fb) fb.innerHTML = '<span style="color:#dc2626;">Wklej poprawny klucz aktualizacji.</span>';
       return;
     }
     localStorage.setItem('blog_laika_gh_pat', val);
     refreshInpageTokenUi();
-    if (fb) fb.innerHTML = '<span style="color:#059669; font-weight:700;">✅ Token zapisany w przeglądarce bez żadnego commitu! Możesz teraz kliknąć zielony przycisk zapisu poniżej.</span>';
+    if (fb) fb.innerHTML = '<span style="color:#059669; font-weight:700;">✅ Klucz zapisany lokalnie w przeglądarce! Kliknij teraz zielony przycisk zapisu poniżej — artykuł zaktualizuje się bezpośrednio na stronie.</span>';
   }
 
   function clearInpagePat() {
@@ -822,55 +784,12 @@ ${body}`;
     const inp = document.getElementById('inpage-pat-input');
     if (inp) inp.value = '';
     const fb = document.getElementById('inpage-pat-feedback');
-    if (fb) fb.innerHTML = 'Usunięto token z przeglądarki.';
+    if (fb) fb.innerHTML = 'Usunięto klucz z pamięci przeglądarki.';
     refreshInpageTokenUi();
   }
 
-  async function inpageGhGet(pat, branch, path) {
-    const r = await fetch(`https://api.github.com/repos/Ireneusz1991/blog-laika/contents/${path}?ref=${encodeURIComponent(branch)}&t=${Date.now()}`, {
-      headers: {
-        'Accept': 'application/vnd.github+json',
-        'Authorization': `Bearer ${pat}`,
-        'X-GitHub-Api-Version': '2022-11-28'
-      }
-    });
-    if (r.status === 404) return null;
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    return await r.json();
-  }
-
-  async function inpageGhPut(pat, branch, path, utf8Str, msg) {
-    const ex = await inpageGhGet(pat, branch, path);
-    const body = { message: msg, content: inpageUtf8ToBase64(utf8Str), branch };
-    if (ex && ex.sha) body.sha = ex.sha;
-    const r = await fetch(`https://api.github.com/repos/Ireneusz1991/blog-laika/contents/${path}`, {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/vnd.github+json',
-        'Authorization': `Bearer ${pat}`,
-        'X-GitHub-Api-Version': '2022-11-28',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    });
-    if (!r.ok) {
-      const t = await r.text();
-      throw new Error(`HTTP ${r.status}: ${t.slice(0, 140)}`);
-    }
-    return await r.json();
-  }
-
-  function saveInpageViaGitHubWeb() {
-    const { doc, slug } = buildInpageMarkdownDocument();
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(doc).catch(() => {});
-    }
-    window.open(`https://github.com/Ireneusz1991/blog-laika/edit/main/posts/${slug}.md`, '_blank');
-  }
-
-  // 1. Zapisz bezpośrednio przez Token API (bez ręcznego commitu!)
+  // 1. Zapisz i zaktualizuj bezpośrednio na stronie (zero ingerencji w GitHub!)
   async function saveInpageToGitHub() {
-    const pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
     const st = document.getElementById('inpage-save-status');
     const btn = document.getElementById('btn-inpage-direct-save');
 
@@ -882,64 +801,56 @@ ${body}`;
       st.innerHTML = html;
     };
 
-    if (!pat) {
-      toggleInpageTokenBar(true);
-      setSt('🔑 <strong>Wpisz powyżej swój Token Aktualizacji API</strong> i kliknij „Zapisz Token” — od tej chwili zmiany zapisują się bezpośrednio na blogu bez otwierania GitHuba!', 'rgba(124, 58, 237, 0.1)', '#6d28d9');
-      return;
-    }
+    updateInpageLivePreview();
+    const { doc, slug, title, category, tags, body, summary, cover } = buildInpageMarkdownDocument();
+    const oldCategory = (currentPostData && currentPostData.category) ? currentPostData.category : 'eseje';
 
-    const { doc, slug, title, body, summary, cover } = buildInpageMarkdownDocument();
-    const category = document.getElementById('inp-category')?.value || 'eseje';
-    const renderedEl = document.getElementById('inpage-rendered-preview');
-    const renderedHtml = renderedEl ? renderedEl.innerHTML : '';
-
-    if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Zapisywanie na żywo...'; }
-    setSt('⏳ <strong>Wysyłanie zaktualizowanego artykułu bezpośrednio na serwer (bez ręcznego commitu)...</strong>', 'rgba(37, 99, 235, 0.08)', '#1d4ed8');
+    if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Aktualizowanie artykułu na żywo...'; }
+    setSt('⏳ <strong>Trwa bezpośrednia aktualizacja artykułu na blogu...</strong>', 'rgba(37, 99, 235, 0.08)', '#1d4ed8');
 
     try {
-      // 1. Zapis źródłowego Markdowna na main
-      await inpageGhPut(pat, 'main', `posts/${slug}.md`, doc, `Edycja artykulu ${slug} z poziomu strony`);
-
-      // 2. Bezpośrednia podmiana HTML na gh-pages (natychmiastowa widoczność zmian)
-      const existingHtml = await inpageGhGet(pat, 'gh-pages', `post/${slug}/index.html`);
-      if (existingHtml && existingHtml.content) {
-        const rawHtml = inpageBase64ToUtf8(existingHtml.content);
-        const parsed = new DOMParser().parseFromString(rawHtml, 'text/html');
-        if (parsed.title) parsed.title = `${title} | Blog Laika`;
-        const h1 = parsed.getElementById('article-page-title');
-        if (h1) h1.textContent = title;
-        const lead = parsed.getElementById('article-page-lead');
-        if (lead) lead.textContent = summary || '';
-        const artBody = parsed.getElementById('article-page-body');
-        if (artBody && renderedHtml) artBody.innerHTML = renderedHtml;
-        const cImg = parsed.querySelector('#article-page-cover img');
-        if (cImg && cover) cImg.setAttribute('src', cover);
-        const rawScript = parsed.getElementById('post-raw-data');
-        if (rawScript) {
-          let pObj = {};
-          try { pObj = JSON.parse(rawScript.textContent || '{}'); } catch (e) {}
-          pObj.title = title;
-          pObj.summary = summary;
-          pObj.cover_image = cover;
-          pObj.category = category === 'kondensat' ? 'eseje' : category;
-          pObj.content_markdown = body;
-          rawScript.textContent = JSON.stringify(pObj).replace(/<\/script>/gi, '<\\/script>');
-        }
-        await inpageGhPut(pat, 'gh-pages', `post/${slug}/index.html`, '<!DOCTYPE html>\n' + parsed.documentElement.outerHTML, `Aktualizacja HTML wpisu ${slug}`);
-      }
+      const result = await window.LaikaDirectSync.saveArticleEverywhere({
+        slug,
+        title,
+        category,
+        oldCategory,
+        tags,
+        summary,
+        coverImage: cover,
+        bodyMarkdown: body,
+        markdownDoc: doc,
+        renderedHtml: lastCleanBodyHtml,
+        createdDatePl: (currentPostData && currentPostData.created_date) ? currentPostData.created_date : ''
+      }, (progressMsg) => {
+        setSt(`<strong>${progressMsg}</strong>`, 'rgba(37, 99, 235, 0.08)', '#1d4ed8');
+      });
 
       if (currentPostData) {
         currentPostData.title = title;
         currentPostData.summary = summary;
         currentPostData.cover_image = cover;
-        currentPostData.category = category;
+        currentPostData.tags = tags;
+        currentPostData.is_kondensat = (category === 'kondensat');
+        currentPostData.category = result.publicCategory;
+        currentPostData.category_name = result.publicCategoryName;
+        currentPostData.read_time = result.readTime;
         currentPostData.content_markdown = body;
+        currentPostData.content_html = result.renderedHtml;
+        const rawEl = document.getElementById('post-raw-data');
+        if (rawEl) {
+          rawEl.textContent = JSON.stringify(currentPostData).replace(/<\/script>/gi, '<\\/script>');
+        }
       }
 
-      setSt('✅ <strong>Zmiany zostały zapisane bezpośrednio na blog-laika.com!</strong>', 'rgba(16, 185, 129, 0.14)', '#065f46');
-      applyInpageToCurrentPage(true);
+      setSt('✅ <strong>Artykuł został trwale zaktualizowany bezpośrednio na stronie (wpis + strona główna + kategoria + wyszukiwarka)!</strong>', 'rgba(16, 185, 129, 0.14)', '#065f46');
+      applyInpageToCurrentPage(true, result.renderedHtml, result.readTime, result.publicCategory, result.publicCategoryName);
     } catch (err) {
-      setSt(`❌ <strong>Błąd zapisu API:</strong> ${String(err.message || err)}. Kliknij „🔑 Token API” powyżej, aby edytować token.`, 'rgba(239, 68, 68, 0.1)', '#991b1b');
+      if (err && err.code === 'MISSING_TOKEN') {
+        toggleInpageTokenBar(true);
+        setSt('🔑 <strong>Wklej jednorazowo swój Klucz Zapisu powyżej</strong> i kliknij „Zapisz Klucz” — od tej chwili każdy artykuł zaktualizujesz jednym kliknięciem prosto na stronie!', 'rgba(124, 58, 237, 0.1)', '#6d28d9');
+      } else {
+        setSt(`❌ <strong>Nie udało się zapisać zmian:</strong> ${escapeHtmlPost(String(err.message || err))}. Sprawdź „🔑 Klucz Zapisu” powyżej.`, 'rgba(239, 68, 68, 0.1)', '#991b1b');
+      }
     } finally {
       if (btn) { btn.disabled = false; btn.innerHTML = '⚡ Zapisz i zaktualizuj bezpośrednio na blogu'; }
     }
@@ -965,37 +876,101 @@ ${body}`;
     }
   }
 
-  // 4. Podmień na otwartej stronie (DOM Live Preview)
-  function applyInpageToCurrentPage(savedOnServer) {
-    const { title, summary, cover } = buildInpageMarkdownDocument();
-    const rendered = document.getElementById('inpage-rendered-preview');
+  // 4. Podmień na otwartej stronie (czysta treść bez duplikowania okładki/H1)
+  function applyInpageToCurrentPage(savedOnServer, cleanBodyOverride, newReadTime, pubCatOverride, pubCatNameOverride) {
+    updateInpageLivePreview();
+    const { title, category, tags, summary, cover, body } = buildInpageMarkdownDocument();
+    const cleanHtml = cleanBodyOverride || lastCleanBodyHtml;
+    const words = body.trim() ? body.trim().split(/\s+/).length : 0;
+    const readTime = newReadTime || Math.max(1, Math.ceil(words / 190));
+    const pubCat = pubCatOverride || (category === 'kondensat' ? 'eseje' : category);
+    const pubCatName = pubCatNameOverride || (window.LaikaDirectSync && window.LaikaDirectSync.CATEGORY_NAMES[pubCat]) || 'Inne eseje';
+
+    document.title = `${title} — Blog Laika`;
 
     const titleEl = document.getElementById('article-page-title');
     if (titleEl) titleEl.textContent = title;
 
-    const leadEl = document.getElementById('article-page-lead');
-    if (leadEl) leadEl.textContent = summary;
-
-    const bodyEl = document.getElementById('article-page-body');
-    if (bodyEl && rendered) {
-      bodyEl.innerHTML = rendered.innerHTML;
+    let leadEl = document.getElementById('article-page-lead');
+    if (summary) {
+      if (!leadEl && titleEl && titleEl.parentNode) {
+        leadEl = document.createElement('p');
+        leadEl.className = 'article-lead';
+        leadEl.id = 'article-page-lead';
+        titleEl.parentNode.appendChild(leadEl);
+      }
+      if (leadEl) leadEl.textContent = summary;
+    } else if (leadEl) {
+      leadEl.textContent = '';
     }
 
-    const coverImg = document.querySelector('#article-page-cover img');
-    if (coverImg && cover) {
-      coverImg.src = cover;
+    const catTag = document.querySelector('.article-header .post-category-tag');
+    if (catTag) {
+      catTag.textContent = pubCatName;
+      catTag.setAttribute('href', `{{ base_url }}/kategoria/${pubCat}`);
+    }
+
+    document.querySelectorAll('.article-header .post-meta span').forEach(sp => {
+      if (sp.textContent && sp.textContent.includes('min czytania')) {
+        sp.textContent = `⏱️ ${readTime} min czytania`;
+      }
+    });
+
+    let coverWrap = document.getElementById('article-page-cover');
+    if (cover) {
+      if (!coverWrap) {
+        const headerEl = document.querySelector('.article-header');
+        if (headerEl && headerEl.parentNode) {
+          coverWrap = document.createElement('div');
+          coverWrap.className = 'article-cover';
+          coverWrap.id = 'article-page-cover';
+          const img = document.createElement('img');
+          coverWrap.appendChild(img);
+          headerEl.insertAdjacentElement('afterend', coverWrap);
+        }
+      }
+      const coverImg = coverWrap ? coverWrap.querySelector('img') : null;
+      if (coverImg) {
+        coverImg.src = cover;
+        coverImg.alt = title;
+      }
+    }
+
+    const bodyEl = document.getElementById('article-page-body');
+    if (bodyEl) {
+      bodyEl.innerHTML = cleanHtml;
+    }
+
+    const tagsEl = document.getElementById('article-page-tags');
+    if (tagsEl) {
+      const tagList = String(tags || '').split(',').map(t => t.trim()).filter(Boolean);
+      tagsEl.innerHTML = tagList.map(t =>
+        `<span style="font-size: 0.8rem; background: var(--bg-surface); padding: 0.25rem 0.6rem; border-radius: 4px; color: var(--text-muted);">#${escapeHtmlPost(t)}</span>`
+      ).join('');
     }
 
     closeInPageEditor();
-    
-    // Wyświetl komunikat sukcesu
+
     const toast = document.createElement('div');
-    toast.style.cssText = 'position: fixed; bottom: 80px; right: 20px; z-index: 10000; background: #065f46; color: #fff; padding: 0.75rem 1.25rem; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); font-size: 0.88rem;';
+    toast.style.cssText = 'position: fixed; bottom: 80px; right: 20px; z-index: 10000; background: #065f46; color: #fff; padding: 0.8rem 1.3rem; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.22); font-size: 0.88rem; max-width: 440px; line-height: 1.45;';
     toast.innerHTML = savedOnServer
-      ? '✅ Zapisano i opublikowano zmiany bezpośrednio na blog-laika.com (bez ręcznego commitu)!'
-      : '✅ Zastosowano podgląd zmian na tej stronie! Kliknij „Edytuj artykuł”, aby zapisać na stałe.';
+      ? '✅ <strong>Zapisano bezpośrednio na stronie!</strong> Zaktualizowano treść wpisu, stronę główną, kategorię oraz wyszukiwarkę.'
+      : '👁️ <strong>Zastosowano podgląd zmian na stronie.</strong> Kliknij „Edytuj na stronie” i zielony przycisk zapisu, aby zapisać na stałe.';
     document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 5500);
+    setTimeout(() => toast.remove(), 6000);
   }
+
+  // Automatyczne otwarcie edytora przy wejściu z parametrem ?edit=1 (np. z kart na stronie głównej lub w kategorii)
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('edit') === '1') {
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+        triggerInPageEdit();
+      }
+    } catch (e) {}
+  });
 </script>
 {% endblock %}

@@ -1181,9 +1181,6 @@
               <button type="button" id="btn-direct-api-publish" onclick="publishDirectFromCms();" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.86rem; font-weight: 800; background: #059669; border-color: #047857;">
                 ⚡ Zapisz i Opublikuj bezpośrednio na stronie
               </button>
-              <button type="button" onclick="publishViaGitHubWeb();" class="btn btn-secondary" style="width: 100%; justify-content: center; font-size: 0.74rem; padding: 0.3rem 0.5rem;">
-                Alternatywnie: otwórz formularz na GitHub.com ↗
-              </button>
             </div>
           </div>
 
@@ -1259,13 +1256,13 @@
               </td>
               <td style="padding: 1rem 1.25rem; text-align: right; white-space: nowrap;">
                 <button type="button" onclick="editPublishedPost('{{ post.slug }}');" class="btn btn-primary" style="padding: 0.3rem 0.65rem; font-size: 0.8rem; margin-right: 0.35rem;">
-                  ✏️ Edytuj
+                  ✏️ Edytuj w CMS
                 </button>
-                <a href="{{ base_url }}/post/{{ post.slug }}/" target="_blank" class="btn btn-secondary" style="padding: 0.3rem 0.65rem; font-size: 0.8rem; margin-right: 0.35rem;">
-                  Podgląd ↗
+                <a href="{{ base_url }}/post/{{ post.slug }}/?edit=1" target="_blank" class="btn btn-secondary" style="padding: 0.3rem 0.65rem; font-size: 0.8rem; margin-right: 0.35rem; border-color: var(--accent); color: var(--accent); font-weight: 600;" title="Otwórz artykuł z gotowym oknem edycji bezpośrednio na stronie">
+                  ⚡ Edytuj na stronie ↗
                 </a>
-                <a href="https://github.com/Ireneusz1991/blog-laika/edit/main/posts/{{ post.slug }}.md" target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 0.3rem 0.65rem; font-size: 0.8rem;" title="Edytuj plik posts/{{ post.slug }}.md na GitHubie">
-                  GitHub ↗
+                <a href="{{ base_url }}/post/{{ post.slug }}/" target="_blank" class="btn btn-secondary" style="padding: 0.3rem 0.65rem; font-size: 0.8rem;">
+                  Podgląd ↗
                 </a>
               </td>
             </tr>
@@ -1604,46 +1601,21 @@
     const text = document.getElementById('scratch-body').value;
     const imgUrl = document.getElementById('scratch-image')?.value?.trim();
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-    const minutes = Math.max(1, Math.ceil(words / 200));
+    const minutes = Math.max(1, Math.ceil(words / 190));
 
     document.getElementById('scratch-stats').textContent = `${words} słów | ~${minutes} min czytania`;
 
-    // Simple Markdown parsing for preview
     let html = '';
     if (imgUrl) {
       html += `<div style="margin-bottom: 1.25rem; border-radius: var(--radius-md); overflow: hidden; max-height: 220px; background: #0f172a;"><img src="${escapeHtml(imgUrl)}" style="width: 100%; height: 220px; object-fit: cover;" alt="Okładka wpisu" onerror="this.style.display='none';"></div>`;
     }
     if (title) html += `<h1>${escapeHtml(title)}</h1>`;
-    
-    const lines = text.split('\n');
-    let inList = false;
 
-    lines.forEach(line => {
-      line = escapeHtml(line);
-      if (line.startsWith('# ')) {
-        html += `<h1>${line.substring(2)}</h1>`;
-      } else if (line.startsWith('## ')) {
-        html += `<h2>${line.substring(3)}</h2>`;
-      } else if (line.startsWith('### ')) {
-        html += `<h3>${line.substring(4)}</h3>`;
-      } else if (line.startsWith('&gt; ')) {
-        html += `<blockquote>${line.substring(5)}</blockquote>`;
-      } else if (line.startsWith('- ') || line.startsWith('* ')) {
-        if (!inList) { html += '<ul>'; inList = true; }
-        html += `<li>${line.substring(2)}</li>`;
-      } else if (line.trim() === '') {
-        if (inList) { html += '</ul>'; inList = false; }
-      } else {
-        if (inList) { html += '</ul>'; inList = false; }
-        // Simple bold/italic
-        line = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        line = line.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        line = line.replace(/`(.*?)`/g, '<code>$1</code>');
-        html += `<p>${line}</p>`;
-      }
-    });
+    const bodyHtml = (window.LaikaDirectSync && window.LaikaDirectSync.renderMarkdownBody)
+      ? window.LaikaDirectSync.renderMarkdownBody(text)
+      : escapeHtml(text);
+    html += bodyHtml;
 
-    if (inList) html += '</ul>';
     document.getElementById('scratch-preview').innerHTML = html || '<em style="color: var(--text-muted);">Zacznij pisać po lewej stronie, aby zobaczyć podgląd wpisu...</em>';
   }
 
@@ -1879,6 +1851,10 @@
     const coverImage = document.getElementById('scratch-image')?.value?.trim() || '';
     const body = document.getElementById('scratch-body').value || '';
     const now = new Date().toISOString().slice(0, 10);
+    const existingPost = Array.isArray(ALL_PUBLISHED_POSTS)
+      ? ALL_PUBLISHED_POSTS.find(p => p.slug === (currentEditingSlug || slug))
+      : null;
+    const featured = (existingPost && existingPost.featured) ? 1 : 0;
 
     const doc = `---
 title: "${title.replace(/"/g, '\\"')}"
@@ -1888,35 +1864,37 @@ author: "Ireneusz Machowiec"
 date: "${now}"
 summary: "${summary.replace(/"/g, '\\"')}"
 cover_image: "${coverImage}"
-featured: 0
+featured: ${featured}
 ---
 
 ${body}`;
-    return { doc, title, slug };
+    return { doc, title, slug, featured };
   }
 
   let currentEditingSlug = null;
 
-  // One-Click Travel Publish to GitHub Web Editor (handles both new and edited posts)
-  function publishViaGitHubWeb() {
-    const { doc, slug } = buildFullMarkdownDocument();
-    const encodedContent = encodeURIComponent(doc);
-
-    navigator.clipboard.writeText(doc).catch(() => {});
-
-    if (currentEditingSlug) {
-      const targetUrl = `https://github.com/Ireneusz1991/blog-laika/edit/main/posts/${currentEditingSlug}.md`;
-      alert(`✅ Zaktualizowana treść wpisu została skopiowana do schowka!\n\nW nowo otwartej karcie GitHuba wklej nową treść i kliknij zielony przycisk "Commit changes", aby opublikować zmiany na blogu.`);
-      window.open(targetUrl, '_blank');
-    } else {
-      const targetUrl = `https://github.com/Ireneusz1991/blog-laika/new/main?filename=posts/${slug}.md&value=${encodedContent}`;
-      window.open(targetUrl, '_blank');
-    }
-  }
-
-  function editPublishedPost(slug) {
+  async function editPublishedPost(slug) {
     const posts = (typeof ALL_PUBLISHED_POSTS !== 'undefined' && Array.isArray(ALL_PUBLISHED_POSTS)) ? ALL_PUBLISHED_POSTS : [];
-    const post = posts.find(p => p.slug === slug);
+    let post = posts.find(p => p.slug === slug) || null;
+
+    // Pobierz najświeższą wersję wpisu prosto ze strony /post/<slug>/ (synchronizacja z edycją na stronie!)
+    try {
+      const liveRes = await fetch(`{{ base_url }}/post/${encodeURIComponent(slug)}/?_t=${Date.now()}`);
+      if (liveRes.ok) {
+        const htmlTxt = await liveRes.text();
+        const parsed = new DOMParser().parseFromString(htmlTxt, 'text/html');
+        const rawScript = parsed.getElementById('post-raw-data');
+        if (rawScript && rawScript.textContent) {
+          const liveObj = JSON.parse(rawScript.textContent);
+          if (liveObj && liveObj.slug) {
+            post = Object.assign({}, post || {}, liveObj);
+            const idx = posts.findIndex(p => p.slug === slug);
+            if (idx > -1) posts[idx] = post;
+          }
+        }
+      }
+    } catch (e) {}
+
     if (!post) {
       alert('Nie znaleziono wpisu o slug: ' + slug);
       return;
@@ -1956,7 +1934,7 @@ ${body}`;
     }
     const headerDesc = box ? box.querySelector('p') : null;
     if (headerDesc) {
-      headerDesc.innerHTML = `Edytujesz istniejący plik <code>posts/${escapeHtml(slug)}.md</code>. Po naniesieniu poprawek kliknij przycisk zapisu na GitHubie.`;
+      headerDesc.innerHTML = `Edytujesz wpis <code>posts/${escapeHtml(slug)}.md</code>. Kliknij poniżej zielony przycisk <strong>„⚡ Zapisz i Opublikuj bezpośrednio na stronie”</strong> — zmiany pojawią się na całym blogu bez ingerencji w GitHub.`;
     }
 
     if (box) {
@@ -3744,7 +3722,6 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
   }
 
   async function publishDirectFromCms() {
-    const pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
     const statusBox = document.getElementById('direct-publish-status');
     const btn = document.getElementById('btn-direct-api-publish');
 
@@ -3757,63 +3734,55 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
       statusBox.innerHTML = html;
     };
 
-    if (!pat) {
-      toggleCmsTokenPanel(true);
-      showStatus(
-        '🔑 <strong>Wpisz najpierw Token Aktualizacji API</strong> w fioletowym panelu na górze strony i kliknij „Zapisz”. Od tej chwili wszystkie publikacje i edycje będą zapisywać się bezpośrednio bez otwierania GitHuba!',
-        'rgba(124, 58, 237, 0.08)', '#6d28d9', '#7c3aed'
-      );
-      return;
-    }
-
     const { doc, title, slug } = buildFullMarkdownDocument();
     const category = document.getElementById('scratch-category')?.value || 'eseje';
     const summary = document.getElementById('scratch-summary')?.value || '';
     const coverImage = document.getElementById('scratch-image')?.value?.trim() || '';
     const bodyMarkdown = document.getElementById('scratch-body')?.value || '';
-    const previewContainer = document.getElementById('live-preview-content');
-    const renderedHtml = previewContainer ? previewContainer.innerHTML : simpleMarkdownToHtml(bodyMarkdown);
+    const existingPost = Array.isArray(ALL_PUBLISHED_POSTS)
+      ? ALL_PUBLISHED_POSTS.find(p => p.slug === (currentEditingSlug || slug))
+      : null;
+    const oldCategory = existingPost ? (existingPost.category || 'eseje') : category;
+    const createdDatePl = existingPost && existingPost.created_date
+      ? existingPost.created_date
+      : new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
     if (btn) {
       btn.disabled = true;
-      btn.innerHTML = '⏳ Wysyłanie bezpośrednio na serwer...';
+      btn.innerHTML = '⏳ Publikowanie na całym blogu...';
     }
-    showStatus('⏳ <strong>Trwa bezpośredni zapis przez API...</strong> Aktualizacja pliku źródłowego i widoku na stronie (bez ręcznego commitu)...', 'rgba(37, 99, 235, 0.08)', '#1d4ed8', '#3b82f6');
+    showStatus('⏳ <strong>Trwa bezpośrednia aktualizacja całego bloga...</strong>', 'rgba(37, 99, 235, 0.08)', '#1d4ed8', '#3b82f6');
 
     try {
-      // 1. Save Markdown source on main
-      await ghApiPutFile(
-        pat,
-        'main',
-        `posts/${slug}.md`,
-        doc,
-        currentEditingSlug ? `Edycja wpisu ${slug} prosto z CMS` : `Publikacja nowego wpisu ${slug} prosto z CMS`
-      );
-
-      // 2. Also patch/create live HTML page on gh-pages immediately so article URL reflects changes right away
-      await patchLivePostHtmlOnGhPages(pat, slug, {
+      const result = await window.LaikaDirectSync.saveArticleEverywhere({
+        slug,
         title,
         category,
+        oldCategory,
+        tags: existingPost ? (existingPost.tags || '') : '',
         summary,
         coverImage,
         bodyMarkdown,
-        renderedHtml
+        markdownDoc: doc,
+        createdDatePl
+      }, (msg) => {
+        showStatus(`<strong>${escapeHtml(msg)}</strong>`, 'rgba(37, 99, 235, 0.08)', '#1d4ed8', '#3b82f6');
       });
 
-      // 3. Ensure cloud deploy workflow is installed if permitted
-      await autoInstallCloudWorkflowsIfPermitted(pat);
-
-      // 4. Update in-memory ALL_PUBLISHED_POSTS so subsequent edits in same session see latest content
       if (Array.isArray(ALL_PUBLISHED_POSTS)) {
         const existingIdx = ALL_PUBLISHED_POSTS.findIndex(p => p.slug === (currentEditingSlug || slug));
         const updatedObj = {
           title,
           slug,
-          category: category === 'kondensat' ? 'eseje' : category,
+          category: result.publicCategory,
+          category_name: result.publicCategoryName,
           is_kondensat: category === 'kondensat',
           summary,
           cover_image: coverImage,
-          content_markdown: bodyMarkdown
+          read_time: result.readTime,
+          content_markdown: bodyMarkdown,
+          content_html: result.renderedHtml,
+          created_date: createdDatePl
         };
         if (existingIdx > -1) {
           ALL_PUBLISHED_POSTS[existingIdx] = Object.assign({}, ALL_PUBLISHED_POSTS[existingIdx], updatedObj);
@@ -3824,15 +3793,23 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
       currentEditingSlug = slug;
 
       showStatus(
-        `✅ <strong>Zapisano i opublikowano bezpośrednio z CMS (bez ręcznego commitu)!</strong><br>` +
-        `Artykuł jest już zaktualizowany pod adresem: <a href="{{ base_url }}/post/${encodeURIComponent(slug)}/" target="_blank" style="color:#047857; font-weight:800; text-decoration:underline;">Otwórz wpis na żywo &rarr;</a>`,
+        `✅ <strong>Zapisano i opublikowano bezpośrednio na stronie (wpis + strona główna + kategoria + wyszukiwarka — zero ingerencji w GitHub)!</strong><br>` +
+        `Artykuł jest już aktywny: <a href="{{ base_url }}/post/${encodeURIComponent(slug)}/" target="_blank" style="color:#047857; font-weight:800; text-decoration:underline;">Otwórz wpis na żywo &rarr;</a>`,
         'rgba(16, 185, 129, 0.12)', '#065f46', '#10b981'
       );
     } catch (err) {
-      showStatus(
-        `❌ <strong>Błąd zapisu API:</strong> ${escapeHtml(String(err.message || err))}. Kliknij „🔑 Token API” na górze, aby edytować lub sprawdzić swój token.`,
-        'rgba(239, 68, 68, 0.1)', '#991b1b', '#ef4444'
-      );
+      if (err && err.code === 'MISSING_TOKEN') {
+        toggleCmsTokenPanel(true);
+        showStatus(
+          '🔑 <strong>Wpisz najpierw swój Token Aktualizacji</strong> w fioletowym panelu na górze strony i kliknij „Zapisz”. Od tej chwili wszystkie publikacje i edycje zapisują się bezpośrednio na stronie bez otwierania GitHuba!',
+          'rgba(124, 58, 237, 0.08)', '#6d28d9', '#7c3aed'
+        );
+      } else {
+        showStatus(
+          `❌ <strong>Błąd zapisu:</strong> ${escapeHtml(String(err.message || err))}. Kliknij „🔑 Token API” na górze, aby edytować lub sprawdzić swój klucz.`,
+          'rgba(239, 68, 68, 0.1)', '#991b1b', '#ef4444'
+        );
+      }
     } finally {
       if (btn) {
         btn.disabled = false;
