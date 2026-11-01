@@ -517,6 +517,42 @@
       "category": "kondensat",
       "title": "Kondensat (1 listopada 2026 r., wydanie 21:53): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów",
       "url": ""
+    },
+    {
+      "date": "2026-11-01",
+      "category": "technologia",
+      "title": "Pod maską przełomu: Najgorsza przyszłość to ta, do której przywykniemy",
+      "url": "https://www.kwantowo.pl/2026/10/24/octavia-butler-najgorsza-przyszlosc/"
+    },
+    {
+      "date": "2026-11-01",
+      "category": "gospodarka",
+      "title": "Rachunek bez iluzji: Raymond James obniża cenę docelową akcji Oil States",
+      "url": "https://pl.investing.com/news/analyst-ratings/raymond-james-obniza-cene-docelowa-akcji-oil-states-93CH-1628658"
+    },
+    {
+      "date": "2026-11-01",
+      "category": "historia",
+      "title": "Mechanizmy dziejów: We Wszystkich Świętych i Zaduszki zacierała się granica między światem żywych i zmarłych",
+      "url": "https://dzieje.pl/wiadomosci/we-wszystkich-swietych-i-zaduszki-zacierala-sie-granica-miedzy-swiatem-zywych-i-zmarlych"
+    },
+    {
+      "date": "2026-11-01",
+      "category": "polityka",
+      "title": "Uchodźczynie z Afganistanu: „Nie zamkną nam ust. Ani groźbami, ani nawet kwasem",
+      "url": "https://krytykapolityczna.pl/swiat/afganistan-uciekly-przed-mezami-i-talibami/"
+    },
+    {
+      "date": "2026-11-01",
+      "category": "eseje",
+      "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Your Book Review: The History And Adventures Of An Atom)",
+      "url": "https://www.astralcodexten.com/p/your-book-review-the-history-and"
+    },
+    {
+      "date": "2026-11-01",
+      "category": "kondensat",
+      "title": "Kondensat (1 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
+      "url": ""
     }
   ],
   "seen_rss_urls": {
@@ -544,7 +580,32 @@
       "title": "Serbscy studenci zwyciężyli! Czy faktycznie odmienią kraj? — chłodny bilans z perspektywy dociekliwego laika",
       "seen_date": "2026-11-01",
       "category": "eseje"
+    },
+    "https://www.kwantowo.pl/2026/10/24/octavia-butler-najgorsza-przyszlosc/": {
+      "title": "Pod maską przełomu: Najgorsza przyszłość to ta, do której przywykniemy",
+      "seen_date": "2026-11-01",
+      "category": "technologia"
+    },
+    "https://pl.investing.com/news/analyst-ratings/raymond-james-obniza-cene-docelowa-akcji-oil-states-93CH-1628658": {
+      "title": "Rachunek bez iluzji: Raymond James obniża cenę docelową akcji Oil States",
+      "seen_date": "2026-11-01",
+      "category": "gospodarka"
+    },
+    "https://dzieje.pl/wiadomosci/we-wszystkich-swietych-i-zaduszki-zacierala-sie-granica-miedzy-swiatem-zywych-i-zmarlych": {
+      "title": "Mechanizmy dziejów: We Wszystkich Świętych i Zaduszki zacierała się granica między światem żywych i zmarłych",
+      "seen_date": "2026-11-01",
+      "category": "historia"
+    },
+    "https://krytykapolityczna.pl/swiat/afganistan-uciekly-przed-mezami-i-talibami/": {
+      "title": "Uchodźczynie z Afganistanu: „Nie zamkną nam ust. Ani groźbami, ani nawet kwasem",
+      "seen_date": "2026-11-01",
+      "category": "polityka"
+    },
+    "https://www.astralcodexten.com/p/your-book-review-the-history-and": {
+      "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Your Book Review: The History And Adventures Of An Atom)",
+      "seen_date": "2026-11-01",
+      "category": "eseje"
     }
   },
-  "last_updated": "2026-11-01T21:53:15.410761"
+  "last_updated": "2026-11-01T21:59:50.291890"
 }
