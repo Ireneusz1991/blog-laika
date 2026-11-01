@@ -95,6 +95,9 @@
       </div>
 
       <div style="display: flex; gap: 0.65rem; align-items: center; flex-wrap: wrap;">
+        <button type="button" onclick="toggleCmsTokenPanel();" class="btn btn-secondary" id="btn-top-token" style="border-color: #7c3aed; color: #6d28d9; background: rgba(124, 58, 237, 0.08); font-weight: 700;">
+          🔑 Token Aktualizacji API
+        </button>
         <button onclick="scrollToAndTriggerManualCron();" class="btn btn-secondary" id="btn-top-manual-cron" style="border-color: #d97706; color: #b45309; background: rgba(217, 119, 6, 0.1); font-weight: 700;">
           ⚡ Odpal Scraper / Cron z palca
         </button>
@@ -105,6 +108,54 @@
           Wyloguj się
         </button>
       </div>
+    </div>
+
+    <!-- Panel Zarządzania i Edycji Tokena Aktualizacji Bezpośredniej (bez potrzeby aktualizowania commitu) -->
+    <div id="cms-token-panel" style="display: none; background: var(--bg-card); border: 2px solid #7c3aed; border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1.75rem; box-shadow: 0 8px 24px rgba(124, 58, 237, 0.12);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.85rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.25rem;">
+            <span style="font-size: 1.2rem;">🔑</span>
+            <h3 style="font-family: var(--font-serif); font-size: 1.2rem; font-weight: 800; margin: 0; color: var(--text-primary);">
+              Token Aktualizacji Bezpośredniej w CMS (Zero ręcznych commitów)
+            </h3>
+            <span id="cms-token-badge" class="badge" style="background: rgba(107, 114, 128, 0.15); color: var(--text-secondary); font-weight: 700;">
+              Brak zapisanego tokena
+            </span>
+          </div>
+          <p style="font-size: 0.83rem; color: var(--text-secondary); margin: 0; line-height: 1.45;">
+            Wpisz lub edytuj swój GitHub Personal Access Token bezpośrednio tutaj — jest on zapisywany <strong>natychmiast w pamięci Twojej przeglądarki</strong> (bez robienia żadnego commitu i bez ujawniania go w kodzie strony). Z aktywnym tokenem edycja artykułów, publikacja nowych wpisów, zapisywanie zestawów RSS i uruchamianie Crona dzieją się w tle jednym kliknięciem prosto z CMS-a!
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <a href="https://github.com/settings/tokens/new?description=Blog+Laika+CMS+Direct+Update&scopes=repo,workflow" target="_blank" rel="noopener" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.35rem 0.7rem; border-color: #7c3aed; color: #6d28d9; font-weight: 700;">
+            🔗 Wygeneruj Token na GitHubie (repo + workflow) ↗
+          </a>
+          <button type="button" onclick="toggleCmsTokenPanel(false);" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.35rem 0.65rem;">
+            ✕ Zwiń
+          </button>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+        <div style="position: relative; flex: 1; min-width: 260px; display: flex; align-items: center;">
+          <input type="password" id="cms-pat-input" class="form-input" placeholder="Wklej lub edytuj token: ghp_... lub github_pat_..." style="width: 100%; font-family: var(--font-mono, monospace); font-size: 0.85rem; padding-right: 5.5rem;">
+          <button type="button" onclick="toggleCmsPatVisibility();" id="btn-toggle-pat-vis" style="position: absolute; right: 8px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 2px 8px; font-size: 0.72rem; cursor: pointer; color: var(--text-secondary); font-weight: 600;">
+            👁️ Pokaż
+          </button>
+        </div>
+        <button type="button" onclick="saveAndVerifyCmsPat();" id="btn-save-cms-pat" class="btn btn-primary" style="background: #7c3aed; border-color: #6d28d9; font-weight: 700; padding: 0.55rem 1.1rem;">
+          💾 Zapisz / Zaktualizuj Token
+        </button>
+        <button type="button" onclick="verifyCurrentCmsPat();" class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.55rem 0.85rem;">
+          🧪 Testuj połączenie
+        </button>
+        <button type="button" onclick="clearGithubPat();" class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.55rem 0.75rem; color: #dc2626; border-color: rgba(220, 38, 38, 0.3);">
+          🗑️ Usuń
+        </button>
+      </div>
+
+      <div id="cms-token-feedback" style="margin-top: 0.65rem; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45;"></div>
     </div>
 
     <!-- Quick Status Cards -->
@@ -503,22 +554,9 @@
           </div>
         </details>
 
-        <details>
-          <summary style="cursor: pointer; font-weight: 600; color: var(--text-muted); user-select: none;">
-            🔑 Ustawienia 1-kliku Chmury GitHub (opcjonalny Token)
-          </summary>
-          <div style="margin-top: 0.6rem; padding: 0.75rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 6px; max-width: 460px;">
-            <p style="margin: 0 0 0.45rem 0; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
-              Przycisk <strong>„Skanuj RSS TERAZ”</strong> działa zawsze od ręki w przeglądarce bez żadnego tokena. Jeśli chcesz, aby drugi przycisk (<strong>„Pełny Cron w Chmurze GitHub”</strong>) wyzwalał przebudowę całej strony w tle jednym kliknięciem bez otwierania karty GitHuba, wklej tu swój GitHub Personal Access Token (uprawnienia <code>repo</code> + <code>workflow</code> — zapisywany wyłącznie lokalnie w Twojej przeglądarce):
-            </p>
-            <div style="display: flex; gap: 0.4rem; align-items: center;">
-              <input type="password" id="gh-pat-input" placeholder="ghp_... lub github_pat_..." style="flex: 1; padding: 0.35rem 0.6rem; font-size: 0.76rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-card); color: var(--text-primary);">
-              <button type="button" onclick="saveGithubPat();" class="btn btn-primary" style="font-size: 0.74rem; padding: 0.35rem 0.65rem;">Zapisz</button>
-              <button type="button" onclick="clearGithubPat();" class="btn btn-secondary" style="font-size: 0.74rem; padding: 0.35rem 0.55rem;">Usuń</button>
-            </div>
-            <div id="gh-pat-status" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.3rem;"></div>
-          </div>
-        </details>
+        <button type="button" onclick="toggleCmsTokenPanel(true);" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.3rem 0.7rem; border-color: #7c3aed; color: #6d28d9; font-weight: 700;">
+          🔑 Edytuj Token Aktualizacji API
+        </button>
       </div>
     </div>
 
@@ -1128,19 +1166,25 @@
         </h4>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
-          <!-- Opcja 1: GitHub Web One-Click -->
-          <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <!-- Opcja 1: Bezpośredni Zapis API z CMS (Zero ręcznych commitów!) -->
+          <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.07), rgba(37, 99, 235, 0.06)); border: 2px solid #10b981; border-radius: var(--radius-sm); padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
-              <strong style="display: block; font-size: 0.95rem; margin-bottom: 0.35rem; color: var(--accent);">
-                1. Publikuj bezpośrednio na GitHubie
+              <strong style="display: block; font-size: 0.95rem; margin-bottom: 0.35rem; color: #059669;">
+                1. ⚡ Opublikuj / Zaktualizuj prosto z CMS (bez ręcznego commitu)
               </strong>
-              <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.85rem; line-height: 1.5;">
-                Otwiera formularz utworzenia nowego pliku w folderze <code>posts/</code> na GitHubie z automatycznie wypełnioną treścią. Wystarczy na telefonie lub laptopie kliknąć zielony przycisk <em>„Commit changes...”</em> i wpis automatycznie publikuje się na blogu!
+              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.75rem; line-height: 1.5;">
+                Wysyła artykuł bezpośrednio przez Token API prosto na bloga w tle — <strong>bez otwierania kart GitHuba, bez wklejania i bez klikania „Commit changes”</strong>.
               </p>
+              <div id="direct-publish-status" style="display: none; font-size: 0.78rem; padding: 0.45rem 0.6rem; border-radius: 6px; margin-bottom: 0.65rem; line-height: 1.4;"></div>
             </div>
-            <button type="button" onclick="publishViaGitHubWeb();" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.85rem;">
-              🚀 Utwórz plik na GitHubie &rarr;
-            </button>
+            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+              <button type="button" id="btn-direct-api-publish" onclick="publishDirectFromCms();" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.86rem; font-weight: 800; background: #059669; border-color: #047857;">
+                ⚡ Zapisz i Opublikuj bezpośrednio na stronie
+              </button>
+              <button type="button" onclick="publishViaGitHubWeb();" class="btn btn-secondary" style="width: 100%; justify-content: center; font-size: 0.74rem; padding: 0.3rem 0.5rem;">
+                Alternatywnie: otwórz formularz na GitHub.com ↗
+              </button>
+            </div>
           </div>
 
           <!-- Opcja 2: Pobierz .md -->
@@ -3106,13 +3150,33 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     a.click();
   }
 
-  function saveLiveManualPackageToGithub() {
+  async function saveLiveManualPackageToGithub() {
     if (!LIVE_MANUAL_PACKAGE) return;
     const md = buildLivePackageMarkdown(LIVE_MANUAL_PACKAGE);
+    const pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+
+    if (pat) {
+      setCronBanner(`⏳ <strong>Zapisywanie zestawu <code>${escapeHtml(LIVE_MANUAL_PACKAGE.filename)}</code> bezpośrednio przez Token API...</strong>`, '#7c3aed');
+      try {
+        await ghApiPutFile(
+          pat,
+          'main',
+          `propozycje-tematow/${LIVE_MANUAL_PACKAGE.filename}`,
+          md,
+          `Aktualizacja propozycji z CMS (${LIVE_MANUAL_PACKAGE.filename})`
+        );
+        setCronBanner(`✅ <strong>Zestaw <code>${escapeHtml(LIVE_MANUAL_PACKAGE.filename)}</code> został zapisany bezpośrednio z CMS (bez ręcznego commitu)!</strong>`, '#10b981');
+        return;
+      } catch (err) {
+        setCronBanner(`⚠️ <strong>Błąd zapisu przez Token API:</strong> ${escapeHtml(String(err.message || err))}. Sprawdź ustawienia Tokena powyżej.`, '#ef4444');
+        toggleCmsTokenPanel(true);
+        return;
+      }
+    }
+
     navigator.clipboard.writeText(md).catch(() => {});
-    const targetUrl = `https://github.com/Ireneusz1991/blog-laika/new/main?filename=propozycje-tematow/${LIVE_MANUAL_PACKAGE.filename}`;
-    alert(`✅ Pełny zestaw 6 świeżych propozycji (${LIVE_MANUAL_PACKAGE.filename}) został skopiowany do schowka!\n\nW nowo otwartej karcie GitHuba wklej treść (Ctrl+V) i kliknij "Commit changes" — GitHub Actions automatycznie przebuduje stronę.`);
-    window.open(targetUrl, '_blank');
+    toggleCmsTokenPanel(true);
+    setCronBanner(`🔑 <strong>Wpisz powyżej Token Aktualizacji API</strong>, aby zapisywać zestawy jednym kliknięciem bez otwierania GitHuba (lub użyj skopiowanego schowka).`, '#d97706');
   }
 
   async function triggerInstantBrowserCron() {
@@ -3351,23 +3415,430 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     updateLivePreview();
   }
 
-  function saveGithubPat() {
-    const inp = document.getElementById('gh-pat-input');
-    const st = document.getElementById('gh-pat-status');
+  // ==========================================================
+  // ZARZĄDZANIE TOKENEM API W CMS I ZAPIS BEZPOŚREDNI (BEZ COMMITU W OKNIE GITHUBA)
+  // ==========================================================
+
+  const GH_REPO_SLUG = 'Ireneusz1991/blog-laika';
+
+  function utf8ToBase64(str) {
+    const bytes = new TextEncoder().encode(String(str || ''));
+    let bin = '';
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+      bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+    }
+    return btoa(bin);
+  }
+
+  function base64ToUtf8(b64) {
+    const clean = String(b64 || '').replace(/\s/g, '');
+    const bin = atob(clean);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder('utf-8').decode(bytes);
+  }
+
+  function maskPatToken(tok) {
+    if (!tok) return '';
+    if (tok.length <= 10) return '••••••••';
+    return tok.slice(0, 6) + '••••••••••••' + tok.slice(-4);
+  }
+
+  function refreshCmsTokenUi() {
+    const pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+    const topBtn = document.getElementById('btn-top-token');
+    const badge = document.getElementById('cms-token-badge');
+    const inp = document.getElementById('cms-pat-input');
+
+    if (pat) {
+      if (topBtn) {
+        topBtn.style.borderColor = '#10b981';
+        topBtn.style.color = '#059669';
+        topBtn.style.background = 'rgba(16, 185, 129, 0.1)';
+        topBtn.innerHTML = '🟢 Token API Aktywny (Edytuj)';
+      }
+      if (badge) {
+        badge.style.background = 'rgba(16, 185, 129, 0.15)';
+        badge.style.color = '#059669';
+        badge.innerHTML = `Aktywny: ${escapeHtml(maskPatToken(pat))}`;
+      }
+      if (inp && document.activeElement !== inp) {
+        inp.value = pat;
+      }
+    } else {
+      if (topBtn) {
+        topBtn.style.borderColor = '#7c3aed';
+        topBtn.style.color = '#6d28d9';
+        topBtn.style.background = 'rgba(124, 58, 237, 0.08)';
+        topBtn.innerHTML = '🔑 Ustaw Token Aktualizacji API';
+      }
+      if (badge) {
+        badge.style.background = 'rgba(107, 114, 128, 0.15)';
+        badge.style.color = 'var(--text-secondary)';
+        badge.innerHTML = 'Brak zapisanego tokena';
+      }
+    }
+  }
+
+  function toggleCmsTokenPanel(forceState) {
+    const panel = document.getElementById('cms-token-panel');
+    if (!panel) return;
+    const shouldOpen = (typeof forceState === 'boolean') ? forceState : (panel.style.display === 'none');
+    panel.style.display = shouldOpen ? 'block' : 'none';
+    if (shouldOpen) {
+      const pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+      const inp = document.getElementById('cms-pat-input');
+      if (inp) {
+        inp.value = pat;
+        inp.focus();
+      }
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    refreshCmsTokenUi();
+  }
+
+  function toggleCmsPatVisibility() {
+    const inp = document.getElementById('cms-pat-input');
+    const btn = document.getElementById('btn-toggle-pat-vis');
+    if (!inp) return;
+    if (inp.type === 'password') {
+      inp.type = 'text';
+      if (btn) btn.innerHTML = '🙈 Ukryj';
+    } else {
+      inp.type = 'password';
+      if (btn) btn.innerHTML = '👁️ Pokaż';
+    }
+  }
+
+  async function ghApiGetFile(pat, branch, path) {
+    const r = await fetch(`https://api.github.com/repos/${GH_REPO_SLUG}/contents/${path}?ref=${encodeURIComponent(branch)}&t=${Date.now()}`, {
+      headers: {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': `Bearer ${pat}`,
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    });
+    if (r.status === 404) return null;
+    if (!r.ok) {
+      const txt = await r.text();
+      throw new Error(`GitHub API GET (${r.status}): ${txt.slice(0, 140)}`);
+    }
+    return await r.json();
+  }
+
+  async function ghApiPutFile(pat, branch, path, utf8Content, message) {
+    const existing = await ghApiGetFile(pat, branch, path);
+    const payload = {
+      message: message || `Aktualizacja ${path} z CMS`,
+      content: utf8ToBase64(utf8Content),
+      branch: branch
+    };
+    if (existing && existing.sha) {
+      payload.sha = existing.sha;
+    }
+    const r = await fetch(`https://api.github.com/repos/${GH_REPO_SLUG}/contents/${path}`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': `Bearer ${pat}`,
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!r.ok) {
+      const txt = await r.text();
+      throw new Error(`GitHub API PUT (${r.status}): ${txt.slice(0, 180)}`);
+    }
+    return await r.json();
+  }
+
+  const DEPLOY_YML_TEMPLATE = [
+    "name: Automatyczna Kompilacja i Publikacja na blog-laika.com",
+    "",
+    "on:",
+    "  push:",
+    "    branches:",
+    "      - main",
+    "  workflow_dispatch:",
+    "",
+    "permissions:",
+    "  contents: write",
+    "",
+    "jobs:",
+    "  build-and-deploy:",
+    "    runs-on: ubuntu-latest",
+    "    steps:",
+    "      - uses: actions/checkout@v4",
+    "        with:",
+    "          ref: main",
+    "      - uses: actions/setup-python@v5",
+    "        with:",
+    "          python-version: '3.12'",
+    "      - run: pip install -r requirements.txt",
+    "      - name: Kompilacja statyczna dla domeny blog-laika.com",
+    "        env:",
+    "          TZ: 'Europe/Warsaw'",
+    "        run: python export_static.py",
+    "      - name: Publikacja dist na gh-pages",
+    "        env:",
+    "          GH_TOKEN: $" + "{" + "{ secrets.GITHUB_TOKEN }" + "}",
+    "        run: |",
+    "          TMP_D=$(mktemp -d) && cp -r dist/. \"$TMP_D/\" && cd \"$TMP_D\"",
+    "          git init -b gh-pages && git config user.name 'Blog Laika Deploy Bot' && git config user.email 'kontakt@blog-laika.com'",
+    "          git add -A && git commit -m 'Automatyczne wdrozenie zmian z CMS'",
+    "          git remote add origin \"https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git\"",
+    "          git push origin gh-pages --force"
+  ].join("\n");
+
+  async function autoInstallCloudWorkflowsIfPermitted(pat) {
+    try {
+      const cronExisting = await ghApiGetFile(pat, 'main', '.github/workflows/daily_cron.yml');
+      if (!cronExisting) {
+        await ghApiPutFile(pat, 'main', '.github/workflows/daily_cron.yml', DAILY_CRON_YML_TEMPLATE, 'Instalacja automatycznego Crona 08:00 z CMS [skip ci]');
+      }
+      const deployExisting = await ghApiGetFile(pat, 'main', '.github/workflows/deploy.yml');
+      if (!deployExisting) {
+        await ghApiPutFile(pat, 'main', '.github/workflows/deploy.yml', DEPLOY_YML_TEMPLATE, 'Instalacja automatycznego wdrazania z CMS [skip ci]');
+      }
+      ghWorkflowInstalled = true;
+      initCronTelemetry();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async function saveAndVerifyCmsPat() {
+    const inp = document.getElementById('cms-pat-input');
+    const fb = document.getElementById('cms-token-feedback');
+    const btn = document.getElementById('btn-save-cms-pat');
     const val = inp ? inp.value.trim() : '';
+
     if (!val) {
-      if (st) st.innerHTML = '<span style="color:#ef4444;">Wklej poprawny token GitHub (ghp_... lub github_pat_...).</span>';
+      if (fb) fb.innerHTML = '<span style="color:#dc2626; font-weight:700;">⚠️ Wpisz poprawny token (zaczynający się od <code>ghp_</code> lub <code>github_pat_</code>).</span>';
       return;
     }
+
     localStorage.setItem('blog_laika_gh_pat', val);
-    if (inp) inp.value = '';
-    if (st) st.innerHTML = '<span style="color:#10b981; font-weight:700;">✅ Token zapisany lokalnie w przeglądarce! Przycisk „Pełny Cron w Chmurze GitHub” działa teraz w trybie 1-kliku.</span>';
+    refreshCmsTokenUi();
+
+    if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Weryfikacja tokena...'; }
+    if (fb) fb.innerHTML = '⏳ Sprawdzanie połączenia z repozytorium <code>Ireneusz1991/blog-laika</code>...';
+
+    await verifyCurrentCmsPat();
+
+    if (btn) { btn.disabled = false; btn.innerHTML = '💾 Zapisz / Zaktualizuj Token'; }
+  }
+
+  async function verifyCurrentCmsPat() {
+    const pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+    const fb = document.getElementById('cms-token-feedback');
+    if (!pat) {
+      if (fb) fb.innerHTML = '<span style="color:#dc2626;">Brak zapisanego tokena do przetestowania.</span>';
+      return false;
+    }
+
+    try {
+      const r = await fetch(`https://api.github.com/repos/${GH_REPO_SLUG}`, {
+        headers: {
+          'Accept': 'application/vnd.github+json',
+          'Authorization': `Bearer ${pat}`,
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      });
+      const scopes = r.headers.get('x-oauth-scopes') || '';
+      if (!r.ok) {
+        if (fb) fb.innerHTML = `<span style="color:#dc2626; font-weight:700;">❌ GitHub odrzucił token (HTTP ${r.status}). Sprawdź, czy token jest aktualny i ma uprawnienie <code>repo</code>.</span>`;
+        return false;
+      }
+      const repoData = await r.json();
+      const canPush = repoData && repoData.permissions && repoData.permissions.push;
+      if (!canPush) {
+        if (fb) fb.innerHTML = `<span style="color:#d97706; font-weight:700;">⚠️ Token działa, ale nie ma uprawnień zapisu (<code>repo</code> / Contents: Read &amp; write) do <code>${GH_REPO_SLUG}</code>.</span>`;
+        return false;
+      }
+
+      const wfInstalled = await autoInstallCloudWorkflowsIfPermitted(pat);
+      const wfNote = wfInstalled
+        ? ' • ☁️ Chmurowy Cron 08:00 i auto-deploy są w pełni spięte!'
+        : (scopes ? ` • Uprawnienia tokena: <code>${escapeHtml(scopes)}</code>` : '');
+
+      if (fb) {
+        fb.innerHTML = `<span style="color:#059669; font-weight:700;">✅ Token aktywny i zweryfikowany bez żadnego commitu!</span> Bezpośredni zapis artykułów, edycja na żywo i zapisywanie propozycji działają w tle.${wfNote}`;
+      }
+      return true;
+    } catch (e) {
+      if (fb) fb.innerHTML = `<span style="color:#dc2626;">⚠️ Błąd połączenia z API GitHub: ${escapeHtml(String(e))}</span>`;
+      return false;
+    }
   }
 
   function clearGithubPat() {
     localStorage.removeItem('blog_laika_gh_pat');
-    const st = document.getElementById('gh-pat-status');
-    if (st) st.innerHTML = 'Usunięto zapisany token z przeglądarki.';
+    const inp = document.getElementById('cms-pat-input');
+    if (inp) inp.value = '';
+    const fb = document.getElementById('cms-token-feedback');
+    if (fb) fb.innerHTML = '🗑️ Usunięto token z pamięci przeglądarki.';
+    refreshCmsTokenUi();
+  }
+
+  async function patchLivePostHtmlOnGhPages(pat, slug, meta) {
+    // Directly updates post/<slug>/index.html on gh-pages so edits appear immediately even without CI!
+    const existingPostHtml = await ghApiGetFile(pat, 'gh-pages', `post/${slug}/index.html`);
+    let rawHtml = null;
+
+    if (existingPostHtml && existingPostHtml.content) {
+      rawHtml = base64ToUtf8(existingPostHtml.content);
+    } else {
+      // For a brand-new post, clone template structure from an existing post on gh-pages
+      const templatePost = await ghApiGetFile(pat, 'gh-pages', 'post/pochwala-dociekliwego-laika/index.html');
+      if (templatePost && templatePost.content) {
+        rawHtml = base64ToUtf8(templatePost.content);
+      }
+    }
+    if (!rawHtml) return false;
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(rawHtml, 'text/html');
+
+    if (doc.title) doc.title = `${meta.title} | Blog Laika`;
+    const ogTitle = doc.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', `${meta.title} | Blog Laika`);
+    const ogDesc = doc.querySelector('meta[property="og:description"], meta[name="description"]');
+    if (ogDesc && meta.summary) ogDesc.setAttribute('content', meta.summary);
+
+    const titleEl = doc.getElementById('article-page-title');
+    if (titleEl) titleEl.textContent = meta.title;
+
+    const leadEl = doc.getElementById('article-page-lead');
+    if (leadEl) leadEl.textContent = meta.summary || '';
+
+    const bodyEl = doc.getElementById('article-page-body');
+    if (bodyEl) bodyEl.innerHTML = meta.renderedHtml;
+
+    const coverImg = doc.querySelector('#article-page-cover img');
+    if (coverImg && meta.coverImage) {
+      coverImg.setAttribute('src', meta.coverImage);
+      coverImg.setAttribute('alt', meta.title);
+    }
+
+    const rawScript = doc.getElementById('post-raw-data');
+    if (rawScript) {
+      let postObj = {};
+      try { postObj = JSON.parse(rawScript.textContent || '{}'); } catch (e) {}
+      postObj.title = meta.title;
+      postObj.slug = slug;
+      postObj.category = meta.category === 'kondensat' ? 'eseje' : meta.category;
+      postObj.is_kondensat = (meta.category === 'kondensat');
+      postObj.summary = meta.summary;
+      postObj.cover_image = meta.coverImage;
+      postObj.content_markdown = meta.bodyMarkdown;
+      rawScript.textContent = JSON.stringify(postObj).replace(/<\/script>/gi, '<\\/script>');
+    }
+
+    const finalHtml = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+    await ghApiPutFile(pat, 'gh-pages', `post/${slug}/index.html`, finalHtml, `Bezposrednia aktualizacja strony wpisu ${slug} z CMS`);
+    return true;
+  }
+
+  async function publishDirectFromCms() {
+    const pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+    const statusBox = document.getElementById('direct-publish-status');
+    const btn = document.getElementById('btn-direct-api-publish');
+
+    const showStatus = (html, bg, color, border) => {
+      if (!statusBox) return;
+      statusBox.style.display = 'block';
+      statusBox.style.background = bg;
+      statusBox.style.color = color;
+      statusBox.style.border = `1px solid ${border}`;
+      statusBox.innerHTML = html;
+    };
+
+    if (!pat) {
+      toggleCmsTokenPanel(true);
+      showStatus(
+        '🔑 <strong>Wpisz najpierw Token Aktualizacji API</strong> w fioletowym panelu na górze strony i kliknij „Zapisz”. Od tej chwili wszystkie publikacje i edycje będą zapisywać się bezpośrednio bez otwierania GitHuba!',
+        'rgba(124, 58, 237, 0.08)', '#6d28d9', '#7c3aed'
+      );
+      return;
+    }
+
+    const { doc, title, slug } = buildFullMarkdownDocument();
+    const category = document.getElementById('scratch-category')?.value || 'eseje';
+    const summary = document.getElementById('scratch-summary')?.value || '';
+    const coverImage = document.getElementById('scratch-image')?.value?.trim() || '';
+    const bodyMarkdown = document.getElementById('scratch-body')?.value || '';
+    const previewContainer = document.getElementById('live-preview-content');
+    const renderedHtml = previewContainer ? previewContainer.innerHTML : simpleMarkdownToHtml(bodyMarkdown);
+
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Wysyłanie bezpośrednio na serwer...';
+    }
+    showStatus('⏳ <strong>Trwa bezpośredni zapis przez API...</strong> Aktualizacja pliku źródłowego i widoku na stronie (bez ręcznego commitu)...', 'rgba(37, 99, 235, 0.08)', '#1d4ed8', '#3b82f6');
+
+    try {
+      // 1. Save Markdown source on main
+      await ghApiPutFile(
+        pat,
+        'main',
+        `posts/${slug}.md`,
+        doc,
+        currentEditingSlug ? `Edycja wpisu ${slug} prosto z CMS` : `Publikacja nowego wpisu ${slug} prosto z CMS`
+      );
+
+      // 2. Also patch/create live HTML page on gh-pages immediately so article URL reflects changes right away
+      await patchLivePostHtmlOnGhPages(pat, slug, {
+        title,
+        category,
+        summary,
+        coverImage,
+        bodyMarkdown,
+        renderedHtml
+      });
+
+      // 3. Ensure cloud deploy workflow is installed if permitted
+      await autoInstallCloudWorkflowsIfPermitted(pat);
+
+      // 4. Update in-memory ALL_PUBLISHED_POSTS so subsequent edits in same session see latest content
+      if (Array.isArray(ALL_PUBLISHED_POSTS)) {
+        const existingIdx = ALL_PUBLISHED_POSTS.findIndex(p => p.slug === (currentEditingSlug || slug));
+        const updatedObj = {
+          title,
+          slug,
+          category: category === 'kondensat' ? 'eseje' : category,
+          is_kondensat: category === 'kondensat',
+          summary,
+          cover_image: coverImage,
+          content_markdown: bodyMarkdown
+        };
+        if (existingIdx > -1) {
+          ALL_PUBLISHED_POSTS[existingIdx] = Object.assign({}, ALL_PUBLISHED_POSTS[existingIdx], updatedObj);
+        } else {
+          ALL_PUBLISHED_POSTS.unshift(updatedObj);
+        }
+      }
+      currentEditingSlug = slug;
+
+      showStatus(
+        `✅ <strong>Zapisano i opublikowano bezpośrednio z CMS (bez ręcznego commitu)!</strong><br>` +
+        `Artykuł jest już zaktualizowany pod adresem: <a href="{{ base_url }}/post/${encodeURIComponent(slug)}/" target="_blank" style="color:#047857; font-weight:800; text-decoration:underline;">Otwórz wpis na żywo &rarr;</a>`,
+        'rgba(16, 185, 129, 0.12)', '#065f46', '#10b981'
+      );
+    } catch (err) {
+      showStatus(
+        `❌ <strong>Błąd zapisu API:</strong> ${escapeHtml(String(err.message || err))}. Kliknij „🔑 Token API” na górze, aby edytować lub sprawdzić swój token.`,
+        'rgba(239, 68, 68, 0.1)', '#991b1b', '#ef4444'
+      );
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '⚡ Zapisz i Opublikuj bezpośrednio na stronie';
+      }
+    }
   }
 
   let ghCronPollTimer = null;
@@ -3424,33 +3895,25 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     "          git push origin gh-pages --force"
   ].join("\n");
 
-  function activateGithubCloudCronOneClick() {
-    navigator.clipboard.writeText(DAILY_CRON_YML_TEMPLATE).catch(() => {});
-    const url = `https://github.com/Ireneusz1991/blog-laika/new/main?filename=.github/workflows/daily_cron.yml&value=${encodeURIComponent(DAILY_CRON_YML_TEMPLATE)}`;
-    window.open(url, '_blank');
-    setCronBanner(
-      `☁️ <strong>Otwarto gotowy plik <code>.github/workflows/daily_cron.yml</code> na GitHubie!</strong><br>` +
-      `Kliknij w nowej karcie zielony przycisk <strong>„Commit changes...”</strong> (prawy górny róg) &rarr; zatwierdź. To jednorazowa czynność (token Git w systemie Windows nie miał uprawnień <code>workflow</code>, ale przeglądarka zapisze go od razu!). Od tej chwili Chmura GitHub będzie odpalać Cron codziennie o 08:00 rano 24/7 nawet przy wyłączonym komputerze.`,
-      '#2563eb'
-    );
-    // Poll to detect when user commits the workflow file!
-    let wfChecks = 0;
-    const wfTimer = setInterval(async () => {
-      wfChecks++;
-      if (wfChecks > 36) { clearInterval(wfTimer); return; }
-      try {
-        const r = await fetch(`https://api.github.com/repos/Ireneusz1991/blog-laika/actions/workflows/daily_cron.yml?t=${Date.now()}`);
-        if (r.ok) {
-          clearInterval(wfTimer);
-          ghWorkflowInstalled = true;
-          const badge = document.getElementById('cron-live-gh-badge');
-          if (badge) badge.innerHTML = '☁️ Chmura GitHub 24/7: AKTYWNA!';
-          const btn = document.getElementById('btn-cloud-gh-cron');
-          if (btn) btn.innerHTML = '☁️ Pełny Cron w Chmurze GitHub (Przebuduj stronę)';
-          setCronBanner('🎉 <strong>Chmurowy Cron 24/7 na GitHub Actions został pomyślnie aktywowany!</strong> Możesz teraz kliknąć przycisk „☁️ Pełny Cron w Chmurze GitHub” powyżej, aby przetestować pierwszy przebieg w chmurze.', '#10b981');
-        }
-      } catch (e) {}
-    }, 5000);
+  async function activateGithubCloudCronOneClick() {
+    const pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+    if (pat) {
+      setCronBanner('⏳ <strong>Instalowanie automatycznego Crona 24/7 bezpośrednio przez Token API (bez ręcznego commitu)...</strong>', '#7c3aed');
+      const ok = await autoInstallCloudWorkflowsIfPermitted(pat);
+      if (ok) {
+        const badge = document.getElementById('cron-live-gh-badge');
+        if (badge) badge.innerHTML = '☁️ Chmura GitHub 24/7: AKTYWNA!';
+        const btn = document.getElementById('btn-cloud-gh-cron');
+        if (btn) btn.innerHTML = '☁️ Pełny Cron w Chmurze GitHub (Przebuduj stronę)';
+        setCronBanner('🎉 <strong>Chmurowy Cron 24/7 oraz automatyczne wdrażanie zostały zainstalowane bezpośrednio przez Token API (zero ręcznych commitów)!</strong>', '#10b981');
+        return;
+      }
+      setCronBanner('⚠️ <strong>Twój aktualny token nie ma zaznaczonego uprawnienia <code>workflow</code></strong> — kliknij na górze „🔑 Token API”, aby wkleić token z uprawnieniami <code>repo + workflow</code> (lub zatwierdź otwarty formularz w przeglądarce).', '#d97706');
+    } else {
+      toggleCmsTokenPanel(true);
+      setCronBanner('🔑 <strong>Wpisz na górze swój Token Aktualizacji API (uprawnienia <code>repo + workflow</code>)</strong>, a CMS sam zainstaluje i uruchomi Chmurowy Cron w tle bez robienia żadnego commitu!', '#7c3aed');
+      return;
+    }
   }
 
   async function triggerCloudOrLocalCron() {
@@ -3560,11 +4023,7 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
   }
 
   async function initCronTelemetry() {
-    // Check saved PAT indicator
-    const st = document.getElementById('gh-pat-status');
-    if (st && localStorage.getItem('blog_laika_gh_pat')) {
-      st.innerHTML = '<span style="color:#10b981; font-weight:700;">✅ Token GitHub jest aktywny w tej przeglądarce (tryb cichego 1-kliku włączony).</span>';
-    }
+    refreshCmsTokenUi();
 
     // Fetch latest live_rss_pulse.json & public GitHub workflow run telemetry
     try {
