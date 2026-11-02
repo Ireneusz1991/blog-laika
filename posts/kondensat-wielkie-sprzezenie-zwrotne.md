@@ -1,15 +1,15 @@
 ---
-title: "Kondensat I: Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu"
+title: "Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu"
 slug: "kondensat-wielkie-sprzezenie-zwrotne"
-category: "eseje"
-author: "Ireneusz Machowiec"
-summary: "Interdyscyplinarna synteza czterech węzłów współczesności: dlaczego deficyt czystej energii, drogi kapitał i wąskie gardła geopolityki zderzają się z bezcielesnymi halucynacjami cyfrowego postępu."
+category: "kondensat"
 tags: "kondensat, konglomerat, synteza, technologia, gospodarka, historia, geopolityka, systemy"
 cover_image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80"
+summary: "Interdyscyplinarna synteza czterech węzłów współczesności: dlaczego deficyt czystej energii, drogi kapitał i wąskie gardła geopolityki zderzają się z bezcielesnymi halucynacjami cyfrowego postępu."
+author: "Ireneusz Machowiec"
 featured: 1
 ---
 
-# Kondensat I: Wielkie sprzężenie zwrotne
+Wielkie sprzężenie zwrotne
 
 W świecie zatomizowanej wiedzy specjaliści żyją w odseparowanych silosach. Inżynierowie sztucznej inteligencji debatują o miliardach parametrów i architekturze transformerów; finansiści analizują krzywe rentowności obligacji i rolowanie długu publicznego; historycy wspominają lekcję blokady Kanału Sueskiego z 1956 roku; a stratedzy geopolityczni kreślą mapy wąskich gardeł w Cieśninie Malakka i na Bałtyku.
 
