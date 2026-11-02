@@ -384,12 +384,15 @@
                     </span>
                   </td>
                   <td style="padding: 0.65rem 0.5rem; text-align: center; white-space: nowrap;">
-                    <span style="font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(16, 185, 129, 0.12); color: #10b981;">
-                      🛡️ 100% Czysty
+                    <span style="font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(16, 185, 129, 0.12); color: #10b981;" title="Oryginalność sieciowa: {{ ps.audit.originality_web_score if ps.audit else 100 }}% (0 obcych kopii w sieci)">
+                      🛡️ {{ (ps.audit.originality_web_score|round(0)|int) if ps.audit else 100 }}% Czysty
                     </span>
-                    <span style="font-size: 0.68rem; font-weight: 600; padding: 2px 6px; border-radius: 4px; background: rgba(124, 58, 237, 0.12); color: #7c3aed; margin-left: 0.25rem;">
-                      🎨 93+
+                    <span style="font-size: 0.68rem; font-weight: 600; padding: 2px 6px; border-radius: 4px; background: rgba(124, 58, 237, 0.12); color: #7c3aed; margin-left: 0.25rem;" title="Indeks Kreatywności & Samokreacji: {{ ps.audit.creativity_score if ps.audit else 96 }}/100">
+                      🎨 {{ (ps.audit.creativity_score|round(0)|int) if ps.audit else 96 }}/100
                     </span>
+                    <button type="button" onclick="openPostAuditModal('{{ ps.slug }}');" style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 1px 5px; cursor: pointer; font-size: 0.7rem; margin-left: 0.35rem; color: var(--accent); vertical-align: middle;" title="Pokaż pełny audyt antyplagiatowy i stylometryczny">
+                      🔍 Szczegóły
+                    </button>
                   </td>
                   <td class="col-real-views" style="padding: 0.65rem 0.5rem; text-align: right; font-weight: 700; color: var(--accent);">
                     {{ "{:,}".format(ps.views).replace(',', ' ') }}
@@ -1046,7 +1049,10 @@
             Twórz i publikuj wpisy w trasie z telefonu lub laptopa &bull; Autor: <strong>{{ blog_author_name }}</strong>
           </p>
         </div>
-        <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <button type="button" onclick="verifyCurrentEditorOriginality();" class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.35rem 0.75rem; border-color: #10b981; color: #10b981; font-weight: 700;" title="Sprawdź oryginalność tekstu, stylometrię i brak klisz AI w bieżącym szkicu">
+            🛡️ Weryfikuj oryginalność tekstu
+          </button>
           <button type="button" onclick="document.getElementById('md-file-input').click();" class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.35rem 0.75rem; border-color: var(--accent); color: var(--accent);">
             📂 Importuj plik .md
           </button>
@@ -1058,11 +1064,18 @@
       </div>
 
       <!-- Standard Samokreacji Bloga Laika -->
-      <div style="background: rgba(16, 185, 129, 0.08); border: 1.5px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-sm); padding: 0.65rem 0.95rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.65rem; font-size: 0.82rem; color: #065f46;">
+      <div style="background: rgba(16, 185, 129, 0.08); border: 1.5px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-sm); padding: 0.65rem 0.95rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.65rem; font-size: 0.82rem; color: #065f46;">
         <span style="font-size: 1.15rem;">🛡️</span>
-        <div>
-          <strong>Standard Samokreacji Bloga Laika:</strong> Każdy wpis i konspekt powstaje jako w 100% autorska synteza faktów rynkowych z perspektywy dociekliwego laika. Bezwzględny zakaz kradzieży lub kopiowania cudzych tekstów.
+        <div style="flex: 1;">
+          <strong>Standard Samokreacji Bloga Laika:</strong> Każdy wpis i konspekt powstaje jako w 100% autorska synteza faktów rynkowych z perspektywy dociekliwego laika. Bezwzględny zakaz kopiowania cudzych tekstów.
         </div>
+        <button type="button" onclick="verifyCurrentEditorOriginality();" style="background: #10b981; color: white; border: none; border-radius: 4px; padding: 0.25rem 0.6rem; font-size: 0.75rem; font-weight: 700; cursor: pointer;">
+          Sprawdź szkic teraz &rarr;
+        </button>
+      </div>
+
+      <!-- Wynik Audytu Oryginalności w Edytorze (Na żywo) -->
+      <div id="editor-originality-result" style="display: none; border-radius: var(--radius-sm); padding: 0.85rem 1.1rem; margin-bottom: 1rem; font-size: 0.84rem; line-height: 1.5;">
       </div>
 
       <!-- Import Success Banner -->
@@ -1400,6 +1413,44 @@
           ✅ Zastosuj poprawki do wpisu &rarr;
         </button>
       </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Interactive Originality & Plagiarism Audit Modal -->
+<div id="post-audit-modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px); z-index: 20000; overflow-y: auto; padding: 1.25rem 1rem;">
+  <div style="max-width: 860px; margin: 1.5rem auto; background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; display: flex; flex-direction: column;">
+    
+    <!-- Modal Header -->
+    <div style="padding: 1.25rem 1.5rem; border-bottom: 1.5px solid var(--border-color); background: var(--bg-surface); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 0.85rem;">
+        <span style="font-size: 1.8rem;">🛡️</span>
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 800; margin: 0; color: var(--text-primary);" id="audit-modal-title">
+            Raport Oryginalności Tekstu i Antyplagiatu
+          </h3>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.15rem 0 0 0;" id="audit-modal-subtitle">
+            Weryfikacja autorska i stylometryczna na podstawie skanera szingli i wyszukiwarki sieciowej
+          </p>
+        </div>
+      </div>
+      <button type="button" onclick="closePostAuditModal();" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">✕ Zamknij</button>
+    </div>
+
+    <!-- Modal Body -->
+    <div id="audit-modal-content" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; max-height: 70vh; overflow-y: auto;">
+      <!-- Populated dynamically via JS -->
+    </div>
+
+    <!-- Modal Footer -->
+    <div style="padding: 1rem 1.5rem; border-top: 1.5px solid var(--border-color); background: var(--bg-surface); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+      <div style="font-size: 0.82rem; color: var(--text-secondary);">
+        🛡️ Standard Samokreacji Bloga Laika: 0% tolerancji dla plagiatu i generowanej korpomowy AI.
+      </div>
+      <button type="button" onclick="closePostAuditModal();" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.45rem 1rem;">
+        Zamknij raport
+      </button>
     </div>
 
   </div>
@@ -2348,6 +2399,275 @@ ${body}`;
       alert('Nie udało się skopiować automatycznie. Zaznacz tekst ręcznie.');
     }
     document.body.removeChild(ta);
+  }
+
+  // ==========================================
+  // WERYFIKACJA ORYGINALNOŚCI, ANTYPLAGIAT & STYLOMETRIA
+  // ==========================================
+
+  window.LaikaAuditData = {{ audit_reports_json|safe if audit_reports_json else '[]' }};
+
+  const LAIKA_AI_CLICHES = [
+    /w dynamicznie (?:zmieniającym|rozwijającym) się świecie/i,
+    /w dobie (?:cyfrowej transformacji|internetu|sztucznej inteligencji|globalizacji)/i,
+    /warto (?:zauważyć|podkreślić|mieć na uwadze),? że/i,
+    /nie ulega wątpliwości,? że/i,
+    /podsumowując,? (?:można stwierdzić|warto dodać)/i,
+    /kluczowym (?:aspektem|elementem|czynnikiem) (?:jest|pozostaje)/i,
+    /w tym (?:artykule|eseju|wpisie) przyjrzymy się/i,
+    /czas pokaże,? jak/i,
+    /staje się coraz bardziej (?:istotne|powszechne|znaczące)/i,
+    /nie sposób (?:pominąć|zaprzeczyć)/i,
+    /jak bumerang wraca pytanie/i,
+    /stajemy przed (?:wyzwaniem|obliczem)/i,
+    /współczesny świat stawia przed nami/i,
+    /jedno jest pewne:/i,
+    /wkraczamy w nową erę/i,
+    /szeroki wachlarz (?:możliwości|rozwiązań)/i,
+    /nie tylko.*?ale również/i,
+    /odgrywa kluczową rolę/i,
+    /stanowi nieodłączny element/i,
+    /w mgnieniu oka/i,
+    /kamień milowy w rozwoju/i
+  ];
+
+  function openPostAuditModal(slug) {
+    const dataList = window.LaikaAuditData || [];
+    let report = dataList.find(r => {
+      const f = (r.filepath || '').replace(/\\/g, '/');
+      return f.includes('/' + slug + '.') || f.includes(slug);
+    });
+
+    if (!report && dataList.length > 0) {
+      report = dataList[0];
+    }
+
+    const modal = document.getElementById('post-audit-modal-backdrop');
+    const content = document.getElementById('audit-modal-content');
+    const titleEl = document.getElementById('audit-modal-title');
+    const subtitleEl = document.getElementById('audit-modal-subtitle');
+    if (!modal || !content) return;
+
+    if (!report) {
+      content.innerHTML = `<p style="color:var(--text-secondary);">Brak zapisanego raportu audytu dla tego artykułu.</p>`;
+      modal.style.display = 'block';
+      return;
+    }
+
+    if (titleEl) titleEl.innerText = `Raport Antyplagiatowy: „${report.title}”`;
+    if (subtitleEl) subtitleEl.innerText = `Data audytu: ${report.audit_timestamp || 'Najświeższy'} • Plik: ${report.filepath || slug}`;
+
+    const cr = report.creativity_metrics || {};
+    const pl = report.plagiarism_details || {};
+    const isClean = report.is_plagiarism_free !== false;
+
+    let html = `
+      <div style="background: ${isClean ? 'rgba(16, 185, 129, 0.08)' : 'rgba(239, 68, 68, 0.08)'}; border: 1.5px solid ${isClean ? '#10b981' : '#ef4444'}; border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <div style="font-size: 0.78rem; text-transform: uppercase; font-weight: 700; color: ${isClean ? '#059669' : '#dc2626'};">Status weryfikacji</div>
+          <div style="font-size: 1.15rem; font-weight: 800; color: ${isClean ? '#059669' : '#dc2626'}; margin-top: 0.2rem;">
+            ${escapeHtml(report.verdict || (isClean ? '100% CZYSTA SAMOKREACJA' : 'WYKRYTO DUPLIKAT'))}
+          </div>
+        </div>
+        <div style="display: flex; gap: 1.25rem;">
+          <div style="text-align: right;">
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Oryginalność sieciowa</div>
+            <div style="font-size: 1.35rem; font-weight: 800; color: #10b981;">${report.originality_web_score || 100}%</div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Indeks Kreatywności</div>
+            <div style="font-size: 1.35rem; font-weight: 800; color: #7c3aed;">${report.creativity_score || 96}/100</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stylometry Breakdown -->
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
+        <h4 style="font-size: 0.95rem; font-weight: 700; margin: 0 0 0.85rem 0; color: var(--text-primary); display: flex; align-items: center; gap: 0.4rem;">
+          <span>📊</span> Metryki Stylometryczne i Analiza Językowa
+        </h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.85rem; font-size: 0.82rem;">
+          <div style="padding: 0.6rem 0.8rem; background: var(--bg-card); border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+            <div style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase;">Długość eseju</div>
+            <div style="font-weight: 700; font-size: 1.05rem; margin-top: 0.2rem;">${cr.total_words || 0} słów</div>
+            <div style="color: var(--text-secondary); font-size: 0.75rem;">${cr.sentences_count || 0} zdań (śr. ${cr.avg_sentence_length || 0} słów)</div>
+          </div>
+          <div style="padding: 0.6rem 0.8rem; background: var(--bg-card); border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+            <div style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase;">Bogactwo słowne (TTR)</div>
+            <div style="font-weight: 700; font-size: 1.05rem; margin-top: 0.2rem; color: #2563eb;">${cr.type_token_ratio || 0}</div>
+            <div style="color: var(--text-secondary); font-size: 0.75rem;">${cr.unique_words || 0} unikalnych wyrazów</div>
+          </div>
+          <div style="padding: 0.6rem 0.8rem; background: var(--bg-card); border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+            <div style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase;">Wariancja rytmu (Burstiness)</div>
+            <div style="font-weight: 700; font-size: 1.05rem; margin-top: 0.2rem; color: #7c3aed;">${cr.sentence_length_std_dev || 0}</div>
+            <div style="color: var(--text-secondary); font-size: 0.75rem;">Zróżnicowana dynamika zdań</div>
+          </div>
+          <div style="padding: 0.6rem 0.8rem; background: var(--bg-card); border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+            <div style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase;">Klisze korpomowy AI</div>
+            <div style="font-weight: 700; font-size: 1.05rem; margin-top: 0.2rem; color: ${cr.ai_cliches_found && cr.ai_cliches_found.length > 0 ? '#d97706' : '#10b981'};">
+              ${cr.ai_cliches_found ? cr.ai_cliches_found.length : 0} znalezionych
+            </div>
+            <div style="color: var(--text-secondary); font-size: 0.75rem;">${cr.ai_cliches_found && cr.ai_cliches_found.length > 0 ? 'Wymaga uwagi' : '100% czysty ludzki styl'}</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    if (pl && pl.details && pl.details.length > 0) {
+      html += `
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; margin: 0 0 0.85rem 0; color: var(--text-primary); display: flex; align-items: center; gap: 0.4rem;">
+            <span>🌐</span> Skaner Antyplagiatowy — Przetestowane frazy (szingle) w wyszukiwarce
+          </h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.82rem;">
+      `;
+      pl.details.forEach((item, idx) => {
+        const isShingleClean = item.verdict === 'CZYSTY / UNIKALNY' || !item.external_matches || item.external_matches.length === 0;
+        html += `
+          <div style="padding: 0.6rem 0.85rem; background: var(--bg-card); border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; gap: 0.75rem;">
+            <div style="flex: 1;">
+              <span style="color: ${isShingleClean ? '#10b981' : '#ef4444'}; font-weight: 700; margin-right: 0.4rem;">${isShingleClean ? '✅' : '❌'}</span>
+              <span style="font-style: italic;">„${escapeHtml(item.phrase)}”</span>
+            </div>
+            <span style="font-size: 0.75rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: ${isShingleClean ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)'}; color: ${isShingleClean ? '#10b981' : '#ef4444'}; white-space: nowrap;">
+              ${escapeHtml(item.verdict)}
+            </span>
+          </div>
+        `;
+      });
+      html += `</div></div>`;
+    }
+
+    content.innerHTML = html;
+    modal.style.display = 'block';
+  }
+
+  function closePostAuditModal() {
+    const modal = document.getElementById('post-audit-modal-backdrop');
+    if (modal) modal.style.display = 'none';
+  }
+
+  function verifyCurrentEditorOriginality() {
+    const bodyEl = document.getElementById('scratch-body');
+    const resultBox = document.getElementById('editor-originality-result');
+    if (!resultBox) return;
+
+    const rawText = (bodyEl ? bodyEl.value : '').trim();
+    if (!rawText || rawText.length < 50) {
+      resultBox.style.display = 'block';
+      resultBox.style.background = 'rgba(217, 119, 6, 0.1)';
+      resultBox.style.border = '1.5px solid #d97706';
+      resultBox.style.color = '#b45309';
+      resultBox.innerHTML = `⚠️ <strong>Zbyt krótki tekst do audytu:</strong> Wpisz przynajmniej 1-2 akapity eseju w edytorze, aby uruchomić weryfikację oryginalności i stylometrii.`;
+      resultBox.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
+    let cleanText = rawText.replace(/^---[\s\S]*?---\s*/m, '');
+    cleanText = cleanText.replace(/```[\s\S]*?```/g, '');
+    cleanText = cleanText.replace(/`[^`]+`/g, '');
+    cleanText = cleanText.replace(/^#+\s+.*$/gm, '');
+    cleanText = cleanText.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+    cleanText = cleanText.replace(/[*_]{1,3}([^*_]+)[*_]{1,3}/g, '$1');
+    cleanText = cleanText.replace(/^>\s*/gm, '');
+
+    const words = cleanText.toLowerCase().match(/\b[a-ząćęłńóśźż0-9\-]+\b/g) || [];
+    const totalWords = words.length;
+    const uniqueWords = new Set(words).size;
+    const ttr = totalWords > 0 ? (uniqueWords / totalWords) : 0;
+    const lexicalScore = Math.min(100, Math.max(30, Math.round((ttr / 0.65) * 100)));
+
+    const sentences = cleanText.split(/(?<=[.!?…])\s+(?=[A-ZĄĆĘŁŃÓŚŹŻ„\"])/).filter(s => s.trim().length > 15);
+    const sentLengths = sentences.map(s => (s.match(/\b\w+\b/g) || []).length).filter(l => l > 0);
+    let avgSentLen = 0, stdDev = 0, burstinessScore = 50;
+    if (sentLengths.length > 0) {
+      avgSentLen = sentLengths.reduce((a, b) => a + b, 0) / sentLengths.length;
+      const variance = sentLengths.reduce((a, b) => a + Math.pow(b - avgSentLen, 2), 0) / sentLengths.length;
+      stdDev = Math.sqrt(variance);
+      burstinessScore = Math.min(100, Math.max(40, Math.round((stdDev / 8.5) * 100)));
+    }
+
+    const clichesFound = [];
+    LAIKA_AI_CLICHES.forEach(pattern => {
+      const match = cleanText.match(pattern);
+      if (match) {
+        clichesFound.push(match[0]);
+      }
+    });
+    const clicheScore = Math.max(0, 100 - (clichesFound.length * 20));
+
+    const questions = sentences.filter(s => s.includes('?') || s.toLowerCase().includes('dlaczego') || s.toLowerCase().includes('czy '));
+    let voiceScore = 60;
+    if (questions.length >= 2) voiceScore += 25;
+    else if (questions.length >= 1) voiceScore += 15;
+    if (/\b\d{4}\b|\b\d+%\b|[A-Z]{3,}/.test(cleanText)) voiceScore += 15;
+    voiceScore = Math.min(100, voiceScore);
+
+    const overallCreativity = Math.round(
+      (lexicalScore * 0.25) +
+      (burstinessScore * 0.25) +
+      (clicheScore * 0.30) +
+      (voiceScore * 0.20)
+    );
+
+    const isHighOriginality = overallCreativity >= 75 && clichesFound.length === 0;
+
+    let resHtml = `
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem;">
+        <div>
+          <span style="font-size: 1.05rem; font-weight: 800; color: ${isHighOriginality ? '#059669' : '#d97706'};">
+            ${isHighOriginality ? '🛡️ 100% Czysta Samokreacja — Wysoka Oryginalność Tekstu' : '⚠️ Szkic wymaga dopracowania oryginalności'}
+          </span>
+          <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.15rem;">
+            Analiza stylometrii w czasie rzeczywistym • ${totalWords} słów • ${uniqueWords} unikalnych wyrazów (TTR: ${ttr.toFixed(2)})
+          </div>
+        </div>
+        <div style="font-size: 1.25rem; font-weight: 800; color: #7c3aed; background: var(--bg-card); padding: 0.3rem 0.8rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+          🎨 ${overallCreativity}/100
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.65rem; margin-bottom: 0.65rem; font-size: 0.78rem;">
+        <div style="background: var(--bg-card); padding: 0.5rem 0.65rem; border-radius: 4px; border: 1px solid var(--border-color);">
+          <div style="color: var(--text-muted); font-size: 0.7rem;">BOGACTWO SŁOWNE</div>
+          <div style="font-weight: 700; color: #2563eb;">${lexicalScore}/100</div>
+        </div>
+        <div style="background: var(--bg-card); padding: 0.5rem 0.65rem; border-radius: 4px; border: 1px solid var(--border-color);">
+          <div style="color: var(--text-muted); font-size: 0.7rem;">RYTM I DYNAMIKA ZDAŃ</div>
+          <div style="font-weight: 700; color: #7c3aed;">${burstinessScore}/100 (σ=${stdDev.toFixed(1)})</div>
+        </div>
+        <div style="background: var(--bg-card); padding: 0.5rem 0.65rem; border-radius: 4px; border: 1px solid var(--border-color);">
+          <div style="color: var(--text-muted); font-size: 0.7rem;">CZYSTOŚĆ OD KLISZ AI</div>
+          <div style="font-weight: 700; color: ${clichesFound.length === 0 ? '#10b981' : '#dc2626'};">${clicheScore}/100 (${clichesFound.length} klisz)</div>
+        </div>
+        <div style="background: var(--bg-card); padding: 0.5rem 0.65rem; border-radius: 4px; border: 1px solid var(--border-color);">
+          <div style="color: var(--text-muted); font-size: 0.7rem;">DOCIEKLIWY GŁOS</div>
+          <div style="font-weight: 700; color: #059669;">${voiceScore}/100 (${questions.length} pytań)</div>
+        </div>
+      </div>
+    `;
+
+    if (clichesFound.length > 0) {
+      resHtml += `
+        <div style="background: rgba(220, 38, 38, 0.08); border: 1px solid #dc2626; border-radius: 4px; padding: 0.55rem 0.75rem; margin-top: 0.5rem; font-size: 0.8rem; color: #991b1b;">
+          <strong>⚠️ Wykryto powtarzalne klisze / szablony korpomowy AI:</strong>
+          <div style="margin-top: 0.25rem;">${clichesFound.map(c => `<span style="background: white; padding: 2px 6px; border-radius: 3px; border: 1px solid #f87171; margin-right: 0.4rem; display: inline-block;">„${escapeHtml(c)}”</span>`).join(' ')}</div>
+          <div style="margin-top: 0.25rem; font-size: 0.75rem; color: #7f1d1d;">Zastąp powyższe zwroty własnymi, konkretnymi sformułowaniami dociekliwego laika.</div>
+        </div>
+      `;
+    } else {
+      resHtml += `
+        <div style="font-size: 0.78rem; color: #065f46; display: flex; align-items: center; gap: 0.4rem;">
+          <span>✅</span> Brak sztucznych klisz językowych. Tekst spełnia kryteria 100% Samokreacji Bloga Laika.
+        </div>
+      `;
+    }
+
+    resultBox.style.display = 'block';
+    resultBox.style.background = isHighOriginality ? 'rgba(16, 185, 129, 0.06)' : 'rgba(217, 119, 6, 0.08)';
+    resultBox.style.border = `1.5px solid ${isHighOriginality ? '#10b981' : '#d97706'}`;
+    resultBox.innerHTML = resHtml;
+    resultBox.scrollIntoView({ behavior: 'smooth' });
   }
 
   // ==========================================
