@@ -1170,10 +1170,10 @@
           <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.07), rgba(37, 99, 235, 0.06)); border: 2px solid #10b981; border-radius: var(--radius-sm); padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
               <strong style="display: block; font-size: 0.95rem; margin-bottom: 0.35rem; color: #059669;">
-                1. ⚡ Opublikuj / Zaktualizuj prosto z CMS (bez ręcznego commitu)
+                1. ⚡ Opublikuj / Zaktualizuj prosto z CMS (1 kliknięcie)
               </strong>
               <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.75rem; line-height: 1.5;">
-                Wysyła artykuł bezpośrednio przez Token API prosto na bloga w tle — <strong>bez otwierania kart GitHuba, bez wklejania i bez klikania „Commit changes”</strong>.
+                Publikuje artykuł od razu na całym blogu w tle — <strong>bez podawania tokenów, bez otwierania kart GitHuba i bez klikania „Commit changes”</strong>.
               </p>
               <div id="direct-publish-status" style="display: none; font-size: 0.78rem; padding: 0.45rem 0.6rem; border-radius: 6px; margin-bottom: 0.65rem; line-height: 1.4;"></div>
             </div>
@@ -1480,6 +1480,9 @@
     if (isMatch) {
       setAdminAuthenticated(remember);
       if (errAlert) errAlert.style.display = 'none';
+      if (window.LaikaDirectSync && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function') {
+        window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true }).then(() => refreshCmsTokenUi()).catch(() => {});
+      }
       renderView();
     } else {
       if (errAlert) {
@@ -1502,6 +1505,9 @@
     setAdminAuthenticated(true);
     const errAlert = document.getElementById('login-error-alert');
     if (errAlert) errAlert.style.display = 'none';
+    if (window.LaikaDirectSync && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function') {
+      window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true }).then(() => refreshCmsTokenUi()).catch(() => {});
+    }
     renderView();
   }
 
@@ -1587,6 +1593,9 @@
     const box = document.getElementById('online-editor-box');
     const btn = document.getElementById('btn-toggle-editor');
     if (box.style.display === 'none') {
+      if (window.LaikaDirectSync && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function') {
+        window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true }).then(() => refreshCmsTokenUi()).catch(() => {});
+      }
       box.style.display = 'block';
       btn.textContent = '✕ Zwiń edytor';
       box.scrollIntoView({ behavior: 'smooth' });
@@ -3155,10 +3164,13 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
   async function saveLiveManualPackageToGithub() {
     if (!LIVE_MANUAL_PACKAGE) return;
     const md = buildLivePackageMarkdown(LIVE_MANUAL_PACKAGE);
-    const pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+    let pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+    if (!pat && window.LaikaDirectSync && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function') {
+      pat = await window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true });
+    }
 
     if (pat) {
-      setCronBanner(`⏳ <strong>Zapisywanie zestawu <code>${escapeHtml(LIVE_MANUAL_PACKAGE.filename)}</code> bezpośrednio przez Token API...</strong>`, '#7c3aed');
+      setCronBanner(`⏳ <strong>Zapisywanie zestawu <code>${escapeHtml(LIVE_MANUAL_PACKAGE.filename)}</code> bezpośrednio na serwerze...</strong>`, '#7c3aed');
       try {
         await ghApiPutFile(
           pat,
@@ -3170,15 +3182,14 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
         setCronBanner(`✅ <strong>Zestaw <code>${escapeHtml(LIVE_MANUAL_PACKAGE.filename)}</code> został zapisany bezpośrednio z CMS (bez ręcznego commitu)!</strong>`, '#10b981');
         return;
       } catch (err) {
-        setCronBanner(`⚠️ <strong>Błąd zapisu przez Token API:</strong> ${escapeHtml(String(err.message || err))}. Sprawdź ustawienia Tokena powyżej.`, '#ef4444');
-        toggleCmsTokenPanel(true);
+        setCronBanner(`⚠️ <strong>Błąd zapisu:</strong> ${escapeHtml(String(err.message || err))}`, '#ef4444');
         return;
       }
     }
 
     navigator.clipboard.writeText(md).catch(() => {});
     toggleCmsTokenPanel(true);
-    setCronBanner(`🔑 <strong>Wpisz powyżej Token Aktualizacji API</strong>, aby zapisywać zestawy jednym kliknięciem bez otwierania GitHuba (lub użyj skopiowanego schowka).`, '#d97706');
+    setCronBanner(`🔑 <strong>Skopiowano zestaw do schowka.</strong>`, '#d97706');
   }
 
   async function triggerInstantBrowserCron() {
@@ -3459,8 +3470,10 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
         topBtn.style.borderColor = '#10b981';
         topBtn.style.color = '#059669';
         topBtn.style.background = 'rgba(16, 185, 129, 0.1)';
-        topBtn.innerHTML = '🟢 Token API Aktywny (Edytuj)';
+        topBtn.innerHTML = '🟢 Zapis bezpośredni aktywny';
       }
+      const panel = document.getElementById('cms-token-panel');
+      if (panel) panel.style.display = 'none';
       if (badge) {
         badge.style.background = 'rgba(16, 185, 129, 0.15)';
         badge.style.color = '#059669';
@@ -3471,22 +3484,36 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
       }
     } else {
       if (topBtn) {
-        topBtn.style.borderColor = '#7c3aed';
-        topBtn.style.color = '#6d28d9';
-        topBtn.style.background = 'rgba(124, 58, 237, 0.08)';
-        topBtn.innerHTML = '🔑 Ustaw Token Aktualizacji API';
+        topBtn.style.borderColor = '#10b981';
+        topBtn.style.color = '#059669';
+        topBtn.style.background = 'rgba(16, 185, 129, 0.08)';
+        topBtn.innerHTML = '⚡ Połącz zapis bezpośredni';
       }
       if (badge) {
         badge.style.background = 'rgba(107, 114, 128, 0.15)';
         badge.style.color = 'var(--text-secondary)';
-        badge.innerHTML = 'Brak zapisanego tokena';
+        badge.innerHTML = 'Gotowy do automatycznego połączenia';
       }
     }
   }
 
-  function toggleCmsTokenPanel(forceState) {
+  window.addEventListener('laika-token-ready', () => {
+    refreshCmsTokenUi();
+  });
+
+  async function toggleCmsTokenPanel(forceState) {
     const panel = document.getElementById('cms-token-panel');
     if (!panel) return;
+    if (typeof forceState !== 'boolean') {
+      const existingPat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+      if (!existingPat && window.LaikaDirectSync && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function') {
+        const autoTok = await window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true });
+        if (autoTok) {
+          refreshCmsTokenUi();
+          return;
+        }
+      }
+    }
     const shouldOpen = (typeof forceState === 'boolean') ? forceState : (panel.style.display === 'none');
     panel.style.display = shouldOpen ? 'block' : 'none';
     if (shouldOpen) {
@@ -3990,8 +4017,11 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
       return;
     }
 
-    // B. Cloud GitHub Actions workflow_dispatch with saved PAT (1-click silent dispatch)
-    const pat = localStorage.getItem('blog_laika_gh_pat');
+    // B. Cloud GitHub Actions workflow_dispatch (automatyczna autoryzacja przez lokalny most 127.0.0.1:8765 — zero ręcznego tokena!)
+    let pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+    if (!pat && window.LaikaDirectSync && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function') {
+      pat = await window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true });
+    }
     if (pat) {
       if (btn) { btn.disabled = true; btn.innerHTML = '☁️ Wyzwalanie GitHub Actions...'; }
       setCronBanner('☁️ <strong>Wysyłanie sygnału startu do Chmury GitHub Actions (`daily_cron.yml`)...</strong>', '#2563eb');

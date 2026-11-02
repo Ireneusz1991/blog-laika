@@ -483,6 +483,9 @@
 
   function triggerInPageEdit() {
     if (isAuthorAuthenticated()) {
+      if (window.LaikaDirectSync && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function') {
+        window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true }).then(() => refreshInpageTokenUi()).catch(() => {});
+      }
       openInPageEditorModal();
     } else {
       openInPageAuthModal();
@@ -524,6 +527,9 @@
         localStorage.setItem('blog_laika_admin_auth', 'authenticated');
         sessionStorage.setItem('blog_laika_admin_auth', 'authenticated');
       } catch(err) {}
+      if (window.LaikaDirectSync && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function') {
+        window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true }).then(() => refreshInpageTokenUi()).catch(() => {});
+      }
       closeInPageAuthModal();
       openInPageEditorModal();
     } else {
@@ -752,19 +758,35 @@ ${body}`;
       if (btn) {
         btn.style.borderColor = '#10b981';
         btn.style.color = '#059669';
-        btn.innerHTML = '🟢 Token Aktywny (Edytuj)';
+        btn.innerHTML = '🟢 Zapis bezpośredni aktywny';
       }
+      const bar = document.getElementById('inpage-token-bar');
+      if (bar) bar.style.display = 'none';
       if (inp && document.activeElement !== inp) inp.value = pat;
     } else if (btn) {
-      btn.style.borderColor = '#7c3aed';
-      btn.style.color = '#6d28d9';
-      btn.innerHTML = '🔑 Ustaw Token Aktualizacji';
+      btn.style.borderColor = '#10b981';
+      btn.style.color = '#059669';
+      btn.innerHTML = '⚡ Połącz zapis bezpośredni';
     }
   }
 
-  function toggleInpageTokenBar(forceOpen) {
+  window.addEventListener('laika-token-ready', () => {
+    refreshInpageTokenUi();
+  });
+
+  async function toggleInpageTokenBar(forceOpen) {
     const bar = document.getElementById('inpage-token-bar');
     if (!bar) return;
+    if (typeof forceOpen !== 'boolean') {
+      const existingPat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+      if (!existingPat && window.LaikaDirectSync && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function') {
+        const autoTok = await window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true });
+        if (autoTok) {
+          refreshInpageTokenUi();
+          return;
+        }
+      }
+    }
     const open = (typeof forceOpen === 'boolean') ? forceOpen : (bar.style.display === 'none');
     bar.style.display = open ? 'block' : 'none';
     if (open) {

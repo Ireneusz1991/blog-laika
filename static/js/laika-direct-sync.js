@@ -200,16 +200,127 @@
     return new TextDecoder('utf-8').decode(bytes);
   }
 
+  const BRIDGE_BASE_URL = 'http://127.0.0.1:8765';
+  let _autoTokenPromise = null;
+
   function getToken() {
-    try { return (localStorage.getItem(PAT_STORAGE_KEY) || '').trim(); } catch (e) { return ''; }
+    try {
+      const t = (localStorage.getItem(PAT_STORAGE_KEY) || '').trim();
+      if (!t || t.length < 20 || ['laik2026', 'laika2026', 'admin2026', 'admin', 'laik', 'laika'].includes(t.toLowerCase())) {
+        return '';
+      }
+      return t;
+    } catch (e) {
+      return '';
+    }
   }
 
   function setToken(val) {
-    try { localStorage.setItem(PAT_STORAGE_KEY, String(val || '').trim()); } catch (e) {}
+    try {
+      const clean = String(val || '').trim();
+      if (clean && clean.length >= 20) {
+        localStorage.setItem(PAT_STORAGE_KEY, clean);
+        window.dispatchEvent(new CustomEvent('laika-token-ready', { detail: { token: clean } }));
+      }
+    } catch (e) {}
   }
 
   function clearToken() {
     try { localStorage.removeItem(PAT_STORAGE_KEY); } catch (e) {}
+  }
+
+  /**
+   * Automatyczne pobranie autoryzacji z lokalnego Mostu Publikacji (127.0.0.1:8765)
+   * bez konieczności ręcznego wpisywania lub generowania tokenów przez autora.
+   */
+  async function obtainTokenAutomatically(opts) {
+    const options = opts || {};
+    const allowPopup = options.allowPopup !== false;
+    const forceRefresh = Boolean(options.forceRefresh);
+
+    if (!forceRefresh) {
+      const existing = getToken();
+      if (existing) return existing;
+    }
+
+    if (_autoTokenPromise) return _autoTokenPromise;
+
+    _autoTokenPromise = (async () => {
+      // Krok 1: szybka próba cichego połączenia HTTP (działa na localhost oraz przy aktywnym LNA)
+      try {
+        const ctrl = new AbortController();
+        const tid = setTimeout(() => ctrl.abort(), 700);
+        const r = await fetch(`${BRIDGE_BASE_URL}/api/bridge/session`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Laika-Client': 'blog-laika-cms'
+          },
+          body: JSON.stringify({ auth: 'laik2026' }),
+          signal: ctrl.signal
+        });
+        clearTimeout(tid);
+        if (r.ok) {
+          const d = await r.json();
+          if (d && d.token && d.token.length >= 20) {
+            setToken(d.token);
+            return d.token;
+          }
+        }
+      } catch (e) {}
+
+      // Krok 2: 80-milisekundowy top-level handshake przez postMessage (omija blokadę Chrome LNA na https://blog-laika.com)
+      if (!allowPopup || typeof window === 'undefined' || typeof window.open !== 'function') {
+        return getToken();
+      }
+
+      return await new Promise((resolve) => {
+        let settled = false;
+        let popupWin = null;
+        const finish = (tok) => {
+          if (settled) return;
+          settled = true;
+          window.removeEventListener('message', onBridgeMsg);
+          try { if (popupWin && !popupWin.closed) popupWin.close(); } catch (e) {}
+          resolve(tok || '');
+        };
+
+        const timer = setTimeout(() => finish(getToken()), 3800);
+
+        function onBridgeMsg(ev) {
+          if (ev.origin !== BRIDGE_BASE_URL) return;
+          if (ev.data && ev.data.type === 'LAIKA_BRIDGE_AUTO_TOKEN') {
+            clearTimeout(timer);
+            const received = String(ev.data.token || '').trim();
+            if (received && received.length >= 20) {
+              setToken(received);
+              finish(received);
+            } else {
+              finish('');
+            }
+          }
+        }
+
+        window.addEventListener('message', onBridgeMsg);
+        try {
+          const connectUrl = `${BRIDGE_BASE_URL}/connect?origin=${encodeURIComponent(window.location.origin)}`;
+          popupWin = window.open(connectUrl, 'laika_auto_bridge', 'width=360,height=200,left=80,top=80');
+          if (!popupWin) {
+            clearTimeout(timer);
+            finish(getToken());
+          }
+        } catch (err) {
+          clearTimeout(timer);
+          finish(getToken());
+        }
+      });
+    })();
+
+    try {
+      return await _autoTokenPromise;
+    } finally {
+      _autoTokenPromise = null;
+    }
   }
 
   async function verifyToken(candidate) {
@@ -712,58 +823,82 @@
       return { mode: 'local', renderedHtml, readTime, publicCategory: pubCat, publicCategoryName: CATEGORY_NAMES[pubCat] || 'Inne eseje' };
     }
 
-    // 2. Tryb zdalny na blog-laika.com (atomowy zapis w tle przez Token Aktualizacji)
-    const pat = getToken();
+    // 2. Tryb zdalny na blog-laika.com (automatyczna autoryzacja przez lokalny most 127.0.0.1:8765 — zero ręcznych tokenów!)
+    let pat = getToken();
+    if (!pat) {
+      notify('⚡ Automatyczne łączenie z serwisem publikacji (bez podawania tokena)...');
+      pat = await obtainTokenAutomatically({ allowPopup: true });
+    }
     if (!pat) {
       const err = new Error('MISSING_TOKEN');
       err.code = 'MISSING_TOKEN';
       throw err;
     }
 
-    notify('⏳ Synchronizacja pliku źródłowego wpisu w tle...');
-    await putSingleFile(pat, 'main', `posts/${meta.slug}.md`, meta.markdownDoc, `Aktualizacja wpisu ${meta.slug}`);
+    const executeCloudPublish = async (activePat) => {
+      notify('⏳ Synchronizacja pliku źródłowego wpisu w tle...');
+      await putSingleFile(activePat, 'main', `posts/${meta.slug}.md`, meta.markdownDoc, `Aktualizacja wpisu ${meta.slug}`);
 
-    notify('⏳ Pobieranie bieżących widoków strony do atomowej aktualizacji...');
-    const oldPubCat = meta.oldCategory === 'kondensat' ? 'eseje' : (meta.oldCategory || pubCat);
+      notify('⏳ Pobieranie bieżących widoków strony do atomowej aktualizacji...');
+      const oldPubCat = meta.oldCategory === 'kondensat' ? 'eseje' : (meta.oldCategory || pubCat);
 
-    const [postFile, indexFile, catFile, oldCatFile, searchFile] = await Promise.all([
-      getFileText(pat, 'gh-pages', `post/${meta.slug}/index.html`),
-      getFileText(pat, 'gh-pages', 'index.html'),
-      getFileText(pat, 'gh-pages', `kategoria/${pubCat}/index.html`),
-      (oldPubCat && oldPubCat !== pubCat) ? getFileText(pat, 'gh-pages', `kategoria/${oldPubCat}/index.html`) : Promise.resolve(null),
-      getFileText(pat, 'gh-pages', 'search-index.json')
-    ]);
+      const [postFile, indexFile, catFile, oldCatFile, searchFile] = await Promise.all([
+        getFileText(activePat, 'gh-pages', `post/${meta.slug}/index.html`),
+        getFileText(activePat, 'gh-pages', 'index.html'),
+        getFileText(activePat, 'gh-pages', `kategoria/${pubCat}/index.html`),
+        (oldPubCat && oldPubCat !== pubCat) ? getFileText(activePat, 'gh-pages', `kategoria/${oldPubCat}/index.html`) : Promise.resolve(null),
+        getFileText(activePat, 'gh-pages', 'search-index.json')
+      ]);
 
-    let basePostHtml = postFile ? postFile.text : null;
-    if (!basePostHtml) {
-      const tplPost = await getFileText(pat, 'gh-pages', 'post/pochwala-dociekliwego-laika/index.html');
-      if (tplPost) basePostHtml = tplPost.text;
-    }
+      let basePostHtml = postFile ? postFile.text : null;
+      if (!basePostHtml) {
+        const tplPost = await getFileText(activePat, 'gh-pages', 'post/pochwala-dociekliwego-laika/index.html');
+        if (tplPost) basePostHtml = tplPost.text;
+      }
 
-    const filesToCommit = {};
-    if (basePostHtml) {
-      filesToCommit[`post/${meta.slug}/index.html`] = patchPostPageHtml(basePostHtml, meta);
-    }
-    if (indexFile && indexFile.text) {
-      filesToCommit['index.html'] = patchHomepageHtml(indexFile.text, meta);
-    }
-    if (catFile && catFile.text) {
-      filesToCommit[`kategoria/${pubCat}/index.html`] = patchCategoryPageHtml(catFile.text, meta, true);
-    }
-    if (oldCatFile && oldCatFile.text && oldPubCat !== pubCat) {
-      filesToCommit[`kategoria/${oldPubCat}/index.html`] = patchCategoryPageHtml(oldCatFile.text, meta, false);
-    }
-    if (searchFile && searchFile.text) {
-      filesToCommit['search-index.json'] = patchSearchIndex(searchFile.text, meta);
-    }
+      const filesToCommit = {};
+      if (basePostHtml) {
+        filesToCommit[`post/${meta.slug}/index.html`] = patchPostPageHtml(basePostHtml, meta);
+      }
+      if (indexFile && indexFile.text) {
+        filesToCommit['index.html'] = patchHomepageHtml(indexFile.text, meta);
+      }
+      if (catFile && catFile.text) {
+        filesToCommit[`kategoria/${pubCat}/index.html`] = patchCategoryPageHtml(catFile.text, meta, true);
+      }
+      if (oldCatFile && oldCatFile.text && oldPubCat !== pubCat) {
+        filesToCommit[`kategoria/${oldPubCat}/index.html`] = patchCategoryPageHtml(oldCatFile.text, meta, false);
+      }
+      if (searchFile && searchFile.text) {
+        filesToCommit['search-index.json'] = patchSearchIndex(searchFile.text, meta);
+      }
 
-    notify('⏳ Publikowanie zmian we wszystkich sekcjach bloga (wpis, strona główna, kategoria, wyszukiwarka)...');
-    const commitSha = await commitMultipleFilesAtomically(
-      pat,
-      'gh-pages',
-      filesToCommit,
-      `Aktualizacja artykulu na zywo: ${meta.title}`
-    );
+      notify('⏳ Publikowanie zmian we wszystkich sekcjach bloga (wpis, strona główna, kategoria, wyszukiwarka)...');
+      return await commitMultipleFilesAtomically(
+        activePat,
+        'gh-pages',
+        filesToCommit,
+        `Aktualizacja artykulu na zywo: ${meta.title}`
+      );
+    };
+
+    let commitSha = '';
+    try {
+      commitSha = await executeCloudPublish(pat);
+    } catch (firstErr) {
+      const msg = String(firstErr && firstErr.message ? firstErr.message : firstErr);
+      if (msg.includes('HTTP 401') || msg.includes('HTTP 403')) {
+        clearToken();
+        const refreshedPat = await obtainTokenAutomatically({ allowPopup: true, forceRefresh: true });
+        if (refreshedPat) {
+          commitSha = await executeCloudPublish(refreshedPat);
+        } else {
+          throw firstErr;
+        }
+      } else {
+        throw firstErr;
+      }
+    }
 
     rememberRecentEdit(meta);
 
@@ -954,10 +1089,16 @@
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', hydrateLiveDomFromRecentEdits);
-  } else {
+  function initDirectSyncOnLoad() {
     hydrateLiveDomFromRecentEdits();
+    // Spróbuj cichej synchronizacji w tle bez otwierania okien
+    obtainTokenAutomatically({ allowPopup: false }).catch(() => {});
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDirectSyncOnLoad);
+  } else {
+    initDirectSyncOnLoad();
   }
 
   window.LaikaDirectSync = {
@@ -967,6 +1108,7 @@
     setToken,
     clearToken,
     verifyToken,
+    obtainTokenAutomatically,
     getRecentEdit,
     saveArticleEverywhere
   };
