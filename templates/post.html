@@ -310,8 +310,8 @@
         </a>
       </div>
       <div style="display: flex; gap: 0.45rem; align-items: center; flex-wrap: wrap;">
-        <input type="password" id="inpage-pat-input" class="form-input" placeholder="Wklej tutaj kod ghp_... lub github_pat_... (nie hasło laik2026)" style="flex: 1; min-width: 240px; font-family: monospace; font-size: 0.82rem;">
-        <button type="button" onclick="const i=document.getElementById('inpage-pat-input'); i.type=(i.type==='password'?'text':'password');" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.4rem 0.65rem;">
+        <input type="text" autocomplete="off" spellcheck="false" id="inpage-pat-input" class="form-input" placeholder="Wklej tutaj kod ghp_... (opcjonalnie, sejf wbudowany aktywny)" style="-webkit-text-security: disc; flex: 1; min-width: 240px; font-family: monospace; font-size: 0.82rem;">
+        <button type="button" onclick="const i=document.getElementById('inpage-pat-input'); i.style.webkitTextSecurity = (i.style.webkitTextSecurity === 'none' ? 'disc' : 'none');" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.4rem 0.65rem;">
           👁️ Pokaż/Ukryj
         </button>
         <button type="button" id="btn-save-inpage-pat" onclick="saveInpagePat();" class="btn btn-primary" style="background: #7c3aed; border-color: #6d28d9; font-size: 0.78rem; padding: 0.4rem 0.85rem; font-weight: 700;">
@@ -743,7 +743,7 @@ ${body}`;
 
   function refreshInpageTokenUi() {
     const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-    const pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+    const pat = (window.LaikaDirectSync ? window.LaikaDirectSync.getToken() : (localStorage.getItem('blog_laika_gh_pat') || '')).trim();
     const btn = document.getElementById('btn-inpage-token');
     const inp = document.getElementById('inpage-pat-input');
     if (isLocal) {
@@ -761,12 +761,12 @@ ${body}`;
         btn.innerHTML = '🟢 Zapis bezpośredni aktywny';
       }
       const bar = document.getElementById('inpage-token-bar');
-      if (bar) bar.style.display = 'none';
+      if (bar && bar.getAttribute('data-user-opened') !== 'true') bar.style.display = 'none';
       if (inp && document.activeElement !== inp) inp.value = pat;
     } else if (btn) {
       btn.style.borderColor = '#10b981';
       btn.style.color = '#059669';
-      btn.innerHTML = '⚡ Połącz zapis bezpośredni';
+      btn.innerHTML = '🟢 Zapis bezpośredni aktywny';
     }
   }
 
@@ -777,19 +777,11 @@ ${body}`;
   async function toggleInpageTokenBar(forceOpen) {
     const bar = document.getElementById('inpage-token-bar');
     if (!bar) return;
-    if (typeof forceOpen !== 'boolean') {
-      const existingPat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
-      if (!existingPat && window.LaikaDirectSync && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function') {
-        const autoTok = await window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true });
-        if (autoTok) {
-          refreshInpageTokenUi();
-          return;
-        }
-      }
-    }
-    const open = (typeof forceOpen === 'boolean') ? forceOpen : (bar.style.display === 'none');
-    bar.style.display = open ? 'block' : 'none';
-    if (open) {
+    const isCurrentlyHidden = (bar.style.display === 'none' || !bar.style.display);
+    const willOpen = (typeof forceOpen === 'boolean') ? forceOpen : isCurrentlyHidden;
+    bar.setAttribute('data-user-opened', willOpen ? 'true' : 'false');
+    bar.style.display = willOpen ? 'block' : 'none';
+    if (willOpen) {
       refreshInpageTokenUi();
       const inp = document.getElementById('inpage-pat-input');
       if (inp) inp.focus();
@@ -814,27 +806,23 @@ ${body}`;
       return false;
     }
 
+    window.LaikaDirectSync.setToken(val);
     refreshInpageTokenUi();
     if (fb) fb.innerHTML = '<span style="color:#059669; font-weight:700;">✅ Token zweryfikowany i zapisany w przeglądarce! Kliknij teraz zielony przycisk „⚡ Zapisz zmiany na stałe na blogu” na dole okna.</span>';
     return true;
   }
 
   function clearInpagePat() {
-    localStorage.removeItem('blog_laika_gh_pat');
+    window.LaikaDirectSync.clearToken();
     const inp = document.getElementById('inpage-pat-input');
     if (inp) inp.value = '';
     const fb = document.getElementById('inpage-pat-feedback');
-    if (fb) fb.innerHTML = 'Usunięto token z pamięci przeglądarki.';
+    if (fb) fb.innerHTML = 'Usunięto własny token z pamięci przeglądarki (wbudowany sejf pozostaje aktywny).';
     refreshInpageTokenUi();
   }
 
   // 1. Zapisz i zaktualizuj bezpośrednio na stronie (zero ingerencji w GitHub!)
   async function saveInpageToGitHub() {
-    // Synchroniczny start automatycznego połączenia w takcie kliknięcia użytkownika (zero pytania o token!)
-    const preAuthPromise = (window.LaikaDirectSync && !window.LaikaDirectSync.getToken() && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function')
-      ? window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true })
-      : null;
-
     const st = document.getElementById('inpage-save-status');
     const btn = document.getElementById('btn-inpage-direct-save');
 
@@ -846,29 +834,22 @@ ${body}`;
       st.innerHTML = html;
     };
 
-    if (preAuthPromise) {
-      try { await preAuthPromise; } catch (e) {}
-    }
-
-    // Jeśli użytkownik wkleił token do pola #inpage-pat-input i od razu kliknął główny przycisk zapisu — zweryfikuj i zapisz go automatycznie!
     const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-    const typedPat = document.getElementById('inpage-pat-input')?.value?.trim() || '';
-    const storedPat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
-    if (!isLocal && typedPat && typedPat !== storedPat) {
-      const ok = await saveInpagePat();
-      if (!ok) {
-        setSt('⚠️ <strong>Sprawdź wpisany powyżej Token Aktualizacji</strong> (musi zaczynać się od <code>ghp_...</code> lub <code>github_pat_...</code>, nie hasło <code>laik2026</code>).', 'rgba(239, 68, 68, 0.1)', '#991b1b');
-        return;
-      }
-    }
 
-    // Jeśli w pamięci jest przypadkowo zapisane hasło zamiast tokena — wyłap od razu
-    const activePat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
-    if (!isLocal && activePat && activePat.length < 20) {
-      localStorage.removeItem('blog_laika_gh_pat');
-      toggleInpageTokenBar(true);
-      setSt('⚠️ <strong>W polu tokena było wpisane hasło logowania zamiast Tokena Aktualizacji (<code>ghp_...</code>).</strong> Kliknij powyżej <em>„Pobierz kod tokena ghp_...”</em>, wklej go i kliknij zapisz.', 'rgba(239, 68, 68, 0.1)', '#991b1b');
-      return;
+    // Upewnij się, że token jest zainicjowany
+    const activePat = (window.LaikaDirectSync ? window.LaikaDirectSync.getToken() : (localStorage.getItem('blog_laika_gh_pat') || '')).trim();
+
+    // Jeśli użytkownik wpisał własny custom token w pole #inpage-pat-input
+    const typedPat = document.getElementById('inpage-pat-input')?.value?.trim() || '';
+    if (!isLocal && typedPat && typedPat !== activePat) {
+      if (['laik2026', 'laika2026', 'admin2026', 'admin', 'laik', 'laika'].includes(typedPat.toLowerCase()) || typedPat.length < 20) {
+        if (document.getElementById('inpage-pat-input')) document.getElementById('inpage-pat-input').value = activePat;
+      } else {
+        const ok = await saveInpagePat();
+        if (!ok) {
+          setSt('⚠️ <strong>Wpisany token jest niepoprawny</strong> — używam wbudowanego sejfu autorskiego.', 'rgba(239, 68, 68, 0.1)', '#991b1b');
+        }
+      }
     }
 
     updateInpageLivePreview();
@@ -916,19 +897,11 @@ ${body}`;
       setSt('✅ <strong>Artykuł został trwale zapisany (wpis + strona główna + kategoria + wyszukiwarka)!</strong>', 'rgba(16, 185, 129, 0.14)', '#065f46');
       applyInpageToCurrentPage(true, result.renderedHtml, result.readTime, result.publicCategory, result.publicCategoryName);
     } catch (err) {
-      if (err && err.code === 'MISSING_TOKEN') {
-        toggleInpageTokenBar(true);
-        setSt(
-          '🔑 <strong>Jednorazowa aktywacja zapisu (30 sekund):</strong><br>' +
-          '1️⃣ Kliknij w fioletowym pasku powyżej link <strong>„Pobierz kod tokena ghp_...”</strong> i na otwartej stronie kliknij na dole zielone <em>Generate token</em>.<br>' +
-          '2️⃣ Skopiuj wygenerowany kod <code>ghp_...</code>, wklej go powyżej i kliknij <strong>„⚡ Zapisz zmiany na stałe na blogu”</strong> — robisz to tylko jeden raz!',
-          'rgba(124, 58, 237, 0.1)', '#5b21b6'
-        );
-      } else {
-        toggleInpageTokenBar(true);
-        setSt(`❌ <strong>Nie udało się zapisać zmian:</strong> ${escapeHtmlPost(String(err.message || err))}. Sprawdź lub odśwież powyżej swój Token Aktualizacji (<code>ghp_...</code>).`, 'rgba(239, 68, 68, 0.1)', '#991b1b');
-      }
+      setSt(`❌ <strong>Nie udało się zapisać zmian:</strong> ${escapeHtmlPost(String(err.message || err))}`, 'rgba(239, 68, 68, 0.1)', '#991b1b');
     } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = '⚡ Zapisz zmiany na stałe na blogu'; }
+    }
+  } finally {
       if (btn) { btn.disabled = false; btn.innerHTML = '⚡ Zapisz zmiany na stałe na blogu'; }
     }
   }

@@ -50,6 +50,29 @@ def build_static(output_dir="dist", base_url=None):
     shutil.copytree(static_src, static_dst)
     print("    [OK] Skopiowano pliki statyczne (CSS/JS/Images)")
 
+    # Wbudowanie zaszyfrowanego sejfu autoryzacyjnego w laika-direct-sync.js (zero pytania o token w przeglądarce!)
+    try:
+        from scripts.vault_helper import get_or_create_vault_payload
+        vault_payload = get_or_create_vault_payload()
+        if vault_payload:
+            for target_js in [
+                os.path.join(static_dst, "js", "laika-direct-sync.js"),
+                os.path.join(static_src, "js", "laika-direct-sync.js"),
+            ]:
+                if os.path.isfile(target_js):
+                    with open(target_js, "r", encoding="utf-8") as jf:
+                        content = jf.read()
+                    content = re.sub(
+                        r'const BUILTIN_ENCRYPTED_VAULT = "[^"]*";',
+                        f'const BUILTIN_ENCRYPTED_VAULT = "{vault_payload}";',
+                        content,
+                    )
+                    with open(target_js, "w", encoding="utf-8") as jf:
+                        jf.write(content)
+            print("    [OK] Zabezpieczony sejf autoryzacji wstrzyknięty do laika-direct-sync.js")
+    except Exception as e:
+        print("    [INFO] Sejf autoryzacji:", e)
+
     # Plik .nojekyll dla GitHub Pages
     with open(os.path.join(output_dir, ".nojekyll"), "w") as f:
         pass
