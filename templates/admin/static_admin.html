@@ -3781,6 +3781,11 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
   }
 
   async function publishDirectFromCms() {
+    // Synchroniczny start automatycznego połączenia w takcie kliknięcia użytkownika (zero pytania o token!)
+    const preAuthPromise = (window.LaikaDirectSync && !window.LaikaDirectSync.getToken() && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function')
+      ? window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true })
+      : null;
+
     const statusBox = document.getElementById('direct-publish-status');
     const btn = document.getElementById('btn-direct-api-publish');
 
@@ -3813,6 +3818,9 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     showStatus('⏳ <strong>Trwa bezpośrednia aktualizacja całego bloga...</strong>', 'rgba(37, 99, 235, 0.08)', '#1d4ed8', '#3b82f6');
 
     try {
+      if (preAuthPromise) {
+        try { await preAuthPromise; } catch (e) {}
+      }
       // Jeśli użytkownik wkleił nowy token w pole #cms-pat-input i od razu kliknął Zapisz poniżej — zweryfikuj go i zapisz automatycznie!
       const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
       const typedPat = (document.getElementById('cms-pat-input')?.value || '').trim();

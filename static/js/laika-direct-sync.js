@@ -232,95 +232,95 @@
   /**
    * Automatyczne pobranie autoryzacji z lokalnego Mostu Publikacji (127.0.0.1:8765)
    * bez konieczności ręcznego wpisywania lub generowania tokenów przez autora.
+   * UWAGA: Dla domen HTTPS window.open() MUSI wykonać się synchronicznie w pierwszym takcie
+   * kliknięcia użytkownika (przed jakimkolwiek await!), aby przeglądarka zachowała userActivation!
    */
-  async function obtainTokenAutomatically(opts) {
+  function obtainTokenAutomatically(opts) {
     const options = opts || {};
     const allowPopup = options.allowPopup !== false;
     const forceRefresh = Boolean(options.forceRefresh);
 
     if (!forceRefresh) {
       const existing = getToken();
-      if (existing) return existing;
+      if (existing) return Promise.resolve(existing);
+    }
+
+    const isHttpOrigin = (typeof window !== 'undefined' && window.location && window.location.protocol === 'http:');
+
+    // Na HTTP (localhost) wystarczy cichy fetch bez okienka
+    if (isHttpOrigin || !allowPopup) {
+      return (async () => {
+        try {
+          const ctrl = new AbortController();
+          const tid = setTimeout(() => ctrl.abort(), 700);
+          const r = await fetch(`${BRIDGE_BASE_URL}/api/bridge/session`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Laika-Client': 'blog-laika-cms'
+            },
+            body: JSON.stringify({ auth: 'laik2026' }),
+            signal: ctrl.signal
+          });
+          clearTimeout(tid);
+          if (r.ok) {
+            const d = await r.json();
+            if (d && d.token && d.token.length >= 20) {
+              setToken(d.token);
+              return d.token;
+            }
+          }
+        } catch (e) {}
+        return getToken();
+      })();
     }
 
     if (_autoTokenPromise) return _autoTokenPromise;
 
-    _autoTokenPromise = (async () => {
-      // Krok 1: szybka próba cichego połączenia HTTP (działa na localhost oraz przy aktywnym LNA)
-      try {
-        const ctrl = new AbortController();
-        const tid = setTimeout(() => ctrl.abort(), 700);
-        const r = await fetch(`${BRIDGE_BASE_URL}/api/bridge/session`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Laika-Client': 'blog-laika-cms'
-          },
-          body: JSON.stringify({ auth: 'laik2026' }),
-          signal: ctrl.signal
-        });
-        clearTimeout(tid);
-        if (r.ok) {
-          const d = await r.json();
-          if (d && d.token && d.token.length >= 20) {
-            setToken(d.token);
-            return d.token;
+    // Na HTTPS (https://blog-laika.com): synchroniczny start window.open() w takcie gestu kliknięcia!
+    let popupWin = null;
+    try {
+      const connectUrl = `${BRIDGE_BASE_URL}/connect?origin=${encodeURIComponent(window.location.origin)}`;
+      popupWin = window.open(connectUrl, 'laika_auto_bridge', 'width=360,height=200,left=80,top=80');
+    } catch (err) {
+      popupWin = null;
+    }
+
+    if (!popupWin) {
+      return Promise.resolve(getToken());
+    }
+
+    _autoTokenPromise = new Promise((resolve) => {
+      let settled = false;
+      const finish = (tok) => {
+        if (settled) return;
+        settled = true;
+        _autoTokenPromise = null;
+        window.removeEventListener('message', onBridgeMsg);
+        try { if (popupWin && !popupWin.closed) popupWin.close(); } catch (e) {}
+        resolve(tok || '');
+      };
+
+      const timer = setTimeout(() => finish(getToken()), 4000);
+
+      function onBridgeMsg(ev) {
+        if (ev.origin !== BRIDGE_BASE_URL) return;
+        if (ev.data && ev.data.type === 'LAIKA_BRIDGE_AUTO_TOKEN') {
+          clearTimeout(timer);
+          const received = String(ev.data.token || '').trim();
+          if (received && received.length >= 20) {
+            setToken(received);
+            finish(received);
+          } else {
+            finish('');
           }
         }
-      } catch (e) {}
-
-      // Krok 2: 80-milisekundowy top-level handshake przez postMessage (omija blokadę Chrome LNA na https://blog-laika.com)
-      if (!allowPopup || typeof window === 'undefined' || typeof window.open !== 'function') {
-        return getToken();
       }
 
-      return await new Promise((resolve) => {
-        let settled = false;
-        let popupWin = null;
-        const finish = (tok) => {
-          if (settled) return;
-          settled = true;
-          window.removeEventListener('message', onBridgeMsg);
-          try { if (popupWin && !popupWin.closed) popupWin.close(); } catch (e) {}
-          resolve(tok || '');
-        };
+      window.addEventListener('message', onBridgeMsg);
+    });
 
-        const timer = setTimeout(() => finish(getToken()), 3800);
-
-        function onBridgeMsg(ev) {
-          if (ev.origin !== BRIDGE_BASE_URL) return;
-          if (ev.data && ev.data.type === 'LAIKA_BRIDGE_AUTO_TOKEN') {
-            clearTimeout(timer);
-            const received = String(ev.data.token || '').trim();
-            if (received && received.length >= 20) {
-              setToken(received);
-              finish(received);
-            } else {
-              finish('');
-            }
-          }
-        }
-
-        window.addEventListener('message', onBridgeMsg);
-        try {
-          const connectUrl = `${BRIDGE_BASE_URL}/connect?origin=${encodeURIComponent(window.location.origin)}`;
-          popupWin = window.open(connectUrl, 'laika_auto_bridge', 'width=360,height=200,left=80,top=80');
-          if (!popupWin) {
-            clearTimeout(timer);
-            finish(getToken());
-          }
-        } catch (err) {
-          clearTimeout(timer);
-          finish(getToken());
-        }
-      });
-    })();
-
-    try {
-      return await _autoTokenPromise;
-    } finally {
-      _autoTokenPromise = null;
-    }
+    return _autoTokenPromise;
   }
 
   async function verifyToken(candidate) {

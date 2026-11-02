@@ -830,6 +830,11 @@ ${body}`;
 
   // 1. Zapisz i zaktualizuj bezpośrednio na stronie (zero ingerencji w GitHub!)
   async function saveInpageToGitHub() {
+    // Synchroniczny start automatycznego połączenia w takcie kliknięcia użytkownika (zero pytania o token!)
+    const preAuthPromise = (window.LaikaDirectSync && !window.LaikaDirectSync.getToken() && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function')
+      ? window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true })
+      : null;
+
     const st = document.getElementById('inpage-save-status');
     const btn = document.getElementById('btn-inpage-direct-save');
 
@@ -840,6 +845,10 @@ ${body}`;
       st.style.color = col;
       st.innerHTML = html;
     };
+
+    if (preAuthPromise) {
+      try { await preAuthPromise; } catch (e) {}
+    }
 
     // Jeśli użytkownik wkleił token do pola #inpage-pat-input i od razu kliknął główny przycisk zapisu — zweryfikuj i zapisz go automatycznie!
     const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
