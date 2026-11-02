@@ -30,3 +30,16 @@ Krytycy, tacy jak Emily Bender czy Timnit Gebru, ukuły termin **„stochastyczn
 Z drugiej strony zwolennicy koncepcji *world models* (modeli świata) argumentują, że aby wiarygodnie przewidzieć kolejne słowo w złożonych tekstach opisujących fizykę, szachy czy emocje, sieć **musi wewnętrznie zbudować uproszczoną reprezentację rzeczywistości**.
 
 Niezależnie od definicji świadomości, jedno jest pewne: granica między „mechanicznym powtarzaniem” a „twórczym syntetyzowaniem” została bezpowrotnie zatarta.
+
+---
+
+## Źródła
+
+### 1. Publikacje naukowe i artykuły bazowe
+1. **Ashish Vaswani, Noam Shazeer, Niki Parmar et al. (Google Brain / Google Research)** — [*Attention Is All You Need* (NeurIPS 2017)](https://arxiv.org/abs/1706.03762) — oryginalna publikacja wprowadzająca architekturę Transformer.
+2. **Emily M. Bender, Timnit Gebru, Angelina McMillan-Major, Shmargaret Shmitchell** — [*On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?* (FAccT 2021)](https://doi.org/10.1145/3442188.3445922) — krytyczna analiza ograniczeń wielkich modeli językowych.
+3. **Ilya Sutskever / OpenAI** — dyskusje i publikacje dotyczące kompresji informacji oraz wyłaniania się wewnętrznych modeli świata (*world models*).
+
+### 2. Powiązane eseje na Blogu Laika
+- [Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu](/post/wielkie-sprzezenie-zwrotne/)
+- [Pochwała dociekliwego laika: Dlaczego w epoce wąskich specjalizacji najbardziej potrzebujemy spojrzenia z zewnątrz](/post/pochwala-dociekliwego-laika/)

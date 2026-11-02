@@ -31,3 +31,16 @@ Największe innowacje rzadko powstają w samym centrum ugruntowanej branży; naj
 Być dociekliwym laikiem nie oznacza ignorancji. Wręcz przeciwnie – oznacza to pokorę wobec złożoności świata połączoną z odmową biernej konsumpcji gotowych haseł. Oznacza gotowość do czytania pierwotnych raportów zamiast nagłówków w mediach społecznościowych, do sprawdzania liczb w oficjalnych statystykach i do konfrontowania sprzecznych punktów widzenia.
 
 W świecie zalanym płytką sensacją, umiejętność zatrzymania się i zadania jednego rzetelnego pytania: *„Zaraz, jak to naprawdę działa?”* – staje się najcenniejszą formą intelektualnej suwerenności.
+
+---
+
+## Źródła
+
+### 1. Literatura i filozofia nauki
+1. **Richard P. Feynman** — [*The Pleasure of Finding Things Out* (1999)](https://www.basicbooks.com/titles/richard-p-feynman/the-pleasure-of-finding-things-out/9780465023950/) — o odwadze wątpienia, zadawaniu prostych pytań i różnicy między znajomością nazwy a rozumieniem zjawiska.
+2. **Karl Popper** — [*The Logic of Scientific Discovery* (1959)](https://www.routledge.com/The-Logic-of-Scientific-Discovery/Popper/p/book/9780415278447) — o falsyfikacji, krytycznym racjonalizmie i unikaniu dogmatyzmu poznawczego.
+3. **Charlie Munger** — [*Poor Charlie's Almanack*](https://www.poorcharliesalmanack.com/) — idea modeli myślowych (*latticework of mental models*) oraz interdyscyplinarnego łączenia faktów.
+
+### 2. Powiązane eseje na Blogu Laika
+- [Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu](/post/wielkie-sprzezenie-zwrotne/)
+- [Architektura uwagi: Czy modele AI naprawdę myślą, czy tylko bezbłędnie zgadują?](/post/architektura-uwagi-czy-ai-mysli/)

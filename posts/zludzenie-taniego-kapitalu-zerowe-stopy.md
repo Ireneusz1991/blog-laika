@@ -28,3 +28,19 @@ Gdy cena pieniądza (czyli stopa procentowa) wynosi zero, tradycyjna selekcja ry
 Kiedy w latach 2021-2023 powróciła wysoka inflacja wymuszająca gwałtowne podwyżki stóp, wielu uczestników rynku przeżyło szok poznawczy. Okazało się, że projekty rentowne tylko przy stopie 0% przestają mieć sens przy stopie 5%.
 
 Prawdziwym wyzwaniem kolejnej dekady nie będzie wyłącznie walka ze wskaźnikiem CPI, lecz odnalezienie równowagi w świecie, w którym kapitał znów ma swoją cenę.
+
+---
+
+## Źródła
+
+### 1. Raporty i dane instytucjonalne
+1. **Bank for International Settlements (BIS)** — [*Annual Economic Reports*](https://www.bis.org/publ/arpdf/ar2023e.htm) — analizy zjawiska „firm zombie” i alokacji kapitału w warunkach ultra-niskich stóp procentowych.
+2. **Federal Reserve Bank of St. Louis (FRED)** — [*Historical Interest Rates and Quantitative Easing*](https://fred.stlouisfed.org/) — szeregi czasowe stóp referencyjnych i bilansów banków centralnych.
+3. **Claudio Borio (BIS)** — [*Monetary policy and financial stability: what have we learned?*](https://www.bis.org/speeches/sp140417.htm)
+
+### 2. Klasyczna teoria ekonomiczna
+- **Friedrich August von Hayek:** [*Prices and Production* (1931)](https://mises.org/library/prices-and-production) — teoria zaburzeń struktury produkcji i zniekształceń kalkulacji gospodarczej wywołanych sztucznym obniżaniem stóp procentowych.
+
+### 3. Powiązane eseje na Blogu Laika
+- [Rachunek bez iluzji: Złoto po przecenie, półprzewodniki, „krótko” na WIG20... Oto typy na listopad](/post/rachunek-bez-iluzji-zloto-po-przecenie-polprzewodniki-krotko-na-wig20-oto-typy-na-listopad/)
+- [Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu](/post/wielkie-sprzezenie-zwrotne/)

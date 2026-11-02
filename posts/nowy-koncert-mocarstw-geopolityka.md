@@ -28,3 +28,16 @@ Globalizacja nie zlikwidowała rywalizacji mocarstw – przekształciła jedynie
 Nie mamy do czynienia z prostym cofnięciem się do XIX wieku, lecz z procesem określanym jako **de-risking** i **friendshoring**. Państwa nie rezygnują z handlu międzynarodowego, lecz przenoszą kluczowe węzły produkcyjne do sojuszników politycznych.
 
 Świat staje się bardziej podzielony, droższy i bardziej nieprzewidywalny. Dla laika obserwującego te procesy płynie z tego jedna kluczowa lekcja: **nigdy nie bierz stabilności za pewnik**.
+
+---
+
+## Źródła
+
+### 1. Literatura i opracowania geopolityczne
+1. **Henry Farrell & Abraham L. Newman** — [*Weaponized Interdependence: How Global Economic Networks Shape State Coercion* (International Security, MIT Press)](https://direct.mit.edu/isec/article/44/1/42/12237/Weaponized-Interdependence-How-Global-Economic) — klasyczna teoria wykorzystania węzłów globalnej sieci jako narzędzi przymusu geopolitycznego.
+2. **Francis Fukuyama** — [*The End of History and the Last Man* (1992)](https://www.simonandschuster.com/books/The-End-of-History-and-the-Last-Man/Francis-Fukuyama/9780743284554)
+3. **European Council on Foreign Relations (ECFR)** — [*Geopolitics of supply chains and European de-risking*](https://ecfr.eu/)
+
+### 2. Powiązane eseje na Blogu Laika
+- [Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu](/post/wielkie-sprzezenie-zwrotne/)
+- [Anatomia kryzysu sueskiego 1956: Dzień, w którym Europa zrozumiała, że nie jest już centrum świata](/post/kryzys-sueski-1956-lekcja-historii/)

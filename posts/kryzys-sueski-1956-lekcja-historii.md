@@ -32,3 +32,16 @@ Dla dociekliwego obserwatora historii kryzys sueski to nie zakurzony podręcznik
 - **Wąskie gardła geograficzne**: Cieśniny, kanały żeglugowe i rurociągi są od wieków tym samym – punktami nacisku, w których lokalny konflikt może sparaliżować gospodarki oddalone o tysiące kilometrów.
 
 Lekcja z 1956 roku brzmi chłodno: armia bez suwerenności finansowej i energetycznej jest tylko kosztowną dekoracją.
+
+---
+
+## Źródła
+
+### 1. Archiwa i monografie historyczne
+1. **James M. Boughton (International Monetary Fund)** — [*Northwest of Suez: The 1956 Crisis and the IMF* (IMF Working Paper)](https://www.imf.org/en/Publications/WP/Issues/2016/12/30/Northwest-of-Suez-The-1956-Crisis-and-the-IMF-3949) — szczegółowe studium finansowego mechanizmu nacisku na Bank Anglii i kurs funta.
+2. **The National Archives (UK)** — [*Cabinet Papers: The Suez Crisis of 1956*](https://www.nationalarchives.gov.uk/cabinetpapers/themes/suez-crisis.htm) — odtajnione protokoły posiedzeń brytyjskiego gabinetu Anthony’ego Edena.
+3. **Diane B. Kunz** — [*The Economic Diplomacy of the Suez Crisis* (University of North Carolina Press)](https://uncpress.org/book/9780807819678/the-economic-diplomacy-of-the-suez-crisis/) — analiza współzależności między rynkiem naftowym a rezerwami walutowymi.
+
+### 2. Powiązane eseje na Blogu Laika
+- [Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu](/post/wielkie-sprzezenie-zwrotne/)
+- [Nowy koncert mocarstw: Od wolnego handlu do geopolitycznej autarkii](/post/nowy-koncert-mocarstw-geopolityka/)
