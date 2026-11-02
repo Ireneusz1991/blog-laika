@@ -274,12 +274,12 @@
     <div class="section-header">
       <h2 class="section-title">Katalog wpisów</h2>
       <span class="section-count" style="font-size: 0.88rem; color: var(--text-muted);">
-        Łącznie: {{ posts|length }} wpisy
+        Łącznie: {{ (all_posts if all_posts else posts)|length }} wpisów
       </span>
     </div>
 
     <div class="posts-grid">
-      {% for post in posts %}
+      {% for post in (all_posts if all_posts else posts) %}
       <article class="post-card" id="post-card-{{ post.slug }}">
         {% if post.cover_image %}
         <a href="{{ base_url }}/post/{{ post.slug }}">

@@ -225,7 +225,7 @@ def get_posts(category: Optional[str] = None, status: str = "published",
         query += " AND tags LIKE ?"
         params.append(f"%{tag}%")
         
-    query += " ORDER BY featured DESC, created_at DESC LIMIT ? OFFSET ?"
+    query += " ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?"
     params.extend([limit, offset])
     
     cursor.execute(query, params)
@@ -249,11 +249,9 @@ def search_posts(keyword: str, limit: int = 20) -> List[Dict[str, Any]]:
 def get_featured_post() -> Optional[Dict[str, Any]]:
     conn = get_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM posts WHERE status = 'published' AND featured = 1 ORDER BY created_at DESC LIMIT 1")
+    # Najnowszy opublikowany artykuł jest zawsze artykułem czołowym (Lead Hero Article) na samej górze strony głównej
+    cursor.execute("SELECT * FROM posts WHERE status = 'published' ORDER BY created_at DESC, id DESC LIMIT 1")
     row = cursor.fetchone()
-    if not row:
-        cursor.execute("SELECT * FROM posts WHERE status = 'published' ORDER BY created_at DESC LIMIT 1")
-        row = cursor.fetchone()
     conn.close()
     return dict(row) if row else None
 
@@ -594,7 +592,7 @@ def sync_markdown_files(posts_dir: str = None):
             cursor.execute("UPDATE analytics_events SET post_slug = ? WHERE post_slug = ?", (slug, legacy_slug))
             cursor.execute("DELETE FROM posts WHERE id = ?", (existing_legacy["id"],))
 
-        cursor.execute("SELECT id, featured FROM posts WHERE slug = ?", (slug,))
+        cursor.execute("SELECT id, featured, created_at FROM posts WHERE slug = ?", (slug,))
         row = cursor.fetchone()
         if "featured" in meta:
             featured = 1 if str(meta.get("featured", "0")).lower() in ("1", "true", "yes") else 0
@@ -605,16 +603,30 @@ def sync_markdown_files(posts_dir: str = None):
         read_time = calculate_read_time(body)
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+        # Pobierz lub odtwórz datę publikacji z metadanych frontmatter
+        post_date = meta.get("date") or meta.get("created_at")
+        if post_date:
+            try:
+                date_clean = str(post_date).strip()
+                if len(date_clean) == 10:
+                    created_at = f"{date_clean} 12:00:00"
+                else:
+                    created_at = date_clean[:19]
+            except Exception:
+                created_at = now
+        else:
+            created_at = (row["created_at"] if row else None) or now
+
         if row:
             cursor.execute("""
                 UPDATE posts SET title = ?, summary = ?, content_markdown = ?, content_html = ?,
-                category = ?, tags = ?, cover_image = ?, status = ?, featured = ?, read_time = ?, updated_at = ?
+                category = ?, tags = ?, cover_image = ?, status = ?, featured = ?, read_time = ?, created_at = ?, updated_at = ?
                 WHERE id = ?
-            """, (title, summary, body, content_html, category, tags, cover_image, status, featured, read_time, now, row["id"]))
+            """, (title, summary, body, content_html, category, tags, cover_image, status, featured, read_time, created_at, now, row["id"]))
         else:
             cursor.execute("""
                 INSERT INTO posts (title, slug, summary, content_markdown, content_html, category, tags, cover_image, status, featured, read_time, created_at, updated_at)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (title, slug, summary, body, content_html, category, tags, cover_image, status, featured, read_time, now, now))
+            """, (title, slug, summary, body, content_html, category, tags, cover_image, status, featured, read_time, created_at, now))
     conn.commit()
     conn.close()

@@ -565,10 +565,137 @@
       });
     });
 
-    // Jeśli to zupełnie nowy artykuł jeszcze nieobecny na stronie głównej -> dodaj do Najnowszych i Katalogu
-    if (!foundAny) {
-      const sidebarList = doc.querySelector('.sidebar-articles-list');
-      if (sidebarList) {
+    // 2. NAJNOWSZY ARTYKUŁ ZAWSZE TRAFIA NA SAM POCZĄTEK STRONY GŁÓWNEJ (LEAD HERO ARTICLE)
+    const heroArticle = doc.querySelector('.editorial-hero-article');
+    const heroTitleLink = heroArticle ? heroArticle.querySelector('h1 a') : null;
+    const heroHref = heroTitleLink ? (heroTitleLink.getAttribute('href') || '').replace(/\/+$/, '') : '';
+    const isAlreadyLead = heroHref === `/post/${slug}` || heroHref.endsWith(`/post/${slug}`);
+
+    // Jeśli ten artykuł jest nowy lub nie był dotąd artykułem czołowym — staje się nim natychmiast!
+    if (!isAlreadyLead && heroArticle) {
+      const oldSlugMatch = heroHref.match(/\/post\/([^\/\?#]+)/);
+      const oldSlug = oldSlugMatch ? oldSlugMatch[1] : '';
+      const oldTitle = heroTitleLink ? heroTitleLink.textContent.trim() : '';
+      const oldCatEl = doc.querySelector('.editorial-meta-bar .editorial-label-cat');
+      const oldCatName = oldCatEl ? oldCatEl.textContent.trim() : 'Inne eseje';
+      const oldCatSlug = Object.keys(CATEGORY_NAMES).find(k => CATEGORY_NAMES[k] === oldCatName) || 'eseje';
+      const oldExcerptEl = heroArticle.querySelector('.editorial-hero-excerpt');
+      const oldSummary = oldExcerptEl ? oldExcerptEl.textContent.trim() : '';
+      const oldProseEl = heroArticle.querySelector('.editorial-full-prose');
+      const oldProseHtml = oldProseEl ? oldProseEl.innerHTML : '';
+      const oldReadTimeEl = heroArticle.querySelector('.byline-read-time');
+      const oldReadTime = oldReadTimeEl ? oldReadTimeEl.textContent.trim() : '⏱️ 4 min czytania';
+
+      const subgrid = doc.querySelector('.editorial-subgrid-2col');
+      if (subgrid && oldSlug && oldTitle) {
+        subgrid.querySelectorAll('article').forEach(sc => {
+          if (String(sc.id || '').endsWith(oldSlug)) sc.remove();
+        });
+        const subCard = doc.createElement('article');
+        subCard.className = 'editorial-sub-card sub-card-left';
+        subCard.id = `post-sub-${oldSlug}`;
+        subCard.innerHTML = `
+          <div class="editorial-sub-meta">
+            <a href="/kategoria/${escapeHtml(oldCatSlug)}" class="editorial-cat-tag">${escapeHtml(oldCatName)}</a>
+            <span class="editorial-read-min">${escapeHtml(oldReadTime.replace(' czytania', ''))}</span>
+          </div>
+          <h3 class="editorial-sub-title">
+            <a href="/post/${escapeHtml(oldSlug)}">${escapeHtml(oldTitle)}</a>
+          </h3>
+          <div class="editorial-author-byline">
+            <span class="byline-author-name">Autor artykułu: Ireneusz Machowiec</span>
+          </div>
+          <p class="editorial-sub-excerpt excerpt-preview">${escapeHtml(oldSummary)}</p>
+          <div class="full-content" style="display: none;">
+            <div class="editorial-full-prose">${oldProseHtml}</div>
+            <div style="margin: 0.85rem 0 0.5rem 0;">
+              <a href="/post/${escapeHtml(oldSlug)}" style="font-size: 0.82rem; font-weight: 700; color: var(--accent); text-decoration: none;">Przejdź do pełnej treści wpisu &rarr;</a>
+            </div>
+          </div>
+          <div class="sub-card-actions" style="margin-top: 0.75rem; display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn-sub-expand btn-toggle-expand" onclick="togglePostExpand('post-sub-${escapeHtml(oldSlug)}', this)" aria-expanded="false">
+              <span class="btn-label-expand">Czytaj więcej &darr;</span>
+              <span class="btn-label-collapse" style="display: none;">Zwiń wpis &uarr;</span>
+            </button>
+            <a href="/post/${escapeHtml(oldSlug)}" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: none;">Otwórz wpis &rarr;</a>
+            <a href="/post/${escapeHtml(oldSlug)}/?edit=1" class="admin-quick-edit-link" style="display: none; font-size: 0.8rem; color: var(--accent); text-decoration: underline; font-weight: 600;">✏️ Edytuj na stronie</a>
+          </div>`;
+        subgrid.insertBefore(subCard, subgrid.firstChild);
+
+        const subCards = subgrid.querySelectorAll('article.editorial-sub-card');
+        const extraStream = doc.querySelector('#extra-articles-stream .editorial-subgrid-2col');
+        if (subCards.length > 2 && extraStream) {
+          for (let i = 2; i < subCards.length; i++) {
+            extraStream.insertBefore(subCards[i], extraStream.firstChild);
+          }
+        }
+      }
+
+      // Wstaw nowy artykuł na SAM POCZĄTEK (Lead Hero)
+      const metaBarCat = doc.querySelector('.editorial-meta-bar .editorial-label-cat');
+      if (metaBarCat) metaBarCat.textContent = pubCatName;
+      const metaBarDate = doc.querySelector('.editorial-meta-bar .editorial-date-issue');
+      if (metaBarDate) metaBarDate.textContent = meta.createdDatePl || 'Dzisiaj';
+
+      heroArticle.id = `post-lead-${slug}`;
+      if (heroTitleLink) {
+        heroTitleLink.textContent = meta.title;
+        heroTitleLink.setAttribute('href', `/post/${slug}`);
+      }
+
+      let imgWrap = heroArticle.querySelector('.editorial-hero-image-wrap');
+      if (meta.coverImage) {
+        if (!imgWrap) {
+          imgWrap = doc.createElement('div');
+          imgWrap.className = 'editorial-hero-image-wrap';
+          heroArticle.insertBefore(imgWrap, heroArticle.querySelector('.editorial-hero-body'));
+        }
+        imgWrap.innerHTML = `<a href="/post/${escapeHtml(slug)}"><img src="${escapeHtml(meta.coverImage)}" alt="${escapeHtml(meta.title)}" class="editorial-hero-image"></a>`;
+      } else if (imgWrap) {
+        imgWrap.remove();
+      }
+
+      const heroExcerpt = heroArticle.querySelector('.editorial-hero-excerpt');
+      if (heroExcerpt) heroExcerpt.textContent = meta.summary || '';
+
+      const heroProse = heroArticle.querySelector('.editorial-full-prose');
+      if (heroProse) heroProse.innerHTML = meta.renderedHtml;
+
+      const heroReadTime = heroArticle.querySelector('.byline-read-time');
+      if (heroReadTime) heroReadTime.textContent = `⏱️ ${meta.readTime} min czytania`;
+
+      heroArticle.querySelectorAll('a').forEach(a => {
+        const ah = a.getAttribute('href') || '';
+        if (ah.includes('/post/')) {
+          if (ah.includes('?edit=1')) {
+            a.setAttribute('href', `/post/${slug}/?edit=1`);
+          } else {
+            a.setAttribute('href', `/post/${slug}`);
+          }
+        }
+      });
+
+      const expandBtn = heroArticle.querySelector('.btn-toggle-expand');
+      if (expandBtn) expandBtn.setAttribute('onclick', `togglePostExpand('post-lead-${slug}', this)`);
+
+      if (subgrid) {
+        subgrid.querySelectorAll('article').forEach(sc => {
+          if (String(sc.id || '').endsWith(slug)) sc.remove();
+        });
+      }
+    }
+
+    // 3. Dodaj lub przesuń na 1. miejsce w bocznym pasku (.sidebar-articles-list)
+    const sidebarList = doc.querySelector('.sidebar-articles-list');
+    if (sidebarList) {
+      let existingSidebarItem = null;
+      sidebarList.querySelectorAll('article').forEach(it => {
+        const a = it.querySelector('h3 a');
+        if (a && ((a.getAttribute('href') || '').includes(`/post/${slug}`))) existingSidebarItem = it;
+      });
+      if (existingSidebarItem) {
+        sidebarList.insertBefore(existingSidebarItem, sidebarList.firstChild);
+      } else {
         const item = doc.createElement('article');
         item.className = 'sidebar-article-item';
         item.innerHTML = `
@@ -583,8 +710,15 @@
           </div>`;
         sidebarList.insertBefore(item, sidebarList.firstChild);
       }
-      const catalogGrid = doc.querySelector('#katalog-publikacji .posts-grid');
-      if (catalogGrid) {
+    }
+
+    // 4. Dodaj lub przesuń na 1. miejsce w katalogu publikacji (#katalog-publikacji .posts-grid)
+    const catalogGrid = doc.querySelector('#katalog-publikacji .posts-grid');
+    if (catalogGrid) {
+      let existingCatCard = doc.getElementById(`post-card-${slug}`);
+      if (existingCatCard) {
+        catalogGrid.insertBefore(existingCatCard, catalogGrid.firstChild);
+      } else {
         const card = doc.createElement('article');
         card.className = 'post-card';
         card.id = `post-card-${slug}`;

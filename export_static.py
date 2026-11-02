@@ -155,12 +155,9 @@ def build_static(output_dir="dist", base_url=None):
     raw_posts = database.get_posts(limit=100)
     posts = [enrich_post(p) for p in raw_posts]
 
-    featured = database.get_featured_post()
-    if featured:
-        featured = enrich_post(featured)
-        feed_posts = [p for p in posts if p["id"] != featured["id"]]
-    else:
-        feed_posts = posts
+    # Najnowszy artykuł zawsze trafia na początek strony głównej (jako artykuł czołowy / Lead Hero Article)
+    featured = posts[0] if posts else None
+    feed_posts = posts[1:] if len(posts) > 1 else []
 
     # 1. Strona główna (index.html)
     ctx = get_common_context()
@@ -168,6 +165,7 @@ def build_static(output_dir="dist", base_url=None):
     ctx["posts"] = feed_posts
     ctx["feed_posts"] = feed_posts
     ctx["featured_post"] = featured
+    ctx["all_posts"] = posts
     ctx["current_category"] = None
     ctx["canonical_url"] = f"{site_domain}{base_url}/"
     home_tmpl = env.get_template("index.html")
