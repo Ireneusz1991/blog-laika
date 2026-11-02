@@ -88,7 +88,11 @@ def build_static(output_dir="dist", base_url=None):
         if not p:
             return p
         raw_cat = p.get("category", "")
-        is_kond = raw_cat == "kondensat" or "kondensat" in p.get("title", "").lower()
+        is_kond = (
+            raw_cat == "kondensat"
+            or "kondensat" in p.get("title", "").lower()
+            or "kondensat" in p.get("slug", "").lower()
+        )
         p["is_kondensat"] = is_kond
         
         # Na publicznej stronie kondensaty należą do 'eseje' (Inne eseje) bez osobnego oznaczenia

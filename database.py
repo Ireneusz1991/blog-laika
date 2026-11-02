@@ -204,8 +204,11 @@ def get_posts(category: Optional[str] = None, status: str = "published",
         params.append(status)
         
     if category:
-        query += " AND category = ?"
-        params.append(category)
+        if category == "eseje":
+            query += " AND category IN ('eseje', 'kondensat')"
+        else:
+            query += " AND category = ?"
+            params.append(category)
         
     if tag:
         query += " AND tags LIKE ?"
