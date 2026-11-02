@@ -553,6 +553,42 @@
       "category": "kondensat",
       "title": "Kondensat (1 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
       "url": ""
+    },
+    {
+      "date": "2026-11-02",
+      "category": "technologia",
+      "title": "Architektura technologii czy kosztowna moda? Chłodny audyt trendu (Seabirds racing home over the ocean can get jet-lagged)",
+      "url": "https://arstechnica.com/science/2026/10/seabirds-racing-home-over-the-ocean-can-get-jet-lagged/"
+    },
+    {
+      "date": "2026-11-02",
+      "category": "gospodarka",
+      "title": "Rachunek bez iluzji: Złoto po przecenie, półprzewodniki, „krótko” na WIG20... Oto typy na listopad",
+      "url": "https://www.bankier.pl/wiadomosc/Zloto-po-przecenie-polprzewodniki-krotko-na-WIG20-Oto-typy-na-listopad-9221893.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci"
+    },
+    {
+      "date": "2026-11-02",
+      "category": "historia",
+      "title": "Mechanizmy dziejów: 90 lat temu BBC rozpoczęła nadawanie regularnego programu telewizyjnego",
+      "url": "https://dzieje.pl/wiadomosci/90-lat-temu-bbc-rozpoczela-nadawanie-regularnego-programu-telewizyjnego"
+    },
+    {
+      "date": "2026-11-02",
+      "category": "polityka",
+      "title": "Realpolitik bez retuszu: Wojna wchodzi do łóżka. Jak zmienia się seks, ciało i bliskość w Ukrainie",
+      "url": "https://krytykapolityczna.pl/swiat/wojna-seks-cialo-bliskosc-ukraina-puto-lachowski/"
+    },
+    {
+      "date": "2026-11-02",
+      "category": "eseje",
+      "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Open Thread 458)",
+      "url": "https://www.astralcodexten.com/p/open-thread-458"
+    },
+    {
+      "date": "2026-11-02",
+      "category": "kondensat",
+      "title": "Kondensat (2 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
+      "url": ""
     }
   ],
   "seen_rss_urls": {
@@ -605,7 +641,32 @@
       "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Your Book Review: The History And Adventures Of An Atom)",
       "seen_date": "2026-11-01",
       "category": "eseje"
+    },
+    "https://arstechnica.com/science/2026/10/seabirds-racing-home-over-the-ocean-can-get-jet-lagged/": {
+      "title": "Architektura technologii czy kosztowna moda? Chłodny audyt trendu (Seabirds racing home over the ocean can get jet-lagged)",
+      "seen_date": "2026-11-02",
+      "category": "technologia"
+    },
+    "https://www.bankier.pl/wiadomosc/Zloto-po-przecenie-polprzewodniki-krotko-na-WIG20-Oto-typy-na-listopad-9221893.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci": {
+      "title": "Rachunek bez iluzji: Złoto po przecenie, półprzewodniki, „krótko” na WIG20... Oto typy na listopad",
+      "seen_date": "2026-11-02",
+      "category": "gospodarka"
+    },
+    "https://dzieje.pl/wiadomosci/90-lat-temu-bbc-rozpoczela-nadawanie-regularnego-programu-telewizyjnego": {
+      "title": "Mechanizmy dziejów: 90 lat temu BBC rozpoczęła nadawanie regularnego programu telewizyjnego",
+      "seen_date": "2026-11-02",
+      "category": "historia"
+    },
+    "https://krytykapolityczna.pl/swiat/wojna-seks-cialo-bliskosc-ukraina-puto-lachowski/": {
+      "title": "Realpolitik bez retuszu: Wojna wchodzi do łóżka. Jak zmienia się seks, ciało i bliskość w Ukrainie",
+      "seen_date": "2026-11-02",
+      "category": "polityka"
+    },
+    "https://www.astralcodexten.com/p/open-thread-458": {
+      "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Open Thread 458)",
+      "seen_date": "2026-11-02",
+      "category": "eseje"
     }
   },
-  "last_updated": "2026-11-01T21:59:50.291890"
+  "last_updated": "2026-11-02T08:00:26.101264"
 }

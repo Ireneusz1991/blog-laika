@@ -1,11 +1,11 @@
 {
-  "last_run_iso": "2026-11-01T21:59:39.598544+01:00",
-  "last_run_pl": "1 listopada 2026 r., godz. 21:59:39",
-  "last_run_date": "2026-11-01",
+  "last_run_iso": "2026-11-02T08:00:16.096740+01:00",
+  "last_run_pl": "2 listopada 2026 r., godz. 08:00:16",
+  "last_run_date": "2026-11-02",
   "trigger_label": "Windows Backup Cron",
   "feeds_checked": 39,
   "feeds_online": 30,
-  "total_items_scraped": 295,
+  "total_items_scraped": 294,
   "generated_topics_count": 6,
   "live_wire": [
     {
@@ -39,35 +39,35 @@
       "category": "technologia",
       "source_name": "Hacker News (Y Combinator)",
       "source_flag": "🇺🇸",
-      "title": "Nurses Sound Alarm as 'Uber for Nursing' Apps Push to Deregulate Healthcare",
-      "link": "https://nurse.org/news/uber-for-nursing-gig-apps-report/",
-      "summary": "Article URL: https://nurse.org/news/uber-for-nursing-gig-apps-report/ Comments URL: https://news.ycombinator.com/item?id=50328487 Points: 112 # Comments: 109",
+      "title": "OccupySaaS",
+      "link": "https://occupysaas.com/",
+      "summary": "Article URL: https://occupysaas.com/ Comments URL: https://news.ycombinator.com/item?id=50331402 Points: 181 # Comments: 123",
       "is_pl": false
     },
     {
       "category": "technologia",
       "source_name": "LessWrong",
       "source_flag": "🇺🇸",
-      "title": "A Taxonomy of Agency",
-      "link": "https://www.lesswrong.com/posts/EfvG2LqhvoeuhqGTy/a-taxonomy-of-agency",
-      "summary": "Epistemic status: a rough write-up of a taxonomy of agency I developed during my PIBBSS fellowship this summer. A few people have since asked me to write it up, so this is mainly so I have something to point to; it is ex",
+      "title": "Meal prep that works for me",
+      "link": "https://www.lesswrong.com/posts/qaGkWDinqfJbPREZt/meal-prep-that-works-for-me",
+      "summary": "I've always been somewhat disappointed in myself for not having \"figured out\" meal prep. \"You're 33 years old\", my inner critic will say. \"Meal prep isn't complicated. There are a million resources available online. You'",
       "is_pl": false
     },
     {
       "category": "gospodarka",
       "source_name": "8000 (Osiem tysięcy / osiemtysiecy.pl)",
       "source_flag": "🇵🇱",
-      "title": "Czy RPP zdecyduje się na zmianę stóp procentowych? Listopadowa decyzja poparta nową projekcją inflacyjną",
-      "link": "https://www.bankier.pl/wiadomosc/Czy-RPP-zdecyduje-sie-na-zmiane-stop-procentowych-Listopadowa-decyzja-poparta-nowa-projekcja-inflacyjna-9221238.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
-      "summary": "Początek listopada przyniesie decyzję Rady Polityki Pieniężnej i tradycyjną konferencję prezesa Adama Glapińskiego, a także wysyp wyników finansowych z warszawskiego parkietu z PKO BP, Orlenem i Dino na czele. Globalne n",
+      "title": "Złoto po przecenie, półprzewodniki, „krótko” na WIG20... Oto typy na listopad",
+      "link": "https://www.bankier.pl/wiadomosc/Zloto-po-przecenie-polprzewodniki-krotko-na-WIG20-Oto-typy-na-listopad-9221893.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "summary": "Komitet Bankiera łapie „spadające noże” na rynku złota i srebra, Marcin Materna i Michał Krajczewski stawiają na półprzewodniki, a Piotr Kuczyński otwiera krótką pozycję na WIG20. Inni uczestnicy Portfela Gwiazd pozostaj",
       "is_pl": true
     },
     {
       "category": "gospodarka",
       "source_name": "Investing.com",
       "source_flag": "🌍",
-      "title": "Raymond James obniża cenę docelową akcji Oil States",
-      "link": "https://pl.investing.com/news/analyst-ratings/raymond-james-obniza-cene-docelowa-akcji-oil-states-93CH-1628658",
+      "title": "Citizens obniża ocenę akcji Hilton Grand Vacations z powodu słabej sprzedaży",
+      "link": "https://pl.investing.com/news/analyst-ratings/citizens-obniza-ocene-akcji-hilton-grand-vacations-z-powodu-slabej-sprzedazy-93CH-1628809",
       "summary": "",
       "is_pl": true
     },
@@ -93,9 +93,9 @@
       "category": "gospodarka",
       "source_name": "The Financial Times (FT)",
       "source_flag": "🇬🇧",
-      "title": "Junk debt rout sparks ‘bloodbath’ for credit investors",
-      "link": "https://www.ft.com/content/fdc9a85d-d2c4-465f-99ca-609d68b6d443?syn-25a6b1a6=1",
-      "summary": "Aggressive tactics to shift assets beyond reach of creditors have added fuel to sell-off",
+      "title": "Trump makes final pitch to restive voters in midterms campaign",
+      "link": "https://www.ft.com/content/75e8405b-124f-44aa-9c5e-0a33d0ee5b92?syn-25a6b1a6=1",
+      "summary": "Republican Party is defending its control of Congress against signs of backlash against president",
       "is_pl": false
     },
     {
@@ -111,9 +111,9 @@
       "category": "historia",
       "source_name": "Dzieje.pl (PAP & Muzeum Historii Polski)",
       "source_flag": "🇵🇱",
-      "title": "We Wszystkich Świętych i Zaduszki zacierała się granica między światem żywych i zmarłych",
-      "link": "https://dzieje.pl/wiadomosci/we-wszystkich-swietych-i-zaduszki-zacierala-sie-granica-miedzy-swiatem-zywych-i-zmarlych",
-      "summary": "Zostawianie jedzenia duszom zmarłych, pieczenie chlebów dla żebraków i gesty pojednania składały się na obchody Wszystkich Świętych i Zaduszek w tradycji ludowej. Według dawnych wierzeń w te dni zacierała się granica mię",
+      "title": "90 lat temu BBC rozpoczęła nadawanie regularnego programu telewizyjnego",
+      "link": "https://dzieje.pl/wiadomosci/90-lat-temu-bbc-rozpoczela-nadawanie-regularnego-programu-telewizyjnego",
+      "summary": "2 listopada 1936 r. BBC rozpoczęła nadawanie regularnego programu telewizyjnego w wysokiej rozdzielczości. W pierwszym programie znalazły się przemówienia urzędników i występ gwiazdy musicalowej Adele Dixon. To, co zaczę",
       "is_pl": true
     },
     {
@@ -138,9 +138,9 @@
       "category": "historia",
       "source_name": "Wiek Dwudziesty (Portal Historyczny)",
       "source_flag": "🇵🇱",
-      "title": "Škoda Spider B5 (1972) i Škoda Spider II (1975): Prototypy stworzone z myślą o torach wyścigowych",
-      "link": "https://wiekdwudziesty.pl/skoda-spider-b5-1972-i-skoda-spider-ii-1975-prototypy-stworzone-z-mysla-o-torach-wyscigowych/",
-      "summary": "W 1972 roku Międzynarodowa Federacja Samochodowa (FIA) połączyła klasy B5 i B6 w jedną klasę B5, przeznaczoną dla samochodów o pojemności silnika do 3000 cm³. W mistrzostwach Czechosłowacji limit pojemności silnika zmien",
+      "title": "Cmentarz Obrońców Wybrzeża w Gdyni",
+      "link": "https://wiekdwudziesty.pl/cmentarz-obroncow-wybrzeza-w-gdyni/",
+      "summary": "Cmentarz Obrońców Wybrzeża położony jest przy ulicy Legionów w gdyńskim Redłowie. Charakterystyczny układ tarasów nekropolii przypomina amfiteatr, a nad obszarem góruje pomnik projektu Adama Smolany, którego forma nawiąz",
       "is_pl": true
     },
     {
@@ -156,18 +156,18 @@
       "category": "polityka",
       "source_name": "Krytyka Polityczna",
       "source_flag": "🇵🇱",
-      "title": "Uchodźczynie z Afganistanu: „Nie zamkną nam ust. Ani groźbami, ani nawet kwasem”",
-      "link": "https://krytykapolityczna.pl/swiat/afganistan-uciekly-przed-mezami-i-talibami/",
-      "summary": "Dwie Afganki. Dwa różne doświadczenia przemocy ze strony mężczyzn, którzy nie są zainteresowani wolnością – bo ją mają. Jedna wiara – w siłę kobiet, i jedno przesłanie dla świata: „Przestańcie wspierać talibów”. The post",
+      "title": "Wojna wchodzi do łóżka. Jak zmienia się seks, ciało i bliskość w Ukrainie",
+      "link": "https://krytykapolityczna.pl/swiat/wojna-seks-cialo-bliskosc-ukraina-puto-lachowski/",
+      "summary": "W charkowskim sex shopie żołnierze pytają o zabawki sterowane przez aplikację, w Kijowie seksworkerka coraz częściej słucha zamiast uwodzić, a weterani po amputacjach uczą się własnego ciała od nowa. Reportaż o tym, jak ",
       "is_pl": true
     },
     {
       "category": "polityka",
       "source_name": "Kultura Liberalna",
       "source_flag": "🇵🇱",
-      "title": "Trybunał od dawna działał. Ale jako polityczny łup prawicy, a nie jak sąd",
-      "link": "https://kulturaliberalna.pl/2026/10/31/skrzydlowska-kalukin-trybunal-od-dawna-dzialal-ale-jako-polityczny-lup-prawicy-a-nie-jak-sad/",
-      "summary": "To prawda, że trudno będzie odbudować dawną wiarygodność i autorytet Trybunału Konstytucyjnego. Jednak nie z powodu piątkowych wydarzeń. Kryzys trwa od dziesięciu lat. Artykuł Trybunał od dawna działał. Ale jako politycz",
+      "title": "Czy Polska podbije Azję?",
+      "link": "https://kulturaliberalna.pl/2026/11/02/renik-czy-polska-podbije-azje/",
+      "summary": "Podczas wizyty w Indiach Donald Tusk powiedział, że „Polskę i Indie wiele łączy, a nic nie dzieli”. Słowa te brzmią ładnie, ale przystoją dyplomacie, a nie politykowi. Bo Warszawę i Nowe Delhi dzieli bardzo wiele – relac",
       "is_pl": true
     },
     {
@@ -201,9 +201,9 @@
       "category": "eseje",
       "source_name": "Astral Codex Ten (Scott Alexander)",
       "source_flag": "🇺🇸",
-      "title": "Your Book Review: The History And Adventures Of An Atom",
-      "link": "https://www.astralcodexten.com/p/your-book-review-the-history-and",
-      "summary": "Finalist #14 in the Book Review Contest",
+      "title": "Open Thread 458",
+      "link": "https://www.astralcodexten.com/p/open-thread-458",
+      "summary": "...",
       "is_pl": false
     },
     {
