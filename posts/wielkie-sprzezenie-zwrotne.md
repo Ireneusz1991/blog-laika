@@ -1,6 +1,6 @@
 ---
 title: "Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu"
-slug: "kondensat-wielkie-sprzezenie-zwrotne"
+slug: "wielkie-sprzezenie-zwrotne"
 category: "kondensat"
 author: "Ireneusz Machowiec"
 summary: "Skondensowana synteza czterech wymiarów współczesności: dlaczego skalowanie sztucznej inteligencji przypomina bardziej ciężki projekt przemysłowy niż klasyczne oprogramowanie — i jak energia, koszt kapitału, lekcja Suezu 1956 oraz geopolityka rafinacji surowców wyznaczają tempo cyfrowej rewolucji."

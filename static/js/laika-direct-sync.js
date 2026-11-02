@@ -662,16 +662,25 @@
     const renderedHtml = payload.renderedHtml || renderMarkdownBody(payload.bodyMarkdown || '');
     const pubCat = payload.category === 'kondensat' ? 'eseje' : (payload.category || 'eseje');
 
+    const cleanSlug = String(payload.slug || '')
+      .toLowerCase().trim()
+      .split('-')
+      .filter(p => p && !p.startsWith('kondensat'))
+      .join('-') || 'esej';
+    const cleanMarkdownDoc = payload.markdownDoc
+      ? String(payload.markdownDoc).replace(/^slug:\s*"[^"]*"/m, `slug: "${cleanSlug}"`)
+      : payload.markdownDoc;
+
     const meta = {
       title: payload.title || 'Wpis bez tytułu',
-      slug: payload.slug,
+      slug: cleanSlug,
       category: payload.category || 'eseje',
       oldCategory: payload.oldCategory || pubCat,
       tags: payload.tags || '',
       summary: payload.summary || '',
       coverImage: payload.coverImage || '',
       bodyMarkdown: payload.bodyMarkdown || '',
-      markdownDoc: payload.markdownDoc,
+      markdownDoc: cleanMarkdownDoc,
       renderedHtml,
       readTime,
       createdDatePl: payload.createdDatePl || ''

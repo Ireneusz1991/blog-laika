@@ -942,7 +942,7 @@ EDITORIAL_SOURCES = [
         "lang": "PL",
         "flag": "⚡",
         "type": "Syntetyczny węzeł analityczny łączący 4 dziedziny",
-        "url": "https://blog-laika.com/kategoria/kondensat/",
+        "url": "https://blog-laika.com/post/wielkie-sprzezenie-zwrotne/",
         "rss": "https://blog-laika.com/feed.xml",
         "social": {
             "x": "https://x.com/blog_laika",
@@ -951,7 +951,7 @@ EDITORIAL_SOURCES = [
         "topics": ["Kondensat", "Konglomerat", "Sprzężenie zwrotne", "Makroekonomia długu", "Fizyka krzemu", "Logistyka wojen", "Architektura uwagi"],
         "desc": "Autorski format Bloga Laika: bezkompromisowe łączenie zjawisk technologicznych, finansowych, historycznych i geopolitycznych w jedną spójną analizę przyczynowo-skutkową.",
         "takeaway": "Przełamywanie silosów specjalistycznych: patrzenie na świat z perspektywy całego ekosystemu zamiast izolowanych wycinków.",
-        "best_essay": "„Kondensat I: Wielkie sprzężenie zwrotne — jak kryzys energetyczny, drogi kapitał i wąskie gardła geopolityki zderzają się z cyfrowym postępem”"
+        "best_essay": "„Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu”"
     },
     {
         "id": "konglomerat_energia_krzem",
@@ -964,7 +964,7 @@ EDITORIAL_SOURCES = [
         "lang": "PL",
         "flag": "⚡",
         "type": "Interdyscyplinarna monografia surowcowa",
-        "url": "https://blog-laika.com/kategoria/kondensat/",
+        "url": "https://blog-laika.com/kategoria/eseje/",
         "rss": "https://blog-laika.com/feed.xml",
         "social": {
             "x": "https://x.com/blog_laika"
@@ -1108,10 +1108,10 @@ def get_curated_social_bundles():
                 "category": "kondensat",
                 "category_title": "6. Dział Kondensatów & Konglomeraty Wielowątkowe",
                 "essays": [
-                    {"source": "Syntetyczny Węzeł Analityczny", "title": "Cena Suwerenności i Architektura Zależności: Od Łańcuchów Półprzewodników po Dług Publiczny", "url": "https://blog-laika.com/category/kondensat/"},
-                    {"source": "Węzeł Technologiczno-Energetyczny", "title": "Paradoks Energetyczny AI: Kiedy Wirtualne Modele Zderzają się z Fizyczną Siecią Przesyłową i Geopolityką Miedzi", "url": "https://blog-laika.com/category/kondensat/"},
-                    {"source": "Węzeł Historyczno-Instytucjonalny", "title": "Pęknięcia na Peryferiach: Lekcja z Upadku Dawnych Imperiów Handlowych dla Współczesnej Architektury Bezpieczeństwa", "url": "https://blog-laika.com/category/kondensat/"},
-                    {"source": "Konglomerat Społeczno-Cyfrowy", "title": "Monopolizacja Rzeczywistości: Jak Algorytmy Rekomendacyjne i Finansyzacja Gospodarki Przedefiniowały Wolną Wolę", "url": "https://blog-laika.com/category/kondensat/"}
+                    {"source": "Syntetyczny Węzeł Analityczny", "title": "Cena Suwerenności i Architektura Zależności: Od Łańcuchów Półprzewodników po Dług Publiczny", "url": "https://blog-laika.com/kategoria/eseje/"},
+                    {"source": "Węzeł Technologiczno-Energetyczny", "title": "Paradoks Energetyczny AI: Kiedy Wirtualne Modele Zderzają się z Fizyczną Siecią Przesyłową i Geopolityką Miedzi", "url": "https://blog-laika.com/kategoria/eseje/"},
+                    {"source": "Węzeł Historyczno-Instytucjonalny", "title": "Pęknięcia na Peryferiach: Lekcja z Upadku Dawnych Imperiów Handlowych dla Współczesnej Architektury Bezpieczeństwa", "url": "https://blog-laika.com/kategoria/eseje/"},
+                    {"source": "Konglomerat Społeczno-Cyfrowy", "title": "Monopolizacja Rzeczywistości: Jak Algorytmy Rekomendacyjne i Finansyzacja Gospodarki Przedefiniowały Wolną Wolę", "url": "https://blog-laika.com/kategoria/eseje/"}
                 ]
             }
         ]

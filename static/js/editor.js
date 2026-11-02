@@ -6,16 +6,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const wordCountElem = document.getElementById('word-count');
   const readTimeElem = document.getElementById('read-time');
 
-  // Slug generator helper
+  // Slug generator helper (bez słowa "kondensat" w linkach URL)
   function slugify(text) {
-    return text.toString().toLowerCase().trim()
+    const cleaned = (text || '').toString().trim()
+      .replace(/^(?:⚡\s*)?(?:wielki\s+)?kondensat(?:\s+dnia)?(?:\s*\([^)]*\))?(?:\s+[ivxlcdm0-9]+)?\s*[:\-–—]\s*/i, '')
+      .toLowerCase().trim()
       .replace(/ą/g, 'a').replace(/ć/g, 'c').replace(/ę/g, 'e').replace(/ł/g, 'l')
       .replace(/ń/g, 'n').replace(/ó/g, 'o').replace(/ś/g, 's').replace(/ź/g, 'z').replace(/ż/g, 'z')
       .replace(/\s+/g, '-')
       .replace(/[^\w\-]+/g, '')
       .replace(/\-\-+/g, '-')
       .replace(/^-+/, '')
-      .replace(/-+$/, '');
+      .replace(/-+$/, '')
+      .split('-')
+      .filter(part => part && !part.startsWith('kondensat'))
+      .join('-');
+    return cleaned || 'esej';
   }
 
   // Auto update slug if user hasn't explicitly edited slug

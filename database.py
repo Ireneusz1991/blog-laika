@@ -87,14 +87,26 @@ def render_markdown(md_text: str) -> str:
     ]
     return markdown.markdown(cleaned_md, extensions=extensions)
 
+def clean_post_slug(raw_text: str) -> str:
+    """Generuje czysty slug URL i usuwa słowo 'kondensat' (oraz prefiksy redakcyjne), aby nie trafiało do linków."""
+    t = str(raw_text or "").strip()
+    t = re.sub(
+        r'^(?:wielki\s+)?kondensat(?:\s+dnia)?(?:\s*\([^)]*\))?(?:\s+[ivxlcdm0-9]+)?\s*[:\-–—]\s*',
+        '',
+        t,
+        flags=re.IGNORECASE,
+    )
+    s = slugify(t)
+    parts = [p for p in s.split('-') if p and not p.startswith('kondensat')]
+    return '-'.join(parts) or 'esej'
+
 def create_post(title: str, content_markdown: str, category: str, summary: str = "", 
                 slug: str = "", tags: str = "", cover_image: str = "", 
                 status: str = "published", featured: int = 0) -> int:
     conn = get_db()
     cursor = conn.cursor()
     
-    if not slug:
-        slug = slugify(title)
+    slug = clean_post_slug(slug if slug else title)
         
     # Ensure slug uniqueness
     base_slug = slug
@@ -129,8 +141,7 @@ def update_post(post_id: int, title: str, content_markdown: str, category: str, 
     conn = get_db()
     cursor = conn.cursor()
     
-    if not slug:
-        slug = slugify(title)
+    slug = clean_post_slug(slug if slug else title)
         
     # Ensure slug uniqueness excluding current post
     base_slug = slug
@@ -561,13 +572,28 @@ def sync_markdown_files(posts_dir: str = None):
         if not title:
             title = os.path.splitext(filename)[0].replace("-", " ").capitalize()
 
-        slug = meta.get("slug") or os.path.splitext(filename)[0]
+        raw_slug = meta.get("slug") or os.path.splitext(filename)[0]
+        slug = clean_post_slug(raw_slug)
         category = meta.get("category", "eseje")
         summary = meta.get("summary", "")
         if not summary:
             summary = extract_summary(body)
         tags = meta.get("tags", "")
         cover_image = meta.get("cover_image", "")
+
+        # Automatyczna migracja starszego slugu z prefiksem 'kondensat-' (zachowuje licznik odsłon i analitykę)
+        legacy_slug = f"kondensat-{slug}"
+        cursor.execute("SELECT id FROM posts WHERE slug = ?", (slug,))
+        existing_clean = cursor.fetchone()
+        cursor.execute("SELECT id FROM posts WHERE slug = ?", (legacy_slug,))
+        existing_legacy = cursor.fetchone()
+        if existing_legacy and not existing_clean:
+            cursor.execute("UPDATE posts SET slug = ? WHERE id = ?", (slug, existing_legacy["id"]))
+            cursor.execute("UPDATE analytics_events SET post_slug = ? WHERE post_slug = ?", (slug, legacy_slug))
+        elif existing_legacy and existing_clean:
+            cursor.execute("UPDATE analytics_events SET post_slug = ? WHERE post_slug = ?", (slug, legacy_slug))
+            cursor.execute("DELETE FROM posts WHERE id = ?", (existing_legacy["id"],))
+
         cursor.execute("SELECT id, featured FROM posts WHERE slug = ?", (slug,))
         row = cursor.fetchone()
         if "featured" in meta:

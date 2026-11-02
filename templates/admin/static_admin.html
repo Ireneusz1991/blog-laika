@@ -1623,16 +1623,26 @@
     return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  // Helper: Slug generator
+  // Helper: Usuwanie prefiksów redakcyjnych Kondensatu i generowanie sluga URL (bez słowa "kondensat")
+  function stripKondensatTitlePrefix(text) {
+    return (text || '').toString().trim()
+      .replace(/^(?:⚡\s*)?(?:wielki\s+)?kondensat(?:\s+dnia)?(?:\s*\([^)]*\))?(?:\s+[ivxlcdm0-9]+)?\s*[:\-–—]\s*/i, '');
+  }
+
   function slugify(text) {
-    return text.toString().toLowerCase().trim()
+    const cleaned = stripKondensatTitlePrefix(text)
+      .toLowerCase().trim()
       .replace(/ą/g, 'a').replace(/ć/g, 'c').replace(/ę/g, 'e').replace(/ł/g, 'l')
       .replace(/ń/g, 'n').replace(/ó/g, 'o').replace(/ś/g, 's').replace(/ź/g, 'z').replace(/ż/g, 'z')
       .replace(/\s+/g, '-')
       .replace(/[^\w\-]+/g, '')
       .replace(/\-\-+/g, '-')
       .replace(/^-+/, '')
-      .replace(/-+$/, '');
+      .replace(/-+$/, '')
+      .split('-')
+      .filter(part => part && !part.startsWith('kondensat'))
+      .join('-');
+    return cleaned || 'esej';
   }
 
   let slugManuallyEdited = false;
@@ -1845,7 +1855,10 @@
   // Build Full Markdown with Frontmatter & Author Ireneusz Machowiec
   function buildFullMarkdownDocument() {
     const title = document.getElementById('scratch-title').value || 'Nowy wpis';
-    const slug = document.getElementById('scratch-slug').value || slugify(title) || 'nowy-wpis';
+    const rawSlug = document.getElementById('scratch-slug').value || slugify(title) || 'nowy-wpis';
+    const slug = slugify(rawSlug) || 'nowy-wpis';
+    const slugEl = document.getElementById('scratch-slug');
+    if (slugEl && slugEl.value !== slug) slugEl.value = slug;
     const category = document.getElementById('scratch-category').value || 'eseje';
     const summary = document.getElementById('scratch-summary').value || '';
     const coverImage = document.getElementById('scratch-image')?.value?.trim() || '';
@@ -2127,11 +2140,12 @@ ${body}`;
     if (!prop) return;
     currentEditingSlug = null;
     
-    // Fill title and generate slug
+    // Fill title and generate slug (bez słowa "kondensat" w linku i bez roboczego prefiksu w tytule)
     const titleEl = document.getElementById('scratch-title');
     const slugEl = document.getElementById('scratch-slug');
-    if (titleEl) titleEl.value = prop.title;
-    if (slugEl) slugEl.value = slugify(prop.title);
+    const cleanPropTitle = prop.category === 'kondensat' ? stripKondensatTitlePrefix(prop.title) : prop.title;
+    if (titleEl) titleEl.value = cleanPropTitle;
+    if (slugEl) slugEl.value = slugify(cleanPropTitle);
     slugManuallyEdited = true;
 
     // Fill category if element exists
@@ -3386,8 +3400,9 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     const imgEl = document.getElementById('scratch-image');
     const bodyEl = document.getElementById('scratch-body');
 
-    if (titleEl) titleEl.value = prop.title;
-    if (slugEl) slugEl.value = slugify(prop.title);
+    const cleanDynTitle = prop.category === 'kondensat' ? stripKondensatTitlePrefix(prop.title) : prop.title;
+    if (titleEl) titleEl.value = cleanDynTitle;
+    if (slugEl) slugEl.value = slugify(cleanDynTitle);
     slugManuallyEdited = true;
     if (catEl) catEl.value = prop.category;
     if (sumEl) sumEl.value = prop.lead;

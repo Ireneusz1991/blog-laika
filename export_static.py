@@ -212,14 +212,6 @@ def build_static(output_dir="dist", base_url=None):
         admin_posts.append(ap)
     ctx_admin["posts"] = admin_posts
     ctx_admin["posts_json"] = json.dumps(admin_posts, ensure_ascii=False).replace("</script>", "<\\/script>")
-    ctx_admin["categories"] = [
-        {"slug": "technologia", "name": "Technologia", "color": "#2563eb", "icon": "cpu"},
-        {"slug": "gospodarka", "name": "Gospodarka", "color": "#059669", "icon": "trending-up"},
-        {"slug": "historia", "name": "Historia", "color": "#d97706", "icon": "landmark"},
-        {"slug": "polityka", "name": "Polityka", "color": "#dc2626", "icon": "shield"},
-        {"slug": "eseje", "name": "Inne eseje", "color": "#7c3aed", "icon": "book-open"},
-        {"slug": "kondensat", "name": "⚡ Kondensaty", "color": "#d97706", "icon": "zap"}
-    ]
     ctx_admin["canonical_url"] = f"{site_domain}{base_url}/admin/"
 
     # Kopiowanie i ładowanie propozycji tematów (rotacja 7 dni = 4x7 = 28 propozycji)
@@ -398,6 +390,30 @@ def build_static(output_dir="dist", base_url=None):
 </html>"""
     with open(os.path.join(legacy_kondensat_dir, "index.html"), "w", encoding="utf-8") as f:
         f.write(redirect_html)
+
+    # Przekierowanie dawnego linku z członem "kondensat-" do czystego adresu bez słowa "kondensat"
+    legacy_post_redirects = {
+        "kondensat-wielkie-sprzezenie-zwrotne": "wielkie-sprzezenie-zwrotne",
+    }
+    for old_slug, new_slug in legacy_post_redirects.items():
+        old_post_dir = os.path.join(output_dir, "post", old_slug)
+        os.makedirs(old_post_dir, exist_ok=True)
+        post_redirect_html = f"""<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, follow">
+  <title>Przekierowanie...</title>
+  <link rel="canonical" href="{site_domain}{base_url}/post/{new_slug}/">
+  <meta http-equiv="refresh" content="0; url={base_url}/post/{new_slug}/">
+  <script>window.location.replace("{base_url}/post/{new_slug}/");</script>
+</head>
+<body>
+  <p>Artykuł jest dostępny pod adresem <a href="{base_url}/post/{new_slug}/">{site_domain}{base_url}/post/{new_slug}/</a>.</p>
+</body>
+</html>"""
+        with open(os.path.join(old_post_dir, "index.html"), "w", encoding="utf-8") as f:
+            f.write(post_redirect_html)
 
     # 6. Indeks wyszukiwania JSON (search-index.json)
     search_index = [

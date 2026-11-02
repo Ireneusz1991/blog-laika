@@ -123,6 +123,10 @@ async def read_post(slug: str, request: Request):
     is_admin = is_admin_authenticated(request)
     post = database.get_post_by_slug(slug, include_drafts=is_admin)
     if not post:
+        if "kondensat" in slug.lower():
+            cleaned_slug = database.clean_post_slug(slug)
+            if cleaned_slug != slug and database.get_post_by_slug(cleaned_slug, include_drafts=is_admin):
+                return RedirectResponse(url=f"/post/{cleaned_slug}", status_code=301)
         raise HTTPException(status_code=404, detail="Esej nie został odnaleziony.")
     
     ctx["post"] = enrich_post(post)
@@ -436,7 +440,7 @@ async def api_posts_inline_update(request: Request):
     if not is_admin_authenticated(request) and token not in ("authenticated", "laik2026", "laika2026", "admin"):
         return JSONResponse({"status": "error", "message": "Brak autoryzacji autorskiej."}, status_code=403)
 
-    slug = str(body.get("slug", "")).strip()
+    raw_slug = str(body.get("slug", "")).strip()
     title = str(body.get("title", "")).strip() or "Wpis bez tytułu"
     category = str(body.get("category", "eseje")).strip() or "eseje"
     tags = str(body.get("tags", "")).strip()
@@ -444,10 +448,11 @@ async def api_posts_inline_update(request: Request):
     cover_image = str(body.get("cover_image", "")).strip()
     content_markdown = str(body.get("content_markdown", ""))
 
-    if not slug:
+    if not raw_slug:
         return JSONResponse({"status": "error", "message": "Brak identyfikatora wpisu (slug)."}, status_code=400)
 
-    existing = database.get_post_by_slug(slug, include_drafts=True)
+    slug = database.clean_post_slug(raw_slug)
+    existing = database.get_post_by_slug(slug, include_drafts=True) or database.get_post_by_slug(raw_slug, include_drafts=True)
     featured_val = int(existing.get("featured", 0)) if existing else 0
     if existing:
         database.update_post(
