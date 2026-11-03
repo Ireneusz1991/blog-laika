@@ -1130,6 +1130,9 @@
         <button type="button" onclick="formatText('code')" class="editor-tool-btn" title="Blok kodu"><code>&lt;/&gt;</code> Kod</button>
         <button type="button" onclick="formatText('hr')" class="editor-tool-btn" title="Linia pozioma">---</button>
         <div style="margin-left: auto; display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+          <button type="button" id="voice-dictate-btn" onclick="toggleVoiceDictation('scratch-body', 'voice-dictate-btn');" class="editor-tool-btn" style="background: rgba(239, 68, 68, 0.08); border: 1.5px solid #ef4444; color: #ef4444; font-weight: 700; padding: 0.3rem 0.65rem;" title="Dyktuj mikrofonem z automatycznym usuwaniem powtórzeń słów i zająknięć">
+            🎙️ Dyktuj głosem
+          </button>
           <button type="button" onclick="openTextCleanerModal();" class="editor-tool-btn" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(124, 58, 237, 0.12)); border: 1.5px solid var(--accent); color: var(--accent); font-weight: 700; padding: 0.3rem 0.65rem;" title="Inteligentny autopoprawiacz tekstu: zamienia surowy tekst z Notatnika w elegancki wpis z podglądem na żywo">
             🪄 Autopoprawiacz z Notatnika
           </button>
@@ -1312,8 +1315,16 @@
     </div>
 
     <!-- Options & Settings Bar -->
-    <div style="padding: 0.85rem 1.5rem; background: var(--bg-card); border-bottom: 1px solid var(--border-color); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; font-size: 0.82rem;">
+    <div style="padding: 0.85rem 1.5rem; background: var(--bg-card); border-bottom: 1px solid var(--border-color); display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; font-size: 0.82rem;">
       <span style="font-weight: 700; color: var(--accent); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.5px;">Reguły edytorskie:</span>
+      <label style="display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; background: rgba(16, 185, 129, 0.12); padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.35);">
+        <input type="checkbox" id="clean-opt-voice-dedup" checked onchange="runLiveClean();">
+        <span style="font-weight: 700; color: #059669;">🎙️ Usuwaj potknięcia mikrofonu & powtórzenia słów</span>
+      </label>
+      <label style="display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; background: rgba(59, 130, 246, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.3);">
+        <input type="checkbox" id="clean-opt-condense" onchange="runLiveClean();">
+        <span style="font-weight: 600; color: #2563eb;">⚡ Kondensuj styl (wytnij watę słowną)</span>
+      </label>
       <label style="display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;">
         <input type="checkbox" id="clean-opt-quotes" checked onchange="runLiveClean();">
         <span>Polskie cudzysłowy (<code>„...”</code>)</span>
@@ -1350,13 +1361,16 @@
       <!-- Left: Raw Input -->
       <div style="display: flex; flex-direction: column;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.4rem;">
-          <strong style="font-size: 0.86rem; color: var(--text-primary);">📥 1. Surowy tekst (z Notatnika / telefonu):</strong>
-          <div style="display: flex; gap: 0.5rem;">
+          <strong style="font-size: 0.86rem; color: var(--text-primary);">📥 1. Surowy tekst (z Notatnika / telefonu / mikrofonu):</strong>
+          <div style="display: flex; gap: 0.4rem; align-items: center;">
+            <button type="button" id="cleaner-voice-btn" onclick="toggleVoiceDictation('cleaner-raw-input', 'cleaner-voice-btn');" style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; border-radius: 4px; padding: 0.15rem 0.5rem; font-size: 0.76rem; color: #ef4444; cursor: pointer; font-weight: 600;">
+              🎙️ Dyktuj tutaj
+            </button>
             <button type="button" onclick="loadCurrentEditorTextToCleaner();" style="background: none; border: none; font-size: 0.78rem; color: var(--text-secondary); cursor: pointer; text-decoration: underline;">
               Wczytaj z edytora
             </button>
             <button type="button" onclick="loadSampleRawText();" style="background: none; border: none; font-size: 0.78rem; color: var(--accent); cursor: pointer; text-decoration: underline; font-weight: 600;">
-              Przykładowy surowy tekst
+              Przykładowy tekst
             </button>
           </div>
         </div>
@@ -1395,6 +1409,22 @@
         </div>
       </div>
 
+    </div>
+
+    <!-- Bielik AI Prompt & Voice Assistant Helper -->
+    <div style="margin: 0 1.5rem 1rem 1.5rem; background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(236, 72, 153, 0.06)); border: 1.5px solid rgba(99, 102, 241, 0.25); border-radius: var(--radius-sm); padding: 0.85rem 1.15rem; font-size: 0.82rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.5rem;">
+        <span style="font-weight: 700; color: #4f46e5; display: inline-flex; align-items: center; gap: 0.4rem;">
+          🦅 Wskazówka dla dyktowania z mikrofonu & modelu Bielik:
+        </span>
+        <button type="button" onclick="copyBielikPrompt();" class="btn btn-secondary" style="font-size: 0.74rem; padding: 0.25rem 0.6rem; border-color: rgba(99, 102, 241, 0.4); color: #4f46e5; font-weight: 600;">
+          📋 Kopiuj prompt Bielika do schowka
+        </button>
+      </div>
+      <p style="margin: 0 0 0.4rem 0; color: var(--text-secondary); line-height: 1.5;">
+        Gdy dyktujesz myśli głosem na tablecie lub w oknie modelu Bielik, wklej ten prompt jako instrukcję redaktorską. Wymusi on natychmiastową kondensację tekstu i usunięcie przypadkowo powtórzonych słów:
+      </p>
+      <code id="bielik-prompt-text" style="display: block; padding: 0.5rem 0.75rem; background: var(--bg-card); border-radius: 4px; font-size: 0.78rem; color: var(--text-primary); border: 1px solid var(--border-color); line-height: 1.45;">„Działasz jako bezlitosny redaktor Bloga Laika. Poniżej znajduje się surowy tekst podyktowany z mikrofonu. 1. Bezwzględnie usuń przypadkowo powtórzone słowa, zająknięcia i potknięcia dyktowania. 2. Skondensuj tekst – wytnij watę słowną, zachowaj dynamiczną, dociekliwą esencję myśli, bez szablonów AI.”</code>
     </div>
 
     <!-- Modal Footer Actions -->
@@ -2761,14 +2791,72 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
         title: '',
         summary: '',
         cleanedMarkdown: '',
-        stats: { quotes: 0, dashes: 0, orphans: 0, headings: 0, lists: 0 }
+        stats: { quotes: 0, dashes: 0, orphans: 0, headings: 0, lists: 0, voiceDedup: 0, condensed: 0 }
       };
     }
 
     let text = rawText.trim();
-    const stats = { quotes: 0, dashes: 0, orphans: 0, headings: 0, lists: 0 };
+    const stats = { quotes: 0, dashes: 0, orphans: 0, headings: 0, lists: 0, voiceDedup: 0, condensed: 0 };
     let extractedTitle = '';
     let extractedSummary = '';
+
+    // 0. Filtr dyktowania głosowego i mikrofonu (usuwanie powtórzeń, potknięć, zająknięć)
+    if (options.voiceDedup) {
+      // a) Usuń natychmiastowe powtórzenia tego samego słowa (np. "że że" -> "że", "w w" -> "w", "to to" -> "to", "nie, nie" -> "nie")
+      const wordDupRegex = /\b([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)(?:[,\s]+(?:\1\b))+/gi;
+      let prevText;
+      let passCount = 0;
+      do {
+        prevText = text;
+        text = text.replace(wordDupRegex, (match, word) => {
+          stats.voiceDedup++;
+          return word;
+        });
+        passCount++;
+      } while (text !== prevText && passCount < 5);
+
+      // b) Usuń powtórzenia 2-wyrazowych zwrotów z dyktowania (np. "w tym w tym", "nie ma nie ma", "że to że to")
+      const phraseDupRegex = /\b([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+\s+[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)(?:\s+\1\b)+/gi;
+      text = text.replace(phraseDupRegex, (match, phrase) => {
+        stats.voiceDedup++;
+        return phrase;
+      });
+
+      // c) Usuń wtrącenia dyktowania mikrofonowego (eee, yyy, uhm, mhm, aaa)
+      const fillersRegex = /\b(eee|yyy|uhm|mhm|aaa)\b[\s,]*/gi;
+      text = text.replace(fillersRegex, () => {
+        stats.voiceDedup++;
+        return '';
+      });
+
+      // d) Porządkowanie interpunkcji po usuniętych zająknięciach
+      text = text.replace(/\s+,/g, ',').replace(/,{2,}/g, ',').replace(/(\s)\s+/g, '$1');
+    }
+
+    // 0.5. Opcjonalna kondensacja waty słownej (eliminacja rozwlekłych zwrotów)
+    if (options.condense) {
+      const verbosePhrases = [
+        { p: /\bw związku z tym, że\b/gi, r: 'ponieważ' },
+        { p: /\bz uwagi na fakt, że\b/gi, r: 'ponieważ' },
+        { p: /\bna dzień dzisiejszy\b/gi, r: 'dziś' },
+        { p: /\bw chwili obecnej\b/gi, r: 'obecnie' },
+        { p: /\bw każdym bądź razie\b/gi, r: 'w każdym razie' },
+        { p: /\bw głównej mierze\b/gi, r: 'głównie' },
+        { p: /\bw sposób szczególny\b/gi, r: 'szczególnie' },
+        { p: /\bma to kluczowe znaczenie\b/gi, r: 'jest kluczowe' },
+        { p: /\bnie ulega wątpliwości, że\b/gi, r: 'niewątpliwie' },
+        { p: /\bmożna powiedzieć, że\b/gi, r: '' },
+        { p: /\bjakby to ująć\b/gi, r: '' },
+        { p: /\bw pewnym sensie\b/gi, r: '' }
+      ];
+      verbosePhrases.forEach(item => {
+        if (item.p.test(text)) {
+          text = text.replace(item.p, item.r);
+          stats.condensed++;
+        }
+      });
+      text = text.replace(/(\s)\s+/g, '$1');
+    }
 
     // 1. Łączenie pourywanych linii (jeśli włączone)
     if (options.mergeLines) {
@@ -2948,6 +3036,8 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
   function runLiveClean() {
     const rawText = document.getElementById('cleaner-raw-input').value;
     const options = {
+      voiceDedup: document.getElementById('clean-opt-voice-dedup') ? document.getElementById('clean-opt-voice-dedup').checked : true,
+      condense: document.getElementById('clean-opt-condense') ? document.getElementById('clean-opt-condense').checked : false,
       quotes: document.getElementById('clean-opt-quotes').checked,
       dashes: document.getElementById('clean-opt-dashes').checked,
       orphans: document.getElementById('clean-opt-orphans').checked,
@@ -2978,6 +3068,8 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     const st = lastCleanedResult.stats;
     const parts = [];
     if (lastCleanedResult.title) parts.push(`🎯 Wykryto tytuł: „${lastCleanedResult.title.slice(0, 30)}...”`);
+    if (st.voiceDedup > 0) parts.push(`🎙️ Usunięto ${st.voiceDedup} powtórzeń/potknięć mikrofonu`);
+    if (st.condensed > 0) parts.push(`⚡ Skondensowano ${st.condensed} rozwlekłych zwrotów`);
     if (st.headings > 0) parts.push(`📑 ${st.headings} śródtytułów`);
     if (st.quotes > 0) parts.push(`„” ${st.quotes} cudzysłowów`);
     if (st.dashes > 0) parts.push(`— ${st.dashes} pauz`);
@@ -3049,6 +3141,108 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     navigator.clipboard.writeText(mdVal).then(() => {
       alert('Sformatowany tekst Markdown został skopiowany do schowka!');
     });
+  }
+
+  function copyBielikPrompt() {
+    const promptEl = document.getElementById('bielik-prompt-text');
+    const promptText = promptEl ? promptEl.textContent.replace(/^[„"]|[”"]$/g, '') : '';
+    navigator.clipboard.writeText(promptText).then(() => {
+      alert('🦅 Prompt dla modelu Bielik został skopiowany do schowka! Wklej go w oknie dialogowym przed podyktowanym tekstem.');
+    });
+  }
+
+  // ==========================================
+  // SILNIK DYKTOWANIA GŁOSOWEGO Z DEDUPLIKACJĄ
+  // ==========================================
+  let activeSpeechRecognition = null;
+  let isDictating = false;
+  let activeVoiceBtnId = null;
+
+  function toggleVoiceDictation(targetInputId = 'scratch-body', btnId = 'voice-dictate-btn') {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Twoja przeglądarka nie wspiera bezpośredniego Web Speech API. Użyj mikrofonu wbudowanego w klawiaturę tabletu (ikonka mikrofonu na klawiaturze), a następnie kliknij "Autopoprawiacz z Notatnika", który automatycznie usunie powtórzenia słów i zająknięcia!');
+      return;
+    }
+
+    const btn = document.getElementById(btnId);
+    const targetEl = document.getElementById(targetInputId);
+
+    if (isDictating && activeSpeechRecognition) {
+      activeSpeechRecognition.stop();
+      isDictating = false;
+      if (btn) {
+        btn.innerHTML = btnId === 'cleaner-voice-btn' ? '🎙️ Dyktuj tutaj' : '🎙️ Dyktuj głosem';
+        btn.style.background = btnId === 'cleaner-voice-btn' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(239, 68, 68, 0.08)';
+        btn.style.color = '#ef4444';
+      }
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'pl-PL';
+      recognition.continuous = true;
+      recognition.interimResults = false;
+
+      recognition.onstart = function() {
+        isDictating = true;
+        activeVoiceBtnId = btnId;
+        if (btn) {
+          btn.innerHTML = '🔴 Słucham... (kliknij by zatrzymać)';
+          btn.style.background = '#ef4444';
+          btn.style.color = '#ffffff';
+        }
+      };
+
+      recognition.onresult = function(event) {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            transcript += event.results[i][0].transcript + ' ';
+          }
+        }
+        if (transcript.trim() && targetEl) {
+          // Filtr deduplikacji powtórzeń na żywo
+          let cleaned = transcript.replace(/\b([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)(?:[,\s]+(?:\1\b))+/gi, '$1');
+          cleaned = cleaned.replace(/\b(eee|yyy|uhm|mhm|aaa)\b[\s,]*/gi, '');
+          
+          const curVal = targetEl.value;
+          const needsSpace = curVal.length > 0 && !curVal.endsWith('\n') && !curVal.endsWith(' ');
+          targetEl.value = curVal + (needsSpace ? ' ' : '') + cleaned.trim();
+          
+          if (targetInputId === 'scratch-body') {
+            updateLivePreview();
+          } else if (targetInputId === 'cleaner-raw-input') {
+            runLiveClean();
+          }
+        }
+      };
+
+      recognition.onerror = function(event) {
+        console.warn('Speech recognition warning:', event.error);
+        isDictating = false;
+        if (btn) {
+          btn.innerHTML = btnId === 'cleaner-voice-btn' ? '🎙️ Dyktuj tutaj' : '🎙️ Dyktuj głosem';
+          btn.style.background = btnId === 'cleaner-voice-btn' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(239, 68, 68, 0.08)';
+          btn.style.color = '#ef4444';
+        }
+      };
+
+      recognition.onend = function() {
+        isDictating = false;
+        if (btn) {
+          btn.innerHTML = btnId === 'cleaner-voice-btn' ? '🎙️ Dyktuj tutaj' : '🎙️ Dyktuj głosem';
+          btn.style.background = btnId === 'cleaner-voice-btn' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(239, 68, 68, 0.08)';
+          btn.style.color = '#ef4444';
+        }
+      };
+
+      activeSpeechRecognition = recognition;
+      recognition.start();
+    } catch (e) {
+      alert('Nie udało się uruchomić mikrofonu: ' + e.message);
+    }
   }
 
   // ==========================================================
