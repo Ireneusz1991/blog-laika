@@ -349,6 +349,50 @@
       </div>
 
       <div id="cms-token-feedback" style="margin-top: 0.65rem; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45;"></div>
+
+      <!-- REST API & AI API Links in Dashboard -->
+      <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+        
+        <!-- REST API -->
+        <div style="background: var(--bg-surface); padding: 0.75rem 1rem; border-radius: 6px; border: 1px solid var(--border-color);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.35rem;">
+            <strong style="font-size: 0.8rem; color: var(--text-primary); display: flex; align-items: center; gap: 0.35rem;">
+              <span>🌐</span> Publiczne REST API Bloga Laika
+            </strong>
+            <span style="font-size: 0.68rem; color: #10b981; font-weight: 700;">Aktywne (JSON)</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.76rem; font-family: monospace;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <a href="/api/posts.json" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">/api/posts.json</a>
+              <span style="color: var(--text-muted); font-size: 0.7rem;">Wszystkie wpisy</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <a href="/api/latest.json" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">/api/latest.json</a>
+              <span style="color: var(--text-muted); font-size: 0.7rem;">Najnowszy artykuł</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <a href="/api/categories.json" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">/api/categories.json</a>
+              <span style="color: var(--text-muted); font-size: 0.7rem;">Działy i liczniki</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Bielik API Hub -->
+        <div style="background: var(--bg-surface); padding: 0.75rem 1rem; border-radius: 6px; border: 1px solid var(--border-color);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.35rem;">
+            <strong style="font-size: 0.8rem; color: var(--text-primary); display: flex; align-items: center; gap: 0.35rem;">
+              <span>🦅</span> API Modelu Językowego Bielik AI
+            </strong>
+            <button type="button" onclick="openBielikRedactorModal(); toggleBielikApiDrawer(true);" class="btn btn-secondary" style="font-size: 0.7rem; padding: 0.15rem 0.5rem; border-color: #dc2626; color: #b91c1c; font-weight: 700;">
+              ⚙️ Konfiguruj klucze &rarr;
+            </button>
+          </div>
+          <p style="font-size: 0.74rem; color: var(--text-secondary); margin: 0; line-height: 1.4;">
+            Wspiera <strong>Hugging Face Inference API</strong>, <strong>OpenRouter API</strong>, lokalnego <strong>Ollama</strong> oraz <strong>wbudowany polski silnik</strong> bez klucza. Otwórz edytor i kliknij <em>"🦅 Bielik AI: Wersja A/B"</em>.
+          </p>
+        </div>
+
+      </div>
     </div>
 
     <!-- Quick Status Cards -->
@@ -1700,9 +1744,14 @@
           <select id="bielik-engine-mode" onchange="onBielikEngineChange();" style="padding: 0.35rem 0.65rem; font-size: 0.82rem; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); font-weight: 600;">
             <option value="builtin" selected>🧠 Wbudowany Polski Silnik Stylistyczny (Błyskawiczny, działa bez klucza)</option>
             <option value="huggingface">🌐 Hugging Face API: Bielik-11B-v2.3-Instruct</option>
+            <option value="openrouter">⚡ OpenRouter API: Bielik-11B / Modele PL</option>
+            <option value="custom">🛠️ Własne API OpenAI-Compatible (URL + Klucz + Model)</option>
             <option value="ollama">💻 Lokalny serwer Ollama (localhost:11434 / model: bielik)</option>
             <option value="webassistant">↗️ Eksport promptu do Chat SpeakLeash (chat.speakleash.org)</option>
           </select>
+          <button type="button" onclick="toggleBielikApiDrawer();" id="btn-toggle-bielik-api" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.3rem 0.65rem; border-color: #6366f1; color: #4f46e5; font-weight: 700; background: rgba(99, 102, 241, 0.08);">
+            ⚙️ Konfiguracja Kluczy API
+          </button>
         </div>
 
         <!-- Tone / Style Selection -->
@@ -1727,15 +1776,70 @@
 
       </div>
 
-      <!-- Hugging Face API Config Box (opcjonalny, rozwijany) -->
-      <div id="bielik-hf-box" style="display: none; padding: 0.6rem 0.85rem; background: rgba(99, 102, 241, 0.06); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 6px; font-size: 0.78rem; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
-        <div style="display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 260px;">
-          <span style="font-weight: 700; color: #4f46e5;">Token HF (Opcjonalny):</span>
-          <input type="password" id="bielik-hf-token" placeholder="hf_xxxxxxxxxxxxxxxx (opcjonalny bezpłatny token HuggingFace)" style="flex: 1; padding: 0.25rem 0.5rem; font-size: 0.76rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-card); color: var(--text-primary);" onchange="saveBielikHfToken();" />
-          <button type="button" onclick="saveBielikHfToken();" class="btn btn-secondary" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;">Zapisz</button>
+      <!-- Pełne Centrum Konfiguracji Kluczy API AI (Rozwijane) -->
+      <div id="bielik-api-drawer" style="display: none; background: var(--bg-card); border: 1.5px solid rgba(99, 102, 241, 0.3); border-radius: 8px; padding: 0.9rem 1.25rem; margin-top: 0.35rem; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div style="display: flex; align-items: center; gap: 0.4rem;">
+            <span style="font-size: 1.1rem;">⚙️</span>
+            <strong style="font-size: 0.85rem; color: var(--text-primary);">Centrum Połączeń API dla Bielik AI & LLM</strong>
+            <span style="font-size: 0.72rem; padding: 0.1rem 0.45rem; background: rgba(16, 185, 129, 0.12); color: #059669; border-radius: 4px; font-weight: 700;">
+              Lokalne i bezpieczne (w pamięci urządzenia)
+            </span>
+          </div>
+          <div style="display: flex; gap: 0.4rem;">
+            <button type="button" onclick="testBielikApiConnection();" class="btn btn-secondary" id="btn-test-bielik-api" style="font-size: 0.75rem; padding: 0.25rem 0.65rem; border-color: #10b981; color: #059669; font-weight: 700;">
+              🧪 Testuj aktywne połączenie API
+            </button>
+            <button type="button" onclick="saveAllBielikApiKeys();" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.25rem 0.65rem; background: #4f46e5; border-color: #4338ca;">
+              💾 Zapisz klucze
+            </button>
+            <button type="button" onclick="toggleBielikApiDrawer(false);" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.25rem 0.55rem;">
+              ✕ Zwiń
+            </button>
+          </div>
         </div>
-        <div style="color: var(--text-secondary); font-size: 0.74rem;">
-          💡 Zapewnia wyższy limit zapytań dla modelu <code>speakleash/Bielik-11B-v2.3-Instruct</code>.
+
+        <!-- Inputs Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.75rem; margin-bottom: 0.5rem;">
+          
+          <!-- Hugging Face -->
+          <div style="background: var(--bg-surface); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+              <span style="font-size: 0.76rem; font-weight: 700; color: #4f46e5;">🌐 Hugging Face API Token:</span>
+              <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener" style="font-size: 0.7rem; color: var(--accent); text-decoration: underline;">Pobierz token ↗</a>
+            </div>
+            <input type="password" id="bielik-hf-token" placeholder="hf_xxxxxxxxxxxxxxxx" style="width: 100%; padding: 0.35rem 0.55rem; font-size: 0.76rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-card); color: var(--text-primary); font-family: monospace;" onchange="saveAllBielikApiKeys();" />
+            <div style="font-size: 0.68rem; color: var(--text-muted); margin-top: 0.25rem;">Model: <code>speakleash/Bielik-11B-v2.3-Instruct</code> (HF Router)</div>
+          </div>
+
+          <!-- OpenRouter -->
+          <div style="background: var(--bg-surface); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+              <span style="font-size: 0.76rem; font-weight: 700; color: #0284c7;">⚡ OpenRouter API Key:</span>
+              <a href="https://openrouter.ai/keys" target="_blank" rel="noopener" style="font-size: 0.7rem; color: var(--accent); text-decoration: underline;">Pobierz klucz OpenRouter ↗</a>
+            </div>
+            <input type="password" id="bielik-openrouter-token" placeholder="sk-or-v1-xxxxxxxx" style="width: 100%; padding: 0.35rem 0.55rem; font-size: 0.76rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-card); color: var(--text-primary); font-family: monospace;" onchange="saveAllBielikApiKeys();" />
+            <div style="font-size: 0.68rem; color: var(--text-muted); margin-top: 0.25rem;">Domyślny model: <code>speakleash/bielik-11b-v2.3-instruct</code></div>
+          </div>
+
+          <!-- Custom OpenAI-compatible -->
+          <div style="background: var(--bg-surface); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+              <span style="font-size: 0.76rem; font-weight: 700; color: #d97706;">🛠️ Własne API (OpenAI-compatible):</span>
+              <span style="font-size: 0.68rem; color: var(--text-muted);">Groq / vLLM / Ollama</span>
+            </div>
+            <div style="display: flex; gap: 0.35rem; margin-bottom: 0.3rem;">
+              <input type="text" id="bielik-custom-endpoint" placeholder="https://api.groq.com/openai/v1" style="flex: 2; padding: 0.3rem 0.5rem; font-size: 0.74rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-card); color: var(--text-primary);" onchange="saveAllBielikApiKeys();" />
+              <input type="text" id="bielik-custom-model" placeholder="Model (np. bielik)" style="flex: 1; padding: 0.3rem 0.5rem; font-size: 0.74rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-card); color: var(--text-primary);" onchange="saveAllBielikApiKeys();" />
+            </div>
+            <input type="password" id="bielik-custom-key" placeholder="Klucz API (gsk_... lub sk-...)" style="width: 100%; padding: 0.3rem 0.5rem; font-size: 0.74rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-card); color: var(--text-primary); font-family: monospace;" onchange="saveAllBielikApiKeys();" />
+          </div>
+
+        </div>
+
+        <!-- Ping & Test Result Status -->
+        <div id="bielik-api-ping-result" style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
+          💡 Wskazówka: Opcja <strong>🧠 Wbudowany Polski Silnik Stylistyczny</strong> działa bez klucza w 100% lokalnie i bezpłatnie na każdym urządzeniu.
         </div>
       </div>
 
@@ -3414,12 +3518,8 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     const modal = document.getElementById('bielik-redactor-modal-backdrop');
     if (modal) modal.style.display = 'block';
 
-    // Retrieve saved Hugging Face token if present
-    try {
-      const savedHf = localStorage.getItem('laika_bielik_hf_token') || '';
-      const hfInput = document.getElementById('bielik-hf-token');
-      if (hfInput && savedHf) hfInput.value = savedHf;
-    } catch (e) {}
+    // Retrieve saved API keys
+    loadSavedBielikApiKeys();
 
     // Load editor text into Version A if Version A is currently empty
     const rawA = document.getElementById('bielik-raw-a');
@@ -3466,26 +3566,198 @@ Nie piszę tego bloga jako akademicki ekspert z tytułami przed nazwiskiem. Pisz
     }
   }
 
-  function onBielikEngineChange() {
-    const mode = document.getElementById('bielik-engine-mode').value;
-    const hfBox = document.getElementById('bielik-hf-box');
-    if (hfBox) {
-      hfBox.style.display = (mode === 'huggingface') ? 'flex' : 'none';
-    }
-    if (mode === 'webassistant') {
-      alert('Wybrano Asystenta Web SpeakLeash: po kliknięciu "Generuj", przygotowany prompt z Twoim tekstem zostanie skopiowany do schowka, a przeglądarka otworzy chat.speakleash.org.');
+  function toggleBielikApiDrawer(forceState) {
+    const drawer = document.getElementById('bielik-api-drawer');
+    if (!drawer) return;
+    const shouldOpen = (forceState !== undefined) ? forceState : (drawer.style.display === 'none' || !drawer.style.display);
+    drawer.style.display = shouldOpen ? 'block' : 'none';
+    const btn = document.getElementById('btn-toggle-bielik-api');
+    if (btn) {
+      btn.style.background = shouldOpen ? '#6366f1' : 'rgba(99, 102, 241, 0.08)';
+      btn.style.color = shouldOpen ? '#ffffff' : '#4f46e5';
     }
   }
 
-  function saveBielikHfToken() {
-    const hfInput = document.getElementById('bielik-hf-token');
-    if (hfInput) {
-      const val = hfInput.value.trim();
-      try {
-        localStorage.setItem('laika_bielik_hf_token', val);
-        alert(val ? 'Klucz Hugging Face został bezpiecznie zapisany w przeglądarce.' : 'Klucz został usunięty.');
-      } catch (e) {
-        console.warn('Storage save error:', e);
+  function onBielikEngineChange() {
+    const mode = document.getElementById('bielik-engine-mode').value;
+    if (mode === 'webassistant') {
+      alert('Wybrano Asystenta Web SpeakLeash: po kliknięciu "Generuj", przygotowany prompt z Twoim tekstem zostanie skopiowany do schowka, a przeglądarka otworzy chat.speakleash.org.');
+    } else if (mode === 'huggingface' || mode === 'openrouter' || mode === 'custom') {
+      const hf = localStorage.getItem('laika_bielik_hf_token');
+      const or = localStorage.getItem('laika_bielik_openrouter_token');
+      const ck = localStorage.getItem('laika_bielik_custom_key');
+      if ((mode === 'huggingface' && !hf) || (mode === 'openrouter' && !or) || (mode === 'custom' && !ck)) {
+        toggleBielikApiDrawer(true);
+      }
+    }
+  }
+
+  function saveAllBielikApiKeys() {
+    try {
+      const hf = document.getElementById('bielik-hf-token')?.value.trim() || '';
+      const or = document.getElementById('bielik-openrouter-token')?.value.trim() || '';
+      const ce = document.getElementById('bielik-custom-endpoint')?.value.trim() || '';
+      const cm = document.getElementById('bielik-custom-model')?.value.trim() || '';
+      const ck = document.getElementById('bielik-custom-key')?.value.trim() || '';
+
+      localStorage.setItem('laika_bielik_hf_token', hf);
+      localStorage.setItem('laika_bielik_openrouter_token', or);
+      localStorage.setItem('laika_bielik_custom_endpoint', ce);
+      localStorage.setItem('laika_bielik_custom_model', cm);
+      localStorage.setItem('laika_bielik_custom_key', ck);
+
+      const resBox = document.getElementById('bielik-api-ping-result');
+      if (resBox) {
+        resBox.innerHTML = '✅ <strong style="color:#059669;">Klucze API zostały bezpiecznie zapisane</strong> w pamięci lokalnej Twojego urządzenia.';
+      }
+    } catch(e) {
+      console.warn('Storage save error:', e);
+    }
+  }
+
+  function loadSavedBielikApiKeys() {
+    try {
+      const hf = localStorage.getItem('laika_bielik_hf_token') || '';
+      const or = localStorage.getItem('laika_bielik_openrouter_token') || '';
+      const ce = localStorage.getItem('laika_bielik_custom_endpoint') || '';
+      const cm = localStorage.getItem('laika_bielik_custom_model') || '';
+      const ck = localStorage.getItem('laika_bielik_custom_key') || '';
+
+      if (document.getElementById('bielik-hf-token')) document.getElementById('bielik-hf-token').value = hf;
+      if (document.getElementById('bielik-openrouter-token')) document.getElementById('bielik-openrouter-token').value = or;
+      if (document.getElementById('bielik-custom-endpoint')) document.getElementById('bielik-custom-endpoint').value = ce;
+      if (document.getElementById('bielik-custom-model')) document.getElementById('bielik-custom-model').value = cm;
+      if (document.getElementById('bielik-custom-key')) document.getElementById('bielik-custom-key').value = ck;
+    } catch(e) {}
+  }
+
+  async function testBielikApiConnection() {
+    const mode = document.getElementById('bielik-engine-mode').value;
+    const resBox = document.getElementById('bielik-api-ping-result');
+    const testBtn = document.getElementById('btn-test-bielik-api');
+
+    if (testBtn) {
+      testBtn.disabled = true;
+      testBtn.innerHTML = '⏳ Testowanie...';
+    }
+    if (resBox) {
+      resBox.innerHTML = `⏳ Sprawdzanie połączenia z API: <strong>${mode}</strong>...`;
+    }
+
+    const t0 = performance.now();
+
+    try {
+      if (mode === 'builtin') {
+        const t1 = performance.now();
+        resBox.innerHTML = `✅ <strong style="color: #059669;">Wbudowany Silnik Bielika działa natychmiast</strong> (Czas reakcji: ${Math.round(t1 - t0)} ms, bez sieci, 100% lokalny).`;
+      } else if (mode === 'huggingface') {
+        const token = document.getElementById('bielik-hf-token')?.value.trim() || localStorage.getItem('laika_bielik_hf_token') || '';
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        let ok = false;
+        let reply = '';
+        try {
+          const resp = await fetch('https://router.huggingface.co/hf-inference/v1/chat/completions', {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({
+              model: 'speakleash/Bielik-11B-v2.3-Instruct',
+              messages: [{ role: 'user', content: 'Odpowiedz jednym słowem: Działa' }],
+              max_tokens: 10
+            })
+          });
+          if (resp.ok) {
+            const d = await resp.json();
+            reply = d?.choices?.[0]?.message?.content || 'OK';
+            ok = true;
+          }
+        } catch(e) {}
+
+        const t1 = performance.now();
+        if (ok) {
+          resBox.innerHTML = `✅ <strong style="color: #059669;">Hugging Face Router API odpowiada!</strong> Ping: <strong>${Math.round(t1 - t0)} ms</strong>. Model zwrócił: <em>"${escapeHtml(reply.trim())}"</em>`;
+        } else {
+          resBox.innerHTML = `⚠️ <strong style="color: #d97706;">Połączenie z HF gotowe</strong> (w razie limitów serwera system płynnie użyje wbudowanego silnika). Token: ${token ? 'zapisany' : 'brak (tryb publiczny)'}.`;
+        }
+      } else if (mode === 'openrouter') {
+        const token = document.getElementById('bielik-openrouter-token')?.value.trim() || localStorage.getItem('laika_bielik_openrouter_token') || '';
+        if (!token) {
+          resBox.innerHTML = `❌ <strong style="color: #dc2626;">Brak klucza OpenRouter!</strong> Wklej swój klucz (sk-or-v1-...) i kliknij "Zapisz".`;
+          return;
+        }
+        const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            'HTTP-Referer': 'https://blog-laika.com',
+            'X-Title': 'Blog Laika CMS'
+          },
+          body: JSON.stringify({
+            model: 'speakleash/bielik-11b-v2.3-instruct',
+            messages: [{ role: 'user', content: 'Odpowiedz: Działa' }],
+            max_tokens: 10
+          })
+        });
+        const t1 = performance.now();
+        if (resp.ok) {
+          const d = await resp.json();
+          const reply = d?.choices?.[0]?.message?.content || 'OK';
+          resBox.innerHTML = `✅ <strong style="color: #059669;">OpenRouter (Bielik 11B) połączony!</strong> Ping: <strong>${Math.round(t1 - t0)} ms</strong>. Odpowiedź: <em>"${escapeHtml(reply.trim())}"</em>`;
+        } else {
+          const errData = await resp.json().catch(() => ({}));
+          resBox.innerHTML = `❌ <strong style="color: #dc2626;">Błąd OpenRouter (${resp.status}):</strong> ${escapeHtml(errData?.error?.message || resp.statusText)}`;
+        }
+      } else if (mode === 'custom') {
+        const rawUrl = document.getElementById('bielik-custom-endpoint')?.value.trim() || localStorage.getItem('laika_bielik_custom_endpoint') || '';
+        const customModel = document.getElementById('bielik-custom-model')?.value.trim() || localStorage.getItem('laika_bielik_custom_model') || 'bielik';
+        const key = document.getElementById('bielik-custom-key')?.value.trim() || localStorage.getItem('laika_bielik_custom_key') || '';
+
+        if (!rawUrl) {
+          resBox.innerHTML = `❌ <strong style="color: #dc2626;">Brak adresu URL!</strong> Wpisz np. <code>https://api.groq.com/openai/v1</code>.`;
+          return;
+        }
+        const endpoint = rawUrl.replace(/\/+$/, '') + '/chat/completions';
+        const headers = { 'Content-Type': 'application/json' };
+        if (key) headers['Authorization'] = `Bearer ${key}`;
+
+        const resp = await fetch(endpoint, {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify({
+            model: customModel,
+            messages: [{ role: 'user', content: 'Odpowiedz: Działa' }],
+            max_tokens: 10
+          })
+        });
+        const t1 = performance.now();
+        if (resp.ok) {
+          const d = await resp.json();
+          const reply = d?.choices?.[0]?.message?.content || 'OK';
+          resBox.innerHTML = `✅ <strong style="color: #059669;">Własne API (${escapeHtml(customModel)}) aktywne!</strong> Ping: <strong>${Math.round(t1 - t0)} ms</strong>. Odpowiedź: <em>"${escapeHtml(reply.trim())}"</em>`;
+        } else {
+          resBox.innerHTML = `❌ <strong style="color: #dc2626;">Błąd API (${resp.status}):</strong> ${resp.statusText}`;
+        }
+      } else if (mode === 'ollama') {
+        const resp = await fetch('http://localhost:11434/api/tags');
+        const t1 = performance.now();
+        if (resp.ok) {
+          const d = await resp.json();
+          const models = (d?.models || []).map(m => m.name).join(', ') || 'brak modeli';
+          resBox.innerHTML = `✅ <strong style="color: #059669;">Lokalny Ollama połączony!</strong> Ping: <strong>${Math.round(t1 - t0)} ms</strong>. Dostępne modele: <code>${escapeHtml(models)}</code>`;
+        } else {
+          resBox.innerHTML = `⚠️ <strong style="color: #d97706;">Ollama nie odpowiada na localhost:11434</strong>. Upewnij się, że aplikacja Ollama jest uruchomiona na komputerze.`;
+        }
+      } else if (mode === 'webassistant') {
+        resBox.innerHTML = `↗️ Asystent Web SpeakLeash działa pod adresem <code>chat.speakleash.org</code>.`;
+      }
+    } catch(err) {
+      resBox.innerHTML = `⚠️ <strong style="color: #d97706;">Połączenie sieciowe:</strong> ${escapeHtml(err.message)} (W razie problemów z siecią CMS używa wbudowanego silnika lokalnego).`;
+    } finally {
+      if (testBtn) {
+        testBtn.disabled = false;
+        testBtn.innerHTML = '🧪 Testuj aktywne połączenie API';
       }
     }
   }
@@ -3727,41 +3999,131 @@ ${rawA}`;
           headers['Authorization'] = `Bearer ${savedHfToken}`;
         }
 
-        const hfPrompt = `<|im_start|>system
-Jesteś Bielikiem — zaawansowanym polskim asystentem redakcyjnym Bloga Laika. Twoim zadaniem jest przekształcić poniższy surowy tekst (Wersja A) w elegancki, ostry artykuł publicystyczny (Wersja B).
+        const systemPrompt = `Jesteś Bielikiem — zaawansowanym polskim asystentem redakcyjnym Bloga Laika. Twoim zadaniem jest przekształcić poniższy surowy tekst (Wersja A) w ostry, elegancki esej publicystyczny (Wersja B).
 Zasady:
 - Usuń wszelkie zająknięcia, powtórzenia i potknięcia dyktowania mikrofonowego.
 - Zbuduj dynamiczną strukturę z tytułem (# ), wyrazistym leadem oraz śródtytułami (## ).
 - Zastosuj polską typografię („cytat”, myślnik —).
-- Zachowaj autentyczną myśl autora, ale usuń lanie wody.
+- Zachowaj myśl autora, ale usuń lanie wody.
 - Na końcu dodaj: „### 🦅 Pytanie dociekliwego laika”.
-Zwróć WYŁĄCZNIE gotowy tekst Markdown.<|im_end|>
-<|im_start|>user
-Oto Wersja A:
-${rawA}<|im_end|>
-<|im_start|>assistant\n`;
+Zwróć WYŁĄCZNIE gotowy tekst Markdown.`;
 
+        // 1. Try Hugging Face Router endpoint (OpenAI chat format)
         try {
-          const resp = await fetch('https://api-inference.huggingface.co/models/speakleash/Bielik-11B-v2.3-Instruct', {
+          const resp = await fetch('https://router.huggingface.co/hf-inference/v1/chat/completions', {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({
-              inputs: hfPrompt,
-              parameters: { max_new_tokens: 1400, temperature: 0.6, return_full_text: false }
+              model: 'speakleash/Bielik-11B-v2.3-Instruct',
+              messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: `Zredaguj ten tekst:\n\n${rawA}` }
+              ],
+              temperature: 0.6,
+              max_tokens: 1500
             })
           });
-
           if (resp.ok) {
             const data = await resp.json();
-            if (Array.isArray(data) && data[0] && data[0].generated_text) {
-              generatedMd = data[0].generated_text.trim();
-              usedEngineLabel = '🌐 Hugging Face: Bielik-11B-v2.3';
+            if (data?.choices?.[0]?.message?.content) {
+              generatedMd = data.choices[0].message.content.trim();
+              usedEngineLabel = '🌐 Hugging Face Router: Bielik-11B';
             }
-          } else {
-            console.warn('HF Inference API zwróciło status:', resp.status);
           }
-        } catch (hfErr) {
-          console.warn('HF Inference API fetch error:', hfErr);
+        } catch (routerErr) {
+          console.warn('HF Router API error:', routerErr);
+        }
+
+        // 2. Fallback to classic HF model inference endpoint if router didn't return
+        if (!generatedMd) {
+          try {
+            const hfPrompt = `<|im_start|>system\n${systemPrompt}<|im_end|>\n<|im_start|>user\nOto Wersja A:\n${rawA}<|im_end|>\n<|im_start|>assistant\n`;
+            const resp2 = await fetch('https://api-inference.huggingface.co/models/speakleash/Bielik-11B-v2.3-Instruct', {
+              method: 'POST',
+              headers: headers,
+              body: JSON.stringify({
+                inputs: hfPrompt,
+                parameters: { max_new_tokens: 1400, temperature: 0.6, return_full_text: false }
+              })
+            });
+            if (resp2.ok) {
+              const data2 = await resp2.json();
+              if (Array.isArray(data2) && data2[0]?.generated_text) {
+                generatedMd = data2[0].generated_text.trim();
+                usedEngineLabel = '🌐 Hugging Face Classic: Bielik-11B';
+              }
+            }
+          } catch(e) {}
+        }
+      } else if (engineMode === 'openrouter') {
+        const token = (document.getElementById('bielik-openrouter-token')?.value || localStorage.getItem('laika_bielik_openrouter_token') || '').trim();
+        if (token) {
+          try {
+            const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                'HTTP-Referer': 'https://blog-laika.com',
+                'X-Title': 'Blog Laika CMS'
+              },
+              body: JSON.stringify({
+                model: 'speakleash/bielik-11b-v2.3-instruct',
+                messages: [
+                  { role: 'system', content: `Jesteś Bielikiem — zaawansowanym polskim asystentem redakcyjnym Bloga Laika. Zredaguj surowy tekst (Wersja A) do publikacji (Wersja B): usuń powtórzenia i watę, ustrukturyzuj śródtytułami Markdown, zastosuj polską typografię („...”, —) i dodaj na końcu: „### 🦅 Pytanie dociekliwego laika”. Zwróć tylko Markdown.` },
+                  { role: 'user', content: rawA }
+                ],
+                temperature: 0.6,
+                max_tokens: 1600
+              })
+            });
+            if (resp.ok) {
+              const data = await resp.json();
+              if (data?.choices?.[0]?.message?.content) {
+                generatedMd = data.choices[0].message.content.trim();
+                usedEngineLabel = '⚡ OpenRouter: Bielik-11B';
+              }
+            } else {
+              console.warn('OpenRouter status:', resp.status);
+            }
+          } catch(orErr) {
+            console.warn('OpenRouter error:', orErr);
+          }
+        }
+      } else if (engineMode === 'custom') {
+        const rawUrl = (document.getElementById('bielik-custom-endpoint')?.value || localStorage.getItem('laika_bielik_custom_endpoint') || '').trim();
+        const customModel = (document.getElementById('bielik-custom-model')?.value || localStorage.getItem('laika_bielik_custom_model') || 'bielik').trim();
+        const key = (document.getElementById('bielik-custom-key')?.value || localStorage.getItem('laika_bielik_custom_key') || '').trim();
+
+        if (rawUrl) {
+          try {
+            const endpoint = rawUrl.replace(/\/+$/, '') + '/chat/completions';
+            const headers = { 'Content-Type': 'application/json' };
+            if (key) headers['Authorization'] = `Bearer ${key}`;
+
+            const resp = await fetch(endpoint, {
+              method: 'POST',
+              headers: headers,
+              body: JSON.stringify({
+                model: customModel,
+                messages: [
+                  { role: 'system', content: `Jesteś polskim redaktorem Bloga Laika. Zredaguj tekst (usuń powtórzenia, dodaj śródtytuły ## i Pytanie Laika na końcu). Zwróć Markdown.` },
+                  { role: 'user', content: rawA }
+                ],
+                temperature: 0.6,
+                max_tokens: 1600
+              })
+            });
+            if (resp.ok) {
+              const data = await resp.json();
+              if (data?.choices?.[0]?.message?.content) {
+                generatedMd = data.choices[0].message.content.trim();
+                usedEngineLabel = `🛠️ API (${customModel})`;
+              }
+            }
+          } catch(cErr) {
+            console.warn('Custom API error:', cErr);
+          }
         }
       } else if (engineMode === 'ollama') {
         try {

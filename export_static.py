@@ -483,6 +483,65 @@ def build_static(output_dir="dist", base_url=None):
         json.dump(search_index, f, ensure_ascii=False, indent=2)
     print("    [OK] Wygenerowano: search-index.json")
 
+    # 6b. Publiczne Statyczne REST API Bloga Laika (/api/posts.json, /api/latest.json, /api/categories.json)
+    api_dir = os.path.join(output_dir, "api")
+    os.makedirs(api_dir, exist_ok=True)
+    
+    # /api/posts.json
+    api_posts_data = {
+        "status": "success",
+        "total": len(posts),
+        "updated_at": datetime.now().isoformat(),
+        "site": f"{site_domain}{base_url}",
+        "posts": [
+            {
+                "title": p["title"],
+                "slug": p["slug"],
+                "url": f"{site_domain}{base_url}/post/{p['slug']}/",
+                "summary": p["summary"],
+                "category": p["category"],
+                "category_name": p["category_name"],
+                "author": p.get("author", "Ireneusz Machowiec"),
+                "read_time": p["read_time"],
+                "created_at": p.get("created_at"),
+                "created_date": p["created_date"],
+                "cover_image": p.get("cover_image"),
+                "sources": p.get("sources", []),
+                "tags": p.get("tags", [])
+            }
+            for p in posts
+        ]
+    }
+    with open(os.path.join(api_dir, "posts.json"), "w", encoding="utf-8") as f:
+        json.dump(api_posts_data, f, ensure_ascii=False, indent=2)
+        
+    # /api/latest.json
+    api_latest_data = {
+        "status": "success",
+        "updated_at": datetime.now().isoformat(),
+        "post": api_posts_data["posts"][0] if api_posts_data["posts"] else None
+    }
+    with open(os.path.join(api_dir, "latest.json"), "w", encoding="utf-8") as f:
+        json.dump(api_latest_data, f, ensure_ascii=False, indent=2)
+
+    # /api/categories.json
+    api_categories_data = {
+        "status": "success",
+        "categories": [
+            {
+                "slug": cat["slug"],
+                "name": cat["name"],
+                "icon": cat.get("icon", ""),
+                "count": sum(1 for p in posts if p.get("category") == cat["slug"])
+            }
+            for cat in config.CATEGORIES
+        ]
+    }
+    with open(os.path.join(api_dir, "categories.json"), "w", encoding="utf-8") as f:
+        json.dump(api_categories_data, f, ensure_ascii=False, indent=2)
+        
+    print("    [OK] Wygenerowano REST API: /api/posts.json, /api/latest.json, /api/categories.json")
+
     # 7. Generowanie sitemap.xml dla wyszukiwarek (Google / Bing)
     today_iso = datetime.now().strftime("%Y-%m-%d")
     sitemap_lines = [
