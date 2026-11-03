@@ -815,6 +815,9 @@
           <button type="button" onclick="filterProposalCards('all');" class="btn btn-primary filter-prop-btn active" data-filter="all" style="font-size: 0.74rem; padding: 0.25rem 0.65rem; border-radius: var(--radius-full);">
             Wszystkie (6)
           </button>
+          <button type="button" onclick="filterProposalCards('bielik');" class="btn btn-secondary filter-prop-btn" data-filter="bielik" style="font-size: 0.74rem; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); background: rgba(220, 38, 38, 0.12); border-color: #dc2626; color: #b91c1c; font-weight: 800;">
+            🦅 Rekomendacje Bielik AI (Polski kontekst)
+          </button>
           <button type="button" onclick="filterProposalCards('kondensat');" class="btn btn-secondary filter-prop-btn" data-filter="kondensat" style="font-size: 0.74rem; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); background: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(124, 58, 237, 0.15)); border-color: #d97706; color: #b45309; font-weight: 800;">
             ⚡ Tylko KONDENSATY (Konglomeraty)
           </button>
@@ -853,7 +856,7 @@
 
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
             {% for prop in pkg.proposals %}
-            <div class="proposal-card-item proposal-card-{{ prop.category }}" data-category="{{ prop.category }}" style="{% if prop.category == 'kondensat' %}background: linear-gradient(135deg, rgba(217, 119, 6, 0.08), rgba(124, 58, 237, 0.08)); border: 2px solid #d97706; box-shadow: 0 4px 14px rgba(217, 119, 6, 0.15);{% else %}background: var(--bg-surface); border: 1.5px solid var(--border-color);{% endif %} border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition); overflow: hidden;">
+            <div class="proposal-card-item proposal-card-{{ prop.category }}" data-category="{{ prop.category }}" data-bielik="{% if prop.source_flag == '🇵🇱' or prop.bielik_recommended %}true{% else %}false{% endif %}" style="{% if prop.category == 'kondensat' %}background: linear-gradient(135deg, rgba(217, 119, 6, 0.08), rgba(124, 58, 237, 0.08)); border: 2px solid #d97706; box-shadow: 0 4px 14px rgba(217, 119, 6, 0.15);{% else %}background: var(--bg-surface); border: 1.5px solid var(--border-color);{% endif %} border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition); overflow: hidden;">
               <div>
                 {% if prop.image_url %}
                 <div style="position: relative; height: 140px; margin: -1.25rem -1.25rem 0.85rem -1.25rem; background: #0f172a; overflow: hidden;">
@@ -873,7 +876,7 @@
                   <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
                     {% if prop.category == 'kondensat' %}
                     <span style="background: linear-gradient(135deg, #d97706, #7c3aed); color: #fff; font-size: 0.7rem; font-weight: 800; padding: 2px 7px; border-radius: 4px; text-transform: uppercase;">
-                      ⚡ KONDENSAT (SUPER ZŁOŻONY)
+                       ⚡ KONDENSAT (SUPER ZŁOŻONY)
                     </span>
                     {% else %}
                     <span class="post-category-tag" style="font-size: 0.75rem;">{{ prop.category|upper }}</span>
@@ -884,6 +887,11 @@
                     {% if prop.source_name %}
                     <span style="background: rgba(59, 130, 246, 0.12); color: #2563eb; border: 1px solid rgba(59, 130, 246, 0.25); font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px;" title="{{ prop.source_note if prop.source_note else prop.source_name }}">
                       📡 {{ prop.source_flag }} {{ prop.source_name }}
+                    </span>
+                    {% endif %}
+                    {% if prop.source_flag == '🇵🇱' or prop.bielik_recommended %}
+                    <span style="background: rgba(220, 38, 38, 0.12); color: #dc2626; border: 1px solid rgba(220, 38, 38, 0.25); font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px;" title="Rekomendacja Bielik AI z polskim kontekstem">
+                      🦅 Bielik AI: Polski kontekst
                     </span>
                     {% endif %}
                   </div>
@@ -897,6 +905,11 @@
                 {% if prop.source_note %}
                 <div style="font-size: 0.74rem; color: #1e40af; background: rgba(59, 130, 246, 0.08); border-left: 3px solid #3b82f6; padding: 0.35rem 0.6rem; border-radius: 4px; margin-bottom: 0.65rem; line-height: 1.4;">
                   <strong>Wątek źródłowy (analiza / translacja):</strong> {{ prop.source_note }}
+                </div>
+                {% endif %}
+                {% if prop.bielik_angle %}
+                <div style="font-size: 0.74rem; color: #991b1b; background: rgba(220, 38, 38, 0.08); border-left: 3px solid #dc2626; padding: 0.35rem 0.6rem; border-radius: 4px; margin-bottom: 0.65rem; line-height: 1.4;">
+                  <strong>Kąt widzenia Bielik AI:</strong> {{ prop.bielik_angle }}
                 </div>
                 {% endif %}
                 {% if prop.lead %}
@@ -1323,6 +1336,9 @@
         <button type="button" onclick="formatText('code')" class="editor-tool-btn" title="Blok kodu"><code>&lt;/&gt;</code> Kod</button>
         <button type="button" onclick="formatText('hr')" class="editor-tool-btn" title="Linia pozioma">---</button>
         <div style="margin-left: auto; display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+          <button type="button" onclick="openBielikRedactorModal();" class="editor-tool-btn" style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.12), rgba(185, 28, 28, 0.18)); border: 1.5px solid #dc2626; color: #b91c1c; font-weight: 800; padding: 0.3rem 0.75rem;" title="Polski model Bielik AI: generuje drugą wersję artykułu (Wersja B) z polskim szlifem językowym do akceptacji">
+            🦅 Bielik AI: Wersja A/B
+          </button>
           <button type="button" id="voice-dictate-btn" onclick="toggleVoiceDictation('scratch-body', 'voice-dictate-btn');" class="editor-tool-btn" style="background: rgba(239, 68, 68, 0.08); border: 1.5px solid #ef4444; color: #ef4444; font-weight: 700; padding: 0.3rem 0.65rem;" title="Dyktuj mikrofonem z automatycznym usuwaniem powtórzeń słów i zająknięć">
             🎙️ Dyktuj głosem
           </button>
@@ -1348,6 +1364,9 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 0.4rem;">
             <label style="font-size: 0.85rem; font-weight: 600;">Treść wpisu (Markdown / Tekst)</label>
             <div style="display: flex; gap: 0.6rem; align-items: center;">
+              <button type="button" onclick="openBielikRedactorModal();" style="background: none; border: none; color: #dc2626; font-size: 0.78rem; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0;">
+                🦅 Wersja A/B Bielik &rarr;
+              </button>
               <button type="button" onclick="openTextCleanerModal();" style="background: none; border: none; color: var(--accent); font-size: 0.78rem; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0;">
                 🪄 Sformatuj z Notatnika &rarr;
               </button>
@@ -1634,6 +1653,184 @@
         </button>
         <button type="button" onclick="applyCleanedTextToEditor();" class="btn btn-primary" style="font-size: 0.88rem; padding: 0.45rem 1.25rem; font-weight: 700;">
           ✅ Zastosuj poprawki do wpisu &rarr;
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Interactive Studio Redakcyjne Bielik AI (Wersja A vs Wersja B) -->
+<div id="bielik-redactor-modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(6px); z-index: 20000; overflow-y: auto; padding: 1.25rem 1rem;">
+  <div style="max-width: 1220px; margin: 1.5rem auto; background: var(--bg-card); border: 2px solid rgba(220, 38, 38, 0.4); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; display: flex; flex-direction: column;">
+    
+    <!-- Modal Header -->
+    <div style="padding: 1.25rem 1.5rem; border-bottom: 1.5px solid var(--border-color); background: linear-gradient(135deg, rgba(220, 38, 38, 0.09), rgba(244, 63, 94, 0.05)); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 0.85rem;">
+        <span style="font-size: 2.2rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">🦅</span>
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <h3 style="font-size: 1.25rem; font-weight: 800; margin: 0; color: var(--text-primary); letter-spacing: -0.02em;">
+              Studio Redakcyjne Bielik AI
+            </h3>
+            <span style="display: inline-block; padding: 0.15rem 0.6rem; background: #dc2626; color: #ffffff; border-radius: 9999px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">
+              Wersja A (Oryginał) vs Wersja B (Bielik AI)
+            </span>
+          </div>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+            Polski model językowy weryfikuje styl, usuwa potknięcia dyktowania, zaostrza tezy publicystyczne i generuje alternatywną wersję B do Twojej akceptacji i publikacji.
+          </p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <span id="bielik-status-pill" style="font-size: 0.76rem; padding: 0.25rem 0.65rem; border-radius: 9999px; background: rgba(16, 185, 129, 0.12); color: #059669; font-weight: 700; border: 1px solid rgba(16, 185, 129, 0.3);">
+          ● Gotowy do redakcji
+        </span>
+        <button type="button" onclick="closeBielikRedactorModal();" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.35rem 0.75rem;">✕ Zamknij</button>
+      </div>
+    </div>
+
+    <!-- Toolbar: Options & Engine Switcher -->
+    <div style="padding: 0.85rem 1.5rem; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.75rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        
+        <!-- Engine selection -->
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary);">Silnik Bielika:</label>
+          <select id="bielik-engine-mode" onchange="onBielikEngineChange();" style="padding: 0.35rem 0.65rem; font-size: 0.82rem; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); font-weight: 600;">
+            <option value="builtin" selected>🧠 Wbudowany Polski Silnik Stylistyczny (Błyskawiczny, działa bez klucza)</option>
+            <option value="huggingface">🌐 Hugging Face API: Bielik-11B-v2.3-Instruct</option>
+            <option value="ollama">💻 Lokalny serwer Ollama (localhost:11434 / model: bielik)</option>
+            <option value="webassistant">↗️ Eksport promptu do Chat SpeakLeash (chat.speakleash.org)</option>
+          </select>
+        </div>
+
+        <!-- Tone / Style Selection -->
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary);">Profil redakcyjny:</label>
+          <select id="bielik-style-profile" style="padding: 0.35rem 0.65rem; font-size: 0.82rem; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); font-weight: 600;">
+            <option value="laik_sharp" selected>⚡ Cięta publicystyka Laika (mocny lead, wyostrzone tezy, bez lania wody)</option>
+            <option value="condensed">🎯 Bezwzględny kondensat (usunięcie zbędnych zdań i powtórzeń)</option>
+            <option value="essay">📜 Pogłębiony esej filozoficzny (polski humanizm, dociekliwość)</option>
+          </select>
+        </div>
+
+        <!-- Action buttons -->
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <button type="button" onclick="loadEditorTextToBielikA();" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.75rem;" title="Wczytaj treść z głównego edytora">
+            📥 Wczytaj z edytora
+          </button>
+          <button type="button" id="bielik-run-btn" onclick="runBielikRedaction();" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.4rem 1.15rem; background: linear-gradient(135deg, #dc2626, #b91c1c); border-color: #991b1b; font-weight: 800; box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);">
+            🦅 Generuj Wersję B z Bielik AI
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Hugging Face API Config Box (opcjonalny, rozwijany) -->
+      <div id="bielik-hf-box" style="display: none; padding: 0.6rem 0.85rem; background: rgba(99, 102, 241, 0.06); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 6px; font-size: 0.78rem; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 260px;">
+          <span style="font-weight: 700; color: #4f46e5;">Token HF (Opcjonalny):</span>
+          <input type="password" id="bielik-hf-token" placeholder="hf_xxxxxxxxxxxxxxxx (opcjonalny bezpłatny token HuggingFace)" style="flex: 1; padding: 0.25rem 0.5rem; font-size: 0.76rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-card); color: var(--text-primary);" onchange="saveBielikHfToken();" />
+          <button type="button" onclick="saveBielikHfToken();" class="btn btn-secondary" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;">Zapisz</button>
+        </div>
+        <div style="color: var(--text-secondary); font-size: 0.74rem;">
+          💡 Zapewnia wyższy limit zapytań dla modelu <code>speakleash/Bielik-11B-v2.3-Instruct</code>.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Dual Workspace: Version A (Left) vs Version B (Right) -->
+    <div id="bielik-workspace-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; min-height: 480px; max-height: 65vh;">
+      
+      <!-- LEFT COLUMN: VERSION A (ORYGINAŁ AUTORSKI) -->
+      <div style="display: flex; flex-direction: column; border-right: 1.5px solid var(--border-color); background: var(--bg-card);">
+        <div style="padding: 0.65rem 1rem; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.04em;">
+              Wersja A (Oryginał / Autorska)
+            </span>
+            <span style="padding: 0.1rem 0.45rem; background: rgba(100, 116, 139, 0.15); color: var(--text-secondary); border-radius: 4px; font-size: 0.7rem; font-weight: 700;">
+              Twoja wersja
+            </span>
+          </div>
+          <span id="bielik-stats-a" style="font-size: 0.74rem; color: var(--text-muted); font-family: monospace;">
+            0 słów
+          </span>
+        </div>
+        <textarea id="bielik-raw-a" placeholder="Wklej tutaj swój surowy tekst, podyktowane myśli z mikrofonu lub notatki... albo kliknij 'Wczytaj z edytora'." style="flex: 1; width: 100%; border: none; padding: 1rem; font-family: var(--font-sans); font-size: 0.88rem; line-height: 1.6; resize: none; background: transparent; color: var(--text-primary); outline: none;" oninput="updateBielikStats();"></textarea>
+      </div>
+
+      <!-- RIGHT COLUMN: VERSION B (REDAKCJA BIELIK AI) -->
+      <div style="display: flex; flex-direction: column; background: var(--bg-card);">
+        <div style="padding: 0.55rem 1rem; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 0.8rem; font-weight: 800; color: #dc2626; text-transform: uppercase; letter-spacing: 0.04em;">
+              Wersja B (Szlif Bielik AI)
+            </span>
+            <span id="bielik-diff-badge" style="padding: 0.1rem 0.45rem; background: rgba(220, 38, 38, 0.12); color: #dc2626; border-radius: 4px; font-size: 0.7rem; font-weight: 800;">
+              Oczekuje na start
+            </span>
+          </div>
+          
+          <!-- View switcher for Version B -->
+          <div style="display: flex; gap: 0.25rem; align-items: center;">
+            <button type="button" id="bielik-tab-prev-btn" onclick="switchBielikBTab('preview');" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.2rem 0.55rem;">
+              👁️ Podgląd
+            </button>
+            <button type="button" id="bielik-tab-md-btn" onclick="switchBielikBTab('markdown');" class="btn btn-secondary" style="font-size: 0.72rem; padding: 0.2rem 0.55rem;">
+              📝 Markdown
+            </button>
+            <span id="bielik-stats-b" style="font-size: 0.74rem; color: var(--text-muted); font-family: monospace; margin-left: 0.35rem;">
+              0 słów
+            </span>
+          </div>
+        </div>
+
+        <!-- Version B Preview Area -->
+        <div id="bielik-pane-b-prev" style="flex: 1; padding: 1rem 1.25rem; overflow-y: auto; background: var(--bg-card); color: var(--text-primary); font-size: 0.9rem; line-height: 1.65;">
+          <div style="padding: 3rem 1rem; text-align: center; color: var(--text-muted);">
+            <div style="font-size: 2rem; margin-bottom: 0.75rem;">🦅</div>
+            <p style="font-weight: 600; margin: 0 0 0.4rem 0;">Wersja B jeszcze nie została wygenerowana</p>
+            <p style="font-size: 0.82rem; margin: 0; max-width: 400px; margin-inline: auto;">Kliknij czerwony przycisk <strong>„Generuj Wersję B z Bielik AI”</strong> powyżej, aby polski model językowy przygotował alternatywną, zredagowaną wersję tekstu do akceptacji.</p>
+          </div>
+        </div>
+
+        <!-- Version B Markdown Editor Area -->
+        <textarea id="bielik-output-b" style="display: none; flex: 1; width: 100%; border: none; padding: 1rem; font-family: monospace; font-size: 0.85rem; line-height: 1.55; resize: none; background: transparent; color: var(--text-primary); outline: none;" placeholder="Zredagowany tekst Markdown..." oninput="onBielikBManualEdit();"></textarea>
+
+      </div>
+
+    </div>
+
+    <!-- Differences & Polish Stylistic Summary Bar -->
+    <div style="padding: 0.65rem 1.5rem; background: var(--bg-surface); border-top: 1px solid var(--border-color); font-size: 0.8rem; color: var(--text-secondary); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+      <div id="bielik-changes-summary">
+        💡 Wybierz Wersję A lub B, albo połącz zalety obu wariantów przed ostateczną publikacją na stronie.
+      </div>
+      <div id="bielik-reading-comparison" style="font-size: 0.76rem; color: var(--text-muted);">
+        Wersja A: ~0 min | Wersja B: ~0 min
+      </div>
+    </div>
+
+    <!-- Modal Footer Actions (Decyzja / Akceptacja) -->
+    <div style="padding: 1rem 1.5rem; border-top: 1.5px solid var(--border-color); background: var(--bg-card); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+      <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+        <button type="button" onclick="closeBielikRedactorModal();" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.45rem 0.9rem;">
+          ↩️ Zachowaj Wersję A (Odrzuć)
+        </button>
+        <button type="button" onclick="copyBielikVersionB();" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.45rem 0.9rem;">
+          📋 Kopiuj Wersję B
+        </button>
+      </div>
+
+      <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+        <button type="button" onclick="applyBielikMerged();" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.45rem 1rem; border-color: rgba(99, 102, 241, 0.4); color: #4f46e5; font-weight: 700;" title="Wstawia zredagowany lead i puentę Bielika, ale zachowuje oryginalne akapity autorskie z Wersji A">
+          ✨ Połącz (Lead Bielika + Treść A)
+        </button>
+        <button type="button" onclick="applyBielikVersionB();" class="btn btn-primary" style="font-size: 0.88rem; padding: 0.45rem 1.35rem; font-weight: 800; background: linear-gradient(135deg, #059669, #047857); border-color: #065f46; box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);">
+          ✅ Zastosuj Wersję B (Bielik) do wpisu &rarr;
         </button>
       </div>
     </div>
@@ -2240,7 +2437,14 @@ ${body}`;
     // Show/hide cards across all packages
     document.querySelectorAll('.proposal-card-item').forEach(card => {
       const cardCat = card.getAttribute('data-category');
-      if (cat === 'all' || cardCat === cat) {
+      if (cat === 'all') {
+        card.style.display = 'flex';
+      } else if (cat === 'bielik') {
+        const isBielik = card.getAttribute('data-bielik') === 'true' || 
+                         card.innerText.includes('Bielik AI') || 
+                         card.innerText.includes('🇵🇱');
+        card.style.display = isBielik ? 'flex' : 'none';
+      } else if (cardCat === cat) {
         card.style.display = 'flex';
       } else {
         card.style.display = 'none';
@@ -3191,6 +3395,549 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     });
   }
 
+  // ==============================================================
+  // STUDIO REDAKCYJNE BIELIK AI (WERSJA A vs WERSJA B)
+  // ==============================================================
+  let bielikCurrentResultB = {
+    title: '',
+    lead: '',
+    body: '',
+    fullMarkdown: '',
+    stats: { originalWords: 0, newWords: 0, diffPercent: 0, dedupCount: 0 }
+  };
+
+  function openBielikRedactorModal() {
+    const box = document.getElementById('online-editor-box');
+    if (box && box.style.display === 'none') {
+      toggleOnlineEditor();
+    }
+    const modal = document.getElementById('bielik-redactor-modal-backdrop');
+    if (modal) modal.style.display = 'block';
+
+    // Retrieve saved Hugging Face token if present
+    try {
+      const savedHf = localStorage.getItem('laika_bielik_hf_token') || '';
+      const hfInput = document.getElementById('bielik-hf-token');
+      if (hfInput && savedHf) hfInput.value = savedHf;
+    } catch (e) {}
+
+    // Load editor text into Version A if Version A is currently empty
+    const rawA = document.getElementById('bielik-raw-a');
+    const editorBody = document.getElementById('scratch-body');
+    if (rawA && !rawA.value.trim() && editorBody && editorBody.value.trim()) {
+      rawA.value = editorBody.value.trim();
+    } else if (rawA && !rawA.value.trim()) {
+      // If editor is also empty, load demonstrative text
+      rawA.value = `Dlaczego sztuczna inteligencja nie zastąpi dociekliwego laika
+
+Wszyscy powtarzają, że modele językowe wiedzą już wszystko i że w zasadzie to to ekspertów nie potrzebujemy. Ja jednak uważam zupełnie inaczej - to właśnie dociekliwy laik ma dziś największą siłę w świecie algorytmów.
+
+Kiedy pytamy model o analizę zjawiska, dostajemy odpowiedź wygładzoną jak stół bilardowy. Nie ma w niej żadnego ryzyka, żadnego potknięcia i żadnego własnego zdania. Czy to jest prawdziwa mądrość? Nie, to tylko statystyka w przebraniu wyroczni.
+
+Dlaczego korporacje technologiczne powtarzają w kółko te same slogany? Kto naprawdę płaci za prąd i serwery, gdy narzędzie ma być niby darmowe? Co zrobimy, gdy zabraknie nam wody do chłodzenia centrów danych?
+
+Nie piszę tego bloga jako akademicki ekspert z tytułami przed nazwiskiem. Piszę jako ktoś, kto ma prawo powiedzieć proste słowo: "sprawdzam".`;
+    }
+
+    updateBielikStats();
+  }
+
+  function closeBielikRedactorModal() {
+    const modal = document.getElementById('bielik-redactor-modal-backdrop');
+    if (modal) modal.style.display = 'none';
+  }
+
+  function loadEditorTextToBielikA() {
+    const editorBody = document.getElementById('scratch-body');
+    const rawA = document.getElementById('bielik-raw-a');
+    if (editorBody && rawA) {
+      if (!editorBody.value.trim()) {
+        alert('Edytor główny jest pusty. Wpisz treść artykułu w edytorze lub wklej ją bezpośrednio do kolumny Wersja A.');
+        return;
+      }
+      rawA.value = editorBody.value.trim();
+      updateBielikStats();
+      const pill = document.getElementById('bielik-status-pill');
+      if (pill) {
+        pill.textContent = '📥 Załadowano z edytora';
+        pill.style.background = 'rgba(59, 130, 246, 0.12)';
+        pill.style.color = '#2563eb';
+      }
+    }
+  }
+
+  function onBielikEngineChange() {
+    const mode = document.getElementById('bielik-engine-mode').value;
+    const hfBox = document.getElementById('bielik-hf-box');
+    if (hfBox) {
+      hfBox.style.display = (mode === 'huggingface') ? 'flex' : 'none';
+    }
+    if (mode === 'webassistant') {
+      alert('Wybrano Asystenta Web SpeakLeash: po kliknięciu "Generuj", przygotowany prompt z Twoim tekstem zostanie skopiowany do schowka, a przeglądarka otworzy chat.speakleash.org.');
+    }
+  }
+
+  function saveBielikHfToken() {
+    const hfInput = document.getElementById('bielik-hf-token');
+    if (hfInput) {
+      const val = hfInput.value.trim();
+      try {
+        localStorage.setItem('laika_bielik_hf_token', val);
+        alert(val ? 'Klucz Hugging Face został bezpiecznie zapisany w przeglądarce.' : 'Klucz został usunięty.');
+      } catch (e) {
+        console.warn('Storage save error:', e);
+      }
+    }
+  }
+
+  function switchBielikBTab(tab) {
+    const prevPane = document.getElementById('bielik-pane-b-prev');
+    const mdOutput = document.getElementById('bielik-output-b');
+    const tabPrev = document.getElementById('bielik-tab-prev-btn');
+    const tabMd = document.getElementById('bielik-tab-md-btn');
+
+    if (tab === 'preview') {
+      if (prevPane) prevPane.style.display = 'block';
+      if (mdOutput) mdOutput.style.display = 'none';
+      if (tabPrev) { tabPrev.classList.add('btn-primary'); tabPrev.classList.remove('btn-secondary'); }
+      if (tabMd) { tabMd.classList.add('btn-secondary'); tabMd.classList.remove('btn-primary'); }
+    } else {
+      if (prevPane) prevPane.style.display = 'none';
+      if (mdOutput) mdOutput.style.display = 'block';
+      if (tabPrev) { tabPrev.classList.add('btn-secondary'); tabPrev.classList.remove('btn-primary'); }
+      if (tabMd) { tabMd.classList.add('btn-primary'); tabMd.classList.remove('btn-secondary'); }
+    }
+  }
+
+  function updateBielikStats() {
+    const textA = (document.getElementById('bielik-raw-a')?.value || '').trim();
+    const textB = (document.getElementById('bielik-output-b')?.value || '').trim();
+
+    const wordsA = textA ? textA.split(/\s+/).length : 0;
+    const wordsB = textB ? textB.split(/\s+/).length : 0;
+
+    const minsA = Math.max(1, Math.ceil(wordsA / 200));
+    const minsB = Math.max(1, Math.ceil(wordsB / 200));
+
+    const statsAEl = document.getElementById('bielik-stats-a');
+    if (statsAEl) statsAEl.textContent = `${wordsA} słów (~${minsA} min)`;
+
+    const statsBEl = document.getElementById('bielik-stats-b');
+    if (statsBEl) statsBEl.textContent = `${wordsB} słów (~${minsB} min)`;
+
+    const readCompEl = document.getElementById('bielik-reading-comparison');
+    if (readCompEl) readCompEl.textContent = `Wersja A: ${wordsA} słów (~${minsA} min) | Wersja B: ${wordsB} słów (~${minsB} min)`;
+  }
+
+  function onBielikBManualEdit() {
+    const mdVal = document.getElementById('bielik-output-b').value;
+    bielikCurrentResultB.fullMarkdown = mdVal;
+    const prevPane = document.getElementById('bielik-pane-b-prev');
+    if (prevPane) {
+      prevPane.innerHTML = parseMarkdownPreview(bielikCurrentResultB.title, mdVal);
+    }
+    updateBielikStats();
+  }
+
+  // Bielik Polish Stylistic & Publicistic Engine (Client-side / Fallback / Instant)
+  function polishTextWithBielikRules(rawText, profile) {
+    if (!rawText || !rawText.trim()) return '';
+
+    let text = rawText.trim();
+    let dedupCount = 0;
+
+    // 1. Usunięcie natychmiastowych zacięć dyktowania z mikrofonu
+    const wordDupRegex = /\b([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)(?:[,\s]+(?:\1\b))+/gi;
+    let prevText;
+    do {
+      prevText = text;
+      text = text.replace(wordDupRegex, (match, word) => {
+        dedupCount++;
+        return word;
+      });
+    } while (text !== prevText);
+
+    // 2. Usunięcie typowych potknięć i waty słownej
+    const oralFluff = [
+      /\bno\s+i\s+no\s+i\b/gi,
+      /\bjakby\s+to\s+powiedzieć\b/gi,
+      /\bznaczy\s+się\b/gi,
+      /\bw\s+pewnym\s+sensie\b/gi,
+      /\bpo\s+prostu\b/gi,
+      /\bjak\s+gdyby\b/gi,
+      /\bno\s+nie\b/gi,
+      /\bprawda\?+/gi,
+      /\bwiadomo,\s*że\b/gi,
+      /\bnie\s+da\s+się\s+ukryć,\s*że\b/gi,
+      /\bwarto\s+zauważyć,\s*że\b/gi
+    ];
+    oralFluff.forEach(rx => {
+      text = text.replace(rx, '');
+    });
+
+    // 3. Rozbicie na akapity
+    let blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+    if (blocks.length === 0) return '';
+
+    // 4. Detekcja lub konstrukcja Tytułu i Leadu
+    let title = '';
+    let lead = '';
+    let firstLine = blocks[0].split('\n')[0].trim();
+    if (firstLine.length < 120 && !firstLine.startsWith('#')) {
+      title = firstLine.replace(/^[#\-*•\s]+/, '').replace(/[.]$/, '').trim();
+      blocks[0] = blocks[0].substring(firstLine.length).trim();
+      if (!blocks[0]) blocks.shift();
+    } else {
+      title = 'Dociekliwy sprawdzian rzeczywistości: ' + (firstLine.slice(0, 50).trim()) + '...';
+    }
+
+    if (blocks.length > 0 && blocks[0].length < 340 && !blocks[0].includes('##')) {
+      lead = blocks.shift();
+    }
+
+    // 5. Stylizacja profilowa (Bielik Angle)
+    let processedParagraphs = [];
+    let sectionIdx = 1;
+
+    blocks.forEach((blk, idx) => {
+      let cleanBlk = blk.replace(/[ \t]+/g, ' ').trim();
+
+      // Dodaj śródtytuł co 2 akapity, jeśli nie ma nagłówka
+      if (!cleanBlk.startsWith('#') && idx > 0 && idx % 2 === 0) {
+        let topicHeading = '';
+        if (profile === 'laik_sharp') {
+          const sharpHeadings = [
+            '## Gdzie kończy się marketing, a zaczynają twarde fakty?',
+            '## Pytania, których nikt nie chce zadać na głos',
+            '## Prawdziwy koszt niewypowiedzianych kompromisów',
+            '## Iluzja pewności w epoce gotowych odpowiedzi',
+            '## Sprawdzam: mechanizm pod lupą laika'
+          ];
+          topicHeading = sharpHeadings[(sectionIdx - 1) % sharpHeadings.length];
+        } else if (profile === 'essay') {
+          const essayHeadings = [
+            '## Pomiędzy statystyką a ludzkim doświadczeniem',
+            '## Horyzont wątpliwości i poszukiwanie sensu',
+            '## Dlaczego prawo do błędu buduje mądrość',
+            '## Pęknięcia w gładkich narracjach współczesności'
+          ];
+          topicHeading = essayHeadings[(sectionIdx - 1) % essayHeadings.length];
+        } else {
+          topicHeading = `## Węzeł problemu #${sectionIdx}`;
+        }
+        processedParagraphs.push(topicHeading);
+        sectionIdx++;
+      }
+
+      if (profile === 'condensed') {
+        cleanBlk = cleanBlk.replace(/, które w zasadzie/g, ' —');
+        cleanBlk = cleanBlk.replace(/z całą pewnością/g, 'bez wątpienia');
+      }
+
+      processedParagraphs.push(cleanBlk);
+    });
+
+    // 6. Signature Ending: Pytanie Dociekliwego Laika
+    let concludingSection = '';
+    if (profile === 'laik_sharp') {
+      concludingSection = `---
+
+### 🦅 Pytanie dociekliwego laika
+*Dopóki bezkrytycznie przyjmujemy gotowe schematy myślenia, oddajemy pole tym, którzy zarabiają na naszym milczeniu. Kto w tej układance ponosi realną odpowiedzialność, a kto zgarnia czysty zysk z naszej naiwności?*`;
+    } else if (profile === 'essay') {
+      concludingSection = `---
+
+### 🦅 Refleksja humanistyczna Bielika
+*Prawdziwa odwaga poznawcza nie polega na zbieraniu gotowych receptur od algorytmów, lecz na umiejętności zatrzymania się i postawienia pytania, które burzy wygodny spokój.*`;
+    } else {
+      concludingSection = `---
+
+### 🦅 Podsumowanie w pigułce
+* Trzy filary: rzetelna weryfikacja źródeł, odrzucenie powierzchowności, odwaga do własnego wnioskowania.`;
+    }
+
+    let fullMd = '';
+    if (title) fullMd += `# ${title}\n\n`;
+    if (lead) fullMd += `**${lead}**\n\n`;
+    fullMd += processedParagraphs.join('\n\n') + '\n\n' + concludingSection;
+
+    // Typografia
+    fullMd = fullMd.replace(/(^|[\s(\[{>«])"/g, '$1„');
+    fullMd = fullMd.replace(/"/g, '”');
+    fullMd = fullMd.replace(/“/g, '„');
+    fullMd = fullMd.replace(/([^\n\r])\s+[-–—]{1,2}\s+/g, '$1 — ');
+    fullMd = fullMd.replace(/\.{3,}/g, '…');
+    fullMd = fullMd.replace(/(\b[aiouwzAIOUWZ])\s+/g, '$1\u00A0');
+
+    return {
+      title: title,
+      lead: lead,
+      fullMarkdown: fullMd,
+      dedupCount: dedupCount
+    };
+  }
+
+  // GŁÓWNY PROCES REDAGOWANIA WERSJI B (ASYNC)
+  async function runBielikRedaction() {
+    const rawA = (document.getElementById('bielik-raw-a')?.value || '').trim();
+    if (!rawA) {
+      alert('Wersja A jest pusta! Wpisz lub wklej treść autorską albo kliknij "Wczytaj z edytora".');
+      return;
+    }
+
+    const runBtn = document.getElementById('bielik-run-btn');
+    const pill = document.getElementById('bielik-status-pill');
+    const engineMode = document.getElementById('bielik-engine-mode').value;
+    const styleProfile = document.getElementById('bielik-style-profile').value;
+
+    if (runBtn) {
+      runBtn.disabled = true;
+      runBtn.innerHTML = '⏳ Bielik redaguje tekst...';
+    }
+    if (pill) {
+      pill.textContent = '⏳ Analiza językowa Bielik AI...';
+      pill.style.background = 'rgba(220, 38, 38, 0.15)';
+      pill.style.color = '#dc2626';
+    }
+
+    try {
+      if (engineMode === 'webassistant') {
+        const promptForWeb = `Działasz jako surowy redaktor Bloga Laika. Poniżej znajduje się Wersja A tekstu. Zredaguj go jako Wersję B według zasad:
+1. Bezwzględnie usuń przypadkowe powtórzenia słów, zająknięcia i potknięcia dyktowania.
+2. Zadbaj o cięty, publicystyczny język dociekliwego laika, śródtytuły Markdown (##) i poprawną polską typografię („...”, —).
+3. Na końcu dodaj sekcję: „### 🦅 Pytanie dociekliwego laika”.
+
+TREŚĆ DO REDAKCJI:
+${rawA}`;
+        await navigator.clipboard.writeText(promptForWeb);
+        alert('🦅 Prompt i tekst Wersji A zostały skopiowane do Twojego schowka!\n\nZaraz otworzy się oficjalny asystent Chat SpeakLeash (chat.speakleash.org). Wklej tam tekst (Ctrl+V) i po wygenerowaniu skopiuj odpowiedź do Wersji B.');
+        window.open('https://chat.speakleash.org', '_blank');
+        if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '🦅 Generuj Wersję B z Bielik AI'; }
+        if (pill) { pill.textContent = '↗️ Otwarto Asystenta Web'; }
+        return;
+      }
+
+      let generatedMd = '';
+      let usedEngineLabel = '';
+
+      if (engineMode === 'huggingface') {
+        const savedHfToken = (document.getElementById('bielik-hf-token')?.value || localStorage.getItem('laika_bielik_hf_token') || '').trim();
+        const headers = { 'Content-Type': 'application/json' };
+        if (savedHfToken) {
+          headers['Authorization'] = `Bearer ${savedHfToken}`;
+        }
+
+        const hfPrompt = `<|im_start|>system
+Jesteś Bielikiem — zaawansowanym polskim asystentem redakcyjnym Bloga Laika. Twoim zadaniem jest przekształcić poniższy surowy tekst (Wersja A) w elegancki, ostry artykuł publicystyczny (Wersja B).
+Zasady:
+- Usuń wszelkie zająknięcia, powtórzenia i potknięcia dyktowania mikrofonowego.
+- Zbuduj dynamiczną strukturę z tytułem (# ), wyrazistym leadem oraz śródtytułami (## ).
+- Zastosuj polską typografię („cytat”, myślnik —).
+- Zachowaj autentyczną myśl autora, ale usuń lanie wody.
+- Na końcu dodaj: „### 🦅 Pytanie dociekliwego laika”.
+Zwróć WYŁĄCZNIE gotowy tekst Markdown.<|im_end|>
+<|im_start|>user
+Oto Wersja A:
+${rawA}<|im_end|>
+<|im_start|>assistant\n`;
+
+        try {
+          const resp = await fetch('https://api-inference.huggingface.co/models/speakleash/Bielik-11B-v2.3-Instruct', {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({
+              inputs: hfPrompt,
+              parameters: { max_new_tokens: 1400, temperature: 0.6, return_full_text: false }
+            })
+          });
+
+          if (resp.ok) {
+            const data = await resp.json();
+            if (Array.isArray(data) && data[0] && data[0].generated_text) {
+              generatedMd = data[0].generated_text.trim();
+              usedEngineLabel = '🌐 Hugging Face: Bielik-11B-v2.3';
+            }
+          } else {
+            console.warn('HF Inference API zwróciło status:', resp.status);
+          }
+        } catch (hfErr) {
+          console.warn('HF Inference API fetch error:', hfErr);
+        }
+      } else if (engineMode === 'ollama') {
+        try {
+          const ollamaResp = await fetch('http://localhost:11434/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'bielik',
+              prompt: `Działasz jako bezlitosny polski redaktor Bloga Laika. Zredaguj ten tekst (usuń powtórzenia, watę, ustrukturyzuj nagłówkami i dodaj Pytanie Laika na końcu):\n\n${rawA}`,
+              stream: false
+            })
+          });
+          if (ollamaResp.ok) {
+            const oData = await ollamaResp.json();
+            if (oData && oData.response) {
+              generatedMd = oData.response.trim();
+              usedEngineLabel = '💻 Lokalny Ollama: Bielik';
+            }
+          }
+        } catch (ollamaErr) {
+          console.warn('Ollama fetch error:', ollamaErr);
+        }
+      }
+
+      // Fallback do wbudowanego polskiego silnika stylistycznego Bielika
+      if (!generatedMd) {
+        const localRedacted = polishTextWithBielikRules(rawA, styleProfile);
+        generatedMd = localRedacted.fullMarkdown;
+        usedEngineLabel = (engineMode === 'builtin') ? '🧠 Wbudowany Polski Silnik Bielika' : '🧠 Wbudowany Silnik Bielika (Fallback z sieci)';
+      }
+
+      bielikCurrentResultB.fullMarkdown = generatedMd;
+      
+      const lines = generatedMd.split('\n');
+      let extractedTitle = '';
+      if (lines[0].startsWith('# ')) {
+        extractedTitle = lines[0].replace(/^#\s+/, '').trim();
+      }
+      bielikCurrentResultB.title = extractedTitle;
+
+      const mdOutput = document.getElementById('bielik-output-b');
+      if (mdOutput) mdOutput.value = generatedMd;
+
+      const prevPane = document.getElementById('bielik-pane-b-prev');
+      if (prevPane) {
+        prevPane.innerHTML = parseMarkdownPreview(extractedTitle, generatedMd);
+      }
+
+      const wordsA = rawA.split(/\s+/).length;
+      const wordsB = generatedMd.split(/\s+/).length;
+      const diffP = Math.round(((wordsB - wordsA) / wordsA) * 100);
+      const diffSign = diffP > 0 ? `+${diffP}%` : `${diffP}%`;
+
+      const diffBadge = document.getElementById('bielik-diff-badge');
+      if (diffBadge) {
+        diffBadge.textContent = `Szlif ukończony (${diffSign} objętości)`;
+        diffBadge.style.background = 'rgba(16, 185, 129, 0.15)';
+        diffBadge.style.color = '#059669';
+      }
+
+      const summaryEl = document.getElementById('bielik-changes-summary');
+      if (summaryEl) {
+        summaryEl.innerHTML = `✨ <strong>Sukces (${usedEngineLabel}):</strong> Wygenerowano Wersję B zoptymalizowaną pod kątem dociekliwości laika i polskiej typografii. Różnica objętości: <strong>${diffSign}</strong>.`;
+      }
+
+      if (pill) {
+        pill.textContent = '● Wersja B gotowa do akceptacji';
+        pill.style.background = 'rgba(16, 185, 129, 0.12)';
+        pill.style.color = '#059669';
+      }
+
+      updateBielikStats();
+
+    } catch (err) {
+      alert('Wystąpił błąd podczas redakcji Bielika: ' + err.message);
+    } finally {
+      if (runBtn) {
+        runBtn.disabled = false;
+        runBtn.innerHTML = '🦅 Generuj Wersję B z Bielik AI';
+      }
+    }
+  }
+
+  // ZASTOSOWANIE WERSJI B DO EDYTORA CMS
+  function applyBielikVersionB() {
+    const mdB = (document.getElementById('bielik-output-b')?.value || bielikCurrentResultB.fullMarkdown || '').trim();
+    if (!mdB) {
+      alert('Wersja B nie została jeszcze wygenerowana! Kliknij najpierw czerwony przycisk "Generuj Wersję B z Bielik AI".');
+      return;
+    }
+
+    const lines = mdB.split('\n');
+    let titleToSet = '';
+    let bodyToSet = mdB;
+
+    if (lines[0].startsWith('# ')) {
+      titleToSet = lines[0].replace(/^#\s+/, '').trim();
+      bodyToSet = lines.slice(1).join('\n').trim();
+    }
+
+    const titleInput = document.getElementById('scratch-title');
+    const slugInput = document.getElementById('scratch-slug');
+    if (titleToSet && titleInput) {
+      if (!titleInput.value || confirm(`Czy ustawić zredagowany tytuł Bielika:\n"${titleToSet}"?`)) {
+        titleInput.value = titleToSet;
+        if (slugInput) slugInput.value = slugify(titleToSet);
+      }
+    }
+
+    const editorBody = document.getElementById('scratch-body');
+    if (editorBody) {
+      editorBody.value = bodyToSet;
+    }
+
+    updateLivePreview();
+    closeBielikRedactorModal();
+
+    const notif = document.getElementById('import-notification');
+    if (notif) {
+      notif.style.display = 'block';
+      notif.innerHTML = `🦅 <strong>Zaakceptowano Wersję B od Bielik AI!</strong> Treść wpisu została zaktualizowana i sformatowana w edytorze. Możesz teraz opublikować artykuł.`;
+      setTimeout(() => { notif.style.display = 'none'; }, 7000);
+      notif.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  // POŁĄCZENIE WERSJI (Lead i puenta z Bielika + oryginalna treść z A)
+  function applyBielikMerged() {
+    const rawA = (document.getElementById('bielik-raw-a')?.value || '').trim();
+    const mdB = (document.getElementById('bielik-output-b')?.value || bielikCurrentResultB.fullMarkdown || '').trim();
+
+    if (!rawA) {
+      alert('Brak Wersji A do połączenia.');
+      return;
+    }
+    if (!mdB) {
+      alert('Wersja B nie została jeszcze wygenerowana! Kliknij najpierw "Generuj Wersję B z Bielik AI".');
+      return;
+    }
+
+    let endingMatch = mdB.match(/(### 🦅[\s\S]+)$/);
+    let ending = endingMatch ? endingMatch[1] : '';
+
+    let merged = rawA;
+    if (ending && !merged.includes('### 🦅')) {
+      merged = merged + '\n\n---\n\n' + ending;
+    }
+
+    const editorBody = document.getElementById('scratch-body');
+    if (editorBody) {
+      editorBody.value = merged;
+    }
+
+    updateLivePreview();
+    closeBielikRedactorModal();
+
+    const notif = document.getElementById('import-notification');
+    if (notif) {
+      notif.style.display = 'block';
+      notif.innerHTML = `✨ <strong>Połączono wersje!</strong> Zachowano Twój autorski tekst z Wersji A, dodając dociekliwe podsumowanie Bielik AI.`;
+      setTimeout(() => { notif.style.display = 'none'; }, 7000);
+      notif.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  function copyBielikVersionB() {
+    const mdB = (document.getElementById('bielik-output-b')?.value || bielikCurrentResultB.fullMarkdown || '').trim();
+    if (!mdB) {
+      alert('Wersja B nie została jeszcze wygenerowana.');
+      return;
+    }
+    navigator.clipboard.writeText(mdB).then(() => {
+      alert('🦅 Zredagowana Wersja B (Markdown) została skopiowana do schowka!');
+    });
+  }
+
   // ==========================================
   // SILNIK DYKTOWANIA GŁOSOWEGO Z DEDUPLIKACJĄ
   // ==========================================
@@ -3623,12 +4370,13 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
 
   function renderLiveProposalCardHtml(prop, idx) {
     const isKond = prop.category === 'kondensat';
+    const isBielik = prop.source_flag === '🇵🇱' || prop.bielik_recommended || (prop.tags && prop.tags.includes('bielik'));
     const cardStyle = isKond
       ? 'background: linear-gradient(135deg, rgba(217, 119, 6, 0.08), rgba(124, 58, 237, 0.08)); border: 2px solid #d97706; box-shadow: 0 4px 14px rgba(217, 119, 6, 0.15);'
       : 'background: var(--bg-surface); border: 1.5px solid var(--border-color);';
 
     return `
-      <div class="proposal-card-item proposal-card-${escapeHtml(prop.category)}" data-category="${escapeHtml(prop.category)}" style="${cardStyle} border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition); overflow: hidden;">
+      <div class="proposal-card-item proposal-card-${escapeHtml(prop.category)}" data-category="${escapeHtml(prop.category)}" data-bielik="${isBielik ? 'true' : 'false'}" style="${cardStyle} border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition); overflow: hidden;">
         <div>
           <div style="position: relative; height: 140px; margin: -1.25rem -1.25rem 0.85rem -1.25rem; background: #0f172a; overflow: hidden;">
             <img src="${escapeHtml(prop.image_url)}" alt="${escapeHtml(prop.title)}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
@@ -3644,6 +4392,7 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
                 : `<span class="post-category-tag" style="font-size: 0.75rem;">${escapeHtml(prop.category.toUpperCase())}</span>`}
               <span style="background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.25); font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;">🛡️ 100% Samokreacja</span>
               <span style="background: rgba(59, 130, 246, 0.12); color: #2563eb; border: 1px solid rgba(59, 130, 246, 0.25); font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;">📡 ${escapeHtml(prop.source_flag)} ${escapeHtml(prop.source_name)}</span>
+              ${isBielik ? '<span style="background: rgba(220, 38, 38, 0.12); color: #dc2626; border: 1px solid rgba(220, 38, 38, 0.25); font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;">🦅 Bielik AI: Polski kontekst</span>' : ''}
             </div>
             <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">⚡ ${escapeHtml(prop.search_date)}</span>
           </div>

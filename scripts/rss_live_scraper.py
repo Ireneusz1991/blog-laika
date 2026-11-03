@@ -528,6 +528,9 @@ def synthesize_live_proposal(item: Dict[str, Any], category: str, visual_seed: i
     img_url, img_concept, img_prompt = visuals[visual_seed % len(visuals)]
     crafted = _craft_polish_angle(item, category)
 
+    is_polish = (item.get("source_flag") == "🇵🇱" or item.get("language") == "pl" or any(w in (item.get("title") or "").lower() for w in ["pols", "złot", "warszaw", "nbp", "orlen", "kghm", "sejm", "rzeczpospolit", "wisł", "odr", "bałtyk", "cpk", "atom", "energetyk", "złotych"]))
+    bielik_angle = "🦅 Rekomendacja Bielik AI: Kluczowy wątek dla polskiej debaty publicznej. Interpretacja pod kątem suwerenności regulacyjnej i interesu rodzimego konsumenta/przedsiębiorcy." if is_polish else ""
+
     return {
         "category": category,
         "title": crafted["title"],
@@ -541,7 +544,9 @@ def synthesize_live_proposal(item: Dict[str, Any], category: str, visual_seed: i
         "points": crafted["points"],
         "draft": crafted["draft"],
         "rss_url": item.get("link", ""),
-        "rss_raw_title": item.get("title", "")
+        "rss_raw_title": item.get("title", ""),
+        "bielik_recommended": is_polish,
+        "bielik_angle": bielik_angle
     }
 
 
