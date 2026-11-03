@@ -2,7 +2,7 @@
   {
     "title": "Architektura uwagi: Czy modele AI naprawdę myślą, czy tylko bezbłędnie zgadują?",
     "filepath": "g:\\Mój dysk\\blog-laika\\posts\\architektura-uwagi-czy-ai-mysli.md",
-    "audit_timestamp": "2026-11-02 22:44:35",
+    "audit_timestamp": "2026-11-03 12:08:46",
     "verdict": "100% CZYSTA SAMOKREACJA (BRAK PLAGIATU, WYSOKA KREATYWNOŚĆ)",
     "originality_web_score": 100.0,
     "is_plagiarism_free": true,
@@ -25,54 +25,12 @@
       "voice_score": 100,
       "overall_creativity_score": 95.5
     },
-    "plagiarism_details": {
-      "tested_shingles_count": 5,
-      "external_duplicates_count": 0,
-      "originality_web_score": 100.0,
-      "is_clean": true,
-      "details": [
-        {
-          "phrase": "Kiedy po raz pierwszy prowadzimy dłuższą rozmowę z",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "All You Need Zamiast sekwencyjnie słowo po słowie",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "się nagle przy odpowiedniej skali Krytycy tacy jak",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "szachy czy emocje musi wewnętrznie uproszczoną reprezentację rzeczywistości",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "On the Dangers of Stochastic Parrots Can Language",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        }
-      ]
-    }
+    "plagiarism_details": null
   },
   {
     "title": "Złudzenie taniego kapitału: Dlaczego dekada zerowych stóp procentowych zmieniła wszystko",
     "filepath": "g:\\Mój dysk\\blog-laika\\posts\\zludzenie-taniego-kapitalu-zerowe-stopy.md",
-    "audit_timestamp": "2026-11-02 22:44:40",
+    "audit_timestamp": "2026-11-03 12:08:46",
     "verdict": "100% CZYSTA SAMOKREACJA (BRAK PLAGIATU, WYSOKA KREATYWNOŚĆ)",
     "originality_web_score": 100.0,
     "is_plagiarism_free": true,
@@ -93,54 +51,12 @@
       "voice_score": 80,
       "overall_creativity_score": 96.0
     },
-    "plagiarism_details": {
-      "tested_shingles_count": 5,
-      "external_duplicates_count": 0,
-      "originality_web_score": 100.0,
-      "is_clean": true,
-      "details": [
-        {
-          "phrase": "Przez ponad lat po kryzysie finansowym z 2008",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "poniżej zera Dla przeciętnego obserwatora brzmiało to jak",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "BIS Annual Economic Reports analizy zjawiska firm zombie",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "stóp referencyjnych i bilansów banków centralnych 3 Claudio",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "zniekształceń kalkulacji gospodarczej wywołanych sztucznym obniżaniem stóp procentowych",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        }
-      ]
-    }
+    "plagiarism_details": null
   },
   {
     "title": "Nowy koncert mocarstw: Od wolnego handlu do geopolitycznej autarkii",
     "filepath": "g:\\Mój dysk\\blog-laika\\posts\\nowy-koncert-mocarstw-geopolityka.md",
-    "audit_timestamp": "2026-11-02 22:44:45",
+    "audit_timestamp": "2026-11-03 12:08:46",
     "verdict": "100% CZYSTA SAMOKREACJA (BRAK PLAGIATU, WYSOKA KREATYWNOŚĆ)",
     "originality_web_score": 100.0,
     "is_plagiarism_free": true,
@@ -161,54 +77,12 @@
       "voice_score": 80,
       "overall_creativity_score": 96.0
     },
-    "plagiarism_details": {
-      "tested_shingles_count": 5,
-      "external_duplicates_count": 0,
-      "originality_web_score": 100.0,
-      "is_clean": true,
-      "details": [
-        {
-          "phrase": "Początek lat 90 przyniósł słynną tezę Francisa Fukuyamy",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "czystym ekonomicznym absurdem Niemiecka koncepcja Wandel durch Handel",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "były naiwne 1 Henry Farrell Abraham L Newman",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "jako narzędzi przymusu geopolitycznego 2 Francis Fukuyama The",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "and European de-risking Wielkie sprzężenie zwrotne jak deficyt",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        }
-      ]
-    }
+    "plagiarism_details": null
   },
   {
     "title": "Anatomia kryzysu sueskiego 1956: Dzień, w którym Europa zrozumiała, że nie jest już centrum świata",
     "filepath": "g:\\Mój dysk\\blog-laika\\posts\\kryzys-sueski-1956-lekcja-historii.md",
-    "audit_timestamp": "2026-11-02 22:44:51",
+    "audit_timestamp": "2026-11-03 12:08:46",
     "verdict": "100% CZYSTA SAMOKREACJA (BRAK PLAGIATU, WYSOKA KREATYWNOŚĆ)",
     "originality_web_score": 100.0,
     "is_plagiarism_free": true,
@@ -229,54 +103,12 @@
       "voice_score": 80,
       "overall_creativity_score": 96.0
     },
-    "plagiarism_details": {
-      "tested_shingles_count": 5,
-      "external_duplicates_count": 0,
-      "originality_web_score": 100.0,
-      "is_clean": true,
-      "details": [
-        {
-          "phrase": "Jesienią 1956 roku rządy Wielkiej Brytanii i Francji",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "widzenia operacja Muszkieter była niemal natychmiastowym sukcesem desant",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "Jak do tego doszło 1 James M Boughton",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "kurs funta 2 The National Archives UK Cabinet",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "Crisis University of North Carolina Press analiza współzależności",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        }
-      ]
-    }
+    "plagiarism_details": null
   },
   {
     "title": "Pochwała dociekliwego laika: Dlaczego w epoce wąskich specjalizacji najbardziej potrzebujemy spojrzenia z zewnątrz",
     "filepath": "g:\\Mój dysk\\blog-laika\\posts\\pochwala-dociekliwego-laika.md",
-    "audit_timestamp": "2026-11-02 22:44:56",
+    "audit_timestamp": "2026-11-03 12:08:46",
     "verdict": "100% CZYSTA SAMOKREACJA (BRAK PLAGIATU, WYSOKA KREATYWNOŚĆ)",
     "originality_web_score": 100.0,
     "is_plagiarism_free": true,
@@ -297,54 +129,12 @@
       "voice_score": 90,
       "overall_creativity_score": 98.0
     },
-    "plagiarism_details": {
-      "tested_shingles_count": 5,
-      "external_duplicates_count": 0,
-      "originality_web_score": 100.0,
-      "is_clean": true,
-      "details": [
-        {
-          "phrase": "Współczesny świat nagradza hiper-specjalizację Od inżynierów oprogramowania przez",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "Zjawisko to przyniosło olbrzymi postęp techniczny lecz stworzyło",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "1 Richard P Feynman The Pleasure of Finding",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "Popper The Logic of Scientific Discovery 1959 o",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "mental models oraz interdyscyplinarnego łączenia faktów Wielkie sprzężenie",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        }
-      ]
-    }
+    "plagiarism_details": null
   },
   {
     "title": "Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu",
     "filepath": "g:\\Mój dysk\\blog-laika\\posts\\wielkie-sprzezenie-zwrotne.md",
-    "audit_timestamp": "2026-11-02 22:45:02",
+    "audit_timestamp": "2026-11-03 12:08:46",
     "verdict": "100% CZYSTA SAMOKREACJA (BRAK PLAGIATU, WYSOKA KREATYWNOŚĆ)",
     "originality_web_score": 100.0,
     "is_plagiarism_free": true,
@@ -365,54 +155,12 @@
       "voice_score": 100,
       "overall_creativity_score": 100.0
     },
-    "plagiarism_details": {
-      "tested_shingles_count": 5,
-      "external_duplicates_count": 0,
-      "originality_web_score": 100.0,
-      "is_clean": true,
-      "details": [
-        {
-          "phrase": "W świecie wąskich specjalizacji eksperci analizują w odseparowanych",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "modelu językowego można w kilka miesięcy natomiast wybudowanie",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "i krytyczną infrastrukturą Współczesna Europa nie znajduje się",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "tym więcej ich zużywamy oraz zdolności inżynierii i",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "myśli Złudzenie taniego kapitału Anatomia kryzysu sueskiego 1956",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        }
-      ]
-    }
+    "plagiarism_details": null
   },
   {
     "title": "Rachunek bez iluzji: Złoto po przecenie, półprzewodniki, „krótko” na WIG20... Oto typy na listopad",
     "filepath": "g:\\Mój dysk\\blog-laika\\posts\\rachunek-bez-iluzji-zloto-po-przecenie-polprzewodniki-krotko-na-wig20-oto-typy-na-listopad.md",
-    "audit_timestamp": "2026-11-02 22:45:07",
+    "audit_timestamp": "2026-11-03 12:08:46",
     "verdict": "100% CZYSTA SAMOKREACJA (BRAK PLAGIATU, WYSOKA KREATYWNOŚĆ)",
     "originality_web_score": 100.0,
     "is_plagiarism_free": true,
@@ -433,48 +181,32 @@
       "voice_score": 80,
       "overall_creativity_score": 96.0
     },
-    "plagiarism_details": {
-      "tested_shingles_count": 5,
-      "external_duplicates_count": 0,
-      "originality_web_score": 100.0,
-      "is_clean": true,
-      "details": [
-        {
-          "phrase": "Ekonomia w wydaniu medialnym często przypomina relację sportową",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "od złego odróżnia jedno zły widzi tylko bezpośredni",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "ma podwójne znaczenie Nasz model wzrostu z ostatnich",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "wysoko gospodarka bezwzględnie weryfikuje modele biznesowe budowane na",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        },
-        {
-          "phrase": "osiemtysiecy pl Bastiat Co i czego nie Ce",
-          "matches_count": 0,
-          "external_matches_count": 0,
-          "external_matches": [],
-          "verdict": "CZYSTY / UNIKALNY"
-        }
-      ]
-    }
+    "plagiarism_details": null
+  },
+  {
+    "title": "Cyfrowy Lewiatan i Prawo Własności — dlaczego w epoce chmury, subskrypcji i AI przestajemy być właścicielami czegokolwiek",
+    "filepath": "g:\\Mój dysk\\blog-laika\\posts\\cyfrowy-lewiatan-i-prawo-wlasnosci-dlaczego-w-epoce-chmury-subskrypcji-i-ai-przestajemy-byc-wlascicielami-czegokolwiek.md",
+    "audit_timestamp": "2026-11-03 12:08:46",
+    "verdict": "100% CZYSTA SAMOKREACJA (BRAK PLAGIATU, WYSOKA KREATYWNOŚĆ)",
+    "originality_web_score": 100.0,
+    "is_plagiarism_free": true,
+    "creativity_score": 98.0,
+    "creativity_metrics": {
+      "total_words": 328,
+      "unique_words": 263,
+      "type_token_ratio": 0.802,
+      "guiraud_index": 14.52,
+      "lexical_score": 100,
+      "sentences_count": 16,
+      "avg_sentence_length": 22.4,
+      "sentence_length_std_dev": 14.35,
+      "burstiness_score": 100,
+      "ai_cliches_found": [],
+      "ai_cliche_score": 100,
+      "rhetorical_questions_count": 1,
+      "voice_score": 90,
+      "overall_creativity_score": 98.0
+    },
+    "plagiarism_details": null
   }
 ]

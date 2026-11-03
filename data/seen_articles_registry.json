@@ -1,10 +1,16 @@
 {
   "published_articles": [
     {
+      "id": 8,
+      "title": "Rachunek bez iluzji: Złoto po przecenie, półprzewodniki, „krótko” na WIG20... Oto typy na listopad",
+      "slug": "rachunek-bez-iluzji-zloto-po-przecenie-polprzewodniki-krotko-na-wig20-oto-typy-na-listopad",
+      "category": "gospodarka"
+    },
+    {
       "id": 7,
-      "title": "Kondensat I: Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu",
-      "slug": "kondensat-wielkie-sprzezenie-zwrotne",
-      "category": "eseje"
+      "title": "Wielkie sprzężenie zwrotne — jak deficyt energii, drogi kapitał i wąskie gardła geopolityki zderzają się z halucynacjami cyfrowego postępu",
+      "slug": "wielkie-sprzezenie-zwrotne",
+      "category": "kondensat"
     },
     {
       "id": 6,
@@ -19,10 +25,10 @@
       "category": "historia"
     },
     {
-      "id": 2,
-      "title": "Architektura uwagi: Czy modele AI naprawdę myślą, czy tylko bezbłędnie zgadują?",
-      "slug": "architektura-uwagi-czy-ai-mysli",
-      "category": "technologia"
+      "id": 4,
+      "title": "Nowy koncert mocarstw: Od wolnego handlu do geopolitycznej autarkii",
+      "slug": "nowy-koncert-mocarstw-geopolityka",
+      "category": "polityka"
     },
     {
       "id": 3,
@@ -31,10 +37,10 @@
       "category": "gospodarka"
     },
     {
-      "id": 4,
-      "title": "Nowy koncert mocarstw: Od wolnego handlu do geopolitycznej autarkii",
-      "slug": "nowy-koncert-mocarstw-geopolityka",
-      "category": "polityka"
+      "id": 2,
+      "title": "Architektura uwagi: Czy modele AI naprawdę myślą, czy tylko bezbłędnie zgadują?",
+      "slug": "architektura-uwagi-czy-ai-mysli",
+      "category": "technologia"
     }
   ],
   "proposed_history": [
@@ -668,5 +674,5 @@
       "category": "eseje"
     }
   },
-  "last_updated": "2026-11-02T08:00:26.101264"
+  "last_updated": "2026-11-03T12:05:36.375545"
 }

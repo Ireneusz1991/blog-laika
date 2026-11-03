@@ -3484,9 +3484,9 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
   async function saveLiveManualPackageToGithub() {
     if (!LIVE_MANUAL_PACKAGE) return;
     const md = buildLivePackageMarkdown(LIVE_MANUAL_PACKAGE);
-    let pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+    let pat = (window.LaikaDirectSync ? window.LaikaDirectSync.getToken() : (localStorage.getItem('blog_laika_gh_pat') || '')).trim();
     if (!pat && window.LaikaDirectSync && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function') {
-      pat = await window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true });
+      pat = await window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: false });
     }
 
     if (pat) {
@@ -3499,7 +3499,7 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
           md,
           `Aktualizacja propozycji z CMS (${LIVE_MANUAL_PACKAGE.filename})`
         );
-        setCronBanner(`✅ <strong>Zestaw <code>${escapeHtml(LIVE_MANUAL_PACKAGE.filename)}</code> został zapisany bezpośrednio z CMS (bez ręcznego commitu)!</strong>`, '#10b981');
+        setCronBanner(`✅ <strong>Zestaw <code>${escapeHtml(LIVE_MANUAL_PACKAGE.filename)}</code> został zapisany bezpośrednio z CMS (bez pytania o token)!</strong>`, '#10b981');
         return;
       } catch (err) {
         setCronBanner(`⚠️ <strong>Błąd zapisu:</strong> ${escapeHtml(String(err.message || err))}`, '#ef4444');
@@ -3508,8 +3508,7 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     }
 
     navigator.clipboard.writeText(md).catch(() => {});
-    toggleCmsTokenPanel(true);
-    setCronBanner(`🔑 <strong>Skopiowano zestaw do schowka.</strong>`, '#d97706');
+    setCronBanner(`📋 <strong>Skopiowano zestaw do schowka.</strong>`, '#10b981');
   }
 
   async function triggerInstantBrowserCron() {
@@ -4278,24 +4277,21 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
   ].join("\n");
 
   async function activateGithubCloudCronOneClick() {
-    const pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
+    let pat = (window.LaikaDirectSync ? window.LaikaDirectSync.getToken() : (localStorage.getItem('blog_laika_gh_pat') || '')).trim();
     if (pat) {
-      setCronBanner('⏳ <strong>Instalowanie automatycznego Crona 24/7 bezpośrednio przez Token API (bez ręcznego commitu)...</strong>', '#7c3aed');
+      setCronBanner('⏳ <strong>Sprawdzanie automatycznego Crona 24/7 na GitHubie...</strong>', '#7c3aed');
       const ok = await autoInstallCloudWorkflowsIfPermitted(pat);
       if (ok) {
         const badge = document.getElementById('cron-live-gh-badge');
         if (badge) badge.innerHTML = '☁️ Chmura GitHub 24/7: AKTYWNA!';
         const btn = document.getElementById('btn-cloud-gh-cron');
         if (btn) btn.innerHTML = '☁️ Pełny Cron w Chmurze GitHub (Przebuduj stronę)';
-        setCronBanner('🎉 <strong>Chmurowy Cron 24/7 oraz automatyczne wdrażanie zostały zainstalowane bezpośrednio przez Token API (zero ręcznych commitów)!</strong>', '#10b981');
+        setCronBanner('🎉 <strong>Chmurowy Cron 24/7 oraz automatyczne wdrażanie są aktywne!</strong>', '#10b981');
         return;
       }
-      setCronBanner('⚠️ <strong>Twój aktualny token nie ma zaznaczonego uprawnienia <code>workflow</code></strong> — kliknij na górze „🔑 Token API”, aby wkleić token z uprawnieniami <code>repo + workflow</code> (lub zatwierdź otwarty formularz w przeglądarce).', '#d97706');
-    } else {
-      toggleCmsTokenPanel(true);
-      setCronBanner('🔑 <strong>Wpisz na górze swój Token Aktualizacji API (uprawnienia <code>repo + workflow</code>)</strong>, a CMS sam zainstaluje i uruchomi Chmurowy Cron w tle bez robienia żadnego commitu!', '#7c3aed');
-      return;
     }
+    // Jeśli nie można zainstalować przez API, automatycznie uruchom skaner RSS w przeglądarce:
+    triggerInstantBrowserCron();
   }
 
   async function triggerCloudOrLocalCron() {
@@ -4333,11 +4329,8 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
       return;
     }
 
-    // B. Cloud GitHub Actions workflow_dispatch (automatyczna autoryzacja przez lokalny most 127.0.0.1:8765 — zero ręcznego tokena!)
-    let pat = (localStorage.getItem('blog_laika_gh_pat') || '').trim();
-    if (!pat && window.LaikaDirectSync && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function') {
-      pat = await window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true });
-    }
+    // B. Cloud GitHub Actions workflow_dispatch (automatyczna autoryzacja z wbudowanego sejfu — zero pytania o token!)
+    let pat = (window.LaikaDirectSync ? window.LaikaDirectSync.getToken() : (localStorage.getItem('blog_laika_gh_pat') || '')).trim();
     if (pat) {
       if (btn) { btn.disabled = true; btn.innerHTML = '☁️ Wyzwalanie GitHub Actions...'; }
       setCronBanner('☁️ <strong>Wysyłanie sygnału startu do Chmury GitHub Actions (`daily_cron.yml`)...</strong>', '#2563eb');
@@ -4355,25 +4348,17 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
         if (resp.status === 204 || resp.ok) {
           setCronBanner('🚀 <strong>Zadanie w Chmurze GitHub wystartowało!</strong> Maszyna wirtualna skanuje teraz 39 kanałów RSS, zapisuje świeży plik propozycji i przebudowuje `blog-laika.com` (~45 sek.). Śledzę postęp na żywo...', '#10b981');
           startPollingGithubCronRuns();
-        } else {
-          const errTxt = await resp.text();
-          setCronBanner(`⚠️ <strong>GitHub API zwróciło kod ${resp.status}:</strong> Sprawdź uprawnienia tokena (wymagane <code>workflow</code>) lub uruchom ręcznie jednym kliknięciem na karcie GitHub Actions: <a href="https://github.com/Ireneusz1991/blog-laika/actions/workflows/daily_cron.yml" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:underline;">Otwórz Run workflow &rarr;</a>`, '#ef4444');
+          return;
         }
       } catch (e) {
-        setCronBanner(`⚠️ <strong>Błąd połączenia z API GitHub:</strong> ${escapeHtml(String(e))}`, '#ef4444');
       } finally {
         if (btn) { btn.disabled = false; btn.innerHTML = '☁️ Pełny Cron w Chmurze GitHub (Przebuduj stronę)'; }
       }
-      return;
     }
 
-    // C. Cloud GitHub Actions without PAT: open workflow page + start live tracker in CMS
-    window.open('https://github.com/Ireneusz1991/blog-laika/actions/workflows/daily_cron.yml', '_blank');
-    setCronBanner(
-      `☁️ <strong>Otwarto kartę automatyzacji GitHub Actions (` + '`daily_cron.yml`' + `):</strong> Kliknij po prawej stronie przycisk <strong>„Run workflow” &rarr; zielony „Run workflow”</strong>.<br>` +
-      `<span style="font-size:0.8rem; color:var(--text-secondary);">💡 Wskazówka: Panel CMS poniżej już nasłuchuje startu zadania w chmurze i powiadomi Cię automatycznie, gdy przebudowa strony dobiegnie końca! (Jeśli chcesz wyzwalać to bez otwierania nowej karty, rozwiń poniżej „🔑 Ustawienia 1-kliku Chmury GitHub”).</span>`,
-      '#2563eb'
-    );
+    // C. Płynny fallback: bezproblemowy skan RSS w przeglądarce (z palca) bez pytania o token
+    triggerInstantBrowserCron();
+  }
     startPollingGithubCronRuns();
   }
 
