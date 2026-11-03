@@ -383,6 +383,16 @@ def build_static(output_dir="dist", base_url=None):
         f.write(admin_tmpl.render(**ctx_admin))
     print("    [OK] Wygenerowano: admin/index.html (Panel CMS na GitHubie)")
 
+    # 3f. Aliasy i przekierowania /admin/login oraz /login do /admin/
+    admin_login_redirect_html = '<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=/admin/"><link rel="canonical" href="/admin/"><title>Logowanie do CMS</title><script>window.location.replace("/admin/");</script></head><body><p>Przekierowywanie do <a href="/admin/">Panelu CMS</a>...</p></body></html>'
+    os.makedirs(os.path.join(output_dir, "admin", "login"), exist_ok=True)
+    with open(os.path.join(output_dir, "admin", "login", "index.html"), "w", encoding="utf-8") as f:
+        f.write(admin_login_redirect_html)
+    os.makedirs(os.path.join(output_dir, "login"), exist_ok=True)
+    with open(os.path.join(output_dir, "login", "index.html"), "w", encoding="utf-8") as f:
+        f.write(admin_login_redirect_html)
+    print("    [OK] Wygenerowano przekierowania: /admin/login/ i /login/ -> /admin/")
+
     # 4. Widoki poszczególnych esejów (post/<slug>/index.html)
     post_tmpl = env.get_template("post.html")
     for p in posts:
