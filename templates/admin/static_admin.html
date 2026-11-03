@@ -1995,8 +1995,9 @@
   }
 
   // Render immediately if script executes after DOM is ready
-  renderView();
-  renderView();
+  if (typeof renderView === 'function') {
+    renderView();
+  }
 
   // Automatic edit loader if ?edit=<slug> query param is present
   try {
@@ -5703,8 +5704,6 @@ Zwróć WYŁĄCZNIE gotowy tekst Markdown.`;
 
     // C. Płynny fallback: bezproblemowy skan RSS w przeglądarce (z palca) bez pytania o token
     triggerInstantBrowserCron();
-  }
-    startPollingGithubCronRuns();
   }
 
   function startPollingGithubCronRuns() {
