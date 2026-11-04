@@ -1,6 +1,12 @@
 {
   "published_articles": [
     {
+      "id": 9,
+      "title": "Cyfrowy Lewiatan i Prawo Własności — dlaczego w epoce chmury, subskrypcji i AI przestajemy być właścicielami czegokolwiek",
+      "slug": "cyfrowy-lewiatan-i-prawo-wlasnosci-dlaczego-w-epoce-chmury-subskrypcji-i-ai-przestajemy-byc-wlascicielami-czegokolwiek",
+      "category": "eseje"
+    },
+    {
       "id": 8,
       "title": "Rachunek bez iluzji: Złoto po przecenie, półprzewodniki, „krótko” na WIG20... Oto typy na listopad",
       "slug": "rachunek-bez-iluzji-zloto-po-przecenie-polprzewodniki-krotko-na-wig20-oto-typy-na-listopad",
@@ -595,6 +601,42 @@
       "category": "kondensat",
       "title": "Kondensat (2 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
       "url": ""
+    },
+    {
+      "date": "2026-11-04",
+      "category": "technologia",
+      "title": "Pod maską przełomu: Toniemy w „⁠edukacyjnych⁠” AI",
+      "url": "https://www.kwantowo.pl/2026/11/02/toniemy-w-edukacyjnych-ai-slopach/"
+    },
+    {
+      "date": "2026-11-04",
+      "category": "gospodarka",
+      "title": "Rachunek bez iluzji: Polski producent dronów szykuje debiut dekady. Zgoda właścicieli otwiera drogę do historycznego IPO",
+      "url": "https://www.bankier.pl/wiadomosc/WB-Electronics-podjal-kluczowa-decyzje-Wycena-na-30-miliardow-zlotych-i-giganci-z-Wall-Street-9223347.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci"
+    },
+    {
+      "date": "2026-11-04",
+      "category": "historia",
+      "title": "Przebaczamy i prosimy o przebaczenie”. Dlaczego komuniści oskarżyli polskich biskupów o zdradę? — chłodny bilans z perspektywy dociekliwego laika",
+      "url": "https://ciekawostkihistoryczne.pl/2026/11/04/przebaczamy-i-prosimy-o-przebaczenie-dlaczego-komunisci-oskarzyli-polskich-biskupow-o-zdrade/"
+    },
+    {
+      "date": "2026-11-04",
+      "category": "polityka",
+      "title": "Tusk zaczyna wygrywać wojnę o Trybunał Konstytucyjny? Najnowsze dane — chłodny bilans z perspektywy dociekliwego laika",
+      "url": "https://klubjagiellonski.pl/2026/11/04/tusk-zaczyna-wygrywac-wojne-o-trybunal-konstytucyjny-najnowsze-dane/"
+    },
+    {
+      "date": "2026-11-04",
+      "category": "eseje",
+      "title": "Wbrew utartym kliszom: Wolałbym nie. Ale nie mogę przestać",
+      "url": "https://magazynkontakt.pl/wolalbym-nie-ale-nie-moge-przestac/"
+    },
+    {
+      "date": "2026-11-04",
+      "category": "kondensat",
+      "title": "Kondensat (4 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
+      "url": ""
     }
   ],
   "seen_rss_urls": {
@@ -672,7 +714,32 @@
       "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Open Thread 458)",
       "seen_date": "2026-11-02",
       "category": "eseje"
+    },
+    "https://www.kwantowo.pl/2026/11/02/toniemy-w-edukacyjnych-ai-slopach/": {
+      "title": "Pod maską przełomu: Toniemy w „⁠edukacyjnych⁠” AI",
+      "seen_date": "2026-11-04",
+      "category": "technologia"
+    },
+    "https://www.bankier.pl/wiadomosc/WB-Electronics-podjal-kluczowa-decyzje-Wycena-na-30-miliardow-zlotych-i-giganci-z-Wall-Street-9223347.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci": {
+      "title": "Rachunek bez iluzji: Polski producent dronów szykuje debiut dekady. Zgoda właścicieli otwiera drogę do historycznego IPO",
+      "seen_date": "2026-11-04",
+      "category": "gospodarka"
+    },
+    "https://ciekawostkihistoryczne.pl/2026/11/04/przebaczamy-i-prosimy-o-przebaczenie-dlaczego-komunisci-oskarzyli-polskich-biskupow-o-zdrade/": {
+      "title": "Przebaczamy i prosimy o przebaczenie”. Dlaczego komuniści oskarżyli polskich biskupów o zdradę? — chłodny bilans z perspektywy dociekliwego laika",
+      "seen_date": "2026-11-04",
+      "category": "historia"
+    },
+    "https://klubjagiellonski.pl/2026/11/04/tusk-zaczyna-wygrywac-wojne-o-trybunal-konstytucyjny-najnowsze-dane/": {
+      "title": "Tusk zaczyna wygrywać wojnę o Trybunał Konstytucyjny? Najnowsze dane — chłodny bilans z perspektywy dociekliwego laika",
+      "seen_date": "2026-11-04",
+      "category": "polityka"
+    },
+    "https://magazynkontakt.pl/wolalbym-nie-ale-nie-moge-przestac/": {
+      "title": "Wbrew utartym kliszom: Wolałbym nie. Ale nie mogę przestać",
+      "seen_date": "2026-11-04",
+      "category": "eseje"
     }
   },
-  "last_updated": "2026-11-03T12:05:36.375545"
+  "last_updated": "2026-11-04T14:19:56.206796"
 }
