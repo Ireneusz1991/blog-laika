@@ -1,6 +1,12 @@
 {
   "published_articles": [
     {
+      "id": 10,
+      "title": "Serbscy studenci zwyciężyli! Czy faktycznie odmienią kraj? — analiza przyczyn i konsekwencji z pierwszych zasad",
+      "slug": "serbscy-studenci-zwyciezyli-czy-faktycznie-odmienia-kraj-analiza-przyczyn-i-konsekwencji-z-pierwszych-zasad",
+      "category": "eseje"
+    },
+    {
       "id": 9,
       "title": "Cyfrowy Lewiatan i Prawo Własności — dlaczego w epoce chmury, subskrypcji i AI przestajemy być właścicielami czegokolwiek",
       "slug": "cyfrowy-lewiatan-i-prawo-wlasnosci-dlaczego-w-epoce-chmury-subskrypcji-i-ai-przestajemy-byc-wlascicielami-czegokolwiek",
@@ -637,6 +643,78 @@
       "category": "kondensat",
       "title": "Kondensat (4 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
       "url": ""
+    },
+    {
+      "date": "2026-11-04",
+      "category": "unknown",
+      "title": "Bielik 11B i suwerenność cyfrowa: Dlaczego Polska potrzebuje własnych modeli językowych w starciu z Doliną Krzemową",
+      "url": ""
+    },
+    {
+      "date": "2026-11-04",
+      "category": "unknown",
+      "title": "Kondensacja myśli zamiast halucynacji: Jak model Bielik AI wspiera autorską publicystykę i eliminuje watę słowną",
+      "url": ""
+    },
+    {
+      "date": "2026-11-04",
+      "category": "unknown",
+      "title": "Wielki rachunek za krzem: Kto zapłaci za gigawaty dla centrów danych AI w Europie i Polsce?",
+      "url": ""
+    },
+    {
+      "date": "2026-11-04",
+      "category": "unknown",
+      "title": "Algorytmiczna suwerenność: Bitwa o regulacje sztucznej inteligencji między Waszyngtonem, Brukselą i Warszawą",
+      "url": ""
+    },
+    {
+      "date": "2026-11-04",
+      "category": "unknown",
+      "title": "Od maszyny Turinga do polskich cybernetyków: Zapomniana szkoła lwowsko-warszawska u źródeł dzisiejszego AI",
+      "url": ""
+    },
+    {
+      "date": "2026-11-04",
+      "category": "unknown",
+      "title": "Kondensat (4 listopada 2026 r.): Suwerenność obliczeniowa, koszt energii i granice sztucznej inteligencji — wielowątkowa synteza Bielik AI",
+      "url": ""
+    },
+    {
+      "date": "2026-11-05",
+      "category": "technologia",
+      "title": "Architektura technologii czy kosztowna moda? Chłodny audyt trendu (Mercedes-AMG GT 4-Door Coupe first drive: Where tech and fun collide)",
+      "url": "https://arstechnica.com/cars/2026/11/mercedes-amg-gt-4-door-coupe-first-drive-where-tech-and-fun-collide/"
+    },
+    {
+      "date": "2026-11-05",
+      "category": "gospodarka",
+      "title": "Ropa najtańsza od dwóch miesięcy. JD Vance: Przez wojnę przegraliśmy wybory",
+      "url": "https://www.bankier.pl/wiadomosc/Ropa-najtansza-od-dwoch-miesiecy-JD-Vance-Przez-wojne-przegralismy-wybory-9223958.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci"
+    },
+    {
+      "date": "2026-11-05",
+      "category": "historia",
+      "title": "Mechanizmy dziejów: Polacy poszkodowani przez Trzecią Rzeszę apelują do Niemiec o wsparcie ofiar narodowego socjalizmu",
+      "url": "https://dzieje.pl/wiadomosci/polacy-poszkodowani-przez-trzecia-rzesze-apeluja-do-niemiec-o-wsparcie-ofiar-narodowego"
+    },
+    {
+      "date": "2026-11-05",
+      "category": "polityka",
+      "title": "Realpolitik bez retuszu: Demokraci wygrali, ale Amerykanie jeszcze nie. Eskalacja wojny z Iranem jest nieunikniona",
+      "url": "https://klubjagiellonski.pl/2026/11/05/demokraci-wygrali-ale-amerykanie-jeszcze-nie-eskalacja-wojny-z-iranem-jest-nieunikniona/"
+    },
+    {
+      "date": "2026-11-05",
+      "category": "eseje",
+      "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Progress in Medicine, the Roots of Progress Institute’s new summer caree…)",
+      "url": "https://rootsofprogress.org/progress-in-medicine-the-roots-of-progress-institutes-new-summer-career-exploration-program-has-started/"
+    },
+    {
+      "date": "2026-11-05",
+      "category": "kondensat",
+      "title": "Kondensat (5 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
+      "url": ""
     }
   ],
   "seen_rss_urls": {
@@ -739,7 +817,32 @@
       "title": "Wbrew utartym kliszom: Wolałbym nie. Ale nie mogę przestać",
       "seen_date": "2026-11-04",
       "category": "eseje"
+    },
+    "https://arstechnica.com/cars/2026/11/mercedes-amg-gt-4-door-coupe-first-drive-where-tech-and-fun-collide/": {
+      "title": "Architektura technologii czy kosztowna moda? Chłodny audyt trendu (Mercedes-AMG GT 4-Door Coupe first drive: Where tech and fun collide)",
+      "seen_date": "2026-11-05",
+      "category": "technologia"
+    },
+    "https://www.bankier.pl/wiadomosc/Ropa-najtansza-od-dwoch-miesiecy-JD-Vance-Przez-wojne-przegralismy-wybory-9223958.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci": {
+      "title": "Ropa najtańsza od dwóch miesięcy. JD Vance: Przez wojnę przegraliśmy wybory",
+      "seen_date": "2026-11-05",
+      "category": "gospodarka"
+    },
+    "https://dzieje.pl/wiadomosci/polacy-poszkodowani-przez-trzecia-rzesze-apeluja-do-niemiec-o-wsparcie-ofiar-narodowego": {
+      "title": "Mechanizmy dziejów: Polacy poszkodowani przez Trzecią Rzeszę apelują do Niemiec o wsparcie ofiar narodowego socjalizmu",
+      "seen_date": "2026-11-05",
+      "category": "historia"
+    },
+    "https://klubjagiellonski.pl/2026/11/05/demokraci-wygrali-ale-amerykanie-jeszcze-nie-eskalacja-wojny-z-iranem-jest-nieunikniona/": {
+      "title": "Realpolitik bez retuszu: Demokraci wygrali, ale Amerykanie jeszcze nie. Eskalacja wojny z Iranem jest nieunikniona",
+      "seen_date": "2026-11-05",
+      "category": "polityka"
+    },
+    "https://rootsofprogress.org/progress-in-medicine-the-roots-of-progress-institutes-new-summer-career-exploration-program-has-started/": {
+      "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Progress in Medicine, the Roots of Progress Institute’s new summer caree…)",
+      "seen_date": "2026-11-05",
+      "category": "eseje"
     }
   },
-  "last_updated": "2026-11-04T14:19:56.206796"
+  "last_updated": "2026-11-05T12:09:32.373090"
 }
