@@ -154,10 +154,25 @@ def parse_proposals_file(filepath: str) -> list:
         is_kond = "kondensat" in title.lower() or "kondensat" in first_line.lower() or category == "kondensat"
         admin_cat = "kondensat" if is_kond else category
 
+        # Wykrywanie propozycji AI, Bielik AI oraz polskiego kontekstu
+        scan_text = f"{title} {lead} {thesis} {' '.join(body_lines)} {' '.join(draft_lines)} {source_name} {source_note}".lower()
+        ai_terms = [
+            'bielik', 'speakleash', 'cyfronet', 'sztuczn', 'model językow', 'modele językow',
+            'llm', 'transformer', 'sieci neuronow', 'uczenie maszynow', 'deep learning',
+            'chatgpt', 'openai', 'anthropic', 'suwerenność cyfrowa', ' ai ', ' ai:', ' ai,', ' ai.',
+            '(ai)', 'sztucznej inteligencji'
+        ]
+        is_ai_topic = any(term in scan_text for term in ai_terms) or 'bielik' in title.lower() or ' ai' in title.lower() or 'ai:' in title.lower()
+        is_bielik_rec = is_ai_topic or (source_flag == '🇵🇱')
+        bielik_badge = "🦅 Bielik AI: Rekomendacja AI" if is_ai_topic else ("🦅 Bielik AI: Polski kontekst" if is_bielik_rec else "")
+
         proposals.append({
             "title": title,
             "category": admin_cat,
             "is_kondensat": is_kond,
+            "bielik_recommended": is_bielik_rec,
+            "is_bielik_ai": is_ai_topic,
+            "bielik_badge": bielik_badge,
             "search_date": search_date,
             "image_url": image_url,
             "image_concept": image_concept,
@@ -181,6 +196,7 @@ def load_all_weekly_proposals(proposals_dir: str, max_days: int = 7) -> list:
     
     daily_packages = []
     total_count = 0
+    total_bielik = 0
 
     for fn in retained_files:
         filepath = os.path.join(proposals_dir, fn)
@@ -191,6 +207,8 @@ def load_all_weekly_proposals(proposals_dir: str, max_days: int = 7) -> list:
         
         props = parse_proposals_file(filepath)
         total_count += len(props)
+        bielik_in_pkg = sum(1 for p in props if p.get('bielik_recommended') or p.get('is_bielik_ai'))
+        total_bielik += bielik_in_pkg
 
         daily_packages.append({
             "filename": fn,
@@ -198,11 +216,13 @@ def load_all_weekly_proposals(proposals_dir: str, max_days: int = 7) -> list:
             "formatted_date": formatted_date,
             "day_name": day_name,
             "proposals": props,
-            "count": len(props)
+            "count": len(props),
+            "bielik_count": bielik_in_pkg
         })
 
     return {
         "packages": daily_packages,
         "total_proposals": total_count,
+        "total_bielik_proposals": total_bielik,
         "total_days": len(daily_packages)
     }

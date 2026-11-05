@@ -114,8 +114,8 @@
       </span>
       <span>•</span>
       <span>{{ post.created_date }}</span>
-      <span>•</span>
-      <button type="button" onclick="triggerInPageEdit();" class="in-page-edit-pill" style="background: rgba(37, 99, 235, 0.08); border: 1.5px solid var(--accent); color: var(--accent); border-radius: var(--radius-sm); padding: 0.15rem 0.6rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" title="Edytuj ten esej bezpośrednio z poziomu strony">
+      <span class="admin-only-bullet" style="display: none;">•</span>
+      <button type="button" onclick="triggerInPageEdit();" class="in-page-edit-pill admin-only-control" style="display: none; background: rgba(37, 99, 235, 0.08); border: 1.5px solid var(--accent); color: var(--accent); border-radius: var(--radius-sm); padding: 0.15rem 0.6rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; align-items: center; gap: 0.35rem;" title="Edytuj ten esej bezpośrednio z poziomu strony">
         ✏️ Edytuj wpis
       </button>
     </div>
@@ -181,8 +181,8 @@
     </div>
   </div>
 
-  <!-- Pasek autorski pod artykułem -->
-  <div style="max-width: var(--max-w-content); margin: 1.25rem auto 0 auto; display: flex; justify-content: flex-end; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+  <!-- Pasek autorski pod artykułem (widoczny wyłącznie dla zalogowanego autora) -->
+  <div id="author-post-action-bar" class="admin-only-control" style="display: none; max-width: var(--max-w-content); margin: 1.25rem auto 0 auto; justify-content: flex-end; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
     <button type="button" onclick="triggerInPageEdit();" class="btn btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.82rem; border: 1.5px dashed var(--accent); color: var(--accent); font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer;">
       ✏️ Edytuj treść tego artykułu na stronie
     </button>
@@ -207,8 +207,8 @@
 
 </article>
 
-<!-- Pływający Dok Autorski (Floating Quick Dock) w prawym dolnym rogu -->
-<div id="author-floating-dock" style="position: fixed; bottom: 22px; right: 22px; z-index: 9999; display: flex; align-items: center; gap: 0.5rem; background: var(--bg-card); border: 1.5px solid var(--accent); border-radius: var(--radius-full); padding: 0.35rem 0.8rem; box-shadow: 0 8px 24px rgba(0,0,0,0.18); backdrop-filter: blur(8px);">
+<!-- Pływający Dok Autorski (Floating Quick Dock) w prawym dolnym rogu (widoczny wyłącznie dla zalogowanego autora) -->
+<div id="author-floating-dock" class="admin-only-control" style="display: none; position: fixed; bottom: 22px; right: 22px; z-index: 9999; align-items: center; gap: 0.5rem; background: var(--bg-card); border: 1.5px solid var(--accent); border-radius: var(--radius-full); padding: 0.35rem 0.8rem; box-shadow: 0 8px 24px rgba(0,0,0,0.18); backdrop-filter: blur(8px);">
   <span style="font-size: 0.78rem; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 0.35rem;">
     <span style="width: 7px; height: 7px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
     Autor:
@@ -239,15 +239,15 @@
     </div>
 
     <div id="inpage-auth-error" style="display: none; background: #fee2e2; border: 1.5px solid #f87171; color: #991b1b; padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.85rem;">
-      ⚠️ Niepoprawne hasło. Domyślne hasło to: <code>laik2026</code>
+      ⚠️ Niepoprawne hasło dostępu. Spróbuj ponownie.
     </div>
 
     <form onsubmit="handleInPageAuth(event); return false;">
       <div style="margin-bottom: 1.25rem;">
         <label for="inpage-auth-pass" style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">
-          Hasło administratora:
+          Hasło autorskie:
         </label>
-        <input type="password" id="inpage-auth-pass" class="form-input" placeholder="laik2026" required autofocus style="width: 100%;">
+        <input type="password" id="inpage-auth-pass" class="form-input" placeholder="Wprowadź hasło dostępu" required autofocus style="width: 100%;">
       </div>
 
       <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
@@ -258,10 +258,6 @@
           Anuluj
         </button>
       </div>
-
-      <button type="button" onclick="quickFillInPageAuth();" class="btn btn-secondary" style="width: 100%; justify-content: center; font-size: 0.8rem; border: 1.5px dashed var(--accent); color: var(--accent); padding: 0.5rem;">
-        ⚡ Wypełnij natychmiast (laik2026)
-      </button>
     </form>
   </div>
 </div>
@@ -510,10 +506,15 @@
     if (m) m.style.display = 'none';
   }
 
-  function quickFillInPageAuth() {
-    const passIn = document.getElementById('inpage-auth-pass');
-    if (passIn) passIn.value = 'laik2026';
-    handleInPageAuth();
+  function updateAuthorUiVisibility() {
+    const isAuthed = isAuthorAuthenticated();
+    document.querySelectorAll('.in-page-edit-pill, .admin-only-bullet, .admin-only-control').forEach(el => {
+      el.style.display = isAuthed ? (el.tagName === 'SPAN' ? 'inline' : (el.classList.contains('in-page-edit-pill') ? 'inline-flex' : 'flex')) : 'none';
+    });
+    const dock = document.getElementById('author-floating-dock');
+    if (dock) dock.style.display = isAuthed ? 'flex' : 'none';
+    const postBar = document.getElementById('author-post-action-bar');
+    if (postBar) postBar.style.display = isAuthed ? 'flex' : 'none';
   }
 
   function handleInPageAuth(e) {
@@ -530,6 +531,7 @@
       if (window.LaikaDirectSync && typeof window.LaikaDirectSync.obtainTokenAutomatically === 'function') {
         window.LaikaDirectSync.obtainTokenAutomatically({ allowPopup: true }).then(() => refreshInpageTokenUi()).catch(() => {});
       }
+      updateAuthorUiVisibility();
       closeInPageAuthModal();
       openInPageEditorModal();
     } else {
@@ -1007,17 +1009,26 @@ ${body}`;
     setTimeout(() => toast.remove(), 6000);
   }
 
-  // Automatyczne otwarcie edytora przy wejściu z parametrem ?edit=1 (np. z kart na stronie głównej lub w kategorii)
+  // Inicjalizacja widoczności narzędzi autorskich (ukrytych domyślnie dla czytelników)
   window.addEventListener('DOMContentLoaded', () => {
+    updateAuthorUiVisibility();
     try {
       const params = new URLSearchParams(window.location.search);
-      if (params.get('edit') === '1') {
+      if (params.get('edit') === '1' || params.get('admin') === '1') {
         if (window.history && window.history.replaceState) {
           window.history.replaceState({}, document.title, window.location.pathname);
         }
         triggerInPageEdit();
       }
     } catch (e) {}
+  });
+
+  // Skrót klawiszowy Ctrl+Alt+A dla autora
+  window.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.altKey && (e.key === 'a' || e.key === 'A')) {
+      e.preventDefault();
+      triggerInPageEdit();
+    }
   });
 </script>
 {% endblock %}

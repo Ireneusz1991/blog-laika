@@ -146,7 +146,7 @@
     } else {
       if (errAlert) {
         errAlert.style.display = 'block';
-        errAlert.innerHTML = `⚠️ <strong>Niepoprawne hasło.</strong><br>Domyślne hasło to: <code>laik2026</code> (lub <code>admin</code>). Możesz też po prostu kliknąć przycisk <em>„⚡ Zaloguj natychmiast (1 kliknięcie)”</em> poniżej.`;
+        errAlert.innerHTML = `⚠️ <strong>Niepoprawny login lub hasło.</strong> Sprawdź wprowadzone dane dostępowe i spróbuj ponownie.`;
       }
       if (passInput) {
         passInput.value = '';
@@ -154,17 +154,6 @@
       }
     }
     return false;
-  }
-
-  function autoLoginAdmin() {
-    const userInput = document.getElementById('admin-user');
-    const passInput = document.getElementById('admin-pass');
-    if (userInput) userInput.value = 'admin';
-    if (passInput) passInput.value = 'laik2026';
-    setAdminAuthenticated(true);
-    const errAlert = document.getElementById('login-error-alert');
-    if (errAlert) errAlert.style.display = 'none';
-    renderView();
   }
 
   function togglePasswordVisibility() {
@@ -226,7 +215,7 @@
           <label class="form-label" for="admin-user" style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">
             Nazwa użytkownika
           </label>
-          <input class="form-input" type="text" id="admin-user" required autofocus placeholder="admin" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" style="font-family: inherit;">
+          <input class="form-input" type="text" id="admin-user" required autofocus placeholder="Wprowadź login" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" style="font-family: inherit;">
         </div>
 
         <div class="form-group" style="margin-bottom: 1.1rem;">
@@ -239,7 +228,7 @@
             </button>
           </div>
           <div style="position: relative;">
-            <input class="form-input" type="password" id="admin-pass" required placeholder="laik2026" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" style="font-family: inherit; padding-right: 2.75rem;" onkeydown="if(event.key === 'Enter') { handleStaticLogin(event); }">
+            <input class="form-input" type="password" id="admin-pass" required placeholder="Wprowadź hasło administratora" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" style="font-family: inherit; padding-right: 2.75rem;" onkeydown="if(event.key === 'Enter') { handleStaticLogin(event); }">
             <button type="button" onclick="togglePasswordVisibility();" title="Przełącz widoczność hasła" style="position: absolute; right: 0.65rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.05rem; padding: 0.2rem; line-height: 1; opacity: 0.75;" id="toggle-pwd-icon">
               👁️
             </button>
@@ -249,31 +238,20 @@
         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.35rem; font-size: 0.85rem; color: var(--text-secondary);">
           <input type="checkbox" id="admin-remember" checked style="accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer;">
           <label for="admin-remember" style="cursor: pointer; user-select: none;">
-            Zapamiętaj logowanie na tym urządzeniu
+            Zapamiętaj sesję administracyjną na tym urządzeniu
           </label>
         </div>
 
         <button type="button" onclick="handleStaticLogin(event);" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.75rem; font-weight: 700; font-size: 0.95rem;">
           Zaloguj się do panelu &rarr;
         </button>
-
-        <button type="button" onclick="autoLoginAdmin();" class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 0.65rem; margin-top: 0.75rem; font-weight: 600; font-size: 0.85rem; background: var(--bg-surface); border: 1.5px dashed var(--accent); color: var(--text-primary); cursor: pointer; transition: all 0.2s ease;">
-          ⚡ Wypełnij i zaloguj natychmiast (1 kliknięcie)
-        </button>
       </form>
-
-      <div style="margin-top: 1.5rem; text-align: center; font-size: 0.82rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 1rem; line-height: 1.6;">
-        Oficjalne dane dostępowe:<br>
-        Login: <strong style="color: var(--text-primary); font-family: var(--font-mono); cursor: pointer; text-decoration: underline;" onclick="document.getElementById('admin-user').value='admin'; document.getElementById('admin-pass').focus();" title="Kliknij, aby wstawić">admin</strong> &nbsp;|&nbsp; 
-        Hasło: <strong style="color: var(--text-primary); font-family: var(--font-mono); cursor: pointer; text-decoration: underline;" onclick="document.getElementById('admin-pass').value='laik2026';" title="Kliknij, aby wstawić">laik2026</strong> (lub <strong style="color: var(--text-primary); font-family: var(--font-mono); cursor: pointer; text-decoration: underline;" onclick="document.getElementById('admin-pass').value='laika2026';" title="Kliknij, aby wstawić">laika2026</strong>)
-      </div>
-
     </div>
   </div>
 
 
   <!-- Stan: Zalogowany (Pełny Panel CMS w chmurze / na GitHubie) -->
-  <div id="admin-dashboard-view" style="display: none;">
+  <div id="admin-dashboard-view" style="display: none !important;">
     
     <!-- Top Action Bar -->
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1.5px solid var(--border-color);">
@@ -860,7 +838,7 @@
             Wszystkie (6)
           </button>
           <button type="button" onclick="filterProposalCards('bielik');" class="btn btn-secondary filter-prop-btn" data-filter="bielik" style="font-size: 0.74rem; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); background: rgba(220, 38, 38, 0.12); border-color: #dc2626; color: #b91c1c; font-weight: 800;">
-            🦅 Rekomendacje Bielik AI (Polski kontekst)
+            🦅 Rekomendacje Bielik AI (Artykuły AI & Polski kontekst)
           </button>
           <button type="button" onclick="filterProposalCards('kondensat');" class="btn btn-secondary filter-prop-btn" data-filter="kondensat" style="font-size: 0.74rem; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); background: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(124, 58, 237, 0.15)); border-color: #d97706; color: #b45309; font-weight: 800;">
             ⚡ Tylko KONDENSATY (Konglomeraty)
@@ -900,7 +878,7 @@
 
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
             {% for prop in pkg.proposals %}
-            <div class="proposal-card-item proposal-card-{{ prop.category }}" data-category="{{ prop.category }}" data-bielik="{% if prop.source_flag == '🇵🇱' or prop.bielik_recommended %}true{% else %}false{% endif %}" style="{% if prop.category == 'kondensat' %}background: linear-gradient(135deg, rgba(217, 119, 6, 0.08), rgba(124, 58, 237, 0.08)); border: 2px solid #d97706; box-shadow: 0 4px 14px rgba(217, 119, 6, 0.15);{% else %}background: var(--bg-surface); border: 1.5px solid var(--border-color);{% endif %} border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition); overflow: hidden;">
+            <div class="proposal-card-item proposal-card-{{ prop.category }}" data-category="{{ prop.category }}" data-bielik="{% if prop.source_flag == '🇵🇱' or prop.bielik_recommended or prop.is_bielik_ai %}true{% else %}false{% endif %}" data-ai="{% if prop.is_bielik_ai %}true{% else %}false{% endif %}" style="{% if prop.category == 'kondensat' %}background: linear-gradient(135deg, rgba(217, 119, 6, 0.08), rgba(124, 58, 237, 0.08)); border: 2px solid #d97706; box-shadow: 0 4px 14px rgba(217, 119, 6, 0.15);{% else %}background: var(--bg-surface); border: 1.5px solid var(--border-color);{% endif %} border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition); overflow: hidden;">
               <div>
                 {% if prop.image_url %}
                 <div style="position: relative; height: 140px; margin: -1.25rem -1.25rem 0.85rem -1.25rem; background: #0f172a; overflow: hidden;">
@@ -933,8 +911,12 @@
                       📡 {{ prop.source_flag }} {{ prop.source_name }}
                     </span>
                     {% endif %}
-                    {% if prop.source_flag == '🇵🇱' or prop.bielik_recommended %}
-                    <span style="background: rgba(220, 38, 38, 0.12); color: #dc2626; border: 1px solid rgba(220, 38, 38, 0.25); font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px;" title="Rekomendacja Bielik AI z polskim kontekstem">
+                    {% if prop.is_bielik_ai %}
+                    <span class="bielik-badge bielik-ai-badge" style="background: rgba(220, 38, 38, 0.16); color: #b91c1c; border: 1.5px solid #dc2626; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 1px 3px rgba(220, 38, 38, 0.2);" title="Propozycja artykułu AI / LLM rekomendowana przez polski model Bielik AI">
+                      🦅 BIELIK AI • Artykuł AI
+                    </span>
+                    {% elif prop.source_flag == '🇵🇱' or prop.bielik_recommended %}
+                    <span class="bielik-badge bielik-pl-badge" style="background: rgba(220, 38, 38, 0.12); color: #dc2626; border: 1px solid rgba(220, 38, 38, 0.25); font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px;" title="Rekomendacja Bielik AI z polskim kontekstem">
                       🦅 Bielik AI: Polski kontekst
                     </span>
                     {% endif %}
@@ -992,20 +974,26 @@
                     <div class="proposal-draft-rendered-content" style="font-size: 0.84rem; line-height: 1.6;">
                       {{ prop.full_draft_html|safe }}
                     </div>
-                    <div style="margin-top: 0.85rem; padding-top: 0.65rem; border-top: 1px dashed var(--border-color); display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <div style="margin-top: 0.85rem; padding-top: 0.65rem; border-top: 1px dashed var(--border-color); display: flex; gap: 0.4rem; flex-wrap: wrap;">
                       <button type="button" onclick="loadProposalIntoEditor({{ day_idx }}, {{ loop.index0 }});" class="btn btn-primary" style="font-size: 0.78rem; padding: 0.35rem 0.75rem; flex: 1; justify-content: center;">
                         ✍️ Załaduj do edytora &rarr;
                       </button>
+                      <button type="button" onclick="loadProposalIntoBielikStudio({{ day_idx }}, {{ loop.index0 }});" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.35rem 0.7rem; border-color: #dc2626; color: #b91c1c; font-weight: 700; background: rgba(220, 38, 38, 0.08);" title="Otwórz w Studio Redakcyjnym Bielik AI">
+                        🦅 Studio Bielik &rarr;
+                      </button>
                       <button type="button" onclick="copyProposalDraft({{ day_idx }}, {{ loop.index0 }});" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.35rem 0.75rem;" title="Kopiuj pełną treść artykułu">
-                        📋 Kopiuj treść
+                        📋 Kopiuj
                       </button>
                     </div>
                   </div>
                 </details>
               </div>
-              <div>
-                <button type="button" onclick="loadProposalIntoEditor({{ day_idx }}, {{ loop.index0 }});" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.82rem; padding: 0.5rem; font-weight: 600;">
-                  ✍️ Załaduj do edytora online &rarr;
+              <div style="display: flex; gap: 0.45rem; margin-top: 0.4rem;">
+                <button type="button" onclick="loadProposalIntoEditor({{ day_idx }}, {{ loop.index0 }});" class="btn btn-primary" style="flex: 1; justify-content: center; font-size: 0.82rem; padding: 0.45rem 0.6rem; font-weight: 600;">
+                  ✍️ Załaduj do edytora &rarr;
+                </button>
+                <button type="button" onclick="loadProposalIntoBielikStudio({{ day_idx }}, {{ loop.index0 }});" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.45rem 0.65rem; border-color: #dc2626; color: #b91c1c; font-weight: 700; background: rgba(220, 38, 38, 0.08);" title="Załaduj prosto do Studio Redakcyjnego Bielik AI">
+                  🦅 Bielik Studio
                 </button>
               </div>
             </div>
@@ -2545,8 +2533,15 @@ ${body}`;
       if (cat === 'all') {
         card.style.display = 'flex';
       } else if (cat === 'bielik') {
+        const cardText = card.innerText.toLowerCase();
         const isBielik = card.getAttribute('data-bielik') === 'true' || 
-                         card.innerText.includes('Bielik AI') || 
+                         card.getAttribute('data-ai') === 'true' ||
+                         card.querySelector('.bielik-badge') !== null ||
+                         cardText.includes('bielik') || 
+                         cardText.includes('sztuczna inteligencja') ||
+                         cardText.includes('sztucznej inteligencji') ||
+                         cardText.includes('model językowy') ||
+                         cardText.includes('ai ') ||
                          card.innerText.includes('🇵🇱');
         card.style.display = isBielik ? 'flex' : 'none';
       } else if (cardCat === cat) {
@@ -2555,6 +2550,13 @@ ${body}`;
         card.style.display = 'none';
       }
     });
+  }
+
+  function loadProposalIntoBielikStudio(dayIndexOrIndex, propIndex) {
+    loadProposalIntoEditor(dayIndexOrIndex, propIndex);
+    if (typeof openBielikRedactorModal === 'function') {
+      openBielikRedactorModal();
+    }
   }
 
   function loadProposalIntoEditor(dayIndexOrIndex, propIndex) {
