@@ -11,11 +11,6 @@ featured: 0
 
 # Serbscy studenci zwyciężyli! Czy faktycznie odmienią kraj? — analiza przyczyn i konsekwencji z pierwszych zasad
 
-> 🛡️ **Model Samokreacji Bloga Laika:** 100% autorska analiza z pierwszych zasad. Zero kopiowania cudzych zdań.
-> 📡 **Impuls źródłowy (RSS Live):** 🇵🇱 [Magazyn Kontakt — „Serbscy studenci zwyciężyli! Czy faktycznie odmienią kraj?”](https://magazynkontakt.pl/serbscy-studenci-zwyciezyli-czy-faktycznie-odmienia-kraj/)
-
-*Data skanowania z palca: 04.11.2026 (14:05)*
-
 Publikacja na łamach Magazyn Kontakt („Serbscy studenci zwyciężyli! Czy faktycznie odmienią kraj?”) stanowi znakomity punkt wyjścia do głębszego eseju o tym, jak nowoczesne instytucje i nadmiar bodźców kształtują nasze decyzje. Rozbieramy zjawisko na czynniki pierwsze bez akademickiego zadęcia.
 
 > **Teza przewodnia:** Odporność poznawcza w XXI wieku polega na umiejętności odróżniania szumu informacyjnego od procesów o długim okresie półtrwania.

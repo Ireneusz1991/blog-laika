@@ -127,6 +127,13 @@ def build_static(output_dir="dist", base_url=None):
         p["category_color"] = cat_info["color"]
         p["created_date"] = format_date_pl(p.get("created_at", ""))
         
+        # Oczyszczenie treści wpisu z technicznych dyrektyw redakcyjnych (Model Samokreacji, Impuls źródłowy, daty skanowania)
+        # dla widoków czytelnika na stronie /post/<slug>/
+        if "content_html" in p and p["content_html"]:
+            p["content_html"] = database.strip_editorial_commands_from_html(p["content_html"])
+        if "content_markdown" in p and p["content_markdown"]:
+            p["content_markdown"] = database.strip_editorial_commands(p["content_markdown"])
+        
         words = len(re.findall(r'\w+', p.get("content_markdown", "")))
         p["words_count"] = words
         read_time_calc = max(2, round(words / 180))

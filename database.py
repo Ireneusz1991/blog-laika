@@ -66,17 +66,98 @@ def calculate_read_time(text: str) -> int:
     minutes = max(1, round(words / 200))
     return minutes
 
+def strip_editorial_commands(md_text: str) -> str:
+    """
+    Usuwa techniczne dyrektywy redakcyjne (Model Samokreacji, Impuls źródłowy, daty skanowania z palca itp.)
+    z treści przeznaczonej dla czytelnika na stronie czytania /post/<slug>/,
+    pozostawiając treść czysto eseistyczną.
+    """
+    if not md_text:
+        return ""
+    
+    lines = str(md_text).replace('\r\n', '\n').split('\n')
+    filtered = []
+    
+    editorial_keywords = (
+        'model samokreacji',
+        'impuls źródłowy',
+        'źródło impulsu',
+        'źródło inspiracji z banku wiedzy',
+        'źródło inspiracji',
+        'kondensat redakcyjny'
+    )
+    
+    date_patterns = [
+        r'^\s*\*?Data skanowania z palca:.*\*?\s*$',
+        r'^\s*\*?Data wyszukania i analizy tematu:.*\*?\s*$',
+        r'^\s*\*?Data syntezy na żywo:.*\*?\s*$',
+        r'^\s*\*?Autorski wpis Bloga Laika\.\s*100%\s*Samokreacja.*\*?\s*$'
+    ]
+    
+    skip_next_empty = False
+    
+    for line in lines:
+        stripped = line.strip()
+        stripped_lower = stripped.lower()
+        
+        # Sprawdź czy to cytat z dyrektywą redakcyjną (np. > 🛡️ Model Samokreacji... lub > 📡 Impuls źródłowy...)
+        if stripped.startswith('>') and any(kw in stripped_lower for kw in editorial_keywords):
+            skip_next_empty = True
+            continue
+            
+        # Sprawdź czy to linia metadanych daty skanowania/syntezy
+        if any(re.match(pat, stripped, flags=re.IGNORECASE) for pat in date_patterns):
+            skip_next_empty = True
+            continue
+            
+        if skip_next_empty and stripped == '':
+            skip_next_empty = False
+            continue
+            
+        skip_next_empty = False
+        filtered.append(line)
+        
+    return '\n'.join(filtered).strip()
+
+def strip_editorial_commands_from_html(html_text: str) -> str:
+    """
+    Usuwa techniczne dyrektywy redakcyjne z wygenerowanego kodu HTML na stronie czytelnika.
+    """
+    if not html_text:
+        return ""
+    
+    kw_pattern = r'(?:Model\s+Samokreacji|Impuls\s+źródłowy|Źródło\s+impulsu|Źródło\s+inspiracji|KONDENSAT\s+REDAKCYJNY)'
+    cleaned = re.sub(
+        r'<blockquote[^>]*>(?:(?!<\/blockquote>).)*?' + kw_pattern + r'.*?<\/blockquote>\s*',
+        '',
+        str(html_text),
+        flags=re.DOTALL | re.IGNORECASE
+    )
+    
+    date_kw_pattern = r'(?:Data\s+skanowania\s+z\s+palca|Data\s+wyszukania\s+i\s+analizy\s+tematu|Data\s+syntezy\s+na\s+żywo|Autorski\s+wpis\s+Bloga\s+Laika\.\s*100%\s*Samokreacja)'
+    cleaned = re.sub(
+        r'<p[^>]*>(?:(?!<\/p>).)*?' + date_kw_pattern + r'.*?<\/p>\s*',
+        '',
+        cleaned,
+        flags=re.DOTALL | re.IGNORECASE
+    )
+    return cleaned.strip()
+
 def extract_summary(md_text: str) -> str:
-    cleaned = re.sub(r'^#+\s+.*$', '', md_text, flags=re.MULTILINE)
+    cleaned = strip_editorial_commands(md_text)
+    cleaned = re.sub(r'^#+\s+.*$', '', cleaned, flags=re.MULTILINE)
     cleaned = re.sub(r'^>\s+.*$', '', cleaned, flags=re.MULTILINE)
     cleaned = re.sub(r'^---+\s*$', '', cleaned, flags=re.MULTILINE)
     cleaned = re.sub(r'[\*_`\[\]\(\)]', '', cleaned)
     cleaned = re.sub(r'\s+', ' ', cleaned).strip()
     return (cleaned[:220].rstrip() + "...") if len(cleaned) > 220 else cleaned
 
-def render_markdown(md_text: str) -> str:
+def render_markdown(md_text: str, for_reader: bool = True) -> str:
+    cleaned_md = md_text or ""
+    if for_reader:
+        cleaned_md = strip_editorial_commands(cleaned_md)
     # Strip leading H1 title if present to avoid duplicating the page header H1
-    cleaned_md = re.sub(r'^\s*#\s+[^\n]+\n*', '', md_text, count=1)
+    cleaned_md = re.sub(r'^\s*#\s+[^\n]+\n*', '', cleaned_md, count=1)
     extensions = [
         'extra',
         'codehilite',

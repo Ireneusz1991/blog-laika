@@ -2032,7 +2032,7 @@
     if (title) html += `<h1>${escapeHtml(title)}</h1>`;
 
     const bodyHtml = (window.LaikaDirectSync && window.LaikaDirectSync.renderMarkdownBody)
-      ? window.LaikaDirectSync.renderMarkdownBody(text)
+      ? window.LaikaDirectSync.renderMarkdownBody(text, { forReader: false })
       : escapeHtml(text);
     html += bodyHtml;
 

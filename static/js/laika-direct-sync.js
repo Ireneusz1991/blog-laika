@@ -43,10 +43,63 @@
   }
 
   /**
-   * Pełny, czysty renderer treści artykułu z Markdown do HTML (bez duplikowania okładki ani głównego H1 strony)
+   * Usuwa dyrektywy redakcyjne (Model Samokreacji, Impuls źródłowy, daty skanowania z palca itp.)
+   * z treści dla czytelnika na stronie artykułu, pozostawiając czysty esej.
    */
-  function renderMarkdownBody(md) {
-    const cleaned = String(md || '').replace(/\r\n/g, '\n').replace(/^\s*#\s+[^\n]+\n*/, '');
+  function stripEditorialMarkdownLines(md) {
+    if (!md) return '';
+    const lines = String(md).replace(/\n/g, '\n').split('\n');
+    const editorialKeywords = [
+      'model samokreacji',
+      'impuls źródłowy',
+      'źródło impulsu',
+      'źródło inspiracji z banku wiedzy',
+      'źródło inspiracji',
+      'kondensat redakcyjny'
+    ];
+    const dateKeywords = [
+      'data skanowania z palca',
+      'data wyszukania i analizy tematu',
+      'data syntezy na żywo',
+      'autorski wpis bloga laika. 100% samokreacja'
+    ];
+    const filtered = [];
+    let skipEmpty = false;
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const trimmed = line.trim();
+      const lower = trimmed.toLowerCase();
+      if (trimmed.startsWith('>') && editorialKeywords.some(kw => lower.includes(kw))) {
+        skipEmpty = true;
+        continue;
+      }
+      if (dateKeywords.some(kw => lower.includes(kw))) {
+        skipEmpty = true;
+        continue;
+      }
+      if (skipEmpty && trimmed === '') {
+        skipEmpty = false;
+        continue;
+      }
+      skipEmpty = false;
+      filtered.push(line);
+    }
+    return filtered.join('\n');
+  }
+
+  /**
+   * Pełny, czysty renderer treści artykułu z Markdown do HTML (bez duplikowania okładki ani głównego H1 strony)
+   * @param {string} md - Kod Markdown wpisu
+   * @param {object} [options] - Opcje renderowania { forReader: boolean } (domyślnie true)
+   */
+  function renderMarkdownBody(md, options) {
+    const opts = options || {};
+    const forReader = opts.forReader !== false;
+    let sourceMd = String(md || '').replace(/\n/g, '\n');
+    if (forReader) {
+      sourceMd = stripEditorialMarkdownLines(sourceMd);
+    }
+    const cleaned = sourceMd.replace(/^\s*#\s+[^\n]+\n*/, '');
     const lines = cleaned.split('\n');
     const out = [];
     let inUl = false;
@@ -1183,6 +1236,7 @@
   window.LaikaDirectSync = {
     CATEGORY_NAMES,
     renderMarkdownBody,
+    stripEditorialMarkdownLines,
     getToken,
     setToken,
     clearToken,

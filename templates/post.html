@@ -988,6 +988,7 @@ ${body}`;
     const bodyEl = document.getElementById('article-page-body');
     if (bodyEl) {
       bodyEl.innerHTML = cleanHtml;
+      sanitizeReaderArticleBody();
     }
 
     const tagsEl = document.getElementById('article-page-tags');
@@ -1009,8 +1010,41 @@ ${body}`;
     setTimeout(() => toast.remove(), 6000);
   }
 
+  // Usuwa techniczne dyrektywy redakcyjne ze strony czytania (Model Samokreacji, Impuls źródłowy, daty skanowania z palca itp.)
+  function sanitizeReaderArticleBody() {
+    const bodyEl = document.getElementById('article-page-body');
+    if (!bodyEl) return;
+    const editorialKeywords = [
+      'model samokreacji',
+      'impuls źródłowy',
+      'źródło impulsu',
+      'źródło inspiracji z banku wiedzy',
+      'źródło inspiracji',
+      'kondensat redakcyjny'
+    ];
+    const dateKeywords = [
+      'data skanowania z palca',
+      'data wyszukania i analizy tematu',
+      'data syntezy na żywo',
+      'autorski wpis bloga laika. 100% samokreacja'
+    ];
+    bodyEl.querySelectorAll('blockquote').forEach(bq => {
+      const txt = (bq.textContent || '').toLowerCase();
+      if (editorialKeywords.some(kw => txt.includes(kw))) {
+        bq.remove();
+      }
+    });
+    bodyEl.querySelectorAll('p').forEach(p => {
+      const txt = (p.textContent || '').toLowerCase();
+      if (dateKeywords.some(kw => txt.includes(kw))) {
+        p.remove();
+      }
+    });
+  }
+
   // Inicjalizacja widoczności narzędzi autorskich (ukrytych domyślnie dla czytelników)
   window.addEventListener('DOMContentLoaded', () => {
+    sanitizeReaderArticleBody();
     updateAuthorUiVisibility();
     try {
       const params = new URLSearchParams(window.location.search);
