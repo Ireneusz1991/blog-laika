@@ -715,6 +715,42 @@
       "category": "kondensat",
       "title": "Kondensat (5 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
       "url": ""
+    },
+    {
+      "date": "2026-11-07",
+      "category": "technologia",
+      "title": "Ekonomia i granice modeli AI: Co naprawdę oznacza sygnał z rynku (Doctors pull knife from man's eye that went through his brain—and he's f…)",
+      "url": "https://arstechnica.com/health/2026/11/man-unexpectedly-recovers-from-a-knife-wound-through-his-eye-and-brain/"
+    },
+    {
+      "date": "2026-11-07",
+      "category": "gospodarka",
+      "title": "Rachunek bez iluzji: Apetyt Chin na złoto tylko rośnie i się nie kończy. Kupują bez przerwy od dwóch lat i właśnie dorzucili najwięcej ton",
+      "url": "https://www.bankier.pl/wiadomosc/Ludowy-Bank-Chin-kupil-najwiecej-zlota-od-ponad-3-lat-Apetyt-na-metal-tylko-rosnie-9225425.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci"
+    },
+    {
+      "date": "2026-11-07",
+      "category": "historia",
+      "title": "Mechanizmy dziejów: Biskupi żyli tu jak królowie. Zamek w Prabutach był kulturalną stolicą Prus",
+      "url": "https://ciekawostkihistoryczne.pl/2026/11/07/biskupi-zyli-tu-jak-krolowie-zamek-w-prabutach-byl-kulturalna-stolica-prus/"
+    },
+    {
+      "date": "2026-11-07",
+      "category": "polityka",
+      "title": "Realpolitik bez retuszu: Na Kresach Ukraińcy powinni być traktowani równorzędnie z Polakami",
+      "url": "https://klubjagiellonski.pl/2026/11/07/na-kresach-ukraincy-powinni-byc-traktowani-rownorzednie-z-polakami/"
+    },
+    {
+      "date": "2026-11-07",
+      "category": "eseje",
+      "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Martin Wolf on Democratic Capitalism After Trump)",
+      "url": "https://www.persuasion.community/p/martin-wolf-3"
+    },
+    {
+      "date": "2026-11-07",
+      "category": "kondensat",
+      "title": "Kondensat (7 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
+      "url": ""
     }
   ],
   "seen_rss_urls": {
@@ -842,7 +878,32 @@
       "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Progress in Medicine, the Roots of Progress Institute’s new summer caree…)",
       "seen_date": "2026-11-05",
       "category": "eseje"
+    },
+    "https://arstechnica.com/health/2026/11/man-unexpectedly-recovers-from-a-knife-wound-through-his-eye-and-brain/": {
+      "title": "Ekonomia i granice modeli AI: Co naprawdę oznacza sygnał z rynku (Doctors pull knife from man's eye that went through his brain—and he's f…)",
+      "seen_date": "2026-11-07",
+      "category": "technologia"
+    },
+    "https://www.bankier.pl/wiadomosc/Ludowy-Bank-Chin-kupil-najwiecej-zlota-od-ponad-3-lat-Apetyt-na-metal-tylko-rosnie-9225425.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci": {
+      "title": "Rachunek bez iluzji: Apetyt Chin na złoto tylko rośnie i się nie kończy. Kupują bez przerwy od dwóch lat i właśnie dorzucili najwięcej ton",
+      "seen_date": "2026-11-07",
+      "category": "gospodarka"
+    },
+    "https://ciekawostkihistoryczne.pl/2026/11/07/biskupi-zyli-tu-jak-krolowie-zamek-w-prabutach-byl-kulturalna-stolica-prus/": {
+      "title": "Mechanizmy dziejów: Biskupi żyli tu jak królowie. Zamek w Prabutach był kulturalną stolicą Prus",
+      "seen_date": "2026-11-07",
+      "category": "historia"
+    },
+    "https://klubjagiellonski.pl/2026/11/07/na-kresach-ukraincy-powinni-byc-traktowani-rownorzednie-z-polakami/": {
+      "title": "Realpolitik bez retuszu: Na Kresach Ukraińcy powinni być traktowani równorzędnie z Polakami",
+      "seen_date": "2026-11-07",
+      "category": "polityka"
+    },
+    "https://www.persuasion.community/p/martin-wolf-3": {
+      "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Martin Wolf on Democratic Capitalism After Trump)",
+      "seen_date": "2026-11-07",
+      "category": "eseje"
     }
   },
-  "last_updated": "2026-11-05T12:09:32.373090"
+  "last_updated": "2026-11-07T12:40:55.406914"
 }
