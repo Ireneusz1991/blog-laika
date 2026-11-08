@@ -751,6 +751,42 @@
       "category": "kondensat",
       "title": "Kondensat (7 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
       "url": ""
+    },
+    {
+      "date": "2026-11-08",
+      "category": "technologia",
+      "title": "Ekonomia i granice modeli AI: Co naprawdę oznacza sygnał z rynku (Physicists listened to electrical noise to crack a superconductor myster…)",
+      "url": "https://arstechnica.com/science/2026/11/physicists-listened-to-electrical-noise-to-crack-a-superconductor-mystery/"
+    },
+    {
+      "date": "2026-11-08",
+      "category": "gospodarka",
+      "title": "Tym będą żyły rynki: inflacyjny test dla USA i prawda o polskim PKB",
+      "url": "https://www.bankier.pl/wiadomosc/Tym-beda-zyly-rynki-inflacyjny-test-dla-USA-i-prawda-o-polskim-PKB-9224737.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci"
+    },
+    {
+      "date": "2026-11-08",
+      "category": "historia",
+      "title": "Mechanizmy dziejów: Misja. CIA w XXI wieku",
+      "url": "https://ciekawostkihistoryczne.pl/2026/11/08/misja-cia-w-xxi-wieku/"
+    },
+    {
+      "date": "2026-11-08",
+      "category": "polityka",
+      "title": "Ile nieporozumień, ile realnych przeszkód? O współżyciu Polaków i Ukraińców po 24 II 2022 — chłodny bilans z perspektywy dociekliwego laika",
+      "url": "https://klubjagiellonski.pl/2026/11/07/ile-nieporozumien-ile-realnych-przeszkod-o-wspolzyciu-polakow-i-ukraincow-po-24-ii-2022/"
+    },
+    {
+      "date": "2026-11-08",
+      "category": "eseje",
+      "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Now in store at Barnes & Noble and Hudson News stores across America)",
+      "url": "https://www.worksinprogress.news/p/now-in-store-at-barnes-and-noble"
+    },
+    {
+      "date": "2026-11-08",
+      "category": "kondensat",
+      "title": "Kondensat (8 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
+      "url": ""
     }
   ],
   "seen_rss_urls": {
@@ -903,7 +939,32 @@
       "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Martin Wolf on Democratic Capitalism After Trump)",
       "seen_date": "2026-11-07",
       "category": "eseje"
+    },
+    "https://arstechnica.com/science/2026/11/physicists-listened-to-electrical-noise-to-crack-a-superconductor-mystery/": {
+      "title": "Ekonomia i granice modeli AI: Co naprawdę oznacza sygnał z rynku (Physicists listened to electrical noise to crack a superconductor myster…)",
+      "seen_date": "2026-11-08",
+      "category": "technologia"
+    },
+    "https://www.bankier.pl/wiadomosc/Tym-beda-zyly-rynki-inflacyjny-test-dla-USA-i-prawda-o-polskim-PKB-9224737.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci": {
+      "title": "Tym będą żyły rynki: inflacyjny test dla USA i prawda o polskim PKB",
+      "seen_date": "2026-11-08",
+      "category": "gospodarka"
+    },
+    "https://ciekawostkihistoryczne.pl/2026/11/08/misja-cia-w-xxi-wieku/": {
+      "title": "Mechanizmy dziejów: Misja. CIA w XXI wieku",
+      "seen_date": "2026-11-08",
+      "category": "historia"
+    },
+    "https://klubjagiellonski.pl/2026/11/07/ile-nieporozumien-ile-realnych-przeszkod-o-wspolzyciu-polakow-i-ukraincow-po-24-ii-2022/": {
+      "title": "Ile nieporozumień, ile realnych przeszkód? O współżyciu Polaków i Ukraińców po 24 II 2022 — chłodny bilans z perspektywy dociekliwego laika",
+      "seen_date": "2026-11-08",
+      "category": "polityka"
+    },
+    "https://www.worksinprogress.news/p/now-in-store-at-barnes-and-noble": {
+      "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Now in store at Barnes & Noble and Hudson News stores across America)",
+      "seen_date": "2026-11-08",
+      "category": "eseje"
     }
   },
-  "last_updated": "2026-11-07T12:40:55.406914"
+  "last_updated": "2026-11-08T21:17:24.325531"
 }
