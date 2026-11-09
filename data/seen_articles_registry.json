@@ -787,6 +787,42 @@
       "category": "kondensat",
       "title": "Kondensat (8 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
       "url": ""
+    },
+    {
+      "date": "2026-11-09",
+      "category": "technologia",
+      "title": "Architektura technologii czy kosztowna moda? Chłodny audyt trendu (Is Opus 5.5 nerfed? Thinking patterns changed on November 3)",
+      "url": "https://twitter.com/shanemelaugh/status/2119192075505893695"
+    },
+    {
+      "date": "2026-11-09",
+      "category": "gospodarka",
+      "title": "Rachunek bez iluzji: Sprzedaż mieszkań rośnie, ale ceny pozostają stabilne. Segment popularny tańszy nawet o 20 proc.",
+      "url": "https://www.bankier.pl/wiadomosc/Sprzedaz-mieszkan-rosnie-ale-ceny-pozostaja-stabilne-Segment-popularny-tanszy-nawet-o-20-proc-9225996.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci"
+    },
+    {
+      "date": "2026-11-09",
+      "category": "historia",
+      "title": "Mechanizmy dziejów: Ogłoszono laureatów Ukraina! 11. Festiwalu Filmowego",
+      "url": "https://dzieje.pl/wiadomosci/ogloszono-laureatow-ukraina-11-festiwalu-filmowego"
+    },
+    {
+      "date": "2026-11-09",
+      "category": "polityka",
+      "title": "Realpolitik bez retuszu: Złota Karczma, nie Matarnia. Jak „przyjezdni” zmieniają obrzeżne dzielnice Gdańska",
+      "url": "https://krytykapolityczna.pl/kraj/gdansk-miasto-matarnia-zlota-karczma-mieszkancy/"
+    },
+    {
+      "date": "2026-11-09",
+      "category": "eseje",
+      "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (The Midterms Just Made the World More Dangerous)",
+      "url": "https://www.persuasion.community/p/the-next-two-years-might-be-more"
+    },
+    {
+      "date": "2026-11-09",
+      "category": "kondensat",
+      "title": "Kondensat (9 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
+      "url": ""
     }
   ],
   "seen_rss_urls": {
@@ -964,7 +1000,32 @@
       "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (Now in store at Barnes & Noble and Hudson News stores across America)",
       "seen_date": "2026-11-08",
       "category": "eseje"
+    },
+    "https://twitter.com/shanemelaugh/status/2119192075505893695": {
+      "title": "Architektura technologii czy kosztowna moda? Chłodny audyt trendu (Is Opus 5.5 nerfed? Thinking patterns changed on November 3)",
+      "seen_date": "2026-11-09",
+      "category": "technologia"
+    },
+    "https://www.bankier.pl/wiadomosc/Sprzedaz-mieszkan-rosnie-ale-ceny-pozostaja-stabilne-Segment-popularny-tanszy-nawet-o-20-proc-9225996.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci": {
+      "title": "Rachunek bez iluzji: Sprzedaż mieszkań rośnie, ale ceny pozostają stabilne. Segment popularny tańszy nawet o 20 proc.",
+      "seen_date": "2026-11-09",
+      "category": "gospodarka"
+    },
+    "https://dzieje.pl/wiadomosci/ogloszono-laureatow-ukraina-11-festiwalu-filmowego": {
+      "title": "Mechanizmy dziejów: Ogłoszono laureatów Ukraina! 11. Festiwalu Filmowego",
+      "seen_date": "2026-11-09",
+      "category": "historia"
+    },
+    "https://krytykapolityczna.pl/kraj/gdansk-miasto-matarnia-zlota-karczma-mieszkancy/": {
+      "title": "Realpolitik bez retuszu: Złota Karczma, nie Matarnia. Jak „przyjezdni” zmieniają obrzeżne dzielnice Gdańska",
+      "seen_date": "2026-11-09",
+      "category": "polityka"
+    },
+    "https://www.persuasion.community/p/the-next-two-years-might-be-more": {
+      "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (The Midterms Just Made the World More Dangerous)",
+      "seen_date": "2026-11-09",
+      "category": "eseje"
     }
   },
-  "last_updated": "2026-11-08T21:17:24.325531"
+  "last_updated": "2026-11-09T12:11:21.596628"
 }
