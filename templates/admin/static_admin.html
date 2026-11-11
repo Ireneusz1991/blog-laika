@@ -207,6 +207,86 @@
     transition: all 0.2s ease;
   }
 
+  /* =========================================================================
+     Permanentne, wyraźne paski przewijania (Scrollbar) i momentum na dotyku
+     ========================================================================= */
+  .custom-scrollbar,
+  #scratch-preview,
+  .source-content-pane,
+  .wire-tab-content,
+  .prop-drawer-scroll-box,
+  #cleaner-pane-preview,
+  #bielik-pane-b-prev,
+  #audit-modal-content,
+  #reader-fullscreen-modal,
+  #live-wire-list {
+    scrollbar-width: thin !important;
+    scrollbar-color: #2563eb rgba(37, 99, 235, 0.12) !important;
+    scrollbar-gutter: stable;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    overscroll-behavior-y: contain !important;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar,
+  #scratch-preview::-webkit-scrollbar,
+  .source-content-pane::-webkit-scrollbar,
+  .wire-tab-content::-webkit-scrollbar,
+  .prop-drawer-scroll-box::-webkit-scrollbar,
+  #cleaner-pane-preview::-webkit-scrollbar,
+  #bielik-pane-b-prev::-webkit-scrollbar,
+  #audit-modal-content::-webkit-scrollbar,
+  #reader-fullscreen-modal::-webkit-scrollbar,
+  #live-wire-list::-webkit-scrollbar {
+    width: 10px !important;
+    height: 10px !important;
+    display: block !important;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track,
+  #scratch-preview::-webkit-scrollbar-track,
+  .source-content-pane::-webkit-scrollbar-track,
+  .wire-tab-content::-webkit-scrollbar-track,
+  .prop-drawer-scroll-box::-webkit-scrollbar-track,
+  #cleaner-pane-preview::-webkit-scrollbar-track,
+  #bielik-pane-b-prev::-webkit-scrollbar-track,
+  #audit-modal-content::-webkit-scrollbar-track,
+  #reader-fullscreen-modal::-webkit-scrollbar-track,
+  #live-wire-list::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.08) !important;
+    border-radius: 8px !important;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb,
+  #scratch-preview::-webkit-scrollbar-thumb,
+  .source-content-pane::-webkit-scrollbar-thumb,
+  .wire-tab-content::-webkit-scrollbar-thumb,
+  .prop-drawer-scroll-box::-webkit-scrollbar-thumb,
+  #cleaner-pane-preview::-webkit-scrollbar-thumb,
+  #bielik-pane-b-prev::-webkit-scrollbar-thumb,
+  #audit-modal-content::-webkit-scrollbar-thumb,
+  #reader-fullscreen-modal::-webkit-scrollbar-thumb,
+  #live-wire-list::-webkit-scrollbar-thumb {
+    background: #2563eb !important;
+    border-radius: 8px !important;
+    border: 2px solid transparent !important;
+    background-clip: content-box !important;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover,
+  #scratch-preview::-webkit-scrollbar-thumb:hover,
+  .source-content-pane::-webkit-scrollbar-thumb:hover,
+  .wire-tab-content::-webkit-scrollbar-thumb:hover,
+  .prop-drawer-scroll-box::-webkit-scrollbar-thumb:hover,
+  #cleaner-pane-preview::-webkit-scrollbar-thumb:hover,
+  #bielik-pane-b-prev::-webkit-scrollbar-thumb:hover,
+  #audit-modal-content::-webkit-scrollbar-thumb:hover,
+  #reader-fullscreen-modal::-webkit-scrollbar-thumb:hover,
+  #live-wire-list::-webkit-scrollbar-thumb:hover {
+    background: #1d4ed8 !important;
+  }
+
+  /* Podgląd wpisu w edytorze (#scratch-preview) */
   #scratch-preview {
     background: var(--bg-surface);
     padding: 1.5rem;
@@ -214,11 +294,19 @@
     border: 1.5px solid var(--border-color);
     font-size: 1.05rem;
     line-height: 1.75;
+    height: 70vh;
     min-height: 480px;
-    max-height: 75vh;
-    overflow-y: auto;
+    max-height: 780px;
+    overflow-y: scroll !important;
     font-family: var(--font-serif);
     color: var(--text-primary);
+    transition: height 0.25s ease, max-height 0.25s ease;
+  }
+
+  #scratch-preview.preview-expanded-all {
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: visible !important;
   }
 
   #scratch-preview h1, #scratch-preview h2, #scratch-preview h3 {
@@ -235,6 +323,22 @@
     font-style: italic;
   }
 
+  /* Klasy rozwijalnych kontenerów w szufladach (Źródła, RSS Wire, Bank Tematów) */
+  .source-content-pane,
+  .wire-tab-content,
+  .prop-drawer-scroll-box {
+    max-height: 420px;
+    overflow-y: scroll !important;
+    transition: max-height 0.25s ease;
+  }
+
+  .source-content-pane.pane-expanded,
+  .wire-tab-content.pane-expanded,
+  .prop-drawer-scroll-box.pane-expanded {
+    max-height: none !important;
+    overflow-y: visible !important;
+  }
+
   /* Styl na tabletach i smartfonach (<= 992px) */
   @media (max-width: 992px) {
     .editor-workspace-container {
@@ -246,12 +350,18 @@
       max-width: 100% !important;
     }
     #scratch-preview {
-      min-height: 520px !important;
-      height: auto !important;
-      max-height: none !important;
+      height: 65vh !important;
+      min-height: 440px !important;
+      max-height: 720px !important;
+      overflow-y: scroll !important;
       padding: 1.25rem 0.85rem !important;
       font-size: 1.08rem !important;
       line-height: 1.8 !important;
+    }
+    #scratch-preview.preview-expanded-all {
+      height: auto !important;
+      max-height: none !important;
+      overflow-y: visible !important;
     }
     #scratch-body {
       height: 450px !important;
@@ -879,23 +989,30 @@
                     <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 500;">Rozwiń &darr;</span>
                   </summary>
                   <div style="padding: 0.75rem; border-top: 1px solid var(--border-color);">
-                    <div style="display: flex; gap: 0.35rem; margin-bottom: 0.65rem; flex-wrap: wrap; align-items: center;">
-                      <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Wersja eseju:</span>
-                      <button type="button" onclick="switchWireDrawerTab(this, 'a');" class="btn btn-primary wire-tab-btn active" style="font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 4px;">
-                        📄 Wersja A (Autorska synteza)
-                      </button>
-                      <button type="button" onclick="switchWireDrawerTab(this, 'b');" class="btn btn-secondary wire-tab-btn" style="font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 4px; border-color: #dc2626; color: #b91c1c; font-weight: 700;">
-                        🦅 Wersja B (Bielik AI: Polski kontekst & Kondensacja)
-                      </button>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.4rem;">
+                      <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
+                        <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Wersja eseju:</span>
+                        <button type="button" onclick="switchWireDrawerTab(this, 'a');" class="btn btn-primary wire-tab-btn active" style="font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 4px;">
+                          📄 Wersja A (Autorska synteza)
+                        </button>
+                        <button type="button" onclick="switchWireDrawerTab(this, 'b');" class="btn btn-secondary wire-tab-btn" style="font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 4px; border-color: #dc2626; color: #b91c1c; font-weight: 700;">
+                          🦅 Wersja B (Bielik AI: Polski kontekst & Kondensacja)
+                        </button>
+                      </div>
+                      <div style="display: flex; gap: 0.25rem; align-items: center;">
+                        <button type="button" onclick="scrollWireDrawer(this, 'top');" class="btn btn-secondary" style="font-size: 0.68rem; padding: 0.15rem 0.4rem;" title="Przewiń treść na górę">⬆️</button>
+                        <button type="button" onclick="scrollWireDrawer(this, 'bottom');" class="btn btn-secondary" style="font-size: 0.68rem; padding: 0.15rem 0.4rem;" title="Przewiń treść na dół">⬇️</button>
+                        <button type="button" onclick="toggleWireDrawerExpand(this);" class="btn btn-secondary btn-wire-expand" style="font-size: 0.68rem; padding: 0.15rem 0.45rem;" title="Rozwiń na pełną wysokość">↕️ Rozwiń</button>
+                      </div>
                     </div>
-                    <div class="wire-tab-content wire-tab-content-a" style="font-size: 0.83rem; line-height: 1.6; max-height: 280px; overflow-y: auto; padding-right: 0.35rem;" class="custom-scrollbar">
+                    <div class="wire-tab-content wire-tab-content-a custom-scrollbar" style="font-size: 0.83rem; line-height: 1.6; max-height: 420px; overflow-y: scroll; padding-right: 0.5rem; -webkit-overflow-scrolling: touch; touch-action: pan-y;">
                       {% if item.full_draft_html %}
                         {{ item.full_draft_html|safe }}
                       {% else %}
                         <p>{{ item.summary }}</p>
                       {% endif %}
                     </div>
-                    <div class="wire-tab-content wire-tab-content-b" style="font-size: 0.83rem; line-height: 1.6; max-height: 280px; overflow-y: auto; padding-right: 0.35rem; display: none;" class="custom-scrollbar">
+                    <div class="wire-tab-content wire-tab-content-b custom-scrollbar" style="font-size: 0.83rem; line-height: 1.6; max-height: 420px; overflow-y: scroll; padding-right: 0.5rem; display: none; -webkit-overflow-scrolling: touch; touch-action: pan-y;">
                       {% if item.bielik_draft_html %}
                         {{ item.bielik_draft_html|safe }}
                       {% else %}
@@ -1124,15 +1241,22 @@
                     </span>
                     <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 500;">Rozwiń &darr;</span>
                   </summary>
-                  <div style="padding: 0.85rem; border-top: 1px solid var(--border-color); font-size: 0.83rem; line-height: 1.6; color: var(--text-primary); max-height: 380px; overflow-y: auto;" class="custom-scrollbar">
-                    <div style="display: flex; gap: 0.35rem; padding-bottom: 0.65rem; margin-bottom: 0.65rem; border-bottom: 1px solid var(--border-color); align-items: center; flex-wrap: wrap;">
-                      <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Wersja:</span>
-                      <button type="button" onclick="switchProposalDrawerTab(this, 'a');" class="btn btn-primary prop-tab-btn active" style="font-size: 0.73rem; padding: 0.2rem 0.55rem; border-radius: 4px;">
-                        📄 Wersja A (Autorska synteza)
-                      </button>
-                      <button type="button" onclick="switchProposalDrawerTab(this, 'b');" class="btn btn-secondary prop-tab-btn" style="font-size: 0.73rem; padding: 0.2rem 0.55rem; border-radius: 4px; border-color: #dc2626; color: #b91c1c; font-weight: 700;">
-                        🦅 Wersja B (Bielik AI: Polski kontekst & Kondensacja)
-                      </button>
+                  <div class="prop-drawer-scroll-box custom-scrollbar" style="padding: 0.85rem; border-top: 1px solid var(--border-color); font-size: 0.83rem; line-height: 1.6; color: var(--text-primary); max-height: 420px; overflow-y: scroll; -webkit-overflow-scrolling: touch; touch-action: pan-y;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.65rem; margin-bottom: 0.65rem; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 0.4rem;">
+                      <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
+                        <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Wersja:</span>
+                        <button type="button" onclick="switchProposalDrawerTab(this, 'a');" class="btn btn-primary prop-tab-btn active" style="font-size: 0.73rem; padding: 0.2rem 0.55rem; border-radius: 4px;">
+                          📄 Wersja A (Autorska synteza)
+                        </button>
+                        <button type="button" onclick="switchProposalDrawerTab(this, 'b');" class="btn btn-secondary prop-tab-btn" style="font-size: 0.73rem; padding: 0.2rem 0.55rem; border-radius: 4px; border-color: #dc2626; color: #b91c1c; font-weight: 700;">
+                          🦅 Wersja B (Bielik AI: Polski kontekst & Kondensacja)
+                        </button>
+                      </div>
+                      <div style="display: flex; gap: 0.25rem; align-items: center;">
+                        <button type="button" onclick="scrollProposalDrawer(this, 'top');" class="btn btn-secondary" style="font-size: 0.68rem; padding: 0.15rem 0.4rem;" title="Przewiń na górę">⬆️</button>
+                        <button type="button" onclick="scrollProposalDrawer(this, 'bottom');" class="btn btn-secondary" style="font-size: 0.68rem; padding: 0.15rem 0.4rem;" title="Przewiń na dół">⬇️</button>
+                        <button type="button" onclick="toggleProposalDrawerExpand(this);" class="btn btn-secondary btn-prop-expand" style="font-size: 0.68rem; padding: 0.15rem 0.45rem;" title="Rozwiń na pełną wysokość">↕️ Rozwiń</button>
+                      </div>
                     </div>
                     <div class="proposal-draft-rendered-content prop-draft-content-a" style="font-size: 0.84rem; line-height: 1.6;">
                       {{ prop.full_draft_html|safe }}
@@ -1377,21 +1501,28 @@
                       {{ src.ready_article.lead }}
                     </p>
 
-                    <!-- Tabs switcher -->
-                    <div style="display: flex; gap: 0.35rem; margin-bottom: 0.6rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem;">
-                      <button type="button" class="btn btn-secondary source-tab-btn active" id="tab-src-{{ src.id }}-A" onclick="switchSourceDrawerTab('{{ src.id }}', 'A');" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; font-weight: 700;">
-                        📄 Wersja A (Autorska)
-                      </button>
-                      <button type="button" class="btn btn-secondary source-tab-btn" id="tab-src-{{ src.id }}-B" onclick="switchSourceDrawerTab('{{ src.id }}', 'B');" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; font-weight: 700;">
-                        🦅 Wersja B (Bielik AI)
-                      </button>
+                    <!-- Tabs switcher & Drawer Controls -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem; flex-wrap: wrap; gap: 0.4rem;">
+                      <div style="display: flex; gap: 0.35rem; align-items: center;">
+                        <button type="button" class="btn btn-secondary source-tab-btn active" id="tab-src-{{ src.id }}-A" onclick="switchSourceDrawerTab('{{ src.id }}', 'A');" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; font-weight: 700;">
+                          📄 Wersja A (Autorska)
+                        </button>
+                        <button type="button" class="btn btn-secondary source-tab-btn" id="tab-src-{{ src.id }}-B" onclick="switchSourceDrawerTab('{{ src.id }}', 'B');" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; font-weight: 700;">
+                          🦅 Wersja B (Bielik AI)
+                        </button>
+                      </div>
+                      <div style="display: flex; gap: 0.25rem; align-items: center;">
+                        <button type="button" class="btn btn-secondary" onclick="scrollSourceDrawer('{{ src.id }}', 'top');" style="font-size: 0.68rem; padding: 0.15rem 0.4rem;" title="Przewiń na górę">⬆️</button>
+                        <button type="button" class="btn btn-secondary" onclick="scrollSourceDrawer('{{ src.id }}', 'bottom');" style="font-size: 0.68rem; padding: 0.15rem 0.4rem;" title="Przewiń na dół">⬇️</button>
+                        <button type="button" class="btn btn-secondary" onclick="toggleSourceDrawerExpand('{{ src.id }}');" id="btn-src-expand-{{ src.id }}" style="font-size: 0.68rem; padding: 0.15rem 0.45rem;" title="Rozwiń na pełną wysokość">↕️ Rozwiń</button>
+                      </div>
                     </div>
 
                     <!-- Content Preview Pane A -->
-                    <div id="content-src-{{ src.id }}-A" class="source-content-pane" style="display: block; max-height: 250px; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.65rem; font-size: 0.75rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans);">{{ src.ready_article.draft_markdown }}</div>
+                    <div id="content-src-{{ src.id }}-A" class="source-content-pane custom-scrollbar" style="display: block; max-height: 420px; overflow-y: scroll; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.85rem; font-size: 0.78rem; line-height: 1.6; color: var(--text-primary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans); -webkit-overflow-scrolling: touch; touch-action: pan-y;">{{ src.ready_article.draft_markdown }}</div>
 
                     <!-- Content Preview Pane B -->
-                    <div id="content-src-{{ src.id }}-B" class="source-content-pane" style="display: none; max-height: 250px; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.65rem; font-size: 0.75rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans);">{{ src.ready_article.bielik_draft }}</div>
+                    <div id="content-src-{{ src.id }}-B" class="source-content-pane custom-scrollbar" style="display: none; max-height: 420px; overflow-y: scroll; background: var(--bg-surface); border: 1.5px solid #059669; border-radius: 4px; padding: 0.85rem; font-size: 0.78rem; line-height: 1.6; color: var(--text-primary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans); -webkit-overflow-scrolling: touch; touch-action: pan-y;">{{ src.ready_article.bielik_draft }}</div>
 
                     <!-- Action Buttons -->
                     <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
@@ -1675,7 +1806,16 @@
               <label style="font-size: 0.88rem; font-weight: 700; color: var(--text-primary);">👁️ Podgląd czytelnika (na całą szerokość)</label>
               <span style="font-size: 0.74rem; color: #10b981; font-weight: 700;">● Na żywo</span>
             </div>
-            <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
+            <div style="display: flex; gap: 0.3rem; align-items: center; flex-wrap: wrap;">
+              <button type="button" onclick="scrollPreviewTo('top');" class="btn btn-secondary" style="font-size: 0.73rem; padding: 0.25rem 0.55rem; font-weight: 700;" title="Przewiń podgląd na samą górę">
+                ⬆️ Góra
+              </button>
+              <button type="button" onclick="scrollPreviewTo('bottom');" class="btn btn-secondary" style="font-size: 0.73rem; padding: 0.25rem 0.55rem; font-weight: 700;" title="Przewiń podgląd na sam dół">
+                ⬇️ Dół
+              </button>
+              <button type="button" id="btn-toggle-preview-height" onclick="togglePreviewHeightMode();" class="btn btn-secondary" style="font-size: 0.73rem; padding: 0.25rem 0.6rem; font-weight: 600;" title="Przełącz między oknem z paskiem przewijania a rozwinięciem całej długości">
+                ↕️ Okno / Rozwiń
+              </button>
               <button type="button" onclick="openPreviewInNewWindow();" class="btn btn-secondary" style="font-size: 0.73rem; padding: 0.25rem 0.6rem; color: #2563eb; font-weight: 700; border-color: rgba(37,99,235,0.4);" title="Otwórz ten artykuł w nowej karcie / osobnym oknie jako pełną stronę bloga">
                 ↗️ Osobne okno
               </button>
@@ -1687,7 +1827,7 @@
               </button>
             </div>
           </div>
-          <div id="scratch-preview" class="article-body">
+          <div id="scratch-preview" class="article-body custom-scrollbar">
             <em style="color: var(--text-muted);">Zacznij pisać lub wczytaj plik .md, aby zobaczyć podgląd wpisu...</em>
           </div>
         </div>
@@ -1912,7 +2052,7 @@
         </div>
 
         <!-- Rendered HTML Tab -->
-        <div id="cleaner-pane-preview" class="article-body" style="flex: 1; min-height: 400px; max-height: 480px; overflow-y: auto; background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-sm); border: 1.5px solid var(--border-color); font-size: 0.92rem;">
+        <div id="cleaner-pane-preview" class="article-body custom-scrollbar" style="flex: 1; min-height: 400px; max-height: 480px; overflow-y: scroll; background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-sm); border: 1.5px solid var(--border-color); font-size: 0.92rem; -webkit-overflow-scrolling: touch; touch-action: pan-y;">
           <em style="color: var(--text-muted);">Tutaj zobaczysz elegancki podgląd Twojego wpisu z zachowaniem polskiej typografii i struktury wpisu blogowego...</em>
         </div>
 
@@ -2142,6 +2282,8 @@
           
           <!-- View switcher for Version B -->
           <div style="display: flex; gap: 0.25rem; align-items: center;">
+            <button type="button" onclick="scrollBielikPaneB('top');" class="btn btn-secondary" style="font-size: 0.7rem; padding: 0.18rem 0.45rem;" title="Przewiń treść na samą górę">⬆️</button>
+            <button type="button" onclick="scrollBielikPaneB('bottom');" class="btn btn-secondary" style="font-size: 0.7rem; padding: 0.18rem 0.45rem;" title="Przewiń treść na sam dół">⬇️</button>
             <button type="button" id="bielik-tab-prev-btn" onclick="switchBielikBTab('preview');" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.2rem 0.55rem;">
               👁️ Podgląd
             </button>
@@ -2155,7 +2297,7 @@
         </div>
 
         <!-- Version B Preview Area -->
-        <div id="bielik-pane-b-prev" style="flex: 1; padding: 1rem 1.25rem; overflow-y: auto; background: var(--bg-card); color: var(--text-primary); font-size: 0.9rem; line-height: 1.65;">
+        <div id="bielik-pane-b-prev" class="custom-scrollbar" style="flex: 1; padding: 1rem 1.25rem; overflow-y: scroll; background: var(--bg-card); color: var(--text-primary); font-size: 0.9rem; line-height: 1.65; -webkit-overflow-scrolling: touch; touch-action: pan-y;">
           <div style="padding: 3rem 1rem; text-align: center; color: var(--text-muted);">
             <div style="font-size: 2rem; margin-bottom: 0.75rem;">🦅</div>
             <p style="font-weight: 600; margin: 0 0 0.4rem 0;">Wersja B jeszcze nie została wygenerowana</p>
@@ -2585,6 +2727,127 @@
     }
   }
 
+  // =========================================================================
+  // Narzędzia płynnego przewijania i skalowania okna podglądu (Góra / Dół / Rozwiń)
+  // =========================================================================
+  function scrollPreviewTo(position) {
+    const preview = document.getElementById('scratch-preview');
+    if (!preview) return;
+    if (preview.classList.contains('preview-expanded-all')) {
+      const rect = preview.getBoundingClientRect();
+      const targetY = position === 'top' ? window.scrollY + rect.top - 80 : window.scrollY + rect.bottom - window.innerHeight + 80;
+      window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+    } else {
+      const top = position === 'top' ? 0 : preview.scrollHeight;
+      preview.scrollTo({ top, behavior: 'smooth' });
+    }
+  }
+
+  function togglePreviewHeightMode() {
+    const preview = document.getElementById('scratch-preview');
+    const btn = document.getElementById('btn-toggle-preview-height');
+    if (!preview) return;
+    const isExpanded = preview.classList.toggle('preview-expanded-all');
+    if (btn) {
+      btn.innerHTML = isExpanded ? '↕️ Okno z paskiem' : '📜 Rozwiń całość';
+      btn.style.borderColor = isExpanded ? '#2563eb' : '';
+      btn.style.color = isExpanded ? '#2563eb' : '';
+      btn.style.fontWeight = isExpanded ? '700' : '600';
+    }
+    showToast(isExpanded ? '📜 Rozwinięto podgląd na pełną długość (przewijanie całej strony)' : '↕️ Włączono okno podglądu z paskiem przewijania');
+  }
+
+  function scrollSourceDrawer(sourceId, position) {
+    const paneA = document.getElementById(`content-src-${sourceId}-A`);
+    const paneB = document.getElementById(`content-src-${sourceId}-B`);
+    const activePane = (paneB && paneB.style.display !== 'none') ? paneB : paneA;
+    if (!activePane) return;
+    const top = position === 'top' ? 0 : activePane.scrollHeight;
+    activePane.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  function toggleSourceDrawerExpand(sourceId) {
+    const paneA = document.getElementById(`content-src-${sourceId}-A`);
+    const paneB = document.getElementById(`content-src-${sourceId}-B`);
+    const btn = document.getElementById(`btn-src-expand-${sourceId}`);
+    const activePane = (paneB && paneB.style.display !== 'none') ? paneB : paneA;
+    if (!activePane) return;
+    const isExpanded = activePane.classList.toggle('pane-expanded');
+    if (paneA) paneA.classList.toggle('pane-expanded', isExpanded);
+    if (paneB) paneB.classList.toggle('pane-expanded', isExpanded);
+    if (btn) {
+      btn.innerHTML = isExpanded ? '↕️ Zwiń' : '↕️ Rozwiń';
+      btn.style.color = isExpanded ? '#2563eb' : '';
+      btn.style.borderColor = isExpanded ? '#2563eb' : '';
+    }
+  }
+
+  function scrollWireDrawer(btn, position) {
+    if (!btn) return;
+    const drawer = btn.closest('.live-wire-drawer') || btn.closest('details');
+    if (!drawer) return;
+    const contentA = drawer.querySelector('.wire-tab-content-a');
+    const contentB = drawer.querySelector('.wire-tab-content-b');
+    const activePane = (contentB && contentB.style.display !== 'none') ? contentB : contentA;
+    if (!activePane) return;
+    const top = position === 'top' ? 0 : activePane.scrollHeight;
+    activePane.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  function toggleWireDrawerExpand(btn) {
+    if (!btn) return;
+    const drawer = btn.closest('.live-wire-drawer') || btn.closest('details');
+    if (!drawer) return;
+    const contentA = drawer.querySelector('.wire-tab-content-a');
+    const contentB = drawer.querySelector('.wire-tab-content-b');
+    const activePane = (contentB && contentB.style.display !== 'none') ? contentB : contentA;
+    if (!activePane) return;
+    const isExpanded = activePane.classList.toggle('pane-expanded');
+    if (contentA) contentA.classList.toggle('pane-expanded', isExpanded);
+    if (contentB) contentB.classList.toggle('pane-expanded', isExpanded);
+    btn.innerHTML = isExpanded ? '↕️ Zwiń' : '↕️ Rozwiń';
+    btn.style.color = isExpanded ? '#2563eb' : '';
+    btn.style.borderColor = isExpanded ? '#2563eb' : '';
+  }
+
+  function scrollProposalDrawer(btn, position) {
+    if (!btn) return;
+    const drawer = btn.closest('.proposal-draft-drawer') || btn.closest('details');
+    if (!drawer) return;
+    const scrollBox = drawer.querySelector('.prop-drawer-scroll-box') || drawer.querySelector('.custom-scrollbar');
+    if (!scrollBox) return;
+    const top = position === 'top' ? 0 : scrollBox.scrollHeight;
+    scrollBox.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  function toggleProposalDrawerExpand(btn) {
+    if (!btn) return;
+    const drawer = btn.closest('.proposal-draft-drawer') || btn.closest('details');
+    if (!drawer) return;
+    const scrollBox = drawer.querySelector('.prop-drawer-scroll-box') || drawer.querySelector('.custom-scrollbar');
+    if (!scrollBox) return;
+    const isExpanded = scrollBox.classList.toggle('pane-expanded');
+    btn.innerHTML = isExpanded ? '↕️ Zwiń' : '↕️ Rozwiń';
+    btn.style.color = isExpanded ? '#2563eb' : '';
+    btn.style.borderColor = isExpanded ? '#2563eb' : '';
+  }
+
+  function scrollBielikPaneB(position) {
+    const pane = document.getElementById('bielik-pane-b-prev');
+    const md = document.getElementById('bielik-output-b');
+    const target = (md && md.style.display !== 'none') ? md : pane;
+    if (!target) return;
+    const top = position === 'top' ? 0 : target.scrollHeight;
+    target.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  function scrollModalReader(position) {
+    const modal = document.getElementById('reader-fullscreen-modal');
+    if (!modal) return;
+    const top = position === 'top' ? 0 : modal.scrollHeight;
+    modal.scrollTo({ top, behavior: 'smooth' });
+  }
+
   function toggleEditorSplitView() {
     const ws = document.getElementById('editor-workspace');
     const paneWrite = document.getElementById('pane-write');
@@ -2715,6 +2978,30 @@
     @media (max-width: 768px) {
       .article-title { font-size: 1.8rem; }
       .preview-container { padding: 1.5rem 1rem 3rem 1rem; }
+    }
+    html, body {
+      scrollbar-width: thin !important;
+      scrollbar-color: #2563eb rgba(37, 99, 235, 0.12) !important;
+      -webkit-overflow-scrolling: touch !important;
+      touch-action: pan-y !important;
+    }
+    ::-webkit-scrollbar {
+      width: 10px !important;
+      height: 10px !important;
+      display: block !important;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.08) !important;
+      border-radius: 8px !important;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2563eb !important;
+      border-radius: 8px !important;
+      border: 2px solid transparent !important;
+      background-clip: content-box !important;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #1d4ed8 !important;
     }
     .article-lead {
       font-size: 1.15rem;
@@ -2882,7 +3169,8 @@
     if (!modal) {
       modal = document.createElement('div');
       modal.id = 'reader-fullscreen-modal';
-      modal.style.cssText = 'display: none; position: fixed; inset: 0; z-index: 999999; background: var(--bg-body); overflow-y: auto; padding: 0;';
+      modal.style.cssText = 'display: none; position: fixed; inset: 0; z-index: 999999; background: var(--bg-body); overflow-y: scroll; padding: 0; -webkit-overflow-scrolling: touch; touch-action: pan-y;';
+      modal.className = 'custom-scrollbar';
       document.body.appendChild(modal);
     }
 
@@ -2893,7 +3181,9 @@
           <strong style="font-size: 0.9rem; color: #2563eb;">Pełnoekranowy Widok Czytelnika</strong>
           <span style="font-size: 0.72rem; background: rgba(37,99,235,0.1); color: #2563eb; padding: 2px 6px; border-radius: 4px; font-weight: 700;">100% szerokość</span>
         </div>
-        <div style="display: flex; gap: 0.4rem;">
+        <div style="display: flex; gap: 0.35rem; align-items: center;">
+          <button type="button" class="btn btn-secondary" onclick="scrollModalReader('top');" style="font-size: 0.75rem; padding: 0.3rem 0.55rem;" title="Przewiń na górę">⬆️ Góra</button>
+          <button type="button" class="btn btn-secondary" onclick="scrollModalReader('bottom');" style="font-size: 0.75rem; padding: 0.3rem 0.55rem;" title="Przewiń na dół">⬇️ Dół</button>
           <button type="button" class="btn btn-secondary" onclick="openPreviewInNewWindow();" style="font-size: 0.75rem; padding: 0.3rem 0.65rem;">↗️ Osobne okno</button>
           <button type="button" class="btn btn-primary" onclick="closeFullScreenReaderModal();" style="font-size: 0.75rem; padding: 0.3rem 0.75rem; background: #dc2626; border-color: #dc2626;">✕ Zamknij (Wróć do edycji)</button>
         </div>
@@ -3688,18 +3978,25 @@ ${body}`;
       <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
         ${escapeHtml(ra.lead)}
       </p>
-      <div style="display: flex; gap: 0.35rem; margin-bottom: 0.6rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem;">
-        <button type="button" class="btn btn-secondary source-tab-btn active" id="tab-src-${sourceId}-A" onclick="switchSourceDrawerTab('${sourceId}', 'A');" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; font-weight: 700;">
-          📄 Wersja A (Autorska)
-        </button>
-        <button type="button" class="btn btn-secondary source-tab-btn" id="tab-src-${sourceId}-B" onclick="switchSourceDrawerTab('${sourceId}', 'B');" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; font-weight: 700;">
-          🦅 Wersja B (Bielik AI)
-        </button>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem; flex-wrap: wrap; gap: 0.4rem;">
+        <div style="display: flex; gap: 0.35rem; align-items: center;">
+          <button type="button" class="btn btn-secondary source-tab-btn active" id="tab-src-${sourceId}-A" onclick="switchSourceDrawerTab('${sourceId}', 'A');" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; font-weight: 700;">
+            📄 Wersja A (Autorska)
+          </button>
+          <button type="button" class="btn btn-secondary source-tab-btn" id="tab-src-${sourceId}-B" onclick="switchSourceDrawerTab('${sourceId}', 'B');" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; font-weight: 700;">
+            🦅 Wersja B (Bielik AI)
+          </button>
+        </div>
+        <div style="display: flex; gap: 0.25rem; align-items: center;">
+          <button type="button" class="btn btn-secondary" onclick="scrollSourceDrawer('${sourceId}', 'top');" style="font-size: 0.68rem; padding: 0.15rem 0.4rem;" title="Przewiń na górę">⬆️</button>
+          <button type="button" class="btn btn-secondary" onclick="scrollSourceDrawer('${sourceId}', 'bottom');" style="font-size: 0.68rem; padding: 0.15rem 0.4rem;" title="Przewiń na dół">⬇️</button>
+          <button type="button" class="btn btn-secondary" onclick="toggleSourceDrawerExpand('${sourceId}');" id="btn-src-expand-${sourceId}" style="font-size: 0.68rem; padding: 0.15rem 0.45rem;" title="Rozwiń na pełną wysokość">↕️ Rozwiń</button>
+        </div>
       </div>
-      <div id="content-src-${sourceId}-A" class="source-content-pane" style="display: block; max-height: 250px; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.65rem; font-size: 0.75rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans);">
+      <div id="content-src-${sourceId}-A" class="source-content-pane custom-scrollbar" style="display: block; max-height: 420px; overflow-y: scroll; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.85rem; font-size: 0.78rem; line-height: 1.6; color: var(--text-primary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans); -webkit-overflow-scrolling: touch; touch-action: pan-y;">
 ${escapeHtml(ra.draft_markdown)}
       </div>
-      <div id="content-src-${sourceId}-B" class="source-content-pane" style="display: none; max-height: 250px; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.65rem; font-size: 0.75rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans);">
+      <div id="content-src-${sourceId}-B" class="source-content-pane custom-scrollbar" style="display: none; max-height: 420px; overflow-y: scroll; background: var(--bg-surface); border: 1.5px solid #059669; border-radius: 4px; padding: 0.85rem; font-size: 0.78rem; line-height: 1.6; color: var(--text-primary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans); -webkit-overflow-scrolling: touch; touch-action: pan-y;">
 ${escapeHtml(ra.bielik_draft)}
       </div>
       <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
@@ -5957,15 +6254,22 @@ Zwróć WYŁĄCZNIE gotowy tekst Markdown.`;
               <span>${isKond ? '⚡ Rozwiń gotowy KONDENSAT (Wersja A & Bielik &darr;)' : '📖 Rozwiń gotowy artykuł (Wersja A & Bielik &darr;)'}</span>
               <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 500;">Rozwiń &darr;</span>
             </summary>
-            <div style="padding: 0.85rem; border-top: 1px solid var(--border-color); font-size: 0.83rem; line-height: 1.6; color: var(--text-primary); max-height: 380px; overflow-y: auto;" class="custom-scrollbar">
-              <div style="display: flex; gap: 0.35rem; padding-bottom: 0.65rem; margin-bottom: 0.65rem; border-bottom: 1px solid var(--border-color); align-items: center; flex-wrap: wrap;">
-                <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Wersja eseju:</span>
-                <button type="button" onclick="switchProposalDrawerTab(this, 'a');" class="btn btn-primary prop-tab-btn active" style="font-size: 0.73rem; padding: 0.2rem 0.55rem; border-radius: 4px;">
-                  📄 Wersja A (Autorska synteza)
-                </button>
-                <button type="button" onclick="switchProposalDrawerTab(this, 'b');" class="btn btn-secondary prop-tab-btn" style="font-size: 0.73rem; padding: 0.2rem 0.55rem; border-radius: 4px; border-color: #dc2626; color: #b91c1c; font-weight: 700;">
-                  🦅 Wersja B (Bielik AI: Polski kontekst & Kondensacja)
-                </button>
+            <div class="prop-drawer-scroll-box custom-scrollbar" style="padding: 0.85rem; border-top: 1px solid var(--border-color); font-size: 0.83rem; line-height: 1.6; color: var(--text-primary); max-height: 420px; overflow-y: scroll; -webkit-overflow-scrolling: touch; touch-action: pan-y;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.65rem; margin-bottom: 0.65rem; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 0.4rem;">
+                <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
+                  <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Wersja eseju:</span>
+                  <button type="button" onclick="switchProposalDrawerTab(this, 'a');" class="btn btn-primary prop-tab-btn active" style="font-size: 0.73rem; padding: 0.2rem 0.55rem; border-radius: 4px;">
+                    📄 Wersja A (Autorska synteza)
+                  </button>
+                  <button type="button" onclick="switchProposalDrawerTab(this, 'b');" class="btn btn-secondary prop-tab-btn" style="font-size: 0.73rem; padding: 0.2rem 0.55rem; border-radius: 4px; border-color: #dc2626; color: #b91c1c; font-weight: 700;">
+                    🦅 Wersja B (Bielik AI: Polski kontekst & Kondensacja)
+                  </button>
+                </div>
+                <div style="margin-left: auto; display: flex; gap: 0.25rem; align-items: center;">
+                  <button type="button" onclick="scrollProposalDrawer(this, 'top');" class="btn btn-secondary" style="font-size: 0.68rem; padding: 0.15rem 0.4rem;" title="Przewiń na górę">⬆️</button>
+                  <button type="button" onclick="scrollProposalDrawer(this, 'bottom');" class="btn btn-secondary" style="font-size: 0.68rem; padding: 0.15rem 0.4rem;" title="Przewiń na dół">⬇️</button>
+                  <button type="button" onclick="toggleProposalDrawerExpand(this);" class="btn btn-secondary btn-prop-expand" style="font-size: 0.68rem; padding: 0.15rem 0.45rem;" title="Rozwiń na pełną wysokość">↕️ Rozwiń</button>
+                </div>
               </div>
               <div class="proposal-draft-rendered-content prop-draft-content-a" style="font-size: 0.84rem; line-height: 1.6;">
                 ${prop.full_draft_html || ''}
@@ -6283,19 +6587,26 @@ Zwróć WYŁĄCZNIE gotowy tekst Markdown.`;
                 <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 500;">Rozwiń &darr;</span>
               </summary>
               <div style="padding: 0.75rem; border-top: 1px solid var(--border-color);">
-                <div style="display: flex; gap: 0.35rem; margin-bottom: 0.65rem; flex-wrap: wrap; align-items: center;">
-                  <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Wersja eseju:</span>
-                  <button type="button" onclick="switchWireDrawerTab(this, 'a');" class="btn btn-primary wire-tab-btn active" style="font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 4px;">
-                    📄 Wersja A (Autorska synteza)
-                  </button>
-                  <button type="button" onclick="switchWireDrawerTab(this, 'b');" class="btn btn-secondary wire-tab-btn" style="font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 4px; border-color: #dc2626; color: #b91c1c; font-weight: 700;">
-                    🦅 Wersja B (Bielik AI: Polski kontekst & Kondensacja)
-                  </button>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.4rem;">
+                  <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
+                    <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Wersja eseju:</span>
+                    <button type="button" onclick="switchWireDrawerTab(this, 'a');" class="btn btn-primary wire-tab-btn active" style="font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 4px;">
+                      📄 Wersja A (Autorska synteza)
+                    </button>
+                    <button type="button" onclick="switchWireDrawerTab(this, 'b');" class="btn btn-secondary wire-tab-btn" style="font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 4px; border-color: #dc2626; color: #b91c1c; font-weight: 700;">
+                      🦅 Wersja B (Bielik AI: Polski kontekst & Kondensacja)
+                    </button>
+                  </div>
+                  <div style="display: flex; gap: 0.25rem; align-items: center;">
+                    <button type="button" onclick="scrollWireDrawer(this, 'top');" class="btn btn-secondary" style="font-size: 0.68rem; padding: 0.15rem 0.4rem;" title="Przewiń treść na górę">⬆️</button>
+                    <button type="button" onclick="scrollWireDrawer(this, 'bottom');" class="btn btn-secondary" style="font-size: 0.68rem; padding: 0.15rem 0.4rem;" title="Przewiń treść na dół">⬇️</button>
+                    <button type="button" onclick="toggleWireDrawerExpand(this);" class="btn btn-secondary btn-wire-expand" style="font-size: 0.68rem; padding: 0.15rem 0.45rem;" title="Rozwiń na pełną wysokość">↕️ Rozwiń</button>
+                  </div>
                 </div>
-                <div class="wire-tab-content wire-tab-content-a" style="font-size: 0.83rem; line-height: 1.6; max-height: 280px; overflow-y: auto; padding-right: 0.35rem;" class="custom-scrollbar">
+                <div class="wire-tab-content wire-tab-content-a custom-scrollbar" style="font-size: 0.83rem; line-height: 1.6; max-height: 420px; overflow-y: scroll; padding-right: 0.5rem; -webkit-overflow-scrolling: touch; touch-action: pan-y;">
                   ${it.full_draft_html || ''}
                 </div>
-                <div class="wire-tab-content wire-tab-content-b" style="font-size: 0.83rem; line-height: 1.6; max-height: 280px; overflow-y: auto; padding-right: 0.35rem; display: none;" class="custom-scrollbar">
+                <div class="wire-tab-content wire-tab-content-b custom-scrollbar" style="font-size: 0.83rem; line-height: 1.6; max-height: 420px; overflow-y: scroll; padding-right: 0.5rem; display: none; -webkit-overflow-scrolling: touch; touch-action: pan-y;">
                   ${it.bielik_draft_html || ''}
                 </div>
                 <div style="margin-top: 0.75rem; padding-top: 0.55rem; border-top: 1px dashed var(--border-color); display: flex; gap: 0.4rem; flex-wrap: wrap;">
