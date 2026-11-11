@@ -182,6 +182,93 @@
     renderView();
   });
 </script>
+
+<style>
+  /* Responsywny układ edytora i podglądu na całą szerokość */
+  .editor-workspace-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    width: 100%;
+    transition: all 0.2s ease;
+  }
+
+  .editor-workspace-container.fullwidth-preview {
+    grid-template-columns: 1fr !important;
+  }
+
+  .editor-workspace-container.fullwidth-write {
+    grid-template-columns: 1fr !important;
+  }
+
+  #pane-write, #pane-preview {
+    min-width: 0;
+    width: 100%;
+    transition: all 0.2s ease;
+  }
+
+  #scratch-preview {
+    background: var(--bg-surface);
+    padding: 1.5rem;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border-color);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    min-height: 480px;
+    max-height: 75vh;
+    overflow-y: auto;
+    font-family: var(--font-serif);
+    color: var(--text-primary);
+  }
+
+  #scratch-preview h1, #scratch-preview h2, #scratch-preview h3 {
+    font-family: var(--font-sans);
+    letter-spacing: -0.02em;
+  }
+
+  #scratch-preview blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1.15rem;
+    margin: 1.25rem 0;
+    background: var(--bg-card);
+    border-radius: 0 6px 6px 0;
+    font-style: italic;
+  }
+
+  /* Styl na tabletach i smartfonach (<= 992px) */
+  @media (max-width: 992px) {
+    .editor-workspace-container {
+      grid-template-columns: 1fr !important;
+      gap: 1rem;
+    }
+    #pane-write, #pane-preview {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    #scratch-preview {
+      min-height: 520px !important;
+      height: auto !important;
+      max-height: none !important;
+      padding: 1.25rem 0.85rem !important;
+      font-size: 1.08rem !important;
+      line-height: 1.8 !important;
+    }
+    #scratch-body {
+      height: 450px !important;
+      font-size: 0.95rem !important;
+    }
+    .editor-mobile-tabs {
+      display: flex !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    #scratch-preview {
+      padding: 1rem 0.65rem !important;
+      font-size: 1.02rem !important;
+    }
+  }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -1548,15 +1635,24 @@
         </div>
       </div>
 
-      <!-- Mobile Tab Switcher (dla małych ekranów) -->
-      <div class="editor-mobile-tabs" style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
-        <button type="button" id="tab-btn-write" class="btn btn-secondary active-tab" onclick="switchEditorTab('write')" style="flex: 1; padding: 0.45rem; font-size: 0.85rem; font-weight: 600;">✏️ Edytor tekstu</button>
-        <button type="button" id="tab-btn-preview" class="btn btn-secondary" onclick="switchEditorTab('preview')" style="flex: 1; padding: 0.45rem; font-size: 0.85rem; font-weight: 600;">👁️ Podgląd na żywo</button>
-        <button type="button" id="tab-btn-publish" class="btn btn-secondary" onclick="switchEditorTab('publish')" style="flex: 1; padding: 0.45rem; font-size: 0.85rem; font-weight: 600;">🚀 Publikacja w trasie</button>
+      <!-- Mobile / Tablet Tab Switcher (dla telefonów, tabletów i pracy w trasie) -->
+      <div class="editor-mobile-tabs" style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+        <button type="button" id="tab-btn-write" class="btn btn-primary" onclick="switchEditorTab('write')" style="flex: 1; min-width: 120px; padding: 0.45rem; font-size: 0.85rem; font-weight: 700;">
+          ✏️ Edytor tekstu
+        </button>
+        <button type="button" id="tab-btn-preview" class="btn btn-secondary" onclick="switchEditorTab('preview')" style="flex: 1; min-width: 140px; padding: 0.45rem; font-size: 0.85rem; font-weight: 700;">
+          👁️ Podgląd (100% szerokość)
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="openPreviewInNewWindow();" style="flex: 1; min-width: 130px; padding: 0.45rem; font-size: 0.85rem; font-weight: 700; color: #2563eb; border-color: rgba(37,99,235,0.4);" title="Otwórz podgląd artykułu w osobnym oknie / nowej karcie">
+          ↗️ Osobne okno
+        </button>
+        <button type="button" id="tab-btn-publish" class="btn btn-secondary" onclick="switchEditorTab('publish')" style="flex: 1; min-width: 120px; padding: 0.45rem; font-size: 0.85rem; font-weight: 700;">
+          🚀 Publikacja w trasie
+        </button>
       </div>
 
       <!-- Dual Pane Container -->
-      <div id="editor-workspace" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+      <div id="editor-workspace" class="editor-workspace-container">
         <div id="pane-write">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 0.4rem;">
             <label style="font-size: 0.85rem; font-weight: 600;">Treść wpisu (Markdown / Tekst)</label>
@@ -1570,15 +1666,28 @@
               <span id="scratch-stats" style="font-size: 0.78rem; color: var(--text-muted);">0 słów | ~0 min czytania</span>
             </div>
           </div>
-          <textarea id="scratch-body" class="form-input" style="height: 420px; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.5; resize: vertical;" placeholder="# Rozpocznij pisanie wpisu...&#10;&#10;Użyj przycisków na pasku narzędzi lub kliknij 'Importuj plik .md'!" oninput="updateLivePreview();"></textarea>
+          <textarea id="scratch-body" class="form-input" style="height: 440px; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.5; resize: vertical;" placeholder="# Rozpocznij pisanie wpisu...&#10;&#10;Użyj przycisków na pasku narzędzi lub kliknij 'Importuj plik .md'!" oninput="updateLivePreview();"></textarea>
         </div>
 
         <div id="pane-preview">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-            <label style="font-size: 0.85rem; font-weight: 600;">Podgląd na żywo (widok czytelnika)</label>
-            <span style="font-size: 0.78rem; color: #10b981;">● Aktualizowany w czasie rzeczywistym</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <label style="font-size: 0.88rem; font-weight: 700; color: var(--text-primary);">👁️ Podgląd czytelnika (na całą szerokość)</label>
+              <span style="font-size: 0.74rem; color: #10b981; font-weight: 700;">● Na żywo</span>
+            </div>
+            <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
+              <button type="button" onclick="openPreviewInNewWindow();" class="btn btn-secondary" style="font-size: 0.73rem; padding: 0.25rem 0.6rem; color: #2563eb; font-weight: 700; border-color: rgba(37,99,235,0.4);" title="Otwórz ten artykuł w nowej karcie / osobnym oknie jako pełną stronę bloga">
+                ↗️ Osobne okno
+              </button>
+              <button type="button" onclick="openFullScreenReaderModal();" class="btn btn-secondary" style="font-size: 0.73rem; padding: 0.25rem 0.6rem; font-weight: 600;" title="Otwórz widok czytelnika na pełnym ekranie w tym oknie">
+                🔍 Pełny ekran
+              </button>
+              <button type="button" id="btn-toggle-split-view" onclick="toggleEditorSplitView();" class="btn btn-secondary" style="font-size: 0.73rem; padding: 0.25rem 0.6rem; font-weight: 600;" title="Przełącz między widokiem obok siebie a pełną szerokością">
+                ↔️ Zmień układ
+              </button>
+            </div>
           </div>
-          <div id="scratch-preview" class="article-body" style="height: 420px; overflow-y: auto; background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.95rem;">
+          <div id="scratch-preview" class="article-body">
             <em style="color: var(--text-muted);">Zacznij pisać lub wczytaj plik .md, aby zobaczyć podgląd wpisu...</em>
           </div>
         </div>
@@ -2409,8 +2518,13 @@
     reader.readAsText(file, 'UTF-8');
   }
 
-  // Switch mobile tabs
+  // =========================================================================
+  // RESPONSYWNY PODGLĄD NA CAŁĄ SZEROKOŚĆ & ZEWNĘTRZNE OKNO CZYTELNIKA
+  // =========================================================================
+  let isSplitViewForced = false;
+
   function switchEditorTab(tab) {
+    const ws = document.getElementById('editor-workspace');
     const paneWrite = document.getElementById('pane-write');
     const panePreview = document.getElementById('pane-preview');
     const panePublish = document.getElementById('pane-publish-box');
@@ -2418,23 +2532,405 @@
     const tabPrev = document.getElementById('tab-btn-preview');
     const tabPub = document.getElementById('tab-btn-publish');
 
-    [tabWrite, tabPrev, tabPub].forEach(btn => btn && btn.classList.remove('btn-primary'));
-    [tabWrite, tabPrev, tabPub].forEach(btn => btn && btn.classList.add('btn-secondary'));
+    [tabWrite, tabPrev, tabPub].forEach(btn => {
+      if (btn) {
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-secondary');
+      }
+    });
+
+    const isMobileOrTablet = (window.innerWidth <= 992);
 
     if (tab === 'write') {
-      if (paneWrite) paneWrite.style.display = 'block';
-      if (panePreview) panePreview.style.display = (window.innerWidth > 768) ? 'block' : 'none';
-      if (tabWrite) { tabWrite.classList.add('btn-primary'); tabWrite.classList.remove('btn-secondary'); }
+      if (ws) {
+        ws.classList.remove('fullwidth-preview');
+        ws.style.gridTemplateColumns = isMobileOrTablet ? '1fr' : (isSplitViewForced ? '1fr 1fr' : '1fr 1fr');
+      }
+      if (paneWrite) {
+        paneWrite.style.display = 'block';
+        paneWrite.style.width = '100%';
+      }
+      if (panePreview) {
+        panePreview.style.display = isMobileOrTablet ? 'none' : 'block';
+      }
+      if (tabWrite) {
+        tabWrite.classList.add('btn-primary');
+        tabWrite.classList.remove('btn-secondary');
+      }
     } else if (tab === 'preview') {
-      if (paneWrite) paneWrite.style.display = (window.innerWidth > 768) ? 'block' : 'none';
-      if (panePreview) panePreview.style.display = 'block';
-      if (tabPrev) { tabPrev.classList.add('btn-primary'); tabPrev.classList.remove('btn-secondary'); }
+      updateLivePreview();
+      if (ws) {
+        ws.classList.add('fullwidth-preview');
+        ws.style.gridTemplateColumns = '1fr';
+      }
+      // W trybie podglądu — ZAWSZE 100% pełna szerokość okna na wszystkich urządzeniach
+      if (paneWrite) paneWrite.style.display = 'none';
+      if (panePreview) {
+        panePreview.style.display = 'block';
+        panePreview.style.width = '100%';
+        panePreview.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      if (tabPrev) {
+        tabPrev.classList.add('btn-primary');
+        tabPrev.classList.remove('btn-secondary');
+      }
     } else if (tab === 'publish') {
       if (panePublish) {
-        panePublish.scrollIntoView({ behavior: 'smooth' });
+        panePublish.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-      if (tabPub) { tabPub.classList.add('btn-primary'); tabPub.classList.remove('btn-secondary'); }
+      if (tabPub) {
+        tabPub.classList.add('btn-primary');
+        tabPub.classList.remove('btn-secondary');
+      }
     }
+  }
+
+  function toggleEditorSplitView() {
+    const ws = document.getElementById('editor-workspace');
+    const paneWrite = document.getElementById('pane-write');
+    const panePreview = document.getElementById('pane-preview');
+    if (!ws) return;
+
+    if (window.innerWidth <= 992) {
+      showToast('ℹ️ Na urządzeniu mobilnym/tablecie podgląd działa na całą szerokość. Użyj przycisku „↗️ Osobne okno” do podglądu!');
+      return;
+    }
+
+    isSplitViewForced = !isSplitViewForced;
+    if (isSplitViewForced) {
+      ws.classList.remove('fullwidth-preview', 'fullwidth-write');
+      ws.style.gridTemplateColumns = '1fr 1fr';
+      if (paneWrite) paneWrite.style.display = 'block';
+      if (panePreview) panePreview.style.display = 'block';
+      showToast('↔️ Przełączono na układ dwukolumnowy (edytor + podgląd obok siebie)');
+    } else {
+      ws.classList.add('fullwidth-preview');
+      ws.style.gridTemplateColumns = '1fr';
+      if (paneWrite) paneWrite.style.display = 'none';
+      if (panePreview) panePreview.style.display = 'block';
+      showToast('👁️ Przełączono na podgląd na całą szerokość (100%)');
+    }
+  }
+
+  function openPreviewInNewWindow() {
+    updateLivePreview();
+    const title = (document.getElementById('scratch-title')?.value || '').trim() || 'Bez tytułu — Podgląd artykułu';
+    const text = document.getElementById('scratch-body')?.value || '';
+    const category = document.getElementById('scratch-category')?.value || 'eseje';
+    const summary = (document.getElementById('scratch-summary')?.value || '').trim();
+    const imgUrl = (document.getElementById('scratch-image')?.value || '').trim();
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const minutes = Math.max(1, Math.ceil(words / 190));
+    const now = new Date();
+    const months = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'];
+    const dateStr = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} r.`;
+
+    const bodyHtml = (window.LaikaDirectSync && window.LaikaDirectSync.renderMarkdownBody)
+      ? window.LaikaDirectSync.renderMarkdownBody(text, { forReader: true })
+      : escapeHtml(text);
+
+    const categoryNames = {
+      'technologia': 'Technologia & AI',
+      'gospodarka': 'Gospodarka & Finanse',
+      'historia': 'Historia & Lekcje Dziejów',
+      'polityka': 'Polityka & Myśl Państwowa',
+      'eseje': 'Eseje & Filozofia',
+      'kondensat': 'Dział Kondensatów'
+    };
+    const catName = categoryNames[category] || category;
+
+    const fullHtml = `<!DOCTYPE html>
+<html lang="pl" data-theme="${escapeHtml(currentTheme)}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escapeHtml(title)} — Podgląd Czytelnika (Blog Laika)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,700;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    body {
+      background: var(--bg-body, #ffffff);
+      color: var(--text-primary, #1e293b);
+      font-family: var(--font-sans, system-ui, sans-serif);
+      margin: 0;
+      padding: 0;
+      line-height: 1.7;
+    }
+    .preview-sticky-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--bg-card, #ffffff);
+      border-bottom: 2px solid #2563eb;
+      padding: 0.65rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      flex-wrap: wrap;
+    }
+    .preview-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem 1.25rem;
+    }
+    .article-header {
+      margin-bottom: 2.25rem;
+      text-align: center;
+    }
+    .post-meta {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary, #64748b);
+    }
+    .post-category-tag {
+      background: rgba(37,99,235,0.1);
+      color: #2563eb;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .article-title {
+      font-family: var(--font-serif, serif);
+      font-size: 2.35rem;
+      font-weight: 800;
+      line-height: 1.25;
+      color: var(--text-primary, #0f172a);
+      margin: 0 0 1.25rem 0;
+      letter-spacing: -0.02em;
+    }
+    @media (max-width: 768px) {
+      .article-title { font-size: 1.8rem; }
+      .preview-container { padding: 1.5rem 1rem 3rem 1rem; }
+    }
+    .article-lead {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: var(--text-secondary, #475569);
+      font-style: italic;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color, #e2e8f0);
+    }
+    .article-cover {
+      margin-bottom: 2.25rem;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      max-height: 460px;
+      background: #0f172a;
+    }
+    .article-cover img {
+      width: 100%;
+      height: 100%;
+      max-height: 460px;
+      object-fit: cover;
+      display: block;
+    }
+    .article-body {
+      font-family: var(--font-serif, serif);
+      font-size: 1.2rem;
+      line-height: 1.85;
+      color: var(--text-primary, #1e293b);
+    }
+    .article-body h2 {
+      font-family: var(--font-sans, sans-serif);
+      font-size: 1.45rem;
+      font-weight: 800;
+      margin: 2.25rem 0 1rem 0;
+      color: var(--text-primary, #0f172a);
+      border-bottom: 1.5px solid var(--border-color, #e2e8f0);
+      padding-bottom: 0.4rem;
+    }
+    .article-body h3 {
+      font-family: var(--font-sans, sans-serif);
+      font-size: 1.22rem;
+      font-weight: 700;
+      margin: 1.75rem 0 0.75rem 0;
+      color: var(--text-primary, #0f172a);
+    }
+    .article-body blockquote {
+      border-left: 4px solid #2563eb;
+      padding: 0.85rem 1.25rem;
+      margin: 1.5rem 0;
+      background: var(--bg-surface, #f8fafc);
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+    }
+    .btn-top {
+      padding: 0.4rem 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid var(--border-color, #cbd5e1);
+      background: var(--bg-surface, #f8fafc);
+      color: var(--text-primary, #0f172a);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-sticky-bar">
+    <div style="display: flex; align-items: center; gap: 0.65rem;">
+      <span style="font-size: 1.1rem;">👁️</span>
+      <strong style="font-size: 0.9rem; color: #2563eb;">Podgląd czytelnika (Blog Laika)</strong>
+      <span style="font-size: 0.75rem; background: rgba(37,99,235,0.1); color: #2563eb; padding: 2px 7px; border-radius: 9999px; font-weight: 700;">
+        Wersja na żywo (100% szerokość)
+      </span>
+    </div>
+    <div style="display: flex; gap: 0.45rem;">
+      <button type="button" class="btn-top" onclick="window.print();">🖨️ Drukuj / Zapisz PDF</button>
+      <button type="button" class="btn-top" style="background: #2563eb; color: #fff; border-color: #2563eb;" onclick="window.close();">✕ Zamknij podgląd</button>
+    </div>
+  </div>
+
+  <div class="preview-container">
+    <header class="article-header">
+      <div class="post-meta">
+        <span class="post-category-tag">${escapeHtml(catName)}</span>
+        <span>•</span>
+        <span>Autor: <strong style="color: var(--accent, #2563eb);">Ireneusz Machowiec</strong></span>
+        <span>•</span>
+        <span>⏱️ ${minutes} min czytania (${words} słów)</span>
+        <span>•</span>
+        <span>${dateStr}</span>
+      </div>
+      <h1 class="article-title">${escapeHtml(title)}</h1>
+      ${summary ? `<div class="article-lead">${escapeHtml(summary)}</div>` : ''}
+    </header>
+
+    ${imgUrl ? `<div class="article-cover"><img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(title)}" onerror="this.parentElement.style.display='none';"></div>` : ''}
+
+    <main class="article-body">
+      ${bodyHtml}
+    </main>
+
+    <footer style="margin-top: 3.5rem; padding-top: 1.75rem; border-top: 2px solid var(--border-color, #e2e8f0); text-align: center; color: var(--text-muted, #94a3b8); font-size: 0.85rem;">
+      <p style="margin: 0 0 0.5rem 0;">🛡️ <strong>Blog Laika</strong> — Niezależna publicystyka problemowa i myślenie z pierwszych zasad.</p>
+      <p style="margin: 0; font-size: 0.78rem;">Wierny podgląd czytelnika artykułu przed publikacją na <code>blog-laika.com</code>.</p>
+    </footer>
+  </div>
+</body>
+</html>`;
+
+    let opened = false;
+    try {
+      const newWin = window.open('', '_blank');
+      if (newWin && !newWin.closed) {
+        newWin.document.open();
+        newWin.document.write(fullHtml);
+        newWin.document.close();
+        opened = true;
+        showToast('↗️ Otwarto podgląd artykułu w osobnym oknie!');
+      }
+    } catch(e) { opened = false; }
+
+    if (!opened) {
+      try {
+        const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 30000);
+        showToast('↗️ Otwarto podgląd w nowej karcie (Blob)!');
+      } catch (err) {
+        openFullScreenReaderModal();
+      }
+    }
+  }
+
+  function openFullScreenReaderModal() {
+    updateLivePreview();
+    const title = (document.getElementById('scratch-title')?.value || '').trim() || 'Bez tytułu';
+    const text = document.getElementById('scratch-body')?.value || '';
+    const category = document.getElementById('scratch-category')?.value || 'eseje';
+    const summary = (document.getElementById('scratch-summary')?.value || '').trim();
+    const imgUrl = (document.getElementById('scratch-image')?.value || '').trim();
+
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const minutes = Math.max(1, Math.ceil(words / 190));
+    const now = new Date();
+    const months = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'];
+    const dateStr = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} r.`;
+
+    const bodyHtml = (window.LaikaDirectSync && window.LaikaDirectSync.renderMarkdownBody)
+      ? window.LaikaDirectSync.renderMarkdownBody(text, { forReader: true })
+      : escapeHtml(text);
+
+    let modal = document.getElementById('reader-fullscreen-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'reader-fullscreen-modal';
+      modal.style.cssText = 'display: none; position: fixed; inset: 0; z-index: 999999; background: var(--bg-body); overflow-y: auto; padding: 0;';
+      document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+      <div style="position: sticky; top: 0; z-index: 1000; background: var(--bg-card); border-bottom: 2px solid #2563eb; padding: 0.65rem 1rem; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.2rem;">👁️</span>
+          <strong style="font-size: 0.9rem; color: #2563eb;">Pełnoekranowy Widok Czytelnika</strong>
+          <span style="font-size: 0.72rem; background: rgba(37,99,235,0.1); color: #2563eb; padding: 2px 6px; border-radius: 4px; font-weight: 700;">100% szerokość</span>
+        </div>
+        <div style="display: flex; gap: 0.4rem;">
+          <button type="button" class="btn btn-secondary" onclick="openPreviewInNewWindow();" style="font-size: 0.75rem; padding: 0.3rem 0.65rem;">↗️ Osobne okno</button>
+          <button type="button" class="btn btn-primary" onclick="closeFullScreenReaderModal();" style="font-size: 0.75rem; padding: 0.3rem 0.75rem; background: #dc2626; border-color: #dc2626;">✕ Zamknij (Wróć do edycji)</button>
+        </div>
+      </div>
+      <div style="max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem 1.25rem;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <span style="display: inline-block; padding: 3px 10px; background: rgba(37,99,235,0.1); color: #2563eb; font-weight: 700; border-radius: 9999px; font-size: 0.78rem; text-transform: uppercase;">
+            ${escapeHtml(category)}
+          </span>
+          <div style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.75rem 0;">
+            Autor: <strong style="color: var(--accent);">Ireneusz Machowiec</strong> • ⏱️ ${minutes} min czytania (${words} słów) • ${dateStr}
+          </div>
+          <h1 style="font-family: var(--font-serif); font-size: 2.2rem; font-weight: 800; line-height: 1.25; margin: 0.5rem 0 1rem 0; color: var(--text-primary);">
+            ${escapeHtml(title)}
+          </h1>
+          ${summary ? `<div style="font-size: 1.1rem; line-height: 1.6; color: var(--text-secondary); font-style: italic; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">${escapeHtml(summary)}</div>` : ''}
+        </div>
+        ${imgUrl ? `<div style="margin-bottom: 2rem; border-radius: 10px; overflow: hidden; max-height: 420px; background: #0f172a;"><img src="${escapeHtml(imgUrl)}" style="width: 100%; max-height: 420px; object-fit: cover;" alt="Okładka" onerror="this.parentElement.style.display='none';"></div>` : ''}
+        <article class="article-body" style="font-family: var(--font-serif); font-size: 1.18rem; line-height: 1.85; color: var(--text-primary);">
+          ${bodyHtml}
+        </article>
+        <div style="margin-top: 3rem; text-align: center; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+          <button type="button" class="btn btn-primary" onclick="closeFullScreenReaderModal();" style="font-size: 0.9rem; padding: 0.5rem 1.5rem; background: #2563eb;">
+            ← Wróć do edycji artykułu
+          </button>
+        </div>
+      </div>
+    `;
+
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeFullScreenReaderModal() {
+    const modal = document.getElementById('reader-fullscreen-modal');
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
   }
 
   // Build Full Markdown with Frontmatter & Author Ireneusz Machowiec
