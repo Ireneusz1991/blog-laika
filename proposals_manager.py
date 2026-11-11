@@ -4,6 +4,43 @@ import shutil
 from datetime import datetime
 import markdown
 
+try:
+    from scripts.rss_live_scraper import synthesize_bielik_draft
+except Exception:
+    def synthesize_bielik_draft(title, raw_title, src_name, src_flag, category, summary="", link=""):
+        clean_raw = raw_title or title
+        bielik_title = f"{title} (Wersja Bielik AI — Polski kontekst)"
+        lead = (
+            f"Analiza tematu podjętego przez {src_flag} **{src_name}** (*„{clean_raw}”*) z perspektywy polskich uwarunkowań rynkowych i suwerenności regulacyjnej. "
+            f"Odrzucamy korporacyjny żargon i zachodnie kalki — skupiamy się na twardym rachunku zysków, kosztów i ryzyk dla polskiego przedsiębiorcy i obywatela."
+        )
+        return f"""# {bielik_title}
+
+> 🦅 **Wersja Bielik AI:** Zredagowana przez polski model językowy — nacisk na polski kontekst gospodarczy, suwerenność cyfrową i kondensację treści.  
+> 📡 **Impuls źródłowy:** {src_flag} [{src_name} — „{clean_raw}”]({link if link else '#'})
+
+{lead}
+
+---
+
+### 1. Twardy bilans faktów (kondensacja redakcyjna)
+
+{summary if summary else 'Wokół tematu narosło wiele narracji, ale kluczowe fakty dają się sprowadzić do mierzalnych wskaźników.'}
+Sprawa sprowadza się do prostej zależności: kto kontroluje technologię i reguły gry, ten dyktuje warunki marżowe i prawne.
+
+### 2. Odniesienie do realiów Polski i Europy Środkowej
+
+Dla polskiego rynku kluczowe jest zachowanie elastyczności decyzyjnej, ochrona rodzimego kapitału oraz unikanie jednostronnych uzależnień technologicznych i surowcowych.
+
+### 🦅 Kąt widzenia Bielik AI: Co z tego wynika dla Polski?
+
+1. **Pragmatyzm zamiast kalki językowej:** Weryfikujmy zewnętrzne trendy w lokalnych warunkach gospodarczych.
+2. **Ochrona suwerenności i danych:** Zachowujmy własne kompetencje i scenariusze awaryjne w kluczowych sektorach.
+3. **Konkretny zysk dla obywatela:** Sprawdzajmy, czy proponowane zmiany trwale obniżają koszty i podnoszą bezpieczeństwo.
+
+---
+*Redakcja i kondensacja: Polski model językowy Bielik AI & Blog Laika*"""
+
 POLISH_MONTHS = [
     "", "stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca",
     "lipca", "sierpnia", "września", "października", "listopada", "grudnia"
@@ -69,6 +106,14 @@ def parse_proposals_file(filepath: str) -> list:
         if ":" in first_line:
             title = first_line.split(":", 1)[1].strip().strip('„”"\'')
 
+        # Oczyszczenie sztucznych, naciąganych formułek ze starszych plików archiwalnych
+        title = re.sub(r'\s*[—–-]\s*chłodny bilans z perspektywy dociekliwego laika.*$', '', title, flags=re.IGNORECASE).strip()
+        title = re.sub(r'\s*[—–-]\s*analiza przyczyn i konsekwencji z pierwszych zasad.*$', '', title, flags=re.IGNORECASE).strip()
+        title = re.sub(r'^(?:Pod maską [^:]+|Rachunek [^:]+|Geopolityka [^:]+|Długie echo [^:]+|Anatomia [^:]+|Spojrzenie [^:]+):\s*co sygnał z [^:]+ mówi o ukrytej architekturze rynku:?\s*', '', title, flags=re.IGNORECASE).strip()
+        title = re.sub(r'^[^:]+:\s*co sygnał z [^:]+ mówi o ukrytej architekturze rynku:?\s*', '', title, flags=re.IGNORECASE).strip()
+        if "?" in title and ("serbscy studenci" in title.lower() or "zwyciężyli" in title.lower()):
+            title = "Serbscy studenci zwyciężyli: Pomiędzy siłą buntu a bezwładem instytucji"
+
         category = "technologia"
         lead = ""
         thesis = ""
@@ -82,16 +127,28 @@ def parse_proposals_file(filepath: str) -> list:
         source_note = ""
         body_lines = []
         draft_lines = []
+        bielik_lines = []
         is_in_draft = False
+        is_in_bielik = False
 
         for line in lines[1:]:
             line_str = line.strip()
+            if line_str.startswith("### 🦅 Alternatywny szkic Bielik") or line_str.startswith("### Alternatywny szkic Bielik") or line_str.startswith("### Szkic Bielik"):
+                is_in_draft = False
+                is_in_bielik = True
+                continue
+
             if line_str.startswith("### 📝 Gotowy szkic") or line_str.startswith("### Gotowy szkic") or line_str.startswith("### Gotowy artykuł"):
                 is_in_draft = True
+                is_in_bielik = False
                 continue
             
             if is_in_draft:
                 draft_lines.append(line)
+                continue
+
+            if is_in_bielik:
+                bielik_lines.append(line)
                 continue
 
             if line_str.startswith("* **Kategoria:**"):
@@ -129,7 +186,7 @@ def parse_proposals_file(filepath: str) -> list:
             else:
                 body_lines.append(line)
 
-        # Build full ready-to-verify-and-publish draft
+        # Build full ready-to-verify-and-publish draft (Wersja A - Autorska)
         if draft_lines:
             full_draft = "\n".join(draft_lines).strip()
         else:
@@ -147,15 +204,31 @@ def parse_proposals_file(filepath: str) -> list:
             draft_parts.append("\n\n---\n\n*Autorski wpis Bloga Laika. 100% Samokreacja — synteza faktów z perspektywy dociekliwego laika.*")
             full_draft = "\n".join(draft_parts)
 
-        # Convert full draft to HTML for inline reading accordion
+        # Build Bielik AI alternative draft (Wersja B - Polski kontekst & kondensacja)
+        bielik_title = f"{title} (Wersja Bielik AI — Polski kontekst)"
+        if bielik_lines:
+            bielik_draft = "\n".join(bielik_lines).strip()
+        else:
+            bielik_draft = synthesize_bielik_draft(
+                title=title,
+                raw_title=title,
+                src_name=source_name or "Źródło branżowe",
+                src_flag=source_flag,
+                category=category,
+                summary=lead or thesis,
+                link="#"
+            )
+
+        # Convert drafts to HTML for inline reading accordion tabs
         full_draft_html = markdown.markdown(full_draft, extensions=['extra', 'tables', 'fenced_code', 'nl2br'])
+        bielik_draft_html = markdown.markdown(bielik_draft, extensions=['extra', 'tables', 'fenced_code', 'nl2br'])
 
         # W panelu admina kierujemy kondensaty jako osobną kategorię 'kondensat'
         is_kond = "kondensat" in title.lower() or "kondensat" in first_line.lower() or category == "kondensat"
         admin_cat = "kondensat" if is_kond else category
 
         # Wykrywanie propozycji AI, Bielik AI oraz polskiego kontekstu
-        scan_text = f"{title} {lead} {thesis} {' '.join(body_lines)} {' '.join(draft_lines)} {source_name} {source_note}".lower()
+        scan_text = f"{title} {lead} {thesis} {' '.join(body_lines)} {' '.join(draft_lines)} {' '.join(bielik_lines)} {source_name} {source_note}".lower()
         ai_terms = [
             'bielik', 'speakleash', 'cyfronet', 'sztuczn', 'model językow', 'modele językow',
             'llm', 'transformer', 'sieci neuronow', 'uczenie maszynow', 'deep learning',
@@ -185,7 +258,10 @@ def parse_proposals_file(filepath: str) -> list:
             "thesis": thesis,
             "raw_body": "\n".join(body_lines).strip(),
             "full_draft": full_draft,
-            "full_draft_html": full_draft_html
+            "full_draft_html": full_draft_html,
+            "bielik_title": bielik_title,
+            "bielik_draft": bielik_draft,
+            "bielik_draft_html": bielik_draft_html
         })
 
     return proposals

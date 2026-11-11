@@ -284,10 +284,183 @@ def scrape_all_feeds_parallel(max_per_feed: int = 8) -> Dict[str, Any]:
     }
 
 
+
+def clean_raw_title(title: str) -> str:
+    """Oczyszcza surowy tytuł ze zbędnych ogonów wydawców, cudzysłowów i spacji."""
+    if not title:
+        return ""
+    t = title.strip()
+    t = re.sub(
+        r'\s*[\|\-–—/]\s*(?:Magazyn Kontakt|Kwantowo|Crazy Nauka|Spider\'s Web|Bankier\.pl|Onet|Wyborcza|Forsal|Klub Jagielloński|Nowa Konfederacja|Reuters|Bloomberg|Ars Technica|Hacker News|Wired|Financial Times).*$',
+        '',
+        t,
+        flags=re.IGNORECASE
+    )
+    t = re.sub(r'\s*[\|\-–—]\s*[^|\-–—]{2,24}$', '', t)
+    return t.strip(' „”"\'«»')
+
+
+def craft_natural_polish_title(
+    raw_title: str,
+    src_name: str = "",
+    category: str = "eseje",
+    is_pl: bool = False,
+    summary: str = ""
+) -> str:
+    """
+    Tworzy naturalny, publicystyczny polski tytuł eseju w stylu nowoczesnego magazynu idei i faktów.
+    Zero schematów typu 'Co sygnał mówi o...' czy '... — chłodny bilans z perspektywy dociekliwego laika'.
+    """
+    cleaned = clean_raw_title(raw_title)
+    low = (cleaned + " " + summary).lower()
+
+    if is_pl:
+        if ":" in cleaned:
+            parts = [p.strip() for p in cleaned.split(":", 1)]
+            if len(parts[0]) > 4 and len(parts[1]) > 8:
+                return f"{parts[0]}: {parts[1]}"
+        if "?" in cleaned:
+            main_core = re.sub(r'[\?!].*$', '', cleaned).strip()
+            if len(main_core) > 15:
+                sub_options = {
+                    "polityka": "Pomiędzy siłą buntu a bezwładem instytucji",
+                    "gospodarka": "Rachunek zysków i strat w cieniu wielkich zmian",
+                    "technologia": "Gdzie kończą się obietnice, a zaczyna twarda fizyka",
+                    "historia": "Przełom w świetle dawnych doświadczeń",
+                    "eseje": "Entuzjazm przełomu w zderzeniu z rzeczywistością"
+                }
+                return f"{main_core}: {sub_options.get(category, 'Pomiędzy obietnicą a twardą rzeczywistością')}"
+            return cleaned
+
+        if len(cleaned.split()) <= 4:
+            counterparts = {
+                "technologia": "Gdzie kończy się mit, a zaczynają twarde fakty",
+                "gospodarka": "Kto naprawdę zapłaci rachunek za nowy trend",
+                "historia": "Zapomniane lekcje, które wracają w nowej odsłonie",
+                "polityka": "Gra interesów pod powierzchnią oficjalnych deklaracji",
+                "eseje": "Dlaczego oczywiste odpowiedzi zawodzą"
+            }
+            return f"{cleaned}: {counterparts.get(category, 'Rachunek bez złudzeń')}"
+
+        return cleaned
+
+    # Źródła zagraniczne (EN / Świat) - tematyczna synteza
+    if any(k in low for k in ["ai", "llm", "gpt", "model", "agent", "claude", "openai", "anthropic", "gemini", "deepseek"]):
+        if any(k in low for k in ["cost", "expensive", "bill", "energy", "power", "grid", "electricity"]):
+            return "Rachunek za sztuczną inteligencję: Dlaczego wielkie modele zderzają się z barierą energii i kosztów"
+        if any(k in low for k in ["reasoning", "benchmark", "intelligence", "human", "limit"]):
+            return "Granice rozumowania modeli AI: Pomiędzy cyfrowym złudzeniem a twardą logiką"
+        return "Ekonomia i granice sztucznej inteligencji: Kto kontroluje wąskie gardła nowej rewolucji"
+
+    if any(k in low for k in ["chip", "chips", "semiconductor", "gpu", "nvidia", "tsmc", "silicon", "hardware", "asml"]):
+        return "Geopolityka i fizyka krzemu: Dlaczego światowa gospodarka wisi na kilku fabrykach czipów"
+
+    if any(k in low for k in ["saas", "cloud", "vendor", "subscription", "pricing", "platform"]):
+        return "Bunt przeciwko abonamentom: Dlaczego firmy uciekają z chmury do własnej infrastruktury"
+
+    if any(k in low for k in ["security", "hack", "breach", "privacy", "encrypt", "malware", "cyber"]):
+        return "Iluzja cyfrowej twierdzy: Dlaczego współczesne systemy pękają w najsłabszym ogniwie"
+
+    if any(k in low for k in ["rate", "fed", "inflation", "bond", "yield", "debt", "deficit", "fiscal", "central bank"]):
+        return "Dylemat drogiego kapitału: Jak wysokie stopy procentowe weryfikują modele biznesowe"
+
+    if any(k in low for k in ["tariff", "trade war", "china", "supply chain", "export", "import", "customs"]):
+        return "Koniec naiwnej globalizacji: Pomiędzy ochroną rodzimego rynku a widmem drożyzny"
+
+    if any(k in low for k in ["energy", "nuclear", "grid", "oil", "gas", "renewable", "solar", "wind"]):
+        return "Twarda arytmetyka transformacji energetycznej: Sieci, surowce i stabilność zasilania"
+
+    if any(k in low for k in ["seabird", "bird", "biology", "brain", "nature", "evolution", "jet-lag"]):
+        return "Zegary biologiczne pod presją: Czego zachowanie natury uczy nas o granicach adaptacji"
+
+    defaults = {
+        "technologia": f"Architektura przełomu czy kosztowna moda? Chłodny audyt: {cleaned[:60]}",
+        "gospodarka": f"Pomiędzy rynkową euforią a rachunkiem zysków: {cleaned[:60]}",
+        "historia": f"Lekcja długiego trwania: Jak dawne kryzysy tłumaczą dzisiejsze napięcia",
+        "polityka": f"Przesunięcia globalnych płyt: Interesy mocarstw w zderzeniu z realiami",
+        "eseje": f"Przeciw utartym kliszom: {cleaned[:65]}"
+    }
+    return defaults.get(category, f"Spojrzenie z pierwszych zasad: {cleaned[:65]}")
+
+
+def synthesize_bielik_draft(
+    title: str,
+    raw_title: str,
+    src_name: str,
+    src_flag: str,
+    category: str,
+    summary: str = "",
+    link: str = ""
+) -> str:
+    """Tworzy zredagowaną wersję Bielik AI (Wersja B — Polski kontekst, rodzimy rynek, suwerenność i kondensacja)."""
+    clean_raw = clean_raw_title(raw_title)
+    summary_clean = (summary or "").strip()
+    bielik_title = f"{title} (Wersja Bielik AI — Polski kontekst)"
+
+    lead = (
+        f"Analiza tematu podjętego przez {src_flag} **{src_name}** (*„{clean_raw}”*) z perspektywy polskich uwarunkowań rynkowych i suwerenności regulacyjnej. "
+        f"Odrzucamy korporacyjny żargon i zachodnie kalki pojęciowe — skupiamy się na twardym rachunku zysków, kosztów i ryzyk dla polskiego przedsiębiorcy i obywatela."
+    )
+
+    cat_polish_angles = {
+        "technologia": (
+            "Na polskim rynku technologicznym bezkrytyczny entuzjazm wobec zagranicznych gigantów oznacza rosnące uzależnienie od zewnętrznych licencji (vendor lock-in) i transfer marży za granicę. "
+            "Prawdziwe bezpieczeństwo cyfrowe Polski zależy od budowy własnych kompetencji, otwartych modeli i suwerennej infrastruktury serwerowej zasilanej stabilną energią."
+        ),
+        "gospodarka": (
+            "W realiach polskiej gospodarki, opartej wciąż na silnym sektorze przetwórczym i zmagającej się z kosztami transformacji energetycznej, "
+            "decyzje globalnych rynków przekładają się bezpośrednio na kurs złotego, marże krajowych eksporterów i koszt kredytu dla rodzimych firm. "
+            "Kluczowe jest zachowanie elastyczności własnej polityki gospodarczej."
+        ),
+        "historia": (
+            "Dla Polaków lekcje historii nie są abstrakcją akademicką, lecz podręcznikiem przetrwania państwa położonego na styku wielkich potęg. "
+            "Zrozumienie, jak dawne instytucje i finanse Rzeczypospolitej reagowały na kryzysy zewnętrzne, jest najlepszą szczepionką przeciw powtarzaniu tych samych błędów w XXI wieku."
+        ),
+        "polityka": (
+            "W geopolitycznym położeniu Polski każda zmiana równowagi sił wymaga bezwzględnego realizmu: weryfikacji sojuszy przez pryzmat realnych zdolności logistycznych i obronnych, "
+            "a nie życzeniowych deklaracji. Bezpieczeństwo narodowe to wypadkowa odporności społecznej, zaplecza przemysłowego i suwerenności decyzyjnej."
+        ),
+        "eseje": (
+            "W polskiej debacie publicznej zbyt często kopiujemy spory zza oceanu, zapominając o naszej specyfice kulturowej i społecznej. "
+            "Ochrona własnego krytycznego myślenia i zdolności do rzeczowej dyskusji ponad podziałami to warunek konieczny zdrowej wspólnoty obywatelskiej."
+        )
+    }
+
+    polish_specific = cat_polish_angles.get(category, cat_polish_angles["eseje"])
+
+    return f"""# {bielik_title}
+
+> 🦅 **Wersja Bielik AI:** Zredagowana przez polski model językowy — nacisk na polski kontekst gospodarczy, suwerenność cyfrową i kondensację treści.  
+> 📡 **Impuls źródłowy:** {src_flag} [{src_name} — „{clean_raw}”]({link if link else '#'})
+
+{lead}
+
+---
+
+### 1. Twardy bilans faktów (kondensacja redakcyjna)
+
+{summary_clean if summary_clean else f'Przegląd sedna sprawy: Wokół publikacji {src_name} narosło wiele narracji, ale kluczowe fakty dają się sprowadzić do mierzalnych wskaźników.'}
+Sprawa sprowadza się do prostej zależności: kto kontroluje reguły gry i technologię, ten dyktuje warunki marżowe i prawne. Kto jedynie korzysta z gotowych rozwiązań, płaci premię za zależność.
+
+### 2. Odniesienie do realiów Polski i Europy Środkowej
+
+{polish_specific}
+
+### 🦅 Kąt widzenia Bielik AI: Co z tego wynika dla Polski?
+
+1. **Pragmatyzm zamiast kalki językowej:** Nie przyjmujmy obcych diagnoz bez weryfikacji w lokalnych warunkach podatkowych i prawnych.
+2. **Ochrona kapitału i danych:** Każda decyzja o przejściu na zewnętrzne platformy powinna uwzględniać scenariusz awaryjny (exit strategy).
+3. **Konkretny zysk dla obywatela:** Weryfikujmy innowacje i reformy jednym kryterium — czy trwale obniżają koszty życia i zwiększają bezpieczeństwo kraju.
+
+---
+*Redakcja i kondensacja: Polski model językowy Bielik AI & Blog Laika*"""
+
+
 def _craft_polish_angle(item: Dict[str, Any], category: str) -> Dict[str, Any]:
     """
     Przekształca surowy impuls faktograficzny z RSS (PL lub EN) w 100% autorską,
     polską propozycję redakcyjną zgodną z 5 Filarami Samokreacji Bloga Laika.
+    Generuje Wersję A (Autorska synteza) oraz Wersję B (Bielik AI - polski kontekst).
     """
     raw_title = item.get("title", "").strip()
     raw_summary = item.get("summary", "").strip()
@@ -295,58 +468,17 @@ def _craft_polish_angle(item: Dict[str, Any], category: str) -> Dict[str, Any]:
     src_name = item.get("source_name", "Redakcja branżowa")
     flag = item.get("source_flag", "🌍")
     is_pl = item.get("is_pl", False)
-    low = (raw_title + " " + raw_summary).lower()
 
-    # Tytuł autorski w języku polskim
-    if is_pl:
-        # Tworzymy autorskie ujęcie problemowe na bazie polskiego impulsu tematycznego (bez kopiowania treści)
-        clean_topic = re.sub(r'\s*[\|\-–]\s*[^|\-–]{2,25}$', '', raw_title).strip(' „”"')
-        if "?" in clean_topic:
-            laika_title = f"{clean_topic} — chłodny bilans z perspektywy dociekliwego laika"
-        elif ":" in clean_topic:
-            laika_title = clean_topic
-        else:
-            prefix_map = {
-                "technologia": "Pod maską przełomu",
-                "gospodarka": "Rachunek bez iluzji",
-                "historia": "Mechanizmy dziejów",
-                "polityka": "Realpolitik bez retuszu",
-                "eseje": "Wbrew utartym kliszom"
-            }
-            laika_title = f"{prefix_map.get(category, 'Spojrzenie laika')}: {clean_topic}"
-    else:
-        # Inteligentna synteza polskiego tytułu problemowego dla anglojęzycznych impulsów RSS
-        short_en = raw_title[:72] + ("…" if len(raw_title) > 72 else "")
-        if category == "technologia":
-            if any(w in low for w in ["ai", "llm", "gpt", "model", "agent", "claude", "openai", "anthropic", "gemini"]):
-                laika_title = f"Ekonomia i granice modeli AI: Co naprawdę oznacza sygnał z rynku ({short_en})"
-            elif any(w in low for w in ["chip", "gpu", "nvidia", "tsmc", "silicon", "hardware", "cpu", "quantum"]):
-                laika_title = f"Fizyka krzemu kontra obietnice chmury: Wąskie gardła nowej architektury ({short_en})"
-            elif any(w in low for w in ["security", "hack", "privacy", "breach", "encrypt", "data"]):
-                laika_title = f"Iluzja cyfrowej twierdzy: Bezpieczeństwo i suwerenność danych w cieniu nowego incydentu ({short_en})"
-            else:
-                laika_title = f"Architektura technologii czy kosztowna moda? Chłodny audyt trendu ({short_en})"
-        elif category == "gospodarka":
-            if any(w in low for w in ["rate", "fed", "inflation", "bond", "debt", "deficit", "fiscal", "bank"]):
-                laika_title = f"Koszt kapitału i pułapka długu: Kto zapłaci rachunek za nową politykę pieniężną ({short_en})"
-            elif any(w in low for w in ["tariff", "trade", "china", "supply", "export", "industrial", "manufacturing"]):
-                laika_title = f"Nowy protekcjonizm i pękające łańcuchy dostaw: Realne skutki dla przemysłu ({short_en})"
-            elif any(w in low for w in ["housing", "rent", "wage", "labor", "job", "productivity"]):
-                laika_title = f"Produktywność, płace i kapitał: Dlaczego wskaźniki makro rozmijają się z portfelem obywatela ({short_en})"
-            else:
-                laika_title = f"Rynki finansowe bez makijażu: Co kryje się pod powierzchnią kapitału ({short_en})"
-        elif category == "historia":
-            laika_title = f"Lekcja długiego trwania: Jak dawne imperia i rynki rozwiązywały dzisiejsze dylematy ({short_en})"
-        elif category == "polityka":
-            laika_title = f"Przesunięcie płyt tektonicznych geopolityki: Interesy mocarstw kontra deklaracje ({short_en})"
-        else:
-            laika_title = f"Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych ({short_en})"
+    # Tytuł autorski w języku polskim — naturalny, publicystyczny
+    laika_title = craft_natural_polish_title(raw_title, src_name, category, is_pl, raw_summary)
+    bielik_title = f"{laika_title} (Wersja Bielik AI — Polski kontekst)"
+    bielik_draft = synthesize_bielik_draft(laika_title, raw_title, src_name, flag, category, raw_summary, link)
 
     source_display = f"{flag} {src_name} — [Impuls źródłowy]({link})" if link else f"{flag} {src_name}"
     if is_pl and raw_summary:
-        source_note = f"Impuls faktograficzny z kanału RSS („{raw_title[:95]}”): temat wywołujący debatę o długofalowych skutkach strukturalnych."
+        source_note = f"Impuls faktograficzny z kanału RSS („{clean_raw_title(raw_title)[:95]}”): temat wywołujący debatę o długofalowych skutkach strukturalnych."
     else:
-        source_note = f"Bieżący impuls analityczny z kanału RSS {src_name}: „{raw_title[:110]}” ({link})."
+        source_note = f"Bieżący impuls analityczny z kanału RSS {src_name}: „{clean_raw_title(raw_title)[:110]}” ({link})."
 
     # Ramy analityczne dopasowane do działu (100% autorska polska publicystyka)
     frameworks = {
@@ -516,6 +648,8 @@ Gdybyśmy przez najbliższy miesiąc całkowicie zrezygnowali z komentowania spr
         "thesis": fw["thesis"],
         "points": fw["points"],
         "draft": fw["draft"],
+        "bielik_title": bielik_title,
+        "bielik_draft": bielik_draft,
         "raw_rss_title": raw_title,
         "raw_rss_url": link,
         "raw_rss_source": src_name
@@ -523,7 +657,7 @@ Gdybyśmy przez najbliższy miesiąc całkowicie zrezygnowali z komentowania spr
 
 
 def synthesize_live_proposal(item: Dict[str, Any], category: str, visual_seed: int = 0) -> Dict[str, Any]:
-    """Buduje kompletny słownik propozycji redakcyjnej ze świeżego elementu RSS."""
+    """Buduje kompletny słownik propozycji redakcyjnej ze świeżego elementu RSS (Wersja A + Wersja B Bielik AI)."""
     visuals = CATEGORY_VISUALS.get(category, CATEGORY_VISUALS["eseje"])
     img_url, img_concept, img_prompt = visuals[visual_seed % len(visuals)]
     crafted = _craft_polish_angle(item, category)
@@ -543,6 +677,8 @@ def synthesize_live_proposal(item: Dict[str, Any], category: str, visual_seed: i
         "thesis": crafted["thesis"],
         "points": crafted["points"],
         "draft": crafted["draft"],
+        "bielik_title": crafted.get("bielik_title", f"{crafted['title']} (Wersja Bielik AI — Polski kontekst)"),
+        "bielik_draft": crafted.get("bielik_draft", ""),
         "rss_url": item.get("link", ""),
         "rss_raw_title": item.get("title", ""),
         "bielik_recommended": is_polish,
@@ -554,6 +690,7 @@ def synthesize_live_kondensat(selected_topics: List[Dict[str, Any]], date_pl: st
     """
     Tworzy codzienny wielowątkowy KONDENSAT (Konglomerat Analityczny) splatający
     faktyczne dzisiejsze impulsy z Technologii, Gospodarki, Historii i Geopolityki w jeden esej.
+    Zawiera Wersję A (Autorska synteza) oraz Wersję B (Bielik AI - Polski kontekst).
     """
     visuals = CATEGORY_VISUALS["kondensat"]
     img_url, img_concept, img_prompt = visuals[visual_seed % len(visuals)]
@@ -572,6 +709,9 @@ def synthesize_live_kondensat(selected_topics: List[Dict[str, Any]], date_pl: st
     kondensat_title = (
         f"Kondensat ({date_pl}): Sprzężenie krzemu, kapitału i siły państwa — "
         f"wielowątkowa synteza trendów dnia"
+    )
+    bielik_kondensat_title = (
+        f"Kondensat ({date_pl}): Krzem, kapitał i bezpieczeństwo — bilans polski (Wersja Bielik AI)"
     )
 
     sources_joined = " + ".join(
@@ -600,10 +740,37 @@ Kiedy nałożymy na to dzisiejszy wymiar polityczno-strategiczny (*„{pol_ref}�
 
 Patrząc na te cztery zjawiska jednocześnie, trudno oprzeć się wrażeniu, że największym zagrożeniem dla współczesnych społeczeństw jest wąska, silosowa specjalizacja elit: inżynierowie nie rozumieją długu publicznego, ekonomiści lekceważą geografię strategiczną, a politycy ignorują prawa fizyki i historii. Czy nie nadszedł najwyższy czas, by przywrócić w debacie publicznej całościowe, interdyscyplinarne myślenie państwowe — zanim rzeczywistość sama wystawi nam łączny rachunek?"""
 
+    bielik_draft = f"""# {bielik_kondensat_title}
+
+> 🦅 **Wersja Bielik AI:** Zredagowana przez polski model językowy — nacisk na polski kontekst gospodarczy, suwerenność cyfrową i kondensację treści.  
+> ⚡ **Źródła syntezy:** {sources_joined}
+
+Autorska synteza 4 węzłowych impulsów dnia ({date_pl}) pod kątem interesu polskiego państwa, przedsiębiorstw i konsumentów: od infrastruktury obliczeniowej po stabilność makroekonomiczną.
+
+---
+
+### 1. Węzeł technologiczny a polska infrastruktura cyfrowa
+Wątek *„{tech_ref}”* przypomina, że Polska nie może poprzestawać na byciu rynkiem zbytu dla zagranicznych monopoli chmurowych. Prawdziwa suwerenność wymaga budowy krajowych centrów danych zasilanych stabilną energią oraz rozwoju własnych modeli i kadr inżynieryjnych.
+
+### 2. Dźwignia kapitałowa i realny koszt pieniądza w Polsce
+Z perspektywy gospodarczej (*„{econ_ref}”*) utrzymujący się wysoki koszt kapitału zmusza polskie firmy do dyscypliny inwestycyjnej. Nie ma powrotu do taniego długu — wygrywają przedsiębiorstwa posiadające realną rentowność operacyjną i zdolność do obrony marż.
+
+### 3. Geopolityka i odporność strategiczna kraju
+Zderzenie wątku międzynarodowego (*„{pol_ref}”*) z lekcją historii (*„{hist_ref}”*) prowadzi do jednego wniosku: w Europie Środkowej bezpieczeństwo jest niepodzielne. Zdolność obronna to nie tylko zakupy sprzętu, ale wydolność polskiego przemysłu, odporność sieci energetycznych i szczelność instytucji.
+
+### 🦅 Kąt widzenia Bielik AI: Co z tego wynika dla Polski?
+1. **Suwerenność w łańcuchu wartości:** Unikanie jednostronnych zależności technologicznych (vendor lock-in) w administracji i kluczowych sektorach.
+2. **Kondensacja priorytetów państwa:** Skupienie zasobów publicznych na energetyce, łączności i kształceniu kadr zamiast rozpraszania środków na cele wizerunkowe.
+3. **Pragmatyzm regulacyjny:** Elastyczne wdrażanie dyrektyw unijnych z uwzględnieniem konkurencyjności rodzimego biznesu.
+
+---
+*Redakcja i kondensacja: Polski model językowy Bielik AI & Blog Laika*"""
+
     return {
         "category": "eseje",
         "section_type": "kondensat",
         "title": kondensat_title,
+        "bielik_title": bielik_kondensat_title,
         "source": f"⚡ Konglomerat Wielowątkowy: {sources_joined}",
         "source_note": (
             f"Autorska synteza łącząca 4 dzisiejsze impulsy: [Tech] {tech_ref[:55]} | "
@@ -626,7 +793,8 @@ Patrząc na te cztery zjawiska jednocześnie, trudno oprzeć się wrażeniu, że
             f"Wektor geopolityczny i historyczny: Zderzenie „{pol_ref[:60]}” z lekcją „{hist_ref[:60]}”.",
             "Pytanie dociekliwego laika: Dlaczego wciąż analizujemy technologię, budżet państwa i bezpieczeństwo w osobnych szufladach, skoro w realnym świecie stanowią one jeden i ten sam rachunek suwerenności?"
         ],
-        "draft": draft
+        "draft": draft,
+        "bielik_draft": bielik_draft
     }
 
 

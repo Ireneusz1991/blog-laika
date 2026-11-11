@@ -737,33 +737,100 @@
 
       <!-- Opcjonalna konfiguracja 1-kliku GitHub API oraz podgląd Żywego Pulsu RSS -->
       <div style="padding: 0.65rem 1.5rem; background: var(--bg-card); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; font-size: 0.8rem;">
-        <details style="flex: 1; min-width: 260px;">
+        <details style="flex: 1; min-width: 260px;" open>
           <summary style="cursor: pointer; font-weight: 700; color: var(--accent); user-select: none;">
-            📡 Żywy Puls Źródeł RSS — podejrzyj ostatnio pobrane nagłówki ze świata i Polski (<span id="live-wire-count">{{ live_rss_pulse.live_wire|length if live_rss_pulse and live_rss_pulse.live_wire else 0 }}</span>)
+            📡 Żywy Puls Źródeł RSS — świeże depesze z rozwiniętymi artykułami (Wersja A + Wersja B Bielik AI) (<span id="live-wire-count">{{ live_rss_pulse.live_wire|length if live_rss_pulse and live_rss_pulse.live_wire else 0 }}</span>)
           </summary>
-          <div id="live-wire-list" style="margin-top: 0.75rem; max-height: 290px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.45rem; padding-right: 0.35rem;" class="custom-scrollbar">
+          <div id="live-wire-list" style="margin-top: 0.75rem; max-height: 520px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.65rem; padding-right: 0.35rem;" class="custom-scrollbar">
             {% if live_rss_pulse and live_rss_pulse.live_wire %}
               {% for item in live_rss_pulse.live_wire %}
               {% set it_source = item.source_name if item.source_name else item.source %}
               {% set it_flag = item.source_flag if item.source_flag else item.flag %}
-              <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.65rem; padding: 0.5rem 0.7rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 6px; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 200px;">
-                  <span style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--accent); margin-right: 0.35rem;">[{{ item.category }}]</span>
-                  <span style="font-size: 0.74rem; font-weight: 700; color: var(--text-secondary); margin-right: 0.35rem;">{{ it_flag }} {{ it_source }}:</span>
-                  <a href="{{ item.link }}" target="_blank" rel="noopener" style="font-weight: 600; color: var(--text-primary); text-decoration: none;">{{ item.title }}</a>
+              {% set wire_idx = loop.index0 %}
+              <div class="live-wire-item-card" style="padding: 0.75rem 0.95rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; display: flex; flex-direction: column; gap: 0.45rem;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.65rem; flex-wrap: wrap;">
+                  <div style="flex: 1; min-width: 220px;">
+                    <div style="display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
+                      <span style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--accent); background: rgba(37,99,235,0.08); padding: 1px 6px; border-radius: 4px;">[{{ item.category }}]</span>
+                      <span style="font-size: 0.74rem; font-weight: 700; color: var(--text-secondary);">{{ it_flag }} {{ it_source }}</span>
+                      {% if item.is_pl %}
+                      <span style="font-size: 0.68rem; font-weight: 700; color: #dc2626; background: rgba(220,38,38,0.08); padding: 1px 5px; border-radius: 4px;">🇵🇱 Źródło krajowe</span>
+                      {% endif %}
+                    </div>
+                    <a href="{{ item.link }}" target="_blank" rel="noopener" style="font-weight: 700; font-size: 0.92rem; color: var(--text-primary); text-decoration: none; line-height: 1.35; display: inline-block;">
+                      {{ item.title }}
+                    </a>
+                  </div>
+                  <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+                    <button type="button"
+                            onclick="loadLiveWireItemToEditor({{ wire_idx }}, 'A');"
+                            class="btn btn-primary"
+                            style="font-size: 0.73rem; padding: 0.25rem 0.6rem; font-weight: 700; white-space: nowrap;"
+                            title="Załaduj rozwiniętą Wersję A prosto do edytora">
+                      ✍️ Załaduj Wersję A &rarr;
+                    </button>
+                    <button type="button"
+                            onclick="loadLiveWireItemToEditor({{ wire_idx }}, 'B');"
+                            class="btn btn-secondary"
+                            style="font-size: 0.73rem; padding: 0.25rem 0.6rem; border-color: #dc2626; color: #b91c1c; font-weight: 700; background: rgba(220, 38, 38, 0.08); white-space: nowrap;"
+                            title="Załaduj rozwiniętą Wersję B (Bielik AI - polski kontekst) do edytora">
+                      🦅 Załaduj Wersję B (Bielik) &rarr;
+                    </button>
+                  </div>
                 </div>
-                <button type="button"
-                        data-source="{{ it_source }}"
-                        data-flag="{{ it_flag }}"
-                        data-cat="{{ item.category }}"
-                        data-title="{{ item.title }}"
-                        data-link="{{ item.link }}"
-                        data-summary="{{ item.summary }}"
-                        onclick="convertLiveWireBtnToEditor(this);"
-                        class="btn btn-secondary"
-                        style="font-size: 0.72rem; padding: 0.25rem 0.6rem; border-color: #d97706; color: #b45309; font-weight: 700; white-space: nowrap;">
-                  ⚡ Przekuj w esej &rarr;
-                </button>
+
+                {% if item.summary %}
+                <div style="font-size: 0.79rem; color: var(--text-secondary); line-height: 1.45; background: var(--bg-card); padding: 0.4rem 0.65rem; border-radius: 4px; border-left: 3px solid #d97706;">
+                  📝 <strong>Zajawka źródłowa:</strong> {{ item.summary }}
+                </div>
+                {% endif %}
+
+                <!-- Rozwijany pełny artykuł bezpośrednio przy źródle (Wersja A & Bielik Wersja B) -->
+                <details class="live-wire-drawer" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; margin-top: 0.25rem;">
+                  <summary style="padding: 0.45rem 0.75rem; cursor: pointer; user-select: none; font-size: 0.76rem; font-weight: 700; color: var(--accent); display: flex; justify-content: space-between; align-items: center; background: rgba(37,99,235,0.05);">
+                    <span>📖 Rozwiń gotowy artykuł przy źródle (Wersja A & Bielik AI &darr;)</span>
+                    <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 500;">Rozwiń &darr;</span>
+                  </summary>
+                  <div style="padding: 0.75rem; border-top: 1px solid var(--border-color);">
+                    <div style="display: flex; gap: 0.35rem; margin-bottom: 0.65rem; flex-wrap: wrap; align-items: center;">
+                      <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Wersja eseju:</span>
+                      <button type="button" onclick="switchWireDrawerTab(this, 'a');" class="btn btn-primary wire-tab-btn active" style="font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 4px;">
+                        📄 Wersja A (Autorska synteza)
+                      </button>
+                      <button type="button" onclick="switchWireDrawerTab(this, 'b');" class="btn btn-secondary wire-tab-btn" style="font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 4px; border-color: #dc2626; color: #b91c1c; font-weight: 700;">
+                        🦅 Wersja B (Bielik AI: Polski kontekst & Kondensacja)
+                      </button>
+                    </div>
+                    <div class="wire-tab-content wire-tab-content-a" style="font-size: 0.83rem; line-height: 1.6; max-height: 280px; overflow-y: auto; padding-right: 0.35rem;" class="custom-scrollbar">
+                      {% if item.full_draft_html %}
+                        {{ item.full_draft_html|safe }}
+                      {% else %}
+                        <p>{{ item.summary }}</p>
+                      {% endif %}
+                    </div>
+                    <div class="wire-tab-content wire-tab-content-b" style="font-size: 0.83rem; line-height: 1.6; max-height: 280px; overflow-y: auto; padding-right: 0.35rem; display: none;" class="custom-scrollbar">
+                      {% if item.bielik_draft_html %}
+                        {{ item.bielik_draft_html|safe }}
+                      {% else %}
+                        <p>{{ item.summary }}</p>
+                      {% endif %}
+                    </div>
+                    <div style="margin-top: 0.75rem; padding-top: 0.55rem; border-top: 1px dashed var(--border-color); display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                      <button type="button" onclick="loadLiveWireItemToEditor({{ wire_idx }}, 'A');" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.3rem 0.7rem;">
+                        ✍️ Załaduj Wersję A do edytora &rarr;
+                      </button>
+                      <button type="button" onclick="loadLiveWireItemToEditor({{ wire_idx }}, 'B');" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.3rem 0.7rem; border-color: #dc2626; color: #b91c1c; font-weight: 700; background: rgba(220, 38, 38, 0.08);">
+                        🦅 Załaduj Wersję B (Bielik) do edytora &rarr;
+                      </button>
+                      <button type="button" onclick="openLiveWireInBielikStudio({{ wire_idx }});" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.3rem 0.7rem; border-color: #7c3aed; color: #6d28d9; font-weight: 700;">
+                        🦅 Studio Bielik &rarr;
+                      </button>
+                      <button type="button" onclick="copyLiveWireDraft(this, {{ wire_idx }});" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.3rem 0.7rem;">
+                        📋 Kopiuj
+                      </button>
+                    </div>
+                  </div>
+                </details>
               </div>
               {% endfor %}
             {% else %}
@@ -962,38 +1029,56 @@
                 </details>
                 {% endif %}
 
-                <!-- ROZWIJANY GOTOWY ARTYKUŁ DO WERYFIKACJI I PUBLIKACJI -->
+                <!-- ROZWIJANY GOTOWY ARTYKUŁ DO WERYFIKACJI I PUBLIKACJI (WERSJA A + WERSJA B BIELIK AI) -->
                 <details class="proposal-draft-drawer{% if prop.category == 'kondensat' %} proposal-draft-drawer--kondensat{% endif %}" style="margin-top: 0.75rem; margin-bottom: 0.85rem; background: var(--bg-card); border: 1.5px solid {% if prop.category == 'kondensat' %}#d97706{% else %}var(--border-color){% endif %}; border-radius: 6px; overflow: hidden;">
                   <summary style="padding: 0.6rem 0.85rem; cursor: pointer; user-select: none; font-size: 0.82rem; font-weight: 700; color: {% if prop.category == 'kondensat' %}#d97706{% else %}var(--accent){% endif %}; display: flex; justify-content: space-between; align-items: center; background: {% if prop.category == 'kondensat' %}rgba(217, 119, 6, 0.08){% else %}rgba(37, 99, 235, 0.05){% endif %};">
                     <span style="display: flex; align-items: center; gap: 0.4rem;">
-                      <span>{% if prop.category == 'kondensat' %}⚡ Rozwiń gotowy KONDENSAT do weryfikacji{% else %}📖 Rozwiń gotowy artykuł do weryfikacji{% endif %}</span>
+                      <span>{% if prop.category == 'kondensat' %}⚡ Rozwiń gotowy KONDENSAT (Wersja A & Bielik &darr;){% else %}📖 Rozwiń gotowy artykuł (Wersja A & Bielik &darr;){% endif %}</span>
                     </span>
                     <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 500;">Rozwiń &darr;</span>
                   </summary>
                   <div style="padding: 0.85rem; border-top: 1px solid var(--border-color); font-size: 0.83rem; line-height: 1.6; color: var(--text-primary); max-height: 380px; overflow-y: auto;" class="custom-scrollbar">
-                    <div class="proposal-draft-rendered-content" style="font-size: 0.84rem; line-height: 1.6;">
+                    <div style="display: flex; gap: 0.35rem; padding-bottom: 0.65rem; margin-bottom: 0.65rem; border-bottom: 1px solid var(--border-color); align-items: center; flex-wrap: wrap;">
+                      <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Wersja:</span>
+                      <button type="button" onclick="switchProposalDrawerTab(this, 'a');" class="btn btn-primary prop-tab-btn active" style="font-size: 0.73rem; padding: 0.2rem 0.55rem; border-radius: 4px;">
+                        📄 Wersja A (Autorska synteza)
+                      </button>
+                      <button type="button" onclick="switchProposalDrawerTab(this, 'b');" class="btn btn-secondary prop-tab-btn" style="font-size: 0.73rem; padding: 0.2rem 0.55rem; border-radius: 4px; border-color: #dc2626; color: #b91c1c; font-weight: 700;">
+                        🦅 Wersja B (Bielik AI: Polski kontekst & Kondensacja)
+                      </button>
+                    </div>
+                    <div class="proposal-draft-rendered-content prop-draft-content-a" style="font-size: 0.84rem; line-height: 1.6;">
                       {{ prop.full_draft_html|safe }}
                     </div>
+                    <div class="proposal-draft-rendered-content prop-draft-content-b" style="font-size: 0.84rem; line-height: 1.6; display: none;">
+                      {{ prop.bielik_draft_html|safe }}
+                    </div>
                     <div style="margin-top: 0.85rem; padding-top: 0.65rem; border-top: 1px dashed var(--border-color); display: flex; gap: 0.4rem; flex-wrap: wrap;">
-                      <button type="button" onclick="loadProposalIntoEditor({{ day_idx }}, {{ loop.index0 }});" class="btn btn-primary" style="font-size: 0.78rem; padding: 0.35rem 0.75rem; flex: 1; justify-content: center;">
-                        ✍️ Załaduj do edytora &rarr;
+                      <button type="button" onclick="loadProposalIntoEditor({{ day_idx }}, {{ loop.index0 }}, 'A');" class="btn btn-primary" style="font-size: 0.76rem; padding: 0.35rem 0.65rem; flex: 1; justify-content: center;">
+                        ✍️ Załaduj Wersję A &rarr;
                       </button>
-                      <button type="button" onclick="loadProposalIntoBielikStudio({{ day_idx }}, {{ loop.index0 }});" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.35rem 0.7rem; border-color: #dc2626; color: #b91c1c; font-weight: 700; background: rgba(220, 38, 38, 0.08);" title="Otwórz w Studio Redakcyjnym Bielik AI">
-                        🦅 Studio Bielik &rarr;
+                      <button type="button" onclick="loadProposalIntoEditor({{ day_idx }}, {{ loop.index0 }}, 'B');" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.35rem 0.65rem; flex: 1; justify-content: center; border-color: #dc2626; color: #b91c1c; font-weight: 700; background: rgba(220, 38, 38, 0.08);" title="Załaduj zredagowaną wersję z polskim kontekstem">
+                        🦅 Załaduj Wersję B (Bielik) &rarr;
                       </button>
-                      <button type="button" onclick="copyProposalDraft({{ day_idx }}, {{ loop.index0 }});" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.35rem 0.75rem;" title="Kopiuj pełną treść artykułu">
+                      <button type="button" onclick="loadProposalIntoBielikStudio({{ day_idx }}, {{ loop.index0 }});" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.35rem 0.65rem; border-color: #7c3aed; color: #6d28d9; font-weight: 700;" title="Otwórz w Studio Redakcyjnym Bielik AI">
+                        🦅 Studio
+                      </button>
+                      <button type="button" onclick="copyActiveProposalDraft(this, {{ day_idx }}, {{ loop.index0 }});" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.35rem 0.65rem;" title="Kopiuj pełną treść artykułu">
                         📋 Kopiuj
                       </button>
                     </div>
                   </div>
                 </details>
               </div>
-              <div style="display: flex; gap: 0.45rem; margin-top: 0.4rem;">
-                <button type="button" onclick="loadProposalIntoEditor({{ day_idx }}, {{ loop.index0 }});" class="btn btn-primary" style="flex: 1; justify-content: center; font-size: 0.82rem; padding: 0.45rem 0.6rem; font-weight: 600;">
-                  ✍️ Załaduj do edytora &rarr;
+              <div style="display: flex; gap: 0.45rem; margin-top: 0.4rem; flex-wrap: wrap;">
+                <button type="button" onclick="loadProposalIntoEditor({{ day_idx }}, {{ loop.index0 }}, 'A');" class="btn btn-primary" style="flex: 1; justify-content: center; font-size: 0.8rem; padding: 0.4rem 0.55rem; font-weight: 600;">
+                  ✍️ Wersja A &rarr;
                 </button>
-                <button type="button" onclick="loadProposalIntoBielikStudio({{ day_idx }}, {{ loop.index0 }});" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.45rem 0.65rem; border-color: #dc2626; color: #b91c1c; font-weight: 700; background: rgba(220, 38, 38, 0.08);" title="Załaduj prosto do Studio Redakcyjnego Bielik AI">
-                  🦅 Bielik Studio
+                <button type="button" onclick="loadProposalIntoEditor({{ day_idx }}, {{ loop.index0 }}, 'B');" class="btn btn-secondary" style="flex: 1; justify-content: center; font-size: 0.8rem; padding: 0.4rem 0.55rem; border-color: #dc2626; color: #b91c1c; font-weight: 700; background: rgba(220, 38, 38, 0.08);" title="Załaduj Wersję B od Bielika">
+                  🦅 Wersja B (Bielik) &rarr;
+                </button>
+                <button type="button" onclick="loadProposalIntoBielikStudio({{ day_idx }}, {{ loop.index0 }});" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.4rem 0.55rem; border-color: #7c3aed; color: #6d28d9; font-weight: 700;" title="Załaduj do Studio Redakcyjnego">
+                  🦅 Studio
                 </button>
               </div>
             </div>
@@ -2553,13 +2638,178 @@ ${body}`;
   }
 
   function loadProposalIntoBielikStudio(dayIndexOrIndex, propIndex) {
-    loadProposalIntoEditor(dayIndexOrIndex, propIndex);
+    loadProposalIntoEditor(dayIndexOrIndex, propIndex, 'B');
     if (typeof openBielikRedactorModal === 'function') {
       openBielikRedactorModal();
     }
   }
 
-  function loadProposalIntoEditor(dayIndexOrIndex, propIndex) {
+  function switchProposalDrawerTab(btn, tab) {
+    if (!btn) return;
+    const drawer = btn.closest('.proposal-draft-drawer') || btn.closest('details');
+    if (!drawer) return;
+    const tabBtns = drawer.querySelectorAll('.prop-tab-btn');
+    tabBtns.forEach(b => {
+      b.classList.remove('btn-primary', 'active');
+      b.classList.add('btn-secondary');
+    });
+    btn.classList.remove('btn-secondary');
+    btn.classList.add('btn-primary', 'active');
+
+    const contentA = drawer.querySelector('.prop-draft-content-a');
+    const contentB = drawer.querySelector('.prop-draft-content-b');
+    if (contentA && contentB) {
+      if (tab === 'b') {
+        contentA.style.display = 'none';
+        contentB.style.display = 'block';
+      } else {
+        contentA.style.display = 'block';
+        contentB.style.display = 'none';
+      }
+    }
+  }
+
+  function switchWireDrawerTab(btn, tab) {
+    if (!btn) return;
+    const drawer = btn.closest('.live-wire-drawer') || btn.closest('details');
+    if (!drawer) return;
+    const tabBtns = drawer.querySelectorAll('.wire-tab-btn');
+    tabBtns.forEach(b => {
+      b.classList.remove('btn-primary', 'active');
+      b.classList.add('btn-secondary');
+    });
+    btn.classList.remove('btn-secondary');
+    btn.classList.add('btn-primary', 'active');
+
+    const contentA = drawer.querySelector('.wire-tab-content-a');
+    const contentB = drawer.querySelector('.wire-tab-content-b');
+    if (contentA && contentB) {
+      if (tab === 'b') {
+        contentA.style.display = 'none';
+        contentB.style.display = 'block';
+      } else {
+        contentA.style.display = 'block';
+        contentB.style.display = 'none';
+      }
+    }
+  }
+
+  function loadLiveWireItemToEditor(wireIdx, version = 'A') {
+    let wireItem = null;
+    if (LIVE_MANUAL_PACKAGE && LIVE_MANUAL_PACKAGE.live_wire && LIVE_MANUAL_PACKAGE.live_wire[wireIdx]) {
+      wireItem = LIVE_MANUAL_PACKAGE.live_wire[wireIdx];
+    } else if (LIVE_RSS_PULSE && LIVE_RSS_PULSE.live_wire && LIVE_RSS_PULSE.live_wire[wireIdx]) {
+      wireItem = LIVE_RSS_PULSE.live_wire[wireIdx];
+    }
+    if (!wireItem) return;
+
+    const isVersionB = (String(version).toUpperCase() === 'B');
+    const chosenTitle = isVersionB ? (wireItem.bielik_title || `${wireItem.title} (Wersja Bielik AI — Polski kontekst)`) : wireItem.title;
+    const body = isVersionB ? (wireItem.bielik_draft || wireItem.full_draft || "") : (wireItem.full_draft || wireItem.bielik_draft || "");
+
+    currentEditingSlug = null;
+    const titleEl = document.getElementById('scratch-title');
+    const slugEl = document.getElementById('scratch-slug');
+    const catEl = document.getElementById('scratch-category');
+    const sumEl = document.getElementById('scratch-summary');
+    const imgEl = document.getElementById('scratch-image');
+    const bodyEl = document.getElementById('scratch-body');
+
+    if (titleEl) titleEl.value = chosenTitle;
+    if (slugEl) slugEl.value = slugify(chosenTitle);
+    slugManuallyEdited = true;
+    if (catEl && wireItem.category) catEl.value = wireItem.category;
+    if (sumEl) sumEl.value = wireItem.lead || wireItem.summary || "";
+    if (imgEl) {
+      const catImages = {
+        'technologia': 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+        'gospodarka': 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80',
+        'historia': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80',
+        'polityka': 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80',
+        'eseje': 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=1200&q=80'
+      };
+      imgEl.value = catImages[wireItem.category] || 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=1200&q=80';
+    }
+    if (bodyEl) bodyEl.value = body;
+
+    const box = document.getElementById('online-editor-box');
+    if (box && box.style.display === 'none') {
+      toggleOnlineEditor();
+    } else if (box) {
+      box.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    updateLivePreview();
+
+    const notif = document.getElementById('import-notification');
+    if (notif) {
+      notif.style.display = 'block';
+      if (isVersionB) {
+        notif.innerHTML = `🦅 <strong>Załadowano artykuł przy źródle (Wersja B — Bielik AI):</strong> „${chosenTitle}”! Polski kontekst i kondensacja są w edytorze.`;
+      } else {
+        notif.innerHTML = `✍️ <strong>Załadowano artykuł przy źródle (Wersja A — Autorska):</strong> „${chosenTitle}”! Gotowa synteza jest w edytorze.`;
+      }
+      setTimeout(() => { notif.style.display = 'none'; }, 6000);
+    }
+  }
+
+  function openLiveWireInBielikStudio(wireIdx) {
+    loadLiveWireItemToEditor(wireIdx, 'B');
+    if (typeof openBielikRedactorModal === 'function') {
+      openBielikRedactorModal();
+    }
+  }
+
+  function copyLiveWireDraft(btn, wireIdx) {
+    let wireItem = null;
+    if (LIVE_MANUAL_PACKAGE && LIVE_MANUAL_PACKAGE.live_wire && LIVE_MANUAL_PACKAGE.live_wire[wireIdx]) {
+      wireItem = LIVE_MANUAL_PACKAGE.live_wire[wireIdx];
+    } else if (LIVE_RSS_PULSE && LIVE_RSS_PULSE.live_wire && LIVE_RSS_PULSE.live_wire[wireIdx]) {
+      wireItem = LIVE_RSS_PULSE.live_wire[wireIdx];
+    }
+    if (!wireItem) return;
+    const drawer = btn ? btn.closest('.live-wire-drawer') : null;
+    let textToCopy = wireItem.full_draft;
+    if (drawer) {
+      const contentB = drawer.querySelector('.wire-tab-content-b');
+      if (contentB && contentB.style.display !== 'none' && wireItem.bielik_draft) {
+        textToCopy = wireItem.bielik_draft;
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(textToCopy || wireItem.title).then(() => {
+        alert('Skopiowano treść artykułu do schowka!');
+      });
+    }
+  }
+
+  function copyActiveProposalDraft(btn, dayIdx, propIdx) {
+    let prop = null;
+    if (dayIdx === 'live' && LIVE_MANUAL_PACKAGE && LIVE_MANUAL_PACKAGE.proposals) {
+      prop = LIVE_MANUAL_PACKAGE.proposals[propIdx];
+    } else if (WEEKLY_PROPOSALS && WEEKLY_PROPOSALS.packages && WEEKLY_PROPOSALS.packages[dayIdx]) {
+      const pkg = WEEKLY_PROPOSALS.packages[dayIdx];
+      if (pkg && pkg.proposals) {
+        prop = pkg.proposals[propIdx];
+      }
+    }
+    if (!prop) return;
+    const drawer = btn ? btn.closest('.proposal-draft-drawer') : null;
+    let textToCopy = prop.full_draft;
+    if (drawer) {
+      const contentB = drawer.querySelector('.prop-draft-content-b');
+      if (contentB && contentB.style.display !== 'none' && prop.bielik_draft) {
+        textToCopy = prop.bielik_draft;
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(textToCopy || prop.title).then(() => {
+        alert('Skopiowano treść artykułu do schowka!');
+      });
+    }
+  }
+
+  function loadProposalIntoEditor(dayIndexOrIndex, propIndex, version = 'A') {
     let prop = null;
     let pkgDate = "";
     if (dayIndexOrIndex === 'live' && LIVE_MANUAL_PACKAGE && LIVE_MANUAL_PACKAGE.proposals) {
@@ -2581,10 +2831,12 @@ ${body}`;
     if (!prop) return;
     currentEditingSlug = null;
     
-    // Fill title and generate slug (bez słowa "kondensat" w linku i bez roboczego prefiksu w tytule)
+    const isVersionB = (String(version).toUpperCase() === 'B');
+    const chosenRawTitle = isVersionB ? (prop.bielik_title || `${prop.title} (Wersja Bielik AI — Polski kontekst)`) : prop.title;
+    const cleanPropTitle = prop.category === 'kondensat' ? stripKondensatTitlePrefix(chosenRawTitle) : chosenRawTitle;
+
     const titleEl = document.getElementById('scratch-title');
     const slugEl = document.getElementById('scratch-slug');
-    const cleanPropTitle = prop.category === 'kondensat' ? stripKondensatTitlePrefix(prop.title) : prop.title;
     if (titleEl) titleEl.value = cleanPropTitle;
     if (slugEl) slugEl.value = slugify(cleanPropTitle);
     slugManuallyEdited = true;
@@ -2607,12 +2859,16 @@ ${body}`;
       imgEl.value = prop.image_url;
     }
 
-    // Load full ready draft if present, or build structured starter
+    // Load full ready draft if present (Wersja A lub Wersja B)
     let body = "";
-    if (prop.full_draft && prop.full_draft.trim().length > 0) {
-      body = prop.full_draft;
+    if (isVersionB) {
+      body = (prop.bielik_draft && prop.bielik_draft.trim().length > 0) ? prop.bielik_draft : (prop.full_draft || "");
     } else {
-      body = `# ${prop.title}\n\n`;
+      body = (prop.full_draft && prop.full_draft.trim().length > 0) ? prop.full_draft : "";
+    }
+
+    if (!body || body.trim().length === 0) {
+      body = `# ${cleanPropTitle}\n\n`;
       body += `> 🛡️ **Model Samokreacji Bloga Laika:** 100% autorska synteza faktów i trendów rynkowych z perspektywy dociekliwego laika. Zero kopiowania cudzych tekstów.\n\n`;
       if (prop.source_name) {
         body += `> 📡 **Źródło impulsu i inspiracji rynkowej:** ${prop.source_flag || '🇵🇱'} ${prop.source_name}${prop.source_note ? ' — ' + prop.source_note : ''}\n\n`;
@@ -2650,7 +2906,11 @@ ${body}`;
     const notif = document.getElementById('import-notification');
     if (notif) {
       notif.style.display = 'block';
-      notif.innerHTML = `🛡️ <strong>Gotowy artykuł załadowany do edytora:</strong> "${prop.title}". Tytuł, lead, kategoria, grafika okładkowa oraz pełna treść są gotowe do weryfikacji i publikacji!`;
+      if (isVersionB) {
+        notif.innerHTML = `🦅 <strong>Załadowano Wersję B (Bielik AI — Polski kontekst):</strong> „${cleanPropTitle}”. Zredagowana treść z polską perspektywą i bezlitosną kondensacją jest gotowa do publikacji!`;
+      } else {
+        notif.innerHTML = `✍️ <strong>Załadowano Wersję A (Autorska synteza):</strong> „${cleanPropTitle}”. Gotowy artykuł z pierwszych zasad jest w edytorze!`;
+      }
       setTimeout(() => { notif.style.display = 'none'; }, 6000);
     }
   }
@@ -4610,6 +4870,120 @@ Zwróć WYŁĄCZNIE gotowy tekst Markdown.`;
     }).join('');
   }
 
+  function craftNaturalPolishTitle(rawTitle, srcName, category, isPl, summary) {
+    let cleaned = (rawTitle || '').trim();
+    cleaned = cleaned.replace(/\s*[\|\-–—/]\s*(?:Magazyn Kontakt|Kwantowo|Crazy Nauka|Spider's Web|Bankier\.pl|Onet|Wyborcza|Forsal|Klub Jagielloński|Nowa Konfederacja|Reuters|Bloomberg|Ars Technica|Hacker News|Wired|Financial Times).*$/i, '');
+    cleaned = cleaned.replace(/\s*[\|\-–—]\s*[^|\-–—]{2,24}$/, '');
+    cleaned = cleaned.replace(/^[„”"'\s«»]+|[„”"'\s«»]+$/g, '');
+
+    const low = (cleaned + ' ' + (summary || '')).toLowerCase();
+
+    if (isPl) {
+      if (cleaned.includes(':')) {
+        const parts = cleaned.split(':');
+        if (parts[0].trim().length > 4 && parts[1].trim().length > 8) {
+          return `${parts[0].trim()}: ${parts[1].trim()}`;
+        }
+      }
+      if (cleaned.includes('?')) {
+        const mainCore = cleaned.replace(/[\?!].*$/, '').trim();
+        if (mainCore.length > 15) {
+          const subOptions = {
+            polityka: 'Pomiędzy siłą buntu a bezwładem instytucji',
+            gospodarka: 'Rachunek zysków i strat w cieniu wielkich zmian',
+            technologia: 'Gdzie kończą się obietnice, a zaczyna twarda fizyka',
+            historia: 'Przełom w świetle dawnych doświadczeń',
+            eseje: 'Entuzjazm przełomu w zderzeniu z rzeczywistością'
+          };
+          return `${mainCore}: ${subOptions[category] || 'Pomiędzy obietnicą a twardą rzeczywistością'}`;
+        }
+        return cleaned;
+      }
+      if (cleaned.split(/\s+/).length <= 4) {
+        const counterparts = {
+          technologia: 'Gdzie kończy się mit, a zaczynają twarde fakty',
+          gospodarka: 'Kto naprawdę zapłaci rachunek za nowy trend',
+          historia: 'Zapomniane lekcje, które wracają w nowej odsłonie',
+          polityka: 'Gra interesów pod powierzchnią oficjalnych deklaracji',
+          eseje: 'Dlaczego oczywiste odpowiedzi zawodzą'
+        };
+        return `${cleaned}: ${counterparts[category] || 'Rachunek bez złudzeń'}`;
+      }
+      return cleaned;
+    }
+
+    if (/ai|llm|gpt|model|agent|claude|openai|anthropic|gemini|deepseek/.test(low)) {
+      if (/cost|expensive|bill|energy|power|grid|electricity/.test(low)) {
+        return 'Rachunek za sztuczną inteligencję: Dlaczego wielkie modele zderzają się z barierą energii i kosztów';
+      }
+      if (/reasoning|benchmark|intelligence|human|limit/.test(low)) {
+        return 'Granice rozumowania modeli AI: Pomiędzy cyfrowym złudzeniem a twardą logiką';
+      }
+      return 'Ekonomia i granice sztucznej inteligencji: Kto kontroluje wąskie gardła nowej rewolucji';
+    }
+    if (/chip|chips|semiconductor|gpu|nvidia|tsmc|silicon|hardware|asml/.test(low)) {
+      return 'Geopolityka i fizyka krzemu: Dlaczego światowa gospodarka wisi na kilku fabrykach czipów';
+    }
+    if (/saas|cloud|vendor|subscription|pricing|platform/.test(low)) {
+      return 'Bunt przeciwko abonamentom: Dlaczego firmy uciekają z chmury do własnej infrastruktury';
+    }
+    if (/security|hack|breach|privacy|encrypt|malware|cyber/.test(low)) {
+      return 'Iluzja cyfrowej twierdzy: Dlaczego współczesne systemy pękają w najsłabszym ogniwie';
+    }
+    if (/rate|fed|inflation|bond|yield|debt|deficit|fiscal|central bank/.test(low)) {
+      return 'Dylemat drogiego kapitału: Jak wysokie stopy procentowe weryfikują modele biznesowe';
+    }
+    if (/tariff|trade war|china|supply chain|export|import|customs/.test(low)) {
+      return 'Koniec naiwnej globalizacji: Pomiędzy ochroną rodzimego rynku a widmem drożyzny';
+    }
+    if (/energy|nuclear|grid|oil|gas|renewable|solar|wind/.test(low)) {
+      return 'Twarda arytmetyka transformacji energetycznej: Sieci, surowce i stabilność zasilania';
+    }
+    if (/seabird|bird|biology|brain|nature|evolution|jet-lag/.test(low)) {
+      return 'Zegary biologiczne pod presją: Czego zachowanie natury uczy nas o granicach adaptacji';
+    }
+
+    const defaults = {
+      technologia: `Architektura przełomu czy kosztowna moda? Chłodny audyt: ${cleaned.slice(0, 60)}`,
+      gospodarka: `Pomiędzy rynkową euforią a rachunkiem zysków: ${cleaned.slice(0, 60)}`,
+      historia: `Lekcja długiego trwania: Jak dawne kryzysy tłumaczą dzisiejsze napięcia`,
+      polityka: `Przesunięcia globalnych płyt: Interesy mocarstw w zderzeniu z realiami`,
+      eseje: `Przeciw utartym kliszom: ${cleaned.slice(0, 65)}`
+    };
+    return defaults[category] || `Spojrzenie z pierwszych zasad: ${cleaned.slice(0, 65)}`;
+  }
+
+  function synthesizeBielikDraftInBrowser(title, rawTitle, srcName, flag, category, summary, link) {
+    const cleanRaw = (rawTitle || title || '').replace(/[„”"'\s«»]+/g, ' ').trim();
+    const bielikTitle = `${title} (Wersja Bielik AI — Polski kontekst)`;
+    const summClean = (summary || '').trim();
+
+    const catAngles = {
+      technologia: 'Na polskim rynku technologicznym bezkrytyczny entuzjazm wobec zagranicznych monopoli oznacza rosnący transfer marży za granicę i ryzyko vendor lock-in. Prawdziwe bezpieczeństwo cyfrowe Polski wymaga własnych modeli, otwartych standardów i suwerennych serwerowni.',
+      gospodarka: 'Dla polskiej gospodarki opartej na przemyśle przetwórczym globalne wstrząsy przekładają się wprost na kurs złotego, marże eksporterów i koszt kredytu. Zachowanie dyscypliny i elastyczności własnej polityki jest fundamentem stabilności.',
+      historia: 'Dla Polaków historia to nie ornament, lecz podręcznik przetrwania. Zrozumienie dawnych kryzysów skarbowych i instytucjonalnych Rzeczypospolitej chroni przed powtarzaniem tych samych błędów dzisiaj.',
+      polityka: 'W geopolitycznym położeniu Polski każda zmiana równowagi sił wymaga chłodnego realizmu: weryfikacji sojuszy przez pryzmat zaplecza logistycznego i przemysłowego, a nie życzeniowych deklaracji.',
+      eseje: 'Zamiast bezkrytycznie importować spory kulturowe zza oceanu, chrońmy własną suwerenność poznawczą i zdolność do rzeczowej, pragmatycznej debaty obywatelskiej.'
+    };
+    const angle = catAngles[category] || catAngles.eseje;
+
+    return `# ${bielikTitle}\n\n` +
+      `> 🦅 **Wersja Bielik AI:** Zredagowana przez polski model językowy — nacisk na polski kontekst gospodarczy, suwerenność cyfrową i kondensację treści.\n` +
+      `> 📡 **Impuls źródłowy:** ${flag} [${srcName} — „${cleanRaw}”](${link || '#'})\n\n` +
+      `Analiza tematu podjętego przez ${flag} **${srcName}** (*„${cleanRaw}”*) z perspektywy polskich uwarunkowań rynkowych i suwerenności regulacyjnej. Eliminujemy watę słowną i skupiamy się na twardym rachunku zysków i kosztów dla polskiego obywatela i przedsiębiorcy.\n\n` +
+      `---\n\n` +
+      `### 1. Twardy bilans faktów (kondensacja redakcyjna)\n\n` +
+      `${summClean || 'Wokół tematu narosło wiele narracji, ale kluczowe fakty dają się sprowadzić do mierzalnych wskaźników.'}\n` +
+      `Sprawa sprowadza się do prostej zależności: kto kontroluje technologię i reguły gry, ten dyktuje warunki marżowe. Kto jedynie korzysta z gotowych rozwiązań, płaci premię za zależność.\n\n` +
+      `### 2. Odniesienie do realiów Polski i Europy Środkowej\n\n` +
+      `${angle}\n\n` +
+      `### 🦅 Kąt widzenia Bielik AI: Co z tego wynika dla Polski?\n\n` +
+      `1. **Pragmatyzm zamiast kalki językowej:** Weryfikujmy zewnętrzne mody w lokalnych warunkach prawno-podatkowych.\n` +
+      `2. **Ochrona suwerenności i kapitału:** Zachowujmy własne kompetencje i plany awaryjne w kluczowych sektorach.\n` +
+      `3. **Mierzalny pożytek:** Weryfikujmy reformy kryterium realnego obniżenia kosztów życia i wzrostu bezpieczeństwa.\n\n` +
+      `---\n\n*Redakcja i kondensacja: Polski model językowy Bielik AI & Blog Laika*\n`;
+  }
+
   function synthesizeSamokreacjaFromFeedItem(item, dateStrPl) {
     const cat = item.category || 'eseje';
     const isPl = (item.flag === '🇵🇱') || /[ąćęłńóśźż]/i.test(item.title);
@@ -4649,9 +5023,8 @@ Zwróć WYŁĄCZNIE gotowy tekst Markdown.`;
     };
 
     const cfg = framings[cat] || framings.eseje;
-    const plTitle = isPl
-      ? `${shortRaw} — analiza przyczyn i konsekwencji z pierwszych zasad`
-      : `${cfg.prefix}: co sygnał z ${item.source} mówi o ukrytej architekturze rynku`;
+    const plTitle = craftNaturalPolishTitle(item.title, item.source, cat, isPl, item.summary);
+    const bielikTitle = `${plTitle} (Wersja Bielik AI — Polski kontekst)`;
 
     const pool = CAT_COVER_POOL[cat] || CAT_COVER_POOL.eseje;
     const imgUrl = pool[Math.abs(plTitle.length + item.title.length) % pool.length];
@@ -4673,9 +5046,12 @@ Zwróć WYŁĄCZNIE gotowy tekst Markdown.`;
       `Dla świadomego obserwatora wniosek jest praktyczny: zamiast reagować emocjonalnie na pojedyncze komunikaty, warto śledzić twarde wskaźniki przepustowości, bilanse energetyczno-kapitałowe oraz trwałość instytucji. To właśnie tam — na długo przed oficjalnymi podsumowaniami — rozstrzyga się realny kierunek zmian.\n\n` +
       `---\n\n*Autor: Ireneusz Machowiec*\n`;
 
+    const bielikDraft = synthesizeBielikDraftInBrowser(plTitle, item.title, item.source, item.flag || '🌍', cat, item.summary, item.link);
+
     return {
       category: cat,
       title: plTitle,
+      bielik_title: bielikTitle,
       lead: cfg.leadTpl,
       thesis: cfg.thesis,
       source_name: item.source,
@@ -4687,7 +5063,9 @@ Zwróć WYŁĄCZNIE gotowy tekst Markdown.`;
       image_concept: cfg.concept,
       image_prompt: `Editorial illustration, minimalist architectural style, ${cat}, high contrast, warm paper texture --ar 16:9`,
       full_draft: fullDraft,
-      full_draft_html: simpleMarkdownToHtml(fullDraft)
+      full_draft_html: simpleMarkdownToHtml(fullDraft),
+      bielik_draft: bielikDraft,
+      bielik_draft_html: simpleMarkdownToHtml(bielikDraft)
     };
   }
 
@@ -4768,29 +5146,54 @@ Zwróć WYŁĄCZNIE gotowy tekst Markdown.`;
           <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.75rem;">${escapeHtml(prop.lead)}</p>
           <div style="font-size: 0.8rem; font-style: italic; background: var(--bg-card); border-left: 3px solid var(--accent); padding: 0.5rem 0.75rem; border-radius: 4px; color: var(--text-muted); margin-bottom: 0.75rem; line-height: 1.4;">„${escapeHtml(prop.thesis)}”</div>
 
+          <!-- Rozwijany gotowy artykuł z przełącznikiem Wersja A / Wersja B -->
           <details class="proposal-draft-drawer" style="margin-top: 0.75rem; margin-bottom: 0.85rem; background: var(--bg-card); border: 1.5px solid ${isKond ? '#d97706' : 'var(--border-color)'}; border-radius: 6px; overflow: hidden;">
             <summary style="padding: 0.6rem 0.85rem; cursor: pointer; user-select: none; font-size: 0.82rem; font-weight: 700; color: ${isKond ? '#d97706' : 'var(--accent)'}; display: flex; justify-content: space-between; align-items: center; background: ${isKond ? 'rgba(217, 119, 6, 0.08)' : 'rgba(37, 99, 235, 0.05)'};">
-              <span>${isKond ? '⚡ Rozwiń gotowy KONDENSAT do weryfikacji' : '📖 Rozwiń gotowy artykuł do weryfikacji'}</span>
+              <span>${isKond ? '⚡ Rozwiń gotowy KONDENSAT (Wersja A & Bielik &darr;)' : '📖 Rozwiń gotowy artykuł (Wersja A & Bielik &darr;)'}</span>
               <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 500;">Rozwiń &darr;</span>
             </summary>
             <div style="padding: 0.85rem; border-top: 1px solid var(--border-color); font-size: 0.83rem; line-height: 1.6; color: var(--text-primary); max-height: 380px; overflow-y: auto;" class="custom-scrollbar">
-              <div class="proposal-draft-rendered-content" style="font-size: 0.84rem; line-height: 1.6;">
-                ${prop.full_draft_html}
-              </div>
-              <div style="margin-top: 0.85rem; padding-top: 0.65rem; border-top: 1px dashed var(--border-color); display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                <button type="button" onclick="loadProposalIntoEditor('live', ${idx});" class="btn btn-primary" style="font-size: 0.78rem; padding: 0.35rem 0.75rem; flex: 1; justify-content: center;">
-                  ✍️ Załaduj do edytora &rarr;
+              <div style="display: flex; gap: 0.35rem; padding-bottom: 0.65rem; margin-bottom: 0.65rem; border-bottom: 1px solid var(--border-color); align-items: center; flex-wrap: wrap;">
+                <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Wersja eseju:</span>
+                <button type="button" onclick="switchProposalDrawerTab(this, 'a');" class="btn btn-primary prop-tab-btn active" style="font-size: 0.73rem; padding: 0.2rem 0.55rem; border-radius: 4px;">
+                  📄 Wersja A (Autorska synteza)
                 </button>
-                <button type="button" onclick="copyProposalDraft('live', ${idx});" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.35rem 0.75rem;">
-                  📋 Kopiuj treść
+                <button type="button" onclick="switchProposalDrawerTab(this, 'b');" class="btn btn-secondary prop-tab-btn" style="font-size: 0.73rem; padding: 0.2rem 0.55rem; border-radius: 4px; border-color: #dc2626; color: #b91c1c; font-weight: 700;">
+                  🦅 Wersja B (Bielik AI: Polski kontekst & Kondensacja)
+                </button>
+              </div>
+              <div class="proposal-draft-rendered-content prop-draft-content-a" style="font-size: 0.84rem; line-height: 1.6;">
+                ${prop.full_draft_html || ''}
+              </div>
+              <div class="proposal-draft-rendered-content prop-draft-content-b" style="font-size: 0.84rem; line-height: 1.6; display: none;">
+                ${prop.bielik_draft_html || ''}
+              </div>
+              <div style="margin-top: 0.85rem; padding-top: 0.65rem; border-top: 1px dashed var(--border-color); display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                <button type="button" onclick="loadProposalIntoEditor('live', ${idx}, 'A');" class="btn btn-primary" style="font-size: 0.76rem; padding: 0.35rem 0.65rem; flex: 1; justify-content: center;">
+                  ✍️ Załaduj Wersję A &rarr;
+                </button>
+                <button type="button" onclick="loadProposalIntoEditor('live', ${idx}, 'B');" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.35rem 0.65rem; flex: 1; justify-content: center; border-color: #dc2626; color: #b91c1c; font-weight: 700; background: rgba(220, 38, 38, 0.08);" title="Załaduj zredagowaną wersję z polskim kontekstem">
+                  🦅 Załaduj Wersję B (Bielik) &rarr;
+                </button>
+                <button type="button" onclick="loadProposalIntoBielikStudio('live', ${idx});" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.35rem 0.65rem; border-color: #7c3aed; color: #6d28d9; font-weight: 700;" title="Otwórz w Studio Redakcyjnym Bielik AI">
+                  🦅 Studio
+                </button>
+                <button type="button" onclick="copyActiveProposalDraft(this, 'live', ${idx});" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.35rem 0.65rem;" title="Kopiuj treść">
+                  📋 Kopiuj
                 </button>
               </div>
             </div>
           </details>
         </div>
-        <div>
-          <button type="button" onclick="loadProposalIntoEditor('live', ${idx});" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.82rem; padding: 0.5rem; font-weight: 600;">
-            ✍️ Załaduj do edytora online &rarr;
+        <div style="display: flex; gap: 0.45rem; margin-top: 0.4rem; flex-wrap: wrap;">
+          <button type="button" onclick="loadProposalIntoEditor('live', ${idx}, 'A');" class="btn btn-primary" style="flex: 1; justify-content: center; font-size: 0.8rem; padding: 0.4rem 0.55rem; font-weight: 600;">
+            ✍️ Wersja A &rarr;
+          </button>
+          <button type="button" onclick="loadProposalIntoEditor('live', ${idx}, 'B');" class="btn btn-secondary" style="flex: 1; justify-content: center; font-size: 0.8rem; padding: 0.4rem 0.55rem; border-color: #dc2626; color: #b91c1c; font-weight: 700; background: rgba(220, 38, 38, 0.08);" title="Załaduj Wersję B od Bielika">
+            🦅 Wersja B (Bielik) &rarr;
+          </button>
+          <button type="button" onclick="loadProposalIntoBielikStudio('live', ${idx});" class="btn btn-secondary" style="font-size: 0.78rem; padding: 0.4rem 0.55rem; border-color: #7c3aed; color: #6d28d9; font-weight: 700;" title="Załaduj do Studio Redakcyjnego">
+            🦅 Studio
           </button>
         </div>
       </div>
@@ -4814,7 +5217,8 @@ Zwróć WYŁĄCZNIE gotowy tekst Markdown.`;
       md += `* **Prompt AI dla grafiki:** \`${p.image_prompt}\`\n`;
       md += `* **Lead:** ${p.lead}\n`;
       md += `* **Kluczowa teza wpisu:** ${p.thesis}\n\n`;
-      md += `### 📝 Gotowy szkic wpisu do weryfikacji i publikacji:\n\n${p.full_draft}\n\n---\n\n`;
+      md += `### 📝 Gotowy szkic wpisu do weryfikacji i publikacji (Wersja A — Autorska):\n\n${p.full_draft}\n\n`;
+      md += `### 🦅 Alternatywny szkic Bielik AI (Wersja B — Polski kontekst & Kondensacja):\n\n${p.bielik_draft || p.full_draft}\n\n---\n\n`;
     });
     return md;
   }
@@ -5009,31 +5413,102 @@ Zwróć WYŁĄCZNIE gotowy tekst Markdown.`;
       `;
     }
 
-    // Update live-wire drawer list too
+    // Update live-wire drawer list too with full developed drafts and Bielik alternatives
     if (freshWire.length > 0) {
+      // Pre-synthesize drafts for fresh wire items so drawers and buttons work immediately
+      freshWire.forEach((it, wIdx) => {
+        const prop = synthesizeSamokreacjaFromFeedItem(it, dateStrPl);
+        it.full_draft = prop.full_draft;
+        it.full_draft_html = prop.full_draft_html;
+        it.bielik_draft = prop.bielik_draft;
+        it.bielik_draft_html = prop.bielik_draft_html;
+        it.bielik_title = prop.bielik_title;
+        it.lead = prop.lead;
+        it.thesis = prop.thesis;
+        it.title = prop.title;
+      });
+
+      LIVE_MANUAL_PACKAGE.live_wire = freshWire;
+
       const lwList = document.getElementById('live-wire-list');
       const lwCount = document.getElementById('live-wire-count');
       if (lwCount) lwCount.textContent = String(freshWire.length);
       if (lwList) {
-        lwList.innerHTML = freshWire.map(it => `
-          <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.65rem; padding: 0.5rem 0.7rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 6px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 200px;">
-              <span style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--accent); margin-right: 0.35rem;">[${escapeHtml(it.category)}]</span>
-              <span style="font-size: 0.74rem; font-weight: 700; color: var(--text-secondary); margin-right: 0.35rem;">${escapeHtml(it.flag)} ${escapeHtml(it.source)}:</span>
-              <a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" style="font-weight: 600; color: var(--text-primary); text-decoration: none;">${escapeHtml(it.title)}</a>
+        lwList.innerHTML = freshWire.map((it, wIdx) => `
+          <div class="live-wire-item-card" style="padding: 0.75rem 0.95rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; display: flex; flex-direction: column; gap: 0.45rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.65rem; flex-wrap: wrap;">
+              <div style="flex: 1; min-width: 220px;">
+                <div style="display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
+                  <span style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--accent); background: rgba(37,99,235,0.08); padding: 1px 6px; border-radius: 4px;">[${escapeHtml(it.category)}]</span>
+                  <span style="font-size: 0.74rem; font-weight: 700; color: var(--text-secondary);">${escapeHtml(it.flag)} ${escapeHtml(it.source)}</span>
+                  ${it.flag === '🇵🇱' ? '<span style="font-size: 0.68rem; font-weight: 700; color: #dc2626; background: rgba(220,38,38,0.08); padding: 1px 5px; border-radius: 4px;">🇵🇱 Źródło krajowe</span>' : ''}
+                </div>
+                <a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" style="font-weight: 700; font-size: 0.92rem; color: var(--text-primary); text-decoration: none; line-height: 1.35; display: inline-block;">
+                  ${escapeHtml(it.title)}
+                </a>
+              </div>
+              <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+                <button type="button"
+                        onclick="loadLiveWireItemToEditor(${wIdx}, 'A');"
+                        class="btn btn-primary"
+                        style="font-size: 0.73rem; padding: 0.25rem 0.6rem; font-weight: 700; white-space: nowrap;"
+                        title="Załaduj rozwiniętą Wersję A prosto do edytora">
+                  ✍️ Załaduj Wersję A &rarr;
+                </button>
+                <button type="button"
+                        onclick="loadLiveWireItemToEditor(${wIdx}, 'B');"
+                        class="btn btn-secondary"
+                        style="font-size: 0.73rem; padding: 0.25rem 0.6rem; border-color: #dc2626; color: #b91c1c; font-weight: 700; background: rgba(220, 38, 38, 0.08); white-space: nowrap;"
+                        title="Załaduj rozwiniętą Wersję B (Bielik AI - polski kontekst) do edytora">
+                  🦅 Załaduj Wersję B (Bielik) &rarr;
+                </button>
+              </div>
             </div>
-            <button type="button"
-                    data-source="${escapeHtml(it.source)}"
-                    data-flag="${escapeHtml(it.flag)}"
-                    data-cat="${escapeHtml(it.category)}"
-                    data-title="${escapeHtml(it.title)}"
-                    data-link="${escapeHtml(it.link)}"
-                    data-summary="${escapeHtml(it.summary || '')}"
-                    onclick="convertLiveWireBtnToEditor(this);"
-                    class="btn btn-secondary"
-                    style="font-size: 0.72rem; padding: 0.25rem 0.6rem; border-color: #d97706; color: #b45309; font-weight: 700; white-space: nowrap;">
-              ⚡ Przekuj w esej &rarr;
-            </button>
+
+            ${it.summary ? `
+              <div style="font-size: 0.79rem; color: var(--text-secondary); line-height: 1.45; background: var(--bg-card); padding: 0.4rem 0.65rem; border-radius: 4px; border-left: 3px solid #d97706;">
+                📝 <strong>Zajawka źródłowa:</strong> ${escapeHtml(it.summary)}
+              </div>
+            ` : ''}
+
+            <!-- Rozwijany pełny artykuł bezpośrednio przy źródle (Wersja A & Bielik Wersja B) -->
+            <details class="live-wire-drawer" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; margin-top: 0.25rem;">
+              <summary style="padding: 0.45rem 0.75rem; cursor: pointer; user-select: none; font-size: 0.76rem; font-weight: 700; color: var(--accent); display: flex; justify-content: space-between; align-items: center; background: rgba(37,99,235,0.05);">
+                <span>📖 Rozwiń gotowy artykuł przy źródle (Wersja A & Bielik AI &darr;)</span>
+                <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 500;">Rozwiń &darr;</span>
+              </summary>
+              <div style="padding: 0.75rem; border-top: 1px solid var(--border-color);">
+                <div style="display: flex; gap: 0.35rem; margin-bottom: 0.65rem; flex-wrap: wrap; align-items: center;">
+                  <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Wersja eseju:</span>
+                  <button type="button" onclick="switchWireDrawerTab(this, 'a');" class="btn btn-primary wire-tab-btn active" style="font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 4px;">
+                    📄 Wersja A (Autorska synteza)
+                  </button>
+                  <button type="button" onclick="switchWireDrawerTab(this, 'b');" class="btn btn-secondary wire-tab-btn" style="font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 4px; border-color: #dc2626; color: #b91c1c; font-weight: 700;">
+                    🦅 Wersja B (Bielik AI: Polski kontekst & Kondensacja)
+                  </button>
+                </div>
+                <div class="wire-tab-content wire-tab-content-a" style="font-size: 0.83rem; line-height: 1.6; max-height: 280px; overflow-y: auto; padding-right: 0.35rem;" class="custom-scrollbar">
+                  ${it.full_draft_html || ''}
+                </div>
+                <div class="wire-tab-content wire-tab-content-b" style="font-size: 0.83rem; line-height: 1.6; max-height: 280px; overflow-y: auto; padding-right: 0.35rem; display: none;" class="custom-scrollbar">
+                  ${it.bielik_draft_html || ''}
+                </div>
+                <div style="margin-top: 0.75rem; padding-top: 0.55rem; border-top: 1px dashed var(--border-color); display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                  <button type="button" onclick="loadLiveWireItemToEditor(${wIdx}, 'A');" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.3rem 0.7rem;">
+                    ✍️ Załaduj Wersję A do edytora &rarr;
+                  </button>
+                  <button type="button" onclick="loadLiveWireItemToEditor(${wIdx}, 'B');" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.3rem 0.7rem; border-color: #dc2626; color: #b91c1c; font-weight: 700; background: rgba(220, 38, 38, 0.08);">
+                    🦅 Załaduj Wersję B (Bielik) do edytora &rarr;
+                  </button>
+                  <button type="button" onclick="openLiveWireInBielikStudio(${wIdx});" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.3rem 0.7rem; border-color: #7c3aed; color: #6d28d9; font-weight: 700;">
+                    🦅 Studio Bielik &rarr;
+                  </button>
+                  <button type="button" onclick="copyLiveWireDraft(this, ${wIdx});" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.3rem 0.7rem;">
+                    📋 Kopiuj
+                  </button>
+                </div>
+              </div>
+            </details>
           </div>
         `).join('');
       }

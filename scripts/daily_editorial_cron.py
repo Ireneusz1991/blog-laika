@@ -21,6 +21,7 @@ import json
 import argparse
 import shutil
 import subprocess
+import markdown
 from datetime import datetime, timezone, timedelta
 
 if sys.stdout.encoding != 'utf-8':
@@ -127,9 +128,13 @@ def build_daily_proposals_md(date_str, date_pl, day_name, topics):
 * **Kluczowe wątki i konspekt wpisu:**
 {points_fmt}
 
-### 📝 Gotowy szkic wpisu do weryfikacji i publikacji:
+### 📝 Gotowy szkic wpisu do weryfikacji i publikacji (Wersja A — Autorska):
 
 {t['draft']}
+
+### 🦅 Alternatywny szkic Bielik AI (Wersja B — Polski kontekst & Kondensacja):
+
+{t.get('bielik_draft') or t['draft']}
 """
         sections_md.append(sec_text)
 
@@ -137,19 +142,37 @@ def build_daily_proposals_md(date_str, date_pl, day_name, topics):
 
 
 def save_live_pulse_metadata(now_dt, trigger_label, live_rss_result, chosen_topics):
-    """Zapisuje plik data/live_rss_pulse.json z telemetrią ostatniego uruchomienia Crona i żywym pulsem RSS."""
+    """
+    Zapisuje plik data/live_rss_pulse.json z telemetrią ostatniego uruchomienia Crona i żywym pulsem RSS.
+    Każdy element żywego pulsu zawiera zajawkę oraz w pełni rozwinięty artykuł (Wersja A + Wersja B Bielik AI).
+    """
     live_wire = []
     by_cat = (live_rss_result or {}).get("by_category", {})
+    wire_idx = 0
     for cat in ["technologia", "gospodarka", "historia", "polityka", "eseje"]:
         for item in by_cat.get(cat, [])[:5]:
+            wire_idx += 1
+            prop = synthesize_live_proposal(item, cat, visual_seed=wire_idx)
+            draft_a = prop.get("draft", "")
+            draft_b = prop.get("bielik_draft", "")
+            draft_a_html = markdown.markdown(draft_a, extensions=['extra', 'tables', 'fenced_code', 'nl2br'])
+            draft_b_html = markdown.markdown(draft_b, extensions=['extra', 'tables', 'fenced_code', 'nl2br']) if draft_b else draft_a_html
             live_wire.append({
                 "category": cat,
                 "source_name": item.get("source_name", ""),
                 "source_flag": item.get("source_flag", "🌍"),
-                "title": item.get("title", ""),
+                "title": prop.get("title", item.get("title", "")),
+                "raw_title": item.get("title", ""),
                 "link": item.get("link", ""),
-                "summary": item.get("summary", "")[:220],
+                "summary": item.get("summary", "")[:350],
                 "is_pl": bool(item.get("is_pl", False)),
+                "lead": prop.get("lead", ""),
+                "thesis": prop.get("thesis", ""),
+                "full_draft": draft_a,
+                "full_draft_html": draft_a_html,
+                "bielik_title": prop.get("bielik_title", f"{prop.get('title', item.get('title', ''))} (Wersja Bielik AI — Polski kontekst)"),
+                "bielik_draft": draft_b,
+                "bielik_draft_html": draft_b_html,
             })
 
     pulse_payload = {
