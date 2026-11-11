@@ -216,7 +216,10 @@
   .wire-tab-content,
   .prop-drawer-scroll-box,
   #cleaner-pane-preview,
+  #bielik-pane-a-prev,
   #bielik-pane-b-prev,
+  #bielik-raw-a,
+  #bielik-output-b,
   #audit-modal-content,
   #reader-fullscreen-modal,
   #live-wire-list {
@@ -337,6 +340,53 @@
   .prop-drawer-scroll-box.pane-expanded {
     max-height: none !important;
     overflow-y: visible !important;
+  }
+
+  /* =========================================================================
+     Porównanie A/B w Studiu Redakcyjnym Bielik AI: Gwarancja widocznych pasków
+     ========================================================================= */
+  #bielik-workspace-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    height: 65vh !important;
+    min-height: 480px !important;
+    max-height: 720px !important;
+    overflow: hidden !important;
+  }
+
+  #bielik-workspace-grid > div {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  #bielik-pane-a-prev,
+  #bielik-pane-b-prev,
+  #bielik-raw-a,
+  #bielik-output-b {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow-y: scroll !important;
+    scrollbar-gutter: stable;
+  }
+
+  @media (max-width: 900px) {
+    #bielik-workspace-grid {
+      grid-template-columns: 1fr !important;
+      height: auto !important;
+      max-height: none !important;
+      overflow-y: visible !important;
+    }
+    #bielik-col-a, #bielik-col-b {
+      height: 52vh !important;
+      min-height: 380px !important;
+      max-height: 550px !important;
+      border-right: none !important;
+      border-bottom: 2px solid var(--border-color) !important;
+    }
   }
 
   /* Styl na tabletach i smartfonach (<= 992px) */
@@ -1518,11 +1568,11 @@
                       </div>
                     </div>
 
-                    <!-- Content Preview Pane A -->
-                    <div id="content-src-{{ src.id }}-A" class="source-content-pane custom-scrollbar" style="display: block; max-height: 420px; overflow-y: scroll; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.85rem; font-size: 0.78rem; line-height: 1.6; color: var(--text-primary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans); -webkit-overflow-scrolling: touch; touch-action: pan-y;">{{ src.ready_article.draft_markdown }}</div>
+                    <!-- Content Preview Pane A (Sformatowany) -->
+                    <div id="content-src-{{ src.id }}-A" class="article-body source-content-pane custom-scrollbar" style="display: block; max-height: 420px; overflow-y: scroll; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.85rem 1rem; font-size: 0.82rem; line-height: 1.65; color: var(--text-primary); margin-bottom: 0.65rem; font-family: var(--font-serif); -webkit-overflow-scrolling: touch; touch-action: pan-y;">{% if src.ready_article.draft_html %}{{ src.ready_article.draft_html|safe }}{% else %}{{ src.ready_article.draft_markdown }}{% endif %}</div>
 
-                    <!-- Content Preview Pane B -->
-                    <div id="content-src-{{ src.id }}-B" class="source-content-pane custom-scrollbar" style="display: none; max-height: 420px; overflow-y: scroll; background: var(--bg-surface); border: 1.5px solid #059669; border-radius: 4px; padding: 0.85rem; font-size: 0.78rem; line-height: 1.6; color: var(--text-primary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans); -webkit-overflow-scrolling: touch; touch-action: pan-y;">{{ src.ready_article.bielik_draft }}</div>
+                    <!-- Content Preview Pane B (Sformatowany Bielik AI) -->
+                    <div id="content-src-{{ src.id }}-B" class="article-body source-content-pane custom-scrollbar" style="display: none; max-height: 420px; overflow-y: scroll; background: var(--bg-surface); border: 1.5px solid #059669; border-radius: 4px; padding: 0.85rem 1rem; font-size: 0.82rem; line-height: 1.65; color: var(--text-primary); margin-bottom: 0.65rem; font-family: var(--font-serif); -webkit-overflow-scrolling: touch; touch-action: pan-y;">{% if src.ready_article.bielik_html %}{{ src.ready_article.bielik_html|safe }}{% else %}{{ src.ready_article.bielik_draft }}{% endif %}</div>
 
                     <!-- Action Buttons -->
                     <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
@@ -2247,69 +2297,109 @@
 
     </div>
 
-    <!-- Dual Workspace: Version A (Left) vs Version B (Right) -->
-    <div id="bielik-workspace-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; min-height: 480px; max-height: 65vh;">
+    <!-- Dual Workspace: Version A (Left) vs Version B (Right) with Sync & Formatted View -->
+    <div style="display: flex; flex-direction: column;">
       
-      <!-- LEFT COLUMN: VERSION A (ORYGINAŁ AUTORSKI) -->
-      <div style="display: flex; flex-direction: column; border-right: 1.5px solid var(--border-color); background: var(--bg-card);">
-        <div style="padding: 0.65rem 1rem; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.04em;">
-              Wersja A (Oryginał / Autorska)
-            </span>
-            <span style="padding: 0.1rem 0.45rem; background: rgba(100, 116, 139, 0.15); color: var(--text-secondary); border-radius: 4px; font-size: 0.7rem; font-weight: 700;">
-              Twoja wersja
-            </span>
-          </div>
-          <span id="bielik-stats-a" style="font-size: 0.74rem; color: var(--text-muted); font-family: monospace;">
-            0 słów
+      <!-- Sub-toolbar: Sync scroll & comparison navigation -->
+      <div style="padding: 0.45rem 1.5rem; background: var(--bg-surface); border-bottom: 1.5px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="font-size: 0.78rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.04em;">
+            ⚖️ Porównanie A / B:
+          </span>
+          <span style="font-size: 0.72rem; background: rgba(37,99,235,0.12); color: #2563eb; padding: 2px 8px; border-radius: 9999px; font-weight: 700;">
+            Obie wersje sformatowane (podgląd czytelnika)
           </span>
         </div>
-        <textarea id="bielik-raw-a" placeholder="Wklej tutaj swój surowy tekst, podyktowane myśli z mikrofonu lub notatki... albo kliknij 'Wczytaj z edytora'." style="flex: 1; width: 100%; border: none; padding: 1rem; font-family: var(--font-sans); font-size: 0.88rem; line-height: 1.6; resize: none; background: transparent; color: var(--text-primary); outline: none;" oninput="updateBielikStats();"></textarea>
+        <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
+          <button type="button" id="btn-sync-bielik-scroll" onclick="toggleBielikSyncScroll();" class="btn btn-secondary" style="font-size: 0.73rem; padding: 0.22rem 0.6rem; border-color: #2563eb; color: #2563eb; font-weight: 700; background: rgba(37, 99, 235, 0.06);" title="Przewijaj obie wersje równolegle">
+            🔗 Synchroniczne przewijanie A ⇄ B: WŁĄCZONE
+          </button>
+          <button type="button" onclick="scrollBothBielikPanes('top');" class="btn btn-secondary" style="font-size: 0.73rem; padding: 0.22rem 0.55rem; font-weight: 700;" title="Przewiń obie wersje na początek">
+            ⬆️ Obie na górę
+          </button>
+          <button type="button" onclick="scrollBothBielikPanes('bottom');" class="btn btn-secondary" style="font-size: 0.73rem; padding: 0.22rem 0.55rem; font-weight: 700;" title="Przewiń obie wersje na dół">
+            ⬇️ Obie na dół
+          </button>
+        </div>
       </div>
 
-      <!-- RIGHT COLUMN: VERSION B (REDAKCJA BIELIK AI) -->
-      <div style="display: flex; flex-direction: column; background: var(--bg-card);">
-        <div style="padding: 0.55rem 1rem; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem;">
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="font-size: 0.8rem; font-weight: 800; color: #dc2626; text-transform: uppercase; letter-spacing: 0.04em;">
-              Wersja B (Szlif Bielik AI)
-            </span>
-            <span id="bielik-diff-badge" style="padding: 0.1rem 0.45rem; background: rgba(220, 38, 38, 0.12); color: #dc2626; border-radius: 4px; font-size: 0.7rem; font-weight: 800;">
-              Oczekuje na start
-            </span>
+      <!-- Comparison Grid (Side-by-Side Dual Formatted Panes) -->
+      <div id="bielik-workspace-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; height: 65vh; min-height: 480px; max-height: 720px; overflow: hidden;">
+        
+        <!-- LEFT COLUMN: VERSION A (ORYGINAŁ AUTORSKI — SFORMATOWANY) -->
+        <div id="bielik-col-a" style="display: flex; flex-direction: column; border-right: 1.5px solid var(--border-color); background: var(--bg-card); height: 100%; min-height: 0; overflow: hidden;">
+          <div style="padding: 0.55rem 1rem; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.04em;">
+                📄 Wersja A (Oryginał)
+              </span>
+              <span style="padding: 0.1rem 0.45rem; background: rgba(100, 116, 139, 0.15); color: var(--text-secondary); border-radius: 4px; font-size: 0.7rem; font-weight: 700;">
+                Twoja treść
+              </span>
+            </div>
+            
+            <!-- View switcher for Version A -->
+            <div style="display: flex; gap: 0.25rem; align-items: center;">
+              <button type="button" onclick="scrollBielikPaneA('top');" class="btn btn-secondary" style="font-size: 0.7rem; padding: 0.18rem 0.45rem;" title="Przewiń Wersję A na samą górę">⬆️</button>
+              <button type="button" onclick="scrollBielikPaneA('bottom');" class="btn btn-secondary" style="font-size: 0.7rem; padding: 0.18rem 0.45rem;" title="Przewiń Wersję A na sam dół">⬇️</button>
+              <button type="button" id="bielik-tab-a-prev-btn" onclick="switchBielikATab('preview');" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.2rem 0.55rem; font-weight: 700;">
+                👁️ Sformatowany
+              </button>
+              <button type="button" id="bielik-tab-a-md-btn" onclick="switchBielikATab('markdown');" class="btn btn-secondary" style="font-size: 0.72rem; padding: 0.2rem 0.55rem;">
+                📝 Markdown
+              </button>
+              <span id="bielik-stats-a" style="font-size: 0.74rem; color: var(--text-muted); font-family: monospace; margin-left: 0.35rem;">
+                0 słów
+              </span>
+            </div>
           </div>
-          
-          <!-- View switcher for Version B -->
-          <div style="display: flex; gap: 0.25rem; align-items: center;">
-            <button type="button" onclick="scrollBielikPaneB('top');" class="btn btn-secondary" style="font-size: 0.7rem; padding: 0.18rem 0.45rem;" title="Przewiń treść na samą górę">⬆️</button>
-            <button type="button" onclick="scrollBielikPaneB('bottom');" class="btn btn-secondary" style="font-size: 0.7rem; padding: 0.18rem 0.45rem;" title="Przewiń treść na sam dół">⬇️</button>
-            <button type="button" id="bielik-tab-prev-btn" onclick="switchBielikBTab('preview');" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.2rem 0.55rem;">
-              👁️ Podgląd
-            </button>
-            <button type="button" id="bielik-tab-md-btn" onclick="switchBielikBTab('markdown');" class="btn btn-secondary" style="font-size: 0.72rem; padding: 0.2rem 0.55rem;">
-              📝 Markdown
-            </button>
-            <span id="bielik-stats-b" style="font-size: 0.74rem; color: var(--text-muted); font-family: monospace; margin-left: 0.35rem;">
-              0 słów
-            </span>
+
+          <!-- Version A Formatted Preview Area (Default Active) -->
+          <div id="bielik-pane-a-prev" class="article-body custom-scrollbar" style="display: block; flex: 1 1 0; min-height: 0; padding: 1.25rem; overflow-y: scroll; background: var(--bg-surface); color: var(--text-primary); font-size: 0.95rem; line-height: 1.75; font-family: var(--font-serif); -webkit-overflow-scrolling: touch; touch-action: pan-y;">
           </div>
+
+          <!-- Version A Markdown Editor Area (Optional) -->
+          <textarea id="bielik-raw-a" class="custom-scrollbar" placeholder="Wklej tutaj swój surowy tekst..." style="display: none; flex: 1 1 0; min-height: 0; width: 100%; border: none; padding: 1rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.55; resize: none; background: transparent; color: var(--text-primary); outline: none; overflow-y: scroll;" oninput="onBielikAManualEdit();"></textarea>
         </div>
 
-        <!-- Version B Preview Area -->
-        <div id="bielik-pane-b-prev" class="custom-scrollbar" style="flex: 1; padding: 1rem 1.25rem; overflow-y: scroll; background: var(--bg-card); color: var(--text-primary); font-size: 0.9rem; line-height: 1.65; -webkit-overflow-scrolling: touch; touch-action: pan-y;">
-          <div style="padding: 3rem 1rem; text-align: center; color: var(--text-muted);">
-            <div style="font-size: 2rem; margin-bottom: 0.75rem;">🦅</div>
-            <p style="font-weight: 600; margin: 0 0 0.4rem 0;">Wersja B jeszcze nie została wygenerowana</p>
-            <p style="font-size: 0.82rem; margin: 0; max-width: 400px; margin-inline: auto;">Kliknij czerwony przycisk <strong>„Generuj Wersję B z Bielik AI”</strong> powyżej, aby polski model językowy przygotował alternatywną, zredagowaną wersję tekstu do akceptacji.</p>
+        <!-- RIGHT COLUMN: VERSION B (REDAKCJA BIELIK AI — SFORMATOWANY) -->
+        <div id="bielik-col-b" style="display: flex; flex-direction: column; background: var(--bg-card); height: 100%; min-height: 0; overflow: hidden;">
+          <div style="padding: 0.55rem 1rem; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-size: 0.8rem; font-weight: 800; color: #dc2626; text-transform: uppercase; letter-spacing: 0.04em;">
+                🦅 Wersja B (Bielik AI)
+              </span>
+              <span id="bielik-diff-badge" style="padding: 0.1rem 0.45rem; background: rgba(16, 185, 129, 0.15); color: #059669; border-radius: 4px; font-size: 0.7rem; font-weight: 800;">
+                Gotowa do czytania
+              </span>
+            </div>
+            
+            <!-- View switcher for Version B -->
+            <div style="display: flex; gap: 0.25rem; align-items: center;">
+              <button type="button" onclick="scrollBielikPaneB('top');" class="btn btn-secondary" style="font-size: 0.7rem; padding: 0.18rem 0.45rem;" title="Przewiń Wersję B na samą górę">⬆️</button>
+              <button type="button" onclick="scrollBielikPaneB('bottom');" class="btn btn-secondary" style="font-size: 0.7rem; padding: 0.18rem 0.45rem;" title="Przewiń Wersję B na sam dół">⬇️</button>
+              <button type="button" id="bielik-tab-prev-btn" onclick="switchBielikBTab('preview');" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.2rem 0.55rem; font-weight: 700;">
+                👁️ Sformatowany
+              </button>
+              <button type="button" id="bielik-tab-md-btn" onclick="switchBielikBTab('markdown');" class="btn btn-secondary" style="font-size: 0.72rem; padding: 0.2rem 0.55rem;">
+                📝 Markdown
+              </button>
+              <span id="bielik-stats-b" style="font-size: 0.74rem; color: var(--text-muted); font-family: monospace; margin-left: 0.35rem;">
+                0 słów
+              </span>
+            </div>
           </div>
-        </div>
 
-        <!-- Version B Markdown Editor Area -->
-        <textarea id="bielik-output-b" style="display: none; flex: 1; width: 100%; border: none; padding: 1rem; font-family: monospace; font-size: 0.85rem; line-height: 1.55; resize: none; background: transparent; color: var(--text-primary); outline: none;" placeholder="Zredagowany tekst Markdown..." oninput="onBielikBManualEdit();"></textarea>
+          <!-- Version B Formatted Preview Area (Default Active) -->
+          <div id="bielik-pane-b-prev" class="article-body custom-scrollbar" style="display: block; flex: 1 1 0; min-height: 0; padding: 1.25rem; overflow-y: scroll; background: var(--bg-card); color: var(--text-primary); font-size: 0.95rem; line-height: 1.75; font-family: var(--font-serif); -webkit-overflow-scrolling: touch; touch-action: pan-y;">
+          </div>
+
+          <!-- Version B Markdown Editor Area -->
+          <textarea id="bielik-output-b" class="custom-scrollbar" style="display: none; flex: 1 1 0; min-height: 0; width: 100%; border: none; padding: 1rem; font-family: monospace; font-size: 0.85rem; line-height: 1.55; resize: none; background: transparent; color: var(--text-primary); outline: none; overflow-y: scroll;" placeholder="Zredagowany tekst Markdown..." oninput="onBielikBManualEdit();"></textarea>
+
+        </div>
 
       </div>
-
     </div>
 
     <!-- Differences & Polish Stylistic Summary Bar -->
@@ -3621,10 +3711,39 @@ ${body}`;
   }
 
   function openLiveWireInBielikStudio(wireIdx) {
-    loadLiveWireItemToEditor(wireIdx, 'B');
-    if (typeof openBielikRedactorModal === 'function') {
-      openBielikRedactorModal();
+    let wireItem = null;
+    if (LIVE_MANUAL_PACKAGE && LIVE_MANUAL_PACKAGE.live_wire && LIVE_MANUAL_PACKAGE.live_wire[wireIdx]) {
+      wireItem = LIVE_MANUAL_PACKAGE.live_wire[wireIdx];
+    } else if (LIVE_RSS_PULSE && LIVE_RSS_PULSE.live_wire && LIVE_RSS_PULSE.live_wire[wireIdx]) {
+      wireItem = LIVE_RSS_PULSE.live_wire[wireIdx];
     }
+    if (!wireItem) return;
+
+    loadLiveWireItemToEditor(wireIdx, 'B');
+
+    const draftA = wireItem.full_draft || wireItem.summary || '';
+    const draftB = wireItem.bielik_draft || draftA;
+
+    const rawA = document.getElementById('bielik-raw-a');
+    const outB = document.getElementById('bielik-output-b');
+    const prevA = document.getElementById('bielik-pane-a-prev');
+    const prevB = document.getElementById('bielik-pane-b-prev');
+
+    if (rawA) rawA.value = draftA;
+    if (outB) outB.value = draftB;
+
+    bielikCurrentResultB.title = wireItem.bielik_title || (wireItem.title + ' (Wersja Bielik AI)');
+    bielikCurrentResultB.fullMarkdown = draftB;
+
+    if (prevA) prevA.innerHTML = wireItem.full_draft_html || parseMarkdownPreview(wireItem.title, draftA);
+    if (prevB) prevB.innerHTML = wireItem.bielik_draft_html || parseMarkdownPreview(bielikCurrentResultB.title, draftB);
+
+    switchBielikATab('preview');
+    switchBielikBTab('preview');
+    updateBielikStats();
+
+    openBielikRedactorModal();
+    showToast(`🦅 Załadowano esej z RSS Wire do Studia Bielik — obie wersje sformatowane!`);
   }
 
   function copyLiveWireDraft(btn, wireIdx) {
@@ -3935,14 +4054,26 @@ ${body}`;
 
     loadSourceArticleIntoEditor(sourceId, 'B');
 
-    const studioInputA = document.getElementById('bielik-studio-text-a');
-    const studioInputB = document.getElementById('bielik-studio-text-b');
-    const studioTitleA = document.getElementById('bielik-studio-title-a');
-    const studioTitleB = document.getElementById('bielik-studio-title-b');
-    if (studioInputA) studioInputA.value = ra.draft_markdown || '';
-    if (studioInputB) studioInputB.value = ra.bielik_draft || '';
-    if (studioTitleA) studioTitleA.value = ra.title || '';
-    if (studioTitleB) studioTitleB.value = ra.bielik_title || (ra.title + ' (Wersja Bielik AI — Polski kontekst)');
+    const rawA = document.getElementById('bielik-raw-a');
+    const outB = document.getElementById('bielik-output-b');
+    const prevA = document.getElementById('bielik-pane-a-prev');
+    const prevB = document.getElementById('bielik-pane-b-prev');
+
+    if (rawA) rawA.value = ra.draft_markdown || '';
+    if (outB) outB.value = ra.bielik_draft || '';
+
+    bielikCurrentResultB.title = ra.bielik_title || (ra.title + ' (Wersja Bielik AI — Polski kontekst)');
+    bielikCurrentResultB.fullMarkdown = ra.bielik_draft || '';
+
+    if (prevA) prevA.innerHTML = parseMarkdownPreview(ra.title, ra.draft_markdown);
+    if (prevB) prevB.innerHTML = parseMarkdownPreview(bielikCurrentResultB.title, ra.bielik_draft);
+
+    switchBielikATab('preview');
+    switchBielikBTab('preview');
+    updateBielikStats();
+
+    openBielikRedactorModal();
+    showToast(`🦅 Otwarto Studio Bielik: „${ra.title}” — obie wersje sformatowane!`);
   }
 
   function copySourceArticleText(sourceId) {
@@ -3993,11 +4124,11 @@ ${body}`;
           <button type="button" class="btn btn-secondary" onclick="toggleSourceDrawerExpand('${sourceId}');" id="btn-src-expand-${sourceId}" style="font-size: 0.68rem; padding: 0.15rem 0.45rem;" title="Rozwiń na pełną wysokość">↕️ Rozwiń</button>
         </div>
       </div>
-      <div id="content-src-${sourceId}-A" class="source-content-pane custom-scrollbar" style="display: block; max-height: 420px; overflow-y: scroll; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.85rem; font-size: 0.78rem; line-height: 1.6; color: var(--text-primary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans); -webkit-overflow-scrolling: touch; touch-action: pan-y;">
-${escapeHtml(ra.draft_markdown)}
+      <div id="content-src-${sourceId}-A" class="article-body source-content-pane custom-scrollbar" style="display: block; max-height: 420px; overflow-y: scroll; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.85rem 1rem; font-size: 0.82rem; line-height: 1.65; color: var(--text-primary); margin-bottom: 0.65rem; font-family: var(--font-serif); -webkit-overflow-scrolling: touch; touch-action: pan-y;">
+${parseMarkdownPreview(ra.title, ra.draft_markdown)}
       </div>
-      <div id="content-src-${sourceId}-B" class="source-content-pane custom-scrollbar" style="display: none; max-height: 420px; overflow-y: scroll; background: var(--bg-surface); border: 1.5px solid #059669; border-radius: 4px; padding: 0.85rem; font-size: 0.78rem; line-height: 1.6; color: var(--text-primary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans); -webkit-overflow-scrolling: touch; touch-action: pan-y;">
-${escapeHtml(ra.bielik_draft)}
+      <div id="content-src-${sourceId}-B" class="article-body source-content-pane custom-scrollbar" style="display: none; max-height: 420px; overflow-y: scroll; background: var(--bg-surface); border: 1.5px solid #059669; border-radius: 4px; padding: 0.85rem 1rem; font-size: 0.82rem; line-height: 1.65; color: var(--text-primary); margin-bottom: 0.65rem; font-family: var(--font-serif); -webkit-overflow-scrolling: touch; touch-action: pan-y;">
+${parseMarkdownPreview(ra.bielik_title || (ra.title + ' (Wersja Bielik AI)'), ra.bielik_draft)}
       </div>
       <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
         <button type="button" class="btn btn-primary" onclick="loadSourceArticleIntoEditor('${sourceId}', 'A');" style="font-size: 0.71rem; padding: 0.3rem 0.6rem;">
@@ -4875,6 +5006,8 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     stats: { originalWords: 0, newWords: 0, diffPercent: 0, dedupCount: 0 }
   };
 
+  let isBielikSyncScrollActive = true;
+
   function openBielikRedactorModal() {
     const box = document.getElementById('online-editor-box');
     if (box && box.style.display === 'none') {
@@ -4889,21 +5022,42 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     // Load editor text into Version A if Version A is currently empty
     const rawA = document.getElementById('bielik-raw-a');
     const editorBody = document.getElementById('scratch-body');
+    const editorTitle = document.getElementById('scratch-title')?.value || 'Autorski esej Laika';
+
     if (rawA && !rawA.value.trim() && editorBody && editorBody.value.trim()) {
       rawA.value = editorBody.value.trim();
     } else if (rawA && !rawA.value.trim()) {
-      // If editor is also empty, load demonstrative text
-      rawA.value = `Dlaczego sztuczna inteligencja nie zastąpi dociekliwego laika
-
-Wszyscy powtarzają, że modele językowe wiedzą już wszystko i że w zasadzie to to ekspertów nie potrzebujemy. Ja jednak uważam zupełnie inaczej - to właśnie dociekliwy laik ma dziś największą siłę w świecie algorytmów.
-
-Kiedy pytamy model o analizę zjawiska, dostajemy odpowiedź wygładzoną jak stół bilardowy. Nie ma w niej żadnego ryzyka, żadnego potknięcia i żadnego własnego zdania. Czy to jest prawdziwa mądrość? Nie, to tylko statystyka w przebraniu wyroczni.
-
-Dlaczego korporacje technologiczne powtarzają w kółko te same slogany? Kto naprawdę płaci za prąd i serwery, gdy narzędzie ma być niby darmowe? Co zrobimy, gdy zabraknie nam wody do chłodzenia centrów danych?
-
-Nie piszę tego bloga jako akademicki ekspert z tytułami przed nazwiskiem. Piszę jako ktoś, kto ma prawo powiedzieć proste słowo: "sprawdzam".`;
+      rawA.value = `# Dlaczego sztuczna inteligencja nie zastąpi dociekliwego laika\n\n> 💡 **Autorska teza:** W erze zautomatyzowanej papki informacyjnej krytyczne myślenie z pierwszych zasad staje się najcenniejszą walutą.\n\nWszyscy powtarzają, że modele językowe wiedzą już wszystko i że w zasadzie eksperci nie są potrzebni. Ja jednak uważam zupełnie inaczej – to właśnie dociekliwy laik ma dziś największą siłę w świecie algorytmów.\n\n### Złudzenie wygładzonej odpowiedzi\nKiedy pytamy model o analizę zjawiska, dostajemy odpowiedź wygładzoną jak stół bilardowy. Nie ma w niej żadnego ryzyka, żadnego potknięcia i żadnego własnego zdania. Czy to jest prawdziwa mądrość? Nie, to tylko statystyka w przebraniu wyroczni.\n\n### Pytanie dociekliwego laika\nKto naprawdę płaci za prąd i serwery, gdy narzędzie ma być rzekomo darmowe?`;
     }
 
+    // Always render Version A formatted preview!
+    const prevA = document.getElementById('bielik-pane-a-prev');
+    if (prevA && rawA) {
+      prevA.innerHTML = parseMarkdownPreview(editorTitle, rawA.value);
+    }
+
+    // If Version B has not been set yet, automatically pre-generate it so BOTH sides are formatted!
+    const outB = document.getElementById('bielik-output-b');
+    const prevB = document.getElementById('bielik-pane-b-prev');
+    if (!bielikCurrentResultB.fullMarkdown || !bielikCurrentResultB.fullMarkdown.trim()) {
+      if (rawA && rawA.value.trim()) {
+        const localRedacted = polishTextWithBielikRules(rawA.value, 'publicistic');
+        bielikCurrentResultB.fullMarkdown = localRedacted.fullMarkdown;
+        bielikCurrentResultB.title = localRedacted.title || (editorTitle + ' (Redakcja Bielik AI)');
+        if (outB) outB.value = localRedacted.fullMarkdown;
+      }
+    }
+
+    if (prevB && bielikCurrentResultB.fullMarkdown) {
+      prevB.innerHTML = parseMarkdownPreview(bielikCurrentResultB.title, bielikCurrentResultB.fullMarkdown);
+    }
+
+    // Default both tabs to formatted preview
+    switchBielikATab('preview');
+    switchBielikBTab('preview');
+
+    // Initialize synchronized scrolling
+    setupBielikScrollSync();
     updateBielikStats();
   }
 
@@ -5125,6 +5279,110 @@ Nie piszę tego bloga jako akademicki ekspert z tytułami przed nazwiskiem. Pisz
         testBtn.innerHTML = '🧪 Testuj aktywne połączenie API';
       }
     }
+  }
+
+  // =========================================================================
+  // Kontrolery Wersji A i Wersji B oraz synchronizacji przewijania w Studiu Bielik
+  // =========================================================================
+  function switchBielikATab(tab) {
+    const panePrev = document.getElementById('bielik-pane-a-prev');
+    const paneMd = document.getElementById('bielik-raw-a');
+    const btnPrev = document.getElementById('bielik-tab-a-prev-btn');
+    const btnMd = document.getElementById('bielik-tab-a-md-btn');
+    const isPrev = (tab === 'preview');
+
+    if (isPrev) {
+      if (panePrev && paneMd) {
+        const title = document.getElementById('scratch-title')?.value || 'Wersja A';
+        panePrev.innerHTML = parseMarkdownPreview(title, paneMd.value);
+      }
+    }
+
+    if (panePrev) panePrev.style.display = isPrev ? 'block' : 'none';
+    if (paneMd) paneMd.style.display = isPrev ? 'none' : 'block';
+
+    if (btnPrev) {
+      btnPrev.classList.toggle('btn-primary', isPrev);
+      btnPrev.classList.toggle('btn-secondary', !isPrev);
+      btnPrev.style.fontWeight = isPrev ? '700' : '500';
+    }
+    if (btnMd) {
+      btnMd.classList.toggle('btn-primary', !isPrev);
+      btnMd.classList.toggle('btn-secondary', isPrev);
+      btnMd.style.fontWeight = !isPrev ? '700' : '500';
+    }
+  }
+
+  function onBielikAManualEdit() {
+    const rawVal = document.getElementById('bielik-raw-a')?.value || '';
+    const prevPane = document.getElementById('bielik-pane-a-prev');
+    if (prevPane) {
+      const title = document.getElementById('scratch-title')?.value || 'Wersja A';
+      prevPane.innerHTML = parseMarkdownPreview(title, rawVal);
+    }
+    updateBielikStats();
+  }
+
+  function scrollBielikPaneA(position) {
+    const pane = document.getElementById('bielik-pane-a-prev');
+    const md = document.getElementById('bielik-raw-a');
+    const target = (md && md.style.display !== 'none') ? md : pane;
+    if (!target) return;
+    const top = position === 'top' ? 0 : target.scrollHeight;
+    target.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  function scrollBothBielikPanes(position) {
+    scrollBielikPaneA(position);
+    scrollBielikPaneB(position);
+  }
+
+  function toggleBielikSyncScroll() {
+    isBielikSyncScrollActive = !isBielikSyncScrollActive;
+    const btn = document.getElementById('btn-sync-bielik-scroll');
+    if (btn) {
+      btn.innerHTML = isBielikSyncScrollActive 
+        ? '🔗 Synchroniczne przewijanie A ⇄ B: WŁĄCZONE' 
+        : '🔗 Synchroniczne przewijanie: WYŁĄCZONE';
+      btn.style.color = isBielikSyncScrollActive ? '#2563eb' : 'var(--text-muted)';
+      btn.style.borderColor = isBielikSyncScrollActive ? '#2563eb' : 'var(--border-color)';
+    }
+    showToast(isBielikSyncScrollActive ? '🔗 Włączono synchroniczne przewijanie obu wersji A i B' : '🔗 Rozłączono synchronizację przewijania (niezależne okna)');
+  }
+
+  let bielikScrollSyncAttached = false;
+  function setupBielikScrollSync() {
+    if (bielikScrollSyncAttached) return;
+    const paneA = document.getElementById('bielik-pane-a-prev');
+    const paneB = document.getElementById('bielik-pane-b-prev');
+    if (!paneA || !paneB) return;
+
+    let isSyncingA = false;
+    let isSyncingB = false;
+
+    paneA.addEventListener('scroll', () => {
+      if (!isBielikSyncScrollActive || isSyncingA) return;
+      isSyncingB = true;
+      const maxA = paneA.scrollHeight - paneA.clientHeight;
+      const maxB = paneB.scrollHeight - paneB.clientHeight;
+      if (maxA > 0 && maxB > 0) {
+        paneB.scrollTop = (paneA.scrollTop / maxA) * maxB;
+      }
+      setTimeout(() => { isSyncingB = false; }, 30);
+    }, { passive: true });
+
+    paneB.addEventListener('scroll', () => {
+      if (!isBielikSyncScrollActive || isSyncingB) return;
+      isSyncingA = true;
+      const maxA = paneA.scrollHeight - paneA.clientHeight;
+      const maxB = paneB.scrollHeight - paneB.clientHeight;
+      if (maxA > 0 && maxB > 0) {
+        paneA.scrollTop = (paneB.scrollTop / maxB) * maxA;
+      }
+      setTimeout(() => { isSyncingA = false; }, 30);
+    }, { passive: true });
+
+    bielikScrollSyncAttached = true;
   }
 
   function switchBielikBTab(tab) {

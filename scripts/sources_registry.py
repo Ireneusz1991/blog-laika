@@ -985,10 +985,21 @@ except ImportError:
     except ImportError:
         READY_SOURCE_ARTICLES = {}
 
+try:
+    import markdown
+except ImportError:
+    markdown = None
+
 for _s in EDITORIAL_SOURCES:
     _sid = _s.get("id")
     if _sid in READY_SOURCE_ARTICLES:
-        _s["ready_article"] = READY_SOURCE_ARTICLES[_sid]
+        _ra = dict(READY_SOURCE_ARTICLES[_sid])
+        if markdown:
+            if "draft_markdown" in _ra and "draft_html" not in _ra:
+                _ra["draft_html"] = markdown.markdown(_ra["draft_markdown"], extensions=["extra"])
+            if "bielik_draft" in _ra and "bielik_html" not in _ra:
+                _ra["bielik_html"] = markdown.markdown(_ra["bielik_draft"], extensions=["extra"])
+        _s["ready_article"] = _ra
 
 def get_source_by_id(source_id: str) -> dict:
     for src in EDITORIAL_SOURCES:
