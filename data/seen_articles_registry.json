@@ -823,6 +823,42 @@
       "category": "kondensat",
       "title": "Kondensat (9 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
       "url": ""
+    },
+    {
+      "date": "2026-11-11",
+      "category": "technologia",
+      "title": "Architektura technologii czy kosztowna moda? Chłodny audyt trendu (Trump wanted little Kei trucks for America, Toyota makes it happen)",
+      "url": "https://arstechnica.com/cars/2026/11/toyota-resurrects-scion-with-right-hand-drive-kei-trucks/"
+    },
+    {
+      "date": "2026-11-11",
+      "category": "gospodarka",
+      "title": "Rachunek bez iluzji: Biało-czerwona na maszcie nowego promu. Zaskakujący gest Tuska w Szczecinie.",
+      "url": "https://www.bankier.pl/wiadomosc/Bialo-czerwona-na-maszcie-nowego-promu-Zaskakujacy-gest-Tuska-w-Szczecinie-9227354.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci"
+    },
+    {
+      "date": "2026-11-11",
+      "category": "historia",
+      "title": "Mechanizmy dziejów: Tragiczny pożar kina w Wielopolu Skrzyńskim",
+      "url": "https://ciekawostkihistoryczne.pl/2026/11/11/tragiczny-pozar-kina-w-wielopolu-skrzynskim/"
+    },
+    {
+      "date": "2026-11-11",
+      "category": "polityka",
+      "title": "Konstanty Pilawa: Bohaterstwo leczy nihilizm. Jak przełamać kulturę lęku? — chłodny bilans z perspektywy dociekliwego laika",
+      "url": "https://klubjagiellonski.pl/2026/11/10/konstanty-pilawa-bohaterstwo-leczy-nihilizm-jak-przelamac-kulture-leku/"
+    },
+    {
+      "date": "2026-11-11",
+      "category": "eseje",
+      "title": "Górska: Znajdujemy się w momencie, kiedy zmiana jest możliwa",
+      "url": "https://magazynkontakt.pl/gorska-znajdujemy-sie-w-momencie-kiedy-zmiana-jest-mozliwa/"
+    },
+    {
+      "date": "2026-11-11",
+      "category": "kondensat",
+      "title": "Kondensat (11 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
+      "url": ""
     }
   ],
   "seen_rss_urls": {
@@ -1025,7 +1061,32 @@
       "title": "Przeciw stadnemu myśleniu: Esej o mechanizmach społecznych i poznawczych (The Midterms Just Made the World More Dangerous)",
       "seen_date": "2026-11-09",
       "category": "eseje"
+    },
+    "https://arstechnica.com/cars/2026/11/toyota-resurrects-scion-with-right-hand-drive-kei-trucks/": {
+      "title": "Architektura technologii czy kosztowna moda? Chłodny audyt trendu (Trump wanted little Kei trucks for America, Toyota makes it happen)",
+      "seen_date": "2026-11-11",
+      "category": "technologia"
+    },
+    "https://www.bankier.pl/wiadomosc/Bialo-czerwona-na-maszcie-nowego-promu-Zaskakujacy-gest-Tuska-w-Szczecinie-9227354.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci": {
+      "title": "Rachunek bez iluzji: Biało-czerwona na maszcie nowego promu. Zaskakujący gest Tuska w Szczecinie.",
+      "seen_date": "2026-11-11",
+      "category": "gospodarka"
+    },
+    "https://ciekawostkihistoryczne.pl/2026/11/11/tragiczny-pozar-kina-w-wielopolu-skrzynskim/": {
+      "title": "Mechanizmy dziejów: Tragiczny pożar kina w Wielopolu Skrzyńskim",
+      "seen_date": "2026-11-11",
+      "category": "historia"
+    },
+    "https://klubjagiellonski.pl/2026/11/10/konstanty-pilawa-bohaterstwo-leczy-nihilizm-jak-przelamac-kulture-leku/": {
+      "title": "Konstanty Pilawa: Bohaterstwo leczy nihilizm. Jak przełamać kulturę lęku? — chłodny bilans z perspektywy dociekliwego laika",
+      "seen_date": "2026-11-11",
+      "category": "polityka"
+    },
+    "https://magazynkontakt.pl/gorska-znajdujemy-sie-w-momencie-kiedy-zmiana-jest-mozliwa/": {
+      "title": "Górska: Znajdujemy się w momencie, kiedy zmiana jest możliwa",
+      "seen_date": "2026-11-11",
+      "category": "eseje"
     }
   },
-  "last_updated": "2026-11-09T12:11:21.596628"
+  "last_updated": "2026-11-11T18:23:27.776597"
 }
