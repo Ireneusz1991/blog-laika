@@ -976,6 +976,20 @@ EDITORIAL_SOURCES = [
     }
 ]
 
+# Wzbogacenie wybranych źródeł o gotowe artykuły do wdrożenia (Wersja A + Wersja B Bielik AI)
+try:
+    from scripts.sources_articles_catalog import READY_SOURCE_ARTICLES
+except ImportError:
+    try:
+        from sources_articles_catalog import READY_SOURCE_ARTICLES
+    except ImportError:
+        READY_SOURCE_ARTICLES = {}
+
+for _s in EDITORIAL_SOURCES:
+    _sid = _s.get("id")
+    if _sid in READY_SOURCE_ARTICLES:
+        _s["ready_article"] = READY_SOURCE_ARTICLES[_sid]
+
 def get_source_by_id(source_id: str) -> dict:
     for src in EDITORIAL_SOURCES:
         if src["id"] == source_id:

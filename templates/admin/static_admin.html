@@ -1201,9 +1201,16 @@
                     {{ src.name }}
                   </a>
                 </h4>
-                <span style="font-size: 0.68rem; font-weight: 700; background: rgba(0,0,0,0.06); padding: 2px 6px; border-radius: 4px; white-space: nowrap; color: var(--text-secondary);">
-                  {{ src.lang }}
-                </span>
+                <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                  {% if src.ready_article %}
+                  <span class="badge" style="background: #2563eb; color: #fff; font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;">
+                    ⭐ Gotowy artykuł
+                  </span>
+                  {% endif %}
+                  <span style="font-size: 0.68rem; font-weight: 700; background: rgba(0,0,0,0.06); padding: 2px 6px; border-radius: 4px; white-space: nowrap; color: var(--text-secondary);">
+                    {{ src.lang }}
+                  </span>
+                </div>
               </div>
 
               <!-- Drawer / Department Badge -->
@@ -1261,6 +1268,79 @@
               {% if src.best_essay %}
               <div style="font-size: 0.72rem; color: var(--text-secondary); background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.35rem 0.55rem; border-radius: 4px; margin-bottom: 0.65rem; line-height: 1.35;">
                 <strong style="color: var(--accent);">📖 Wzorcowy esej na start:</strong> {{ src.best_essay }}
+              </div>
+              {% endif %}
+
+              <!-- Gotowy artykuł do wdrożenia (Wersja A + Wersja B Bielik AI) -->
+              {% if src.ready_article %}
+              <div class="source-article-container" style="margin-top: 0.75rem; margin-bottom: 0.75rem;">
+                <details class="source-ready-drawer" id="source-drawer-{{ src.id }}" style="background: var(--bg-card); border: 1.5px solid #2563eb; border-radius: 6px; overflow: hidden;">
+                  <summary style="padding: 0.55rem 0.75rem; background: rgba(37, 99, 235, 0.08); font-size: 0.78rem; font-weight: 700; color: #1d4ed8; cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; list-style: none;">
+                    <span style="display: flex; align-items: center; gap: 6px;">
+                      <span>📄</span>
+                      <span>Artykuł do wdrożenia (Wersja A + B Bielik)</span>
+                    </span>
+                    <span class="badge" style="background: #2563eb; color: #fff; font-size: 0.65rem; padding: 2px 6px;">Rozwiń szkic &darr;</span>
+                  </summary>
+                  <div style="padding: 0.85rem;">
+                    <h5 style="margin: 0 0 0.4rem 0; font-size: 0.92rem; font-family: var(--font-serif); font-weight: 700; color: var(--text-primary); line-height: 1.35;">
+                      {{ src.ready_article.title }}
+                    </h5>
+                    <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
+                      {{ src.ready_article.lead }}
+                    </p>
+
+                    <!-- Tabs switcher -->
+                    <div style="display: flex; gap: 0.35rem; margin-bottom: 0.6rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem;">
+                      <button type="button" class="btn btn-secondary source-tab-btn active" id="tab-src-{{ src.id }}-A" onclick="switchSourceDrawerTab('{{ src.id }}', 'A');" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; font-weight: 700;">
+                        📄 Wersja A (Autorska)
+                      </button>
+                      <button type="button" class="btn btn-secondary source-tab-btn" id="tab-src-{{ src.id }}-B" onclick="switchSourceDrawerTab('{{ src.id }}', 'B');" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; font-weight: 700;">
+                        🦅 Wersja B (Bielik AI)
+                      </button>
+                    </div>
+
+                    <!-- Content Preview Pane A -->
+                    <div id="content-src-{{ src.id }}-A" class="source-content-pane" style="display: block; max-height: 250px; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.65rem; font-size: 0.75rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans);">{{ src.ready_article.draft_markdown }}</div>
+
+                    <!-- Content Preview Pane B -->
+                    <div id="content-src-{{ src.id }}-B" class="source-content-pane" style="display: none; max-height: 250px; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.65rem; font-size: 0.75rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans);">{{ src.ready_article.bielik_draft }}</div>
+
+                    <!-- Action Buttons -->
+                    <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+                      <button type="button" class="btn btn-primary" onclick="loadSourceArticleIntoEditor('{{ src.id }}', 'A');" style="font-size: 0.71rem; padding: 0.3rem 0.6rem;" title="Załaduj Wersję A do edytora na górze">
+                        ✍️ Załaduj Wersję A →
+                      </button>
+                      <button type="button" class="btn btn-success" onclick="loadSourceArticleIntoEditor('{{ src.id }}', 'B');" style="font-size: 0.71rem; padding: 0.3rem 0.6rem; background: #059669; border-color: #059669; color: #fff;" title="Załaduj Wersję B zredagowaną przez Bielik AI">
+                        🦅 Załaduj Wersję B (Bielik) →
+                      </button>
+                      <button type="button" class="btn btn-secondary" onclick="loadSourceArticleToBielikStudio('{{ src.id }}');" style="font-size: 0.71rem; padding: 0.3rem 0.55rem;" title="Otwórz ten esej w Studiu Redakcyjnym Bielik AI">
+                        🦅 Studio
+                      </button>
+                      <button type="button" class="btn btn-secondary" onclick="copySourceArticleText('{{ src.id }}');" style="font-size: 0.71rem; padding: 0.3rem 0.5rem;" title="Skopiuj treść artykułu do schowka">
+                        📋 Kopiuj
+                      </button>
+                    </div>
+                  </div>
+                </details>
+              </div>
+              {% else %}
+              <!-- Dynamiczny szkic na żądanie dla pozostałych źródeł -->
+              <div class="source-article-container" style="margin-top: 0.65rem; margin-bottom: 0.65rem;">
+                <details class="source-ready-drawer" id="source-drawer-{{ src.id }}" style="background: var(--bg-card); border: 1px dashed var(--border-color); border-radius: 6px; overflow: hidden;">
+                  <summary style="padding: 0.45rem 0.65rem; background: var(--bg-surface); font-size: 0.74rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; list-style: none;">
+                    <span>💡 Rozwiń artykuł dla tego źródła</span>
+                    <span class="badge" style="background: rgba(0,0,0,0.05); color: var(--text-muted); font-size: 0.63rem;">Szkic &darr;</span>
+                  </summary>
+                  <div style="padding: 0.75rem;" id="source-dyn-content-{{ src.id }}">
+                    <p style="font-size: 0.74rem; color: var(--text-muted); margin-bottom: 0.55rem; line-height: 1.4;">
+                      Wygeneruj gotowy esej (Wersja A + Wersja B Bielik AI) dedykowany dla <strong>{{ src.name }}</strong> na podstawie profilu źródła:
+                    </p>
+                    <button type="button" class="btn btn-secondary" onclick="generateDynamicSourceArticle('{{ src.id }}');" style="font-size: 0.72rem; padding: 0.35rem 0.65rem; width: 100%;">
+                      ⚡ Wygeneruj propozycję artykułu (Wersja A + Bielik B)
+                    </button>
+                  </div>
+                </details>
               </div>
               {% endif %}
             </div>
@@ -2523,6 +2603,7 @@ ${body}`;
   const PROPOSALS_DATA = {{ latest_proposals_json|safe if latest_proposals_json else '[]' }};
   const LIVE_RSS_PULSE = {{ live_rss_pulse_json|safe if live_rss_pulse_json else '{}' }};
   const SEEN_URLS_INIT = {{ seen_urls_json|safe if seen_urls_json else '[]' }};
+  const EDITORIAL_SOURCES = {{ editorial_sources_json|safe if editorial_sources_json else '[]' }};
   let LIVE_MANUAL_PACKAGE = null;
 
   let activeCategoryFilter = 'all';
@@ -2913,6 +2994,234 @@ ${body}`;
       }
       setTimeout(() => { notif.style.display = 'none'; }, 6000);
     }
+  }
+
+  // =========================================================================
+  // KATALOG ŹRÓDEŁ NA DOLE: ZARZĄDZANIE ARTYKUŁAMI (Wersja A + Wersja B Bielik)
+  // =========================================================================
+  function switchSourceDrawerTab(sourceId, version) {
+    const isA = (String(version).toUpperCase() === 'A');
+    const paneA = document.getElementById(`content-src-${sourceId}-A`);
+    const paneB = document.getElementById(`content-src-${sourceId}-B`);
+    const btnA = document.getElementById(`tab-src-${sourceId}-A`);
+    const btnB = document.getElementById(`tab-src-${sourceId}-B`);
+    if (paneA) paneA.style.display = isA ? 'block' : 'none';
+    if (paneB) paneB.style.display = isA ? 'none' : 'block';
+    if (btnA) {
+      btnA.classList.toggle('active', isA);
+      btnA.style.background = isA ? 'var(--accent)' : 'var(--bg-surface)';
+      btnA.style.color = isA ? '#fff' : 'var(--text-secondary)';
+    }
+    if (btnB) {
+      btnB.classList.toggle('active', !isA);
+      btnB.style.background = !isA ? '#059669' : 'var(--bg-surface)';
+      btnB.style.color = !isA ? '#fff' : 'var(--text-secondary)';
+    }
+  }
+
+  function generateDynamicArticleData(src) {
+    if (!src) return null;
+    const topicSample = (Array.isArray(src.topics) && src.topics.length > 0) ? src.topics[0] : 'Architektura rynku i instytucji';
+    const naturalTitle = craftNaturalPolishTitle({
+      title: src.best_essay || topicSample,
+      source: src.name
+    });
+    const lead = `Autorska synteza problemowa inspirowana publikacją „${src.best_essay || naturalTitle}” (${src.name}). ${src.desc || ''} Badamy fundamentalne mechanizmy z perspektywy dociekliwego laika.`;
+    const thesis = src.takeaway || `Zjawiska opisywane przez ${src.name} odsłaniają głębsze mechanizmy alokacji zasobów, długu i zaufania instytucjonalnego.`;
+
+    const draftMarkdown = `# ${naturalTitle}\n\n` +
+      `> 📡 **Impuls źródłowy:** ${src.flag || '🇵🇱'} [${src.name} — „${src.best_essay || naturalTitle}”](${src.url || '#'})\n` +
+      `> 💡 **Autorska teza Laika:** ${thesis}\n\n` +
+      `### Wprowadzenie: Co ujawnia perspektywa ${src.name}?\n` +
+      `${lead}\n\n` +
+      `W świecie przeładowanym powierzchownymi nagłówkami i agresywnym marketingiem narracyjnym, powrót do fundamentalnych pytań staje się jedyną skuteczną tarczą analityczną. Analiza problemu postawionego przez ${src.name} pozwala spojrzeć głębiej na strukturę zjawiska, które w debacie publicznej bywa sprowadzane do pustych haseł.\n\n` +
+      `### Anatomia mechanizmu z pierwszych zasad\n` +
+      `Kluczowym wnioskiem wyłaniającym się z analiz ${src.name} jest rozpoznanie, że pozorne anomalie rynkowe i społeczne są logiczną konsekwencją przyjętych reguł gry:\n` +
+      `* **Struktura bodźców:** Instytucje i rynki zachowują się dokładnie tak, jak premiuje je obowiązujący system wag i taryf.\n` +
+      `* **Ukryte koszty alternatywne:** Każda decyzja o zamrożeniu cen, subsydiowaniu nierentownych branż czy unikaniu trudnych reform odkłada rachunek w czasie z wysokim procentem składanym.\n` +
+      `* **Granice odporności systemowej:** Złożone łańcuchy powiązań pękają w najmniej spodziewanych miejscach, gdy rezerwy buforowe zostają wyeksploatowane w pogoni za krótkoterminową efektywnością.\n\n` +
+      `### Wnioski dla dociekliwego laika\n` +
+      `Zamiast szukać prostych recept, dociekliwy laik buduje własne modele pojęciowe. Lekcja płynąca z tego impulsu to wezwanie do krytycznego audytu założeń: suwerenność i bezpieczeństwo buduje się na twardych fundamentach fizycznych i instytucjonalnych, a nie na wirtualnych obietnicach.\n`;
+
+    const bielikDraft = synthesizeBielikDraftInBrowser({
+      title: naturalTitle,
+      lead: lead,
+      thesis: thesis,
+      source: src.name,
+      category: src.blog_category || 'eseje'
+    });
+
+    const readyArticle = {
+      title: naturalTitle,
+      bielik_title: `${naturalTitle} (Wersja Bielik AI — Polski kontekst)`,
+      lead: lead,
+      thesis: thesis,
+      category: src.blog_category || 'eseje',
+      draft_markdown: draftMarkdown,
+      bielik_draft: bielikDraft
+    };
+
+    src.ready_article = readyArticle;
+    return readyArticle;
+  }
+
+  function loadSourceArticleIntoEditor(sourceId, version = 'A') {
+    let src = null;
+    if (Array.isArray(EDITORIAL_SOURCES)) {
+      src = EDITORIAL_SOURCES.find(s => s.id === sourceId);
+    }
+    if (!src) return;
+    const isVersionB = (String(version).toUpperCase() === 'B');
+    let ra = src.ready_article;
+    if (!ra) {
+      ra = generateDynamicArticleData(src);
+    }
+    if (!ra) return;
+
+    currentEditingSlug = null;
+    const chosenTitle = isVersionB ? (ra.bielik_title || `${ra.title} (Wersja Bielik AI — Polski kontekst)`) : ra.title;
+
+    const titleEl = document.getElementById('scratch-title');
+    const slugEl = document.getElementById('scratch-slug');
+    if (titleEl) titleEl.value = chosenTitle;
+    if (slugEl) slugEl.value = slugify(chosenTitle);
+    slugManuallyEdited = true;
+
+    const catEl = document.getElementById('scratch-category');
+    if (catEl) {
+      catEl.value = ra.category || src.blog_category || 'eseje';
+    }
+
+    const sumEl = document.getElementById('scratch-summary');
+    if (sumEl) {
+      sumEl.value = ra.lead || '';
+    }
+
+    const catImages = {
+      'technologia': 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+      'gospodarka': 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80',
+      'historia': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80',
+      'polityka': 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80',
+      'eseje': 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
+      'kondensat': 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80'
+    };
+    const imgEl = document.getElementById('scratch-image');
+    if (imgEl) {
+      const chosenCat = ra.category || src.blog_category || 'eseje';
+      imgEl.value = catImages[chosenCat] || catImages['eseje'];
+    }
+
+    const content = isVersionB ? (ra.bielik_draft || ra.draft_markdown) : (ra.draft_markdown || ra.bielik_draft);
+    const editorEl = document.getElementById('scratch-content');
+    if (editorEl) {
+      editorEl.value = content;
+      if (typeof updateEditorStats === 'function') updateEditorStats();
+    }
+
+    const editorSection = document.getElementById('scratch-pad-section') || document.querySelector('.editor-container') || document.getElementById('scratch-title');
+    if (editorSection) {
+      editorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (titleEl) {
+        setTimeout(() => {
+          titleEl.focus();
+          titleEl.style.transition = 'box-shadow 0.3s ease';
+          titleEl.style.boxShadow = isVersionB ? '0 0 0 3px rgba(16, 185, 129, 0.5)' : '0 0 0 3px rgba(37, 99, 235, 0.5)';
+          setTimeout(() => { titleEl.style.boxShadow = ''; }, 1800);
+        }, 400);
+      }
+    }
+
+    const badgeVer = isVersionB ? '🦅 Wersja B (Bielik AI — Polski kontekst)' : '📄 Wersja A (Autorska synteza)';
+    showToast(`✅ Załadowano do edytora: ${badgeVer} ze źródła „${src.name}”`);
+  }
+
+  function loadSourceArticleToBielikStudio(sourceId) {
+    let src = null;
+    if (Array.isArray(EDITORIAL_SOURCES)) {
+      src = EDITORIAL_SOURCES.find(s => s.id === sourceId);
+    }
+    if (!src) return;
+    let ra = src.ready_article;
+    if (!ra) {
+      ra = generateDynamicArticleData(src);
+    }
+    if (!ra) return;
+
+    loadSourceArticleIntoEditor(sourceId, 'B');
+
+    const studioInputA = document.getElementById('bielik-studio-text-a');
+    const studioInputB = document.getElementById('bielik-studio-text-b');
+    const studioTitleA = document.getElementById('bielik-studio-title-a');
+    const studioTitleB = document.getElementById('bielik-studio-title-b');
+    if (studioInputA) studioInputA.value = ra.draft_markdown || '';
+    if (studioInputB) studioInputB.value = ra.bielik_draft || '';
+    if (studioTitleA) studioTitleA.value = ra.title || '';
+    if (studioTitleB) studioTitleB.value = ra.bielik_title || (ra.title + ' (Wersja Bielik AI — Polski kontekst)');
+  }
+
+  function copySourceArticleText(sourceId) {
+    let src = null;
+    if (Array.isArray(EDITORIAL_SOURCES)) {
+      src = EDITORIAL_SOURCES.find(s => s.id === sourceId);
+    }
+    if (!src || !src.ready_article) return;
+    const paneB = document.getElementById(`content-src-${sourceId}-B`);
+    const isVersionBActive = (paneB && paneB.style.display !== 'none');
+    const textToCopy = isVersionBActive ? src.ready_article.bielik_draft : src.ready_article.draft_markdown;
+    if (navigator.clipboard && textToCopy) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        showToast(`📋 Skopiowano do schowka: ${isVersionBActive ? 'Wersję B (Bielik AI)' : 'Wersję A'} dla „${src.name}”`);
+      });
+    }
+  }
+
+  function generateDynamicSourceArticle(sourceId) {
+    let src = null;
+    if (Array.isArray(EDITORIAL_SOURCES)) {
+      src = EDITORIAL_SOURCES.find(s => s.id === sourceId);
+    }
+    if (!src) return;
+    const ra = generateDynamicArticleData(src);
+    const container = document.getElementById(`source-dyn-content-${sourceId}`);
+    if (!container) return;
+
+    container.innerHTML = `
+      <h5 style="margin: 0 0 0.4rem 0; font-size: 0.92rem; font-family: var(--font-serif); font-weight: 700; color: var(--text-primary); line-height: 1.35;">
+        ${escapeHtml(ra.title)}
+      </h5>
+      <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
+        ${escapeHtml(ra.lead)}
+      </p>
+      <div style="display: flex; gap: 0.35rem; margin-bottom: 0.6rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem;">
+        <button type="button" class="btn btn-secondary source-tab-btn active" id="tab-src-${sourceId}-A" onclick="switchSourceDrawerTab('${sourceId}', 'A');" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; font-weight: 700;">
+          📄 Wersja A (Autorska)
+        </button>
+        <button type="button" class="btn btn-secondary source-tab-btn" id="tab-src-${sourceId}-B" onclick="switchSourceDrawerTab('${sourceId}', 'B');" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; font-weight: 700;">
+          🦅 Wersja B (Bielik AI)
+        </button>
+      </div>
+      <div id="content-src-${sourceId}-A" class="source-content-pane" style="display: block; max-height: 250px; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.65rem; font-size: 0.75rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans);">
+${escapeHtml(ra.draft_markdown)}
+      </div>
+      <div id="content-src-${sourceId}-B" class="source-content-pane" style="display: none; max-height: 250px; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.65rem; font-size: 0.75rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.65rem; white-space: pre-wrap; font-family: var(--font-sans);">
+${escapeHtml(ra.bielik_draft)}
+      </div>
+      <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+        <button type="button" class="btn btn-primary" onclick="loadSourceArticleIntoEditor('${sourceId}', 'A');" style="font-size: 0.71rem; padding: 0.3rem 0.6rem;">
+          ✍️ Załaduj Wersję A →
+        </button>
+        <button type="button" class="btn btn-success" onclick="loadSourceArticleIntoEditor('${sourceId}', 'B');" style="font-size: 0.71rem; padding: 0.3rem 0.6rem; background: #059669; border-color: #059669; color: #fff;">
+          🦅 Załaduj Wersję B (Bielik) →
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="loadSourceArticleToBielikStudio('${sourceId}');" style="font-size: 0.71rem; padding: 0.3rem 0.55rem;">
+          🦅 Studio
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="copySourceArticleText('${sourceId}');" style="font-size: 0.71rem; padding: 0.3rem 0.5rem;">
+          📋 Kopiuj
+        </button>
+      </div>
+    `;
+    showToast(`⚡ Wygenerowano propozycję artykułu dla „${src.name}”!`);
   }
 
   function loadLibraryEssayFromBtn(btn) {

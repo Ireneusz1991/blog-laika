@@ -269,7 +269,7 @@ def build_static(output_dir="dist", base_url=None):
     ctx_admin["latest_proposals_date"] = latest_proposals_date
     ctx_admin["latest_proposals_json"] = json.dumps(latest_proposals, ensure_ascii=False)
     ctx_admin["editorial_sources"] = EDITORIAL_SOURCES
-    ctx_admin["editorial_sources_json"] = json.dumps(EDITORIAL_SOURCES, ensure_ascii=False)
+    ctx_admin["editorial_sources_json"] = json.dumps(EDITORIAL_SOURCES, ensure_ascii=False).replace("</script>", "<\\/script>")
     ctx_admin["curated_social"] = get_curated_social_bundles()
 
     # Eksport pliku CSV ze źródłami i profilami społecznościowymi
