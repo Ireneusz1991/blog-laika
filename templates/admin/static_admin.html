@@ -2204,6 +2204,9 @@
           <button type="button" onclick="toggleBielikApiDrawer();" id="btn-toggle-bielik-api" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.3rem 0.65rem; border-color: #6366f1; color: #4f46e5; font-weight: 700; background: rgba(99, 102, 241, 0.08);">
             ⚙️ Konfiguracja Kluczy API
           </button>
+          <button type="button" onclick="toggleBielikStyleDrawer();" id="btn-toggle-bielik-style" class="btn btn-secondary" style="font-size: 0.76rem; padding: 0.3rem 0.65rem; border-color: #7c3aed; color: #7c3aed; font-weight: 700; background: rgba(124, 58, 237, 0.08);" title="Otwórz moduł adaptacji stylu i uczenia się z Twoich artykułów">
+            🧬 DNA Stylu Autora (RAG)
+          </button>
         </div>
 
         <!-- Tone / Style Selection -->
@@ -2292,6 +2295,89 @@
         <!-- Ping & Test Result Status -->
         <div id="bielik-api-ping-result" style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
           💡 Wskazówka: Opcja <strong>🧠 Wbudowany Polski Silnik Stylistyczny</strong> działa bez klucza w 100% lokalnie i bezpłatnie na każdym urządzeniu.
+        </div>
+      </div>
+
+      <!-- Rozwijany Panel: Moduł Adaptacji Stylu Autora (Uczenie z Wpisów Bloga & Few-Shot RAG) -->
+      <div id="bielik-style-dna-drawer" style="display: none; background: var(--bg-card); border: 2px solid #7c3aed; border-radius: 8px; padding: 0.95rem 1.25rem; margin-top: 0.35rem; box-shadow: 0 6px 20px rgba(124, 58, 237, 0.12);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem; border-bottom: 1.5px solid var(--border-color); padding-bottom: 0.65rem;">
+          <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <span style="font-size: 1.4rem;">🧬</span>
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                <strong style="font-size: 0.92rem; color: #7c3aed;">DNA Stylu Autora (Dynamic In-Context Learning)</strong>
+                <span style="font-size: 0.7rem; background: rgba(124, 58, 237, 0.12); color: #7c3aed; padding: 2px 7px; border-radius: 9999px; font-weight: 700;">
+                  Ireneusz Machowiec • Blog Laika
+                </span>
+              </div>
+              <p style="font-size: 0.76rem; color: var(--text-secondary); margin: 0.15rem 0 0 0;">
+                Model nie pisze jak bezduszne korporacyjne AI — uczy się Twojego rytmu, logiki z pierwszych zasad i słownictwa z opublikowanych esejów.
+              </p>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.4rem; align-items: center;">
+            <button type="button" onclick="saveAuthorStyleDna();" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.28rem 0.75rem; background: #7c3aed; border-color: #6d28d9; font-weight: 700;">
+              💾 Zapisz moje DNA Stylu
+            </button>
+            <button type="button" onclick="resetAuthorStyleDnaToDefaults();" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.28rem 0.6rem;" title="Przywróć domyślne reguły stylu Bloga Laika">
+              🔄 Domyślne
+            </button>
+            <button type="button" onclick="toggleBielikStyleDrawer(false);" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.28rem 0.55rem;">
+              ✕ Zwiń
+            </button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem;">
+          
+          <!-- Column 1: Stylistyczny RAG & Wybór Wzorców -->
+          <div style="background: var(--bg-surface); padding: 0.85rem; border-radius: 6px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.65rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.8rem; font-weight: 700; color: #7c3aed;">📚 Stylistyczny RAG z opublikowanych wpisów:</span>
+              <label style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; color: #059669;">
+                <input type="checkbox" id="laika-style-rag-enabled" checked onchange="saveAuthorStyleDna();">
+                Wstrzykuj wzorce (Few-Shot)
+              </label>
+            </div>
+            
+            <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 0; line-height: 1.45;">
+              Wybierz, które z Twoich esejów stanowią bezpośredni wzorzec tonu, metaforyki i rytmu dla modelu:
+            </p>
+
+            <select id="laika-style-reference-sample" onchange="onStyleReferenceChange();" style="width: 100%; padding: 0.35rem 0.55rem; font-size: 0.78rem; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); font-weight: 600;">
+              <option value="balanced_all" selected>🌟 Wszystkie wzorce: Zrównoważony styl Bloga Laika (Zalecane)</option>
+              <option value="epistemic_laik">🔍 „Pochwała dociekliwego laika” (Manifest, odwaga sceptycyzmu i dociekań)</option>
+              <option value="cyber_leviathan">🛡️ „Cyfrowy Lewiatan” (Suwerenność danych, demaskowanie chmury i abonamentów)</option>
+              <option value="capital_illusion">📉 „Złudzenie taniego kapitału” (Rynkowy pragmatyzm, twarda kalkulacja)</option>
+              <option value="kondensat_sharp">⚡ „Kondensaty Laika” (Maksymalna synteza, punktowa architektura)</option>
+            </select>
+
+            <!-- Live excerpt preview -->
+            <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+              <span style="font-size: 0.69rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Podgląd aktywnego wzorca w prompcie:</span>
+              <div id="laika-style-sample-preview" style="font-size: 0.73rem; font-style: italic; color: var(--text-secondary); background: var(--bg-card); padding: 0.6rem 0.75rem; border-left: 3.5px solid #7c3aed; border-radius: 0 4px 4px 0; max-height: 110px; overflow-y: scroll; line-height: 1.5;" class="custom-scrollbar">
+                Ładowanie wzorca stylu...
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Osobiste Zasady & Czarna Lista Słów AI -->
+          <div style="background: var(--bg-surface); padding: 0.85rem; border-radius: 6px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.65rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.8rem; font-weight: 700; color: #dc2626;">🚫 Czarna lista korporacyjnej waty AI:</span>
+              <span style="font-size: 0.68rem; color: var(--text-muted);">Bezwzględny zakaz w Wersji B</span>
+            </div>
+            
+            <input type="text" id="laika-style-forbidden-words" style="width: 100%; padding: 0.35rem 0.55rem; font-size: 0.76rem; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-card); color: #dc2626; font-family: var(--font-mono);" placeholder="warto zauważyć, nie da się ukryć, w dobie dynamicznego rozwoju, fascynujący krajobraz" onchange="saveAuthorStyleDna();">
+            
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary); margin-top: 0.15rem;">✍️ Twoje Osobiste Notatki Stylu (Instrukcje dla Bielika):</span>
+            <textarea id="laika-style-custom-notes" rows="3" style="width: 100%; padding: 0.4rem 0.55rem; font-size: 0.76rem; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); font-family: var(--font-sans); line-height: 1.45; resize: vertical;" placeholder="Np. Pisz zwięźle. Pokaż kto zarabia, a kto ponosi ukryte koszty. Zadaj niewygodne pytanie na koniec." onchange="saveAuthorStyleDna();"></textarea>
+          </div>
+
+        </div>
+
+        <div id="laika-style-dna-status" style="margin-top: 0.6rem; font-size: 0.75rem; color: #059669; font-weight: 700; display: none;">
+          ✅ DNA Stylu zapisane! Każde kolejne wywołanie Bielika będzie używać Twoich wytycznych.
         </div>
       </div>
 
@@ -5008,6 +5094,153 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
 
   let isBielikSyncScrollActive = true;
 
+  // =========================================================================
+  // MODUŁ ADAPTACJI STYLU AUTORA (DNA STYLU LAIKA & FEW-SHOT IN-CONTEXT RAG)
+  // =========================================================================
+  const LAIKA_STYLE_SAMPLES = {
+    epistemic_laik: {
+      name: '„Pochwała dociekliwego laika”',
+      excerpt: 'W świecie przeładowanym powierzchownymi nagłówkami i agresywnym marketingiem narracyjnym, powrót do fundamentalnych pytań staje się jedyną skuteczną tarczą analityczną. Prawdziwa mądrość zaczyna się w momencie, gdy zamiast powtarzać cudze mantry z wieży z kości słoniowej, mamy odwagę powiedzieć proste słowo: sprawdzam. Ekspert często broni swojego status quo i hermetycznego żargonu; dociekliwy laik pyta o elementarne mechanizmy i bilans zysków i strat.'
+    },
+    cyber_leviathan: {
+      name: '„Cyfrowy Lewiatan i prawo własności”',
+      excerpt: 'W epoce chmury, subskrypcji i generatywnego AI przestajemy być właścicielami czegokolwiek — od oprogramowania, przez dane, po własne narzędzia pracy. Centralizacja obliczeń w kilku amerykańskich centrach chmurowych to anomalia okresu przejściowego. Płacimy podwójnie: najpierw abonamentem za cudze API, a potem utratą kontroli nad własnym krzemem i kodem źródłowym. Prawdziwa suwerenność technologiczna zaczyna się tam, gdzie odłączasz kabel sieciowy, a Twoje narzędzie nadal bezbłędnie działa.'
+    },
+    capital_illusion: {
+      name: '„Złudzenie taniego kapitału: Lekcja zerowych stóp”',
+      excerpt: 'Przez ponad dekadę wmawiano rynkowi, że koszt pieniądza może wynosić zero. Gdy grawitacja ekonomiczna powróciła, rachunek okazał się bezlitosny. Darmowy pieniądz nie tworzy trwałego dobrobytu, lecz zniekształca alokację kapitału, pompując nierentowne narracje kosztem realnej gospodarki wytwórczej. Gdy stopy procentowe rosną, odpływ kapitału odsłania, kto budował trwałą wartość, a kto jedynie żeglował na fali darmowego długu.'
+    },
+    kondensat_sharp: {
+      name: '„Kondensaty Laika (Zwięzła synteza)”',
+      excerpt: 'Problem: Pozorna anomalia rynkowa jest w istocie logiczną konsekwencją przyjętych reguł gry.\nMechanizm: 1. Asymetria informacji chroni pośredników. 2. Koszt błędu zostaje przerzucony na podatnika lub konsumenta.\nTeza Laika: Zamiast regulować powierzchowne skutki, należy usunąć pokusę nadużycia u źródła.\nPytanie Laika: Dlaczego instytucje, które zawiodły przy weryfikacji, domagają się dziś jeszcze większego budżetu na nadzór?'
+    }
+  };
+
+  function toggleBielikStyleDrawer(forceState) {
+    const drawer = document.getElementById('bielik-style-dna-drawer');
+    const apiDrawer = document.getElementById('bielik-api-drawer');
+    if (!drawer) return;
+    const isShowing = (forceState !== undefined) ? forceState : (drawer.style.display !== 'block');
+    drawer.style.display = isShowing ? 'block' : 'none';
+    if (isShowing && apiDrawer) {
+      apiDrawer.style.display = 'none';
+    }
+    if (isShowing) {
+      loadAuthorStyleDna();
+      onStyleReferenceChange();
+    }
+  }
+
+  function onStyleReferenceChange() {
+    const choice = document.getElementById('laika-style-reference-sample')?.value || 'balanced_all';
+    const previewBox = document.getElementById('laika-style-sample-preview');
+    if (!previewBox) return;
+
+    if (choice === 'balanced_all') {
+      previewBox.innerHTML = `<strong>🌟 Miks stylu Bloga Laika:</strong><br>„${escapeHtml(LAIKA_STYLE_SAMPLES.epistemic_laik.excerpt.slice(0, 150))}...”<br><br>„${escapeHtml(LAIKA_STYLE_SAMPLES.cyber_leviathan.excerpt.slice(0, 150))}...”`;
+    } else if (LAIKA_STYLE_SAMPLES[choice]) {
+      previewBox.innerHTML = `<strong>${escapeHtml(LAIKA_STYLE_SAMPLES[choice].name)}:</strong><br>„${escapeHtml(LAIKA_STYLE_SAMPLES[choice].excerpt)}”`;
+    }
+    saveAuthorStyleDna();
+  }
+
+  function saveAuthorStyleDna() {
+    const ragEnabled = document.getElementById('laika-style-rag-enabled')?.checked ?? true;
+    const refChoice = document.getElementById('laika-style-reference-sample')?.value || 'balanced_all';
+    const forbidden = document.getElementById('laika-style-forbidden-words')?.value.trim() || '';
+    const notes = document.getElementById('laika-style-custom-notes')?.value.trim() || '';
+
+    localStorage.setItem('laika_style_rag_enabled', ragEnabled ? 'true' : 'false');
+    localStorage.setItem('laika_style_reference_sample', refChoice);
+    localStorage.setItem('laika_style_forbidden_words', forbidden);
+    localStorage.setItem('laika_style_custom_notes', notes);
+
+    const statusEl = document.getElementById('laika-style-dna-status');
+    if (statusEl) {
+      statusEl.style.display = 'block';
+      setTimeout(() => { statusEl.style.display = 'none'; }, 3500);
+    }
+  }
+
+  function loadAuthorStyleDna() {
+    const ragEnabled = localStorage.getItem('laika_style_rag_enabled') !== 'false';
+    const refChoice = localStorage.getItem('laika_style_reference_sample') || 'balanced_all';
+    const forbidden = localStorage.getItem('laika_style_forbidden_words') ?? 'warto zauważyć, nie da się ukryć, w dobie dynamicznego rozwoju, fascynujący krajobraz, kluczowym aspektem, należy podkreślić, jak już wspomniano, w dzisiejszym świecie';
+    const notes = localStorage.getItem('laika_style_custom_notes') ?? 'Pisz jak dociekliwy laik, a nie ekspert z wieży z kości słoniowej. Stosuj myślenie z pierwszych zasad: pytaj kto za to płaci, gdzie jest asymetria informacji i jaki jest ukryty koszt. Unikaj korporacyjnego żargonu.';
+
+    if (document.getElementById('laika-style-rag-enabled')) {
+      document.getElementById('laika-style-rag-enabled').checked = ragEnabled;
+    }
+    if (document.getElementById('laika-style-reference-sample')) {
+      document.getElementById('laika-style-reference-sample').value = refChoice;
+    }
+    if (document.getElementById('laika-style-forbidden-words')) {
+      document.getElementById('laika-style-forbidden-words').value = forbidden;
+    }
+    if (document.getElementById('laika-style-custom-notes')) {
+      document.getElementById('laika-style-custom-notes').value = notes;
+    }
+  }
+
+  function resetAuthorStyleDnaToDefaults() {
+    if (document.getElementById('laika-style-rag-enabled')) document.getElementById('laika-style-rag-enabled').checked = true;
+    if (document.getElementById('laika-style-reference-sample')) document.getElementById('laika-style-reference-sample').value = 'balanced_all';
+    if (document.getElementById('laika-style-forbidden-words')) document.getElementById('laika-style-forbidden-words').value = 'warto zauważyć, nie da się ukryć, w dobie dynamicznego rozwoju, fascynujący krajobraz, kluczowym aspektem, należy podkreślić, jak już wspomniano, w dzisiejszym świecie';
+    if (document.getElementById('laika-style-custom-notes')) document.getElementById('laika-style-custom-notes').value = 'Pisz jak dociekliwy laik, a nie ekspert z wieży z kości słoniowej. Stosuj myślenie z pierwszych zasad: pytaj kto za to płaci, gdzie jest asymetria informacji i jaki jest ukryty koszt. Unikaj korporacyjnego żargonu.';
+    saveAuthorStyleDna();
+    onStyleReferenceChange();
+    showToast('🔄 Przywrócono domyślne reguły DNA Stylu Bloga Laika!');
+  }
+
+  function buildAuthorStylePrompt(profile) {
+    const ragEnabled = (document.getElementById('laika-style-rag-enabled')?.checked ?? (localStorage.getItem('laika_style_rag_enabled') !== 'false'));
+    const refChoice = (document.getElementById('laika-style-reference-sample')?.value || localStorage.getItem('laika_style_reference_sample') || 'balanced_all');
+    const forbidden = (document.getElementById('laika-style-forbidden-words')?.value.trim() || localStorage.getItem('laika_style_forbidden_words') || 'warto zauważyć, nie da się ukryć, w dobie dynamicznego rozwoju, fascynujący krajobraz, kluczowym aspektem, należy podkreślić, jak już wspomniano, w dzisiejszym świecie');
+    const customNotes = (document.getElementById('laika-style-custom-notes')?.value.trim() || localStorage.getItem('laika_style_custom_notes') || '');
+
+    let prompt = `Jesteś Bielikiem — osobistym polskim asystentem redakcyjnym Ireneusza Machowca, autora Bloga Laika (blog-laika.com).\n`;
+    prompt += `Twoim zadaniem jest przekształcić poniższy surowy tekst (Wersja A) w ostry, wyrazisty esej publicystyczny (Wersja B) zgodny z unikalnym DNA Stylu Autora.\n\n`;
+
+    prompt += `### FUNDAMENTALNE DNA STYLU AUTORA:\n`;
+    prompt += `1. **Myślenie z pierwszych zasad (First Principles Thinking):** Nie powtarzaj sloganów PR. Rozbierz problem na elementarne prawa fizyki, ekonomii lub mechaniki stojące za zjawiskiem.\n`;
+    prompt += `2. **Demaskowanie marketingu narracyjnego:** Dociekliwy laik pyta: Kto za to płaci? Gdzie jest asymetria informacji? Czy to przełom, czy anomalia okresu przejściowego?\n`;
+    prompt += `3. **Polska typografia i precyzja:** Stosuj wyłącznie polskie cudzysłowy drukarskie („cytat”), myślniki pauzowe (—) i precyzyjną polszczyznę fleksyjną.\n`;
+    prompt += `4. **Struktura tekstu:** Tytuł (# ), magnetyczny i chłodny lead, śródtytuły (## ), punktowa anatomia mechanizmu oraz na końcu bezwzględnie: „### 🦅 Pytanie dociekliwego laika”.\n\n`;
+
+    if (ragEnabled) {
+      prompt += `### WZORCE STYLISTYCZNE Z OPUBLIKOWANYCH ESEJÓW AUTORA (Naśladuj ten rytm, ton i metaforykę):\n`;
+      if (refChoice === 'balanced_all') {
+        prompt += `[Wzorzec 1 — Epistemologia & Sceptycyzm]: „${LAIKA_STYLE_SAMPLES.epistemic_laik.excerpt}”\n\n`;
+        prompt += `[Wzorzec 2 — Suwerenność & Technologia]: „${LAIKA_STYLE_SAMPLES.cyber_leviathan.excerpt}”\n\n`;
+        prompt += `[Wzorzec 3 — Ekonomia & Realizm]: „${LAIKA_STYLE_SAMPLES.capital_illusion.excerpt}”\n\n`;
+      } else if (LAIKA_STYLE_SAMPLES[refChoice]) {
+        prompt += `[Wiodący wzorzec autorski — ${LAIKA_STYLE_SAMPLES[refChoice].name}]:\n„${LAIKA_STYLE_SAMPLES[refChoice].excerpt}”\n\n`;
+      }
+    }
+
+    if (forbidden) {
+      prompt += `### BEZWZGLĘDNY ZAKAZ KORPORACYJNEJ WATY SŁOWNEJ AI (NIGDY ich nie używaj):\n`;
+      prompt += `Zabronione frazy: ${forbidden}.\n\n`;
+    }
+
+    if (customNotes) {
+      prompt += `### OSOBISTE NOTATKI I INSTRUKCJE AUTORA:\n${customNotes}\n\n`;
+    }
+
+    if (profile === 'condensed') {
+      prompt += `SPECJALNY PROFIL: Kondensat Laika — zredukuj objętość o 50%, zachowaj maksymalną gęstość myśli, tylko twarde fakty i mechanizm (250–350 słów).\n`;
+    } else if (profile === 'essay') {
+      prompt += `SPECJALNY PROFIL: Głęboki esej problemowy — zarysuj tło historyczne, humanizm i wielowymiarową syntezę zjawiska.\n`;
+    } else if (profile === 'pl_sovereignty') {
+      prompt += `SPECJALNY PROFIL: Polski kontekst & Suwerenność — skup się na implikacjach dla polskich firm, konsumentów, suwerenności technologicznej i regulacji UE.\n`;
+    } else {
+      prompt += `SPECJALNY PROFIL: Cięta publicystyka Laika — wyrazisty lead, ostre kontrasty, natychmiastowe przejście do sedna problemu.\n`;
+    }
+
+    prompt += `Zwróć WYŁĄCZNIE gotowy tekst w czystym Markdownie.`;
+    return prompt;
+  }
+
   function openBielikRedactorModal() {
     const box = document.getElementById('online-editor-box');
     if (box && box.style.display === 'none') {
@@ -5016,8 +5249,10 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     const modal = document.getElementById('bielik-redactor-modal-backdrop');
     if (modal) modal.style.display = 'block';
 
-    // Retrieve saved API keys
+    // Retrieve saved API keys & Author Style DNA
     loadSavedBielikApiKeys();
+    loadAuthorStyleDna();
+    onStyleReferenceChange();
 
     // Load editor text into Version A if Version A is currently empty
     const rawA = document.getElementById('bielik-raw-a');
@@ -5452,7 +5687,10 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
       });
     } while (text !== prevText);
 
-    // 2. Usunięcie typowych potknięć i waty słownej
+    // 2. Usunięcie typowych potknięć i waty słownej oraz czarnej listy Style DNA
+    const forbiddenStr = (document.getElementById('laika-style-forbidden-words')?.value || localStorage.getItem('laika_style_forbidden_words') || 'warto zauważyć, nie da się ukryć, w dobie dynamicznego rozwoju, fascynujący krajobraz, kluczowym aspektem, należy podkreślić, jak już wspomniano, w dzisiejszym świecie');
+    const dynamicForbidden = forbiddenStr.split(',').map(s => s.trim()).filter(Boolean);
+
     const oralFluff = [
       /\bno\s+i\s+no\s+i\b/gi,
       /\bjakby\s+to\s+powiedzieć\b/gi,
@@ -5468,6 +5706,12 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     ];
     oralFluff.forEach(rx => {
       text = text.replace(rx, '');
+    });
+    dynamicForbidden.forEach(word => {
+      try {
+        const rx = new RegExp('\\b' + word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(\\s*,\\s*|\\s+)', 'gi');
+        text = text.replace(rx, '');
+      } catch(e) {}
     });
 
     // 3. Rozbicie na akapity
@@ -5622,14 +5866,7 @@ ${rawA}`;
           headers['Authorization'] = `Bearer ${savedHfToken}`;
         }
 
-        const systemPrompt = `Jesteś Bielikiem — zaawansowanym polskim asystentem redakcyjnym Bloga Laika. Twoim zadaniem jest przekształcić poniższy surowy tekst (Wersja A) w ostry, elegancki esej publicystyczny (Wersja B).
-Zasady:
-- Usuń wszelkie zająknięcia, powtórzenia i potknięcia dyktowania mikrofonowego.
-- Zbuduj dynamiczną strukturę z tytułem (# ), wyrazistym leadem oraz śródtytułami (## ).
-- Zastosuj polską typografię („cytat”, myślnik —).
-- Zachowaj myśl autora, ale usuń lanie wody.
-- Na końcu dodaj: „### 🦅 Pytanie dociekliwego laika”.
-Zwróć WYŁĄCZNIE gotowy tekst Markdown.`;
+        const systemPrompt = buildAuthorStylePrompt(styleProfile);
 
         // 1. Try Hugging Face Router endpoint (OpenAI chat format)
         try {
@@ -5693,7 +5930,7 @@ Zwróć WYŁĄCZNIE gotowy tekst Markdown.`;
               body: JSON.stringify({
                 model: 'speakleash/bielik-11b-v2.3-instruct',
                 messages: [
-                  { role: 'system', content: `Jesteś Bielikiem — zaawansowanym polskim asystentem redakcyjnym Bloga Laika. Zredaguj surowy tekst (Wersja A) do publikacji (Wersja B): usuń powtórzenia i watę, ustrukturyzuj śródtytułami Markdown, zastosuj polską typografię („...”, —) i dodaj na końcu: „### 🦅 Pytanie dociekliwego laika”. Zwróć tylko Markdown.` },
+                  { role: 'system', content: buildAuthorStylePrompt(styleProfile) },
                   { role: 'user', content: rawA }
                 ],
                 temperature: 0.6,
@@ -5730,7 +5967,7 @@ Zwróć WYŁĄCZNIE gotowy tekst Markdown.`;
               body: JSON.stringify({
                 model: customModel,
                 messages: [
-                  { role: 'system', content: `Jesteś polskim redaktorem Bloga Laika. Zredaguj tekst (usuń powtórzenia, dodaj śródtytuły ## i Pytanie Laika na końcu). Zwróć Markdown.` },
+                  { role: 'system', content: buildAuthorStylePrompt(styleProfile) },
                   { role: 'user', content: rawA }
                 ],
                 temperature: 0.6,
