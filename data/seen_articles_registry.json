@@ -643,6 +643,42 @@
       "category": "kondensat",
       "title": "Kondensat (11 listopada 2026 r., wydanie 18:28): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów",
       "url": ""
+    },
+    {
+      "date": "2026-11-12",
+      "category": "technologia",
+      "title": "Geopolityka i fizyka krzemu: Dlaczego światowa gospodarka wisi na kilku fabrykach czipów",
+      "url": "https://arstechnica.com/gadgets/2026/11/ceo-jensen-huangs-job-is-suddenly-on-the-line-at-nvidia/"
+    },
+    {
+      "date": "2026-11-12",
+      "category": "gospodarka",
+      "title": "Król hossy AI u Muska, a na jego miejsce córka, syn lub nawet zdradzona żona. Kto mógłby przejąć władzę w Nvidii: Rachunek zysków i strat w cieniu wielkich zmian",
+      "url": "https://www.bankier.pl/wiadomosc/Kto-moze-zastapic-prezesa-Nvidii-Elon-Musk-bylby-zaszczycony-zatrudnieniem-Huanga-u-siebie-9227635.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci"
+    },
+    {
+      "date": "2026-11-12",
+      "category": "historia",
+      "title": "Z płockiego rynku do Winiar",
+      "url": "https://histmag.org/Z-plockiego-rynku-do-Winiar-29559"
+    },
+    {
+      "date": "2026-11-12",
+      "category": "polityka",
+      "title": "Nihiliści prawni kontra Matczak, Rosati i Piotrowski",
+      "url": "https://klubjagiellonski.pl/2026/11/12/nihilisci-prawni-kontra-matczak-rosati-i-piotrowski/"
+    },
+    {
+      "date": "2026-11-12",
+      "category": "eseje",
+      "title": "Przeciw utartym kliszom: Escaping The “Outside Criticism” Trap",
+      "url": "https://www.astralcodexten.com/p/escaping-the-outside-criticism-trap"
+    },
+    {
+      "date": "2026-11-12",
+      "category": "kondensat",
+      "title": "Kondensat (12 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
+      "url": ""
     }
   ],
   "seen_rss_urls": {
@@ -695,7 +731,32 @@
       "title": "Górska: Znajdujemy się w momencie, kiedy zmiana jest możliwa",
       "seen_date": "2026-11-11",
       "category": "eseje"
+    },
+    "https://arstechnica.com/gadgets/2026/11/ceo-jensen-huangs-job-is-suddenly-on-the-line-at-nvidia/": {
+      "title": "Geopolityka i fizyka krzemu: Dlaczego światowa gospodarka wisi na kilku fabrykach czipów",
+      "seen_date": "2026-11-12",
+      "category": "technologia"
+    },
+    "https://www.bankier.pl/wiadomosc/Kto-moze-zastapic-prezesa-Nvidii-Elon-Musk-bylby-zaszczycony-zatrudnieniem-Huanga-u-siebie-9227635.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci": {
+      "title": "Król hossy AI u Muska, a na jego miejsce córka, syn lub nawet zdradzona żona. Kto mógłby przejąć władzę w Nvidii: Rachunek zysków i strat w cieniu wielkich zmian",
+      "seen_date": "2026-11-12",
+      "category": "gospodarka"
+    },
+    "https://histmag.org/Z-plockiego-rynku-do-Winiar-29559": {
+      "title": "Z płockiego rynku do Winiar",
+      "seen_date": "2026-11-12",
+      "category": "historia"
+    },
+    "https://klubjagiellonski.pl/2026/11/12/nihilisci-prawni-kontra-matczak-rosati-i-piotrowski/": {
+      "title": "Nihiliści prawni kontra Matczak, Rosati i Piotrowski",
+      "seen_date": "2026-11-12",
+      "category": "polityka"
+    },
+    "https://www.astralcodexten.com/p/escaping-the-outside-criticism-trap": {
+      "title": "Przeciw utartym kliszom: Escaping The “Outside Criticism” Trap",
+      "seen_date": "2026-11-12",
+      "category": "eseje"
     }
   },
-  "last_updated": "2026-11-11T20:41:45.560351"
+  "last_updated": "2026-11-12T12:41:12.556059"
 }
