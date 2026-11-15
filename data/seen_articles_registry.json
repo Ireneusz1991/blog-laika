@@ -679,6 +679,42 @@
       "category": "kondensat",
       "title": "Kondensat (12 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
       "url": ""
+    },
+    {
+      "date": "2026-11-15",
+      "category": "technologia",
+      "title": "45 kilometrów! Wielki mały rekord łazika Perseverance",
+      "url": "https://www.kwantowo.pl/2026/11/12/dlaczego-laziki-sa-tak-powolne/"
+    },
+    {
+      "date": "2026-11-15",
+      "category": "gospodarka",
+      "title": "Za chwilę Nvidia ujawni swoje tajemnice, a Fed kulisy swojej decyzji. W planie także polski przemysł i inflacja",
+      "url": "https://www.bankier.pl/wiadomosc/Kalendarz-ekonomiczny-16-22-11-2026-Nvidia-KGHM-i-PZU-pokaza-wyniki-W-planie-takze-Warsh-polski-przemysl-i-inflacja-9228369.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci"
+    },
+    {
+      "date": "2026-11-15",
+      "category": "historia",
+      "title": "Dramat więzienny „Bunt” z Borysem Szycem i Filipem Pławiakiem już 9 grudnia tylko w Netflixie",
+      "url": "https://ciekawostkihistoryczne.pl/2026/11/13/dramat-wiezienny-bunt-z-borysem-szycem-i-filipem-plawiakiem-juz-9-grudnia-tylko-w-netflixie/"
+    },
+    {
+      "date": "2026-11-15",
+      "category": "polityka",
+      "title": "Nowa magnateria kontroluje polską gospodarkę",
+      "url": "https://klubjagiellonski.pl/2026/11/15/nowa-magnateria-kontroluje-polska-gospodarke/"
+    },
+    {
+      "date": "2026-11-15",
+      "category": "eseje",
+      "title": "Lalka i Kościół: Dlaczego oczywiste odpowiedzi zawodzą",
+      "url": "https://magazynkontakt.pl/lalka-i-kosciol/"
+    },
+    {
+      "date": "2026-11-15",
+      "category": "kondensat",
+      "title": "Kondensat (15 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
+      "url": ""
     }
   ],
   "seen_rss_urls": {
@@ -756,7 +792,32 @@
       "title": "Przeciw utartym kliszom: Escaping The “Outside Criticism” Trap",
       "seen_date": "2026-11-12",
       "category": "eseje"
+    },
+    "https://www.kwantowo.pl/2026/11/12/dlaczego-laziki-sa-tak-powolne/": {
+      "title": "45 kilometrów! Wielki mały rekord łazika Perseverance",
+      "seen_date": "2026-11-15",
+      "category": "technologia"
+    },
+    "https://www.bankier.pl/wiadomosc/Kalendarz-ekonomiczny-16-22-11-2026-Nvidia-KGHM-i-PZU-pokaza-wyniki-W-planie-takze-Warsh-polski-przemysl-i-inflacja-9228369.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci": {
+      "title": "Za chwilę Nvidia ujawni swoje tajemnice, a Fed kulisy swojej decyzji. W planie także polski przemysł i inflacja",
+      "seen_date": "2026-11-15",
+      "category": "gospodarka"
+    },
+    "https://ciekawostkihistoryczne.pl/2026/11/13/dramat-wiezienny-bunt-z-borysem-szycem-i-filipem-plawiakiem-juz-9-grudnia-tylko-w-netflixie/": {
+      "title": "Dramat więzienny „Bunt” z Borysem Szycem i Filipem Pławiakiem już 9 grudnia tylko w Netflixie",
+      "seen_date": "2026-11-15",
+      "category": "historia"
+    },
+    "https://klubjagiellonski.pl/2026/11/15/nowa-magnateria-kontroluje-polska-gospodarke/": {
+      "title": "Nowa magnateria kontroluje polską gospodarkę",
+      "seen_date": "2026-11-15",
+      "category": "polityka"
+    },
+    "https://magazynkontakt.pl/lalka-i-kosciol/": {
+      "title": "Lalka i Kościół: Dlaczego oczywiste odpowiedzi zawodzą",
+      "seen_date": "2026-11-15",
+      "category": "eseje"
     }
   },
-  "last_updated": "2026-11-12T12:41:12.556059"
+  "last_updated": "2026-11-15T14:36:24.075356"
 }
