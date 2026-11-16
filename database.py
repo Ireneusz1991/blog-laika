@@ -84,7 +84,8 @@ def strip_editorial_commands(md_text: str) -> str:
         'źródło impulsu',
         'źródło inspiracji z banku wiedzy',
         'źródło inspiracji',
-        'kondensat redakcyjny'
+        'kondensat redakcyjny',
+        'źródła syntezy'
     )
     
     date_patterns = [
@@ -117,7 +118,13 @@ def strip_editorial_commands(md_text: str) -> str:
         skip_next_empty = False
         filtered.append(line)
         
-    return '\n'.join(filtered).strip()
+    res = '\n'.join(filtered).strip()
+    try:
+        from scripts.ai_attribution_sanitizer import strip_ai_attribution
+        res = strip_ai_attribution(res)
+    except Exception:
+        pass
+    return res
 
 def strip_editorial_commands_from_html(html_text: str) -> str:
     """

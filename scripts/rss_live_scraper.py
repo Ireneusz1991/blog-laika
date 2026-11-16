@@ -430,13 +430,11 @@ def synthesize_bielik_draft(
 
     return f"""# {bielik_title}
 
-> 📡 **Impuls źródłowy:** {src_flag} [{src_name} — „{clean_raw}”]({link if link else '#'})
-
 {lead}
 
 ---
 
-### 1. Twardy bilans faktów (kondensacja redakcyjna)
+### 1. Twardy bilans faktów
 
 {summary_clean if summary_clean else f'Przegląd sedna sprawy: Wokół publikacji {src_name} narosło wiele narracji, ale kluczowe fakty dają się sprowadzić do mierzalnych wskaźników.'}
 Sprawa sprowadza się do prostej zależności: kto kontroluje reguły gry i technologię, ten dyktuje warunki marżowe i prawne. Kto jedynie korzysta z gotowych rozwiązań, płaci premię za zależność.
@@ -471,17 +469,17 @@ def _craft_polish_angle(item: Dict[str, Any], category: str) -> Dict[str, Any]:
     bielik_title = f"{laika_title}"
     bielik_draft = synthesize_bielik_draft(laika_title, raw_title, src_name, flag, category, raw_summary, link)
 
-    source_display = f"{flag} {src_name} — [Impuls źródłowy]({link})" if link else f"{flag} {src_name}"
+    source_display = f"{flag} {src_name} — [Materiał źródłowy]({link})" if link else f"{flag} {src_name}"
     if is_pl and raw_summary:
-        source_note = f"Impuls faktograficzny z kanału RSS („{clean_raw_title(raw_title)[:95]}”): temat wywołujący debatę o długofalowych skutkach strukturalnych."
+        source_note = f"Publikacja wyjściowa („{clean_raw_title(raw_title)[:95]}”): temat wywołujący debatę o długofalowych skutkach strukturalnych."
     else:
-        source_note = f"Bieżący impuls analityczny z kanału RSS {src_name}: „{clean_raw_title(raw_title)[:110]}” ({link})."
+        source_note = f"Publikacja wyjściowa ({src_name}): „{clean_raw_title(raw_title)[:110]}” ({link})."
 
     # Ramy analityczne dopasowane do działu (100% autorska polska publicystyka)
     frameworks = {
         "technologia": {
             "lead": (
-                f"Najnowszy sygnał z obszaru inżynierii i rynków cyfrowych ({src_name}: „{raw_title}”) zmusza do postawienia pytania, "
+                f"Najnowsze doniesienia z obszaru inżynierii i rynków cyfrowych ({src_name}: „{raw_title}”) zmusza do postawienia pytania, "
                 f"które rzadko pada w komunikatach prasowych korporacji: ile w tym trwałej zmiany produktywności, a ile przesuwania kosztów na użytkowników i infrastrukturę?"
             ),
             "thesis": (
@@ -494,7 +492,7 @@ def _craft_polish_angle(item: Dict[str, Any], category: str) -> Dict[str, Any]:
                 "Suwerenność użytkownika i firm: Ryzyko uzależnienia od zamkniętego ekosystemu pojedynczego dostawcy (vendor lock-in).",
                 "Pytanie dociekliwego laika: Skoro nowe narzędzie obiecuje dziesięciokrotny wzrost wydajności, to dlaczego rachunki za infrastrukturę IT i złożoność systemów rosną zamiast maleć?"
             ],
-            "draft": f"""W świecie technologii przyzwyczailiśmy się do nieustannego stanu wyjątkowego. Niemal każdy tydzień przynosi doniesienia o przełomie, który ma unieważnić dotychczasowe reguły gry. Impuls płynący z bieżących analiz ({src_name}: *„{raw_title}”*) warto jednak potraktować nie jako okazję do powtarzania branżowego entuzjazmu, lecz jako punkt wyjścia do chłodnego audytu z perspektywy dociekliwego laika.
+            "draft": f"""W świecie technologii przyzwyczailiśmy się do nieustannego stanu wyjątkowego. Niemal każdy tydzień przynosi doniesienia o przełomie, który ma unieważnić dotychczasowe reguły gry. Wątek podjęty w bieżących analizach ({src_name}: *„{raw_title}”*) warto jednak potraktować nie jako okazję do powtarzania branżowego entuzjazmu, lecz jako punkt wyjścia do chłodnego audytu z perspektywy dociekliwego laika.
 
 ### Fakty inżynieryjne kontra ekonomia obietnic
 
@@ -525,7 +523,7 @@ Zanim podpiszemy kolejny abonament na „rewolucyjne” rozwiązanie, warto zada
                 "Porównanie z realną gospodarką wytwórczą: przemysł, energia i logistyka wobec sektora finansowego.",
                 "Pytanie dociekliwego laika: Skoro wskaźniki na wykresach wyglądają coraz stabilniej, to dlaczego koszt budowy fabryki, mieszkania i sfinansowania długu pozostaje tak dotkliwy?"
             ],
-            "draft": f"""Ekonomia w wydaniu medialnym często przypomina relację sportową: indeksy wzrosły o pół procenta, bank centralny zmienił ton komunikatu, a analitycy skorygowali prognozę kwartalną. Jednak bieżący impuls rynkowy ({src_name}: *„{raw_title}”*) dotyka znacznie głębszej warstwy — strukturalnej równowagi między światem papierowych zobowiązań a realną zdolnością gospodarki do wytwarzania dóbr i usług.
+            "draft": f"""Ekonomia w wydaniu medialnym często przypomina relację sportową: indeksy wzrosły o pół procenta, bank centralny zmienił ton komunikatu, a analitycy skorygowali prognozę kwartalną. Jednak bieżąca debata rynkowa ({src_name}: *„{raw_title}”*) dotyka znacznie głębszej warstwy — strukturalnej równowagi między światem papierowych zobowiązań a realną zdolnością gospodarki do wytwarzania dóbr i usług.
 
 ### Efekt drugiego rzędu, czyli czego nie widać w nagłówkach
 
@@ -605,7 +603,7 @@ Dlaczego w naszej debacie publicznej poświęcamy 90% energii na personalne poty
         },
         "eseje": {
             "lead": (
-                f"Impuls intelektualny z bieżącej lektury ({src_name}: „{raw_title}”) skłania do zatrzymania się w codziennym pośpiechu "
+                f"Wątek z bieżącej lektury ({src_name}: „{raw_title}”) skłania do zatrzymania się w codziennym pośpiechu "
                 f"i przyjrzenia się temu, jak współczesna kultura informacyjna zmienia nasz sposób myślenia, wartościowania i rozmowy."
             ),
             "thesis": (
@@ -717,19 +715,19 @@ def synthesize_live_kondensat(selected_topics: List[Dict[str, Any]], date_pl: st
             for t in [t_tech, t_econ, t_pol, t_hist]
             if t.get("source")
         ])
-    ) or "⚡ Węzeł Makroanalityczny Bloga Laika (Synteza 4 szuflad)"
+    ) or "Synteza czterech obszarów tematycznych"
 
-    draft = f"""Tradycyjne media dzielą rzeczywistość na szczelne przegródki: osobno czytamy dział technologiczny, osobno tabelki giełdowe, osobno depesze dyplomatyczne, a w weekendowy wieczór sięgamy po dodatek historyczny. Problem polega na tym, że realny świat nie zna podziału na redakcyjne działy. Dzisiejszy splot impulsów analitycznych z **{date_pl}** pokazuje jak na dłoni, że te cztery wektory tworzą jeden nierozerwalny układ naczyń połączonych.
+    draft = f"""Tradycyjne media dzielą rzeczywistość na szczelne przegródki: osobno czytamy dział technologiczny, osobno tabelki giełdowe, osobno depesze dyplomatyczne, a w weekendowy wieczór sięgamy po dodatek historyczny. Problem polega na tym, że realny świat nie zna podziału na redakcyjne działy. Zestawienie najważniejszych tematów z **{date_pl}** pokazuje jak na dłoni, że te cztery wektory tworzą jeden nierozerwalny układ naczyń połączonych.
 
-### Węzeł 1: Technologia i fizyczny rachunek mocy
+### I. Technologia i fizyczny rachunek mocy
 
 W warstwie technologicznej dzisiejszą uwagę przykuwa wątek *„{tech_ref}”*. Jeszcze niedawno postęp cyfrowy wydawał się zawieszony w próżni czystego oprogramowania. Dziś widzimy wyraźnie, że każda innowacja obliczeniowa natychmiast zderza się z twardym bilansem energetycznym, dostępnością komponentów i walką o kontrolę nad infrastrukturą krytyczną. Kod bez suwerennego zaplecza sprzętowego przestaje być gwarancją przewagi.
 
-### Węzeł 2: Makroekonomia i dyscyplina kosztu pieniądza
+### II. Makroekonomia i dyscyplina kosztu pieniądza
 
-To prowadzi nas bezpośrednio do drugiego ogniwa dzisiejszego konglomeratu — sfery gospodarczej (*„{econ_ref}”*). Kapitał przestał być darmowy, a inwestorzy oraz budżety państw muszą wybierać między obsługą narosłych zobowiązań a finansowaniem modernizacji przemysłowej. Przedsiębiorstwa i rządy, które przespały dekadę niskich stóp, płacą dziś podwójną premię za ryzyko.
+To prowadzi nas bezpośrednio do drugiego wymiaru obecnej sytuacji — sfery gospodarczej (*„{econ_ref}”*). Kapitał przestał być darmowy, a inwestorzy oraz budżety państw muszą wybierać między obsługą narosłych zobowiązań a finansowaniem modernizacji przemysłowej. Przedsiębiorstwa i rządy, które przespały dekadę niskich stóp, płacą dziś podwójną premię za ryzyko.
 
-### Węzeł 3: Geopolityka i analogia historyczna
+### III. Geopolityka i analogia historyczna
 
 Kiedy nałożymy na to dzisiejszy wymiar polityczno-strategiczny (*„{pol_ref}”*) oraz perspektywę historyczną (*„{hist_ref}”*), wyłania się pełny obraz epoki przejściowej. Dokładnie tak jak w przełomowych dekadach minionych stuleci, o pozycji państwa nie decydują uroczyste deklaracje, lecz zdolność do zintegrowania trzech elementów: własnej myśli inżynieryjnej, zdrowych finansów publicznych oraz sprawnej logistyki państwowej.
 
@@ -739,16 +737,14 @@ Patrząc na te cztery zjawiska jednocześnie, trudno oprzeć się wrażeniu, że
 
     bielik_draft = f"""# {bielik_kondensat_title}
 
-> ⚡ **Źródła syntezy:** {sources_joined}
-
-Autorska synteza 4 węzłowych impulsów dnia ({date_pl}) pod kątem interesu polskiego państwa, przedsiębiorstw i konsumentów: od infrastruktury obliczeniowej po stabilność makroekonomiczną.
+Przekrojowa analiza czterech kluczowych zjawisk ({date_pl}) pod kątem interesu polskiego państwa, przedsiębiorstw i konsumentów: od infrastruktury obliczeniowej po stabilność makroekonomiczną.
 
 ---
 
-### 1. Węzeł technologiczny a polska infrastruktura cyfrowa
+### 1. Technologia a polska infrastruktura cyfrowa
 Wątek *„{tech_ref}”* przypomina, że Polska nie może poprzestawać na byciu rynkiem zbytu dla zagranicznych monopoli chmurowych. Prawdziwa suwerenność wymaga budowy krajowych centrów danych zasilanych stabilną energią oraz rozwoju własnych modeli i kadr inżynieryjnych.
 
-### 2. Dźwignia kapitałowa i realny koszt pieniądza w Polsce
+### 2. Koszt kapitału i finanse w Polsce
 Z perspektywy gospodarczej (*„{econ_ref}”*) utrzymujący się wysoki koszt kapitału zmusza polskie firmy do dyscypliny inwestycyjnej. Nie ma powrotu do taniego długu — wygrywają przedsiębiorstwa posiadające realną rentowność operacyjną i zdolność do obrony marż.
 
 ### 3. Geopolityka i odporność strategiczna kraju
@@ -756,7 +752,7 @@ Zderzenie wątku międzynarodowego (*„{pol_ref}”*) z lekcją historii (*„{
 
 ### Co z tego wynika dla Polski?
 1. **Suwerenność w łańcuchu wartości:** Unikanie jednostronnych zależności technologicznych (vendor lock-in) w administracji i kluczowych sektorach.
-2. **Kondensacja priorytetów państwa:** Skupienie zasobów publicznych na energetyce, łączności i kształceniu kadr zamiast rozpraszania środków na cele wizerunkowe.
+2. **Koncentracja priorytetów państwa:** Skupienie zasobów publicznych na energetyce, łączności i kształceniu kadr zamiast rozpraszania środków na cele wizerunkowe.
 3. **Pragmatyzm regulacyjny:** Elastyczne wdrażanie dyrektyw unijnych z uwzględnieniem konkurencyjności rodzimego biznesu.
 """
 
@@ -767,14 +763,14 @@ Zderzenie wątku międzynarodowego (*„{pol_ref}”*) z lekcją historii (*„{
         "bielik_title": bielik_kondensat_title,
         "source": f"⚡ Konglomerat Wielowątkowy: {sources_joined}",
         "source_note": (
-            f"Autorska synteza łącząca 4 dzisiejsze impulsy: [Tech] {tech_ref[:55]} | "
+            f"Autorska synteza łącząca cztery bieżące tematy: [Tech] {tech_ref[:55]} | "
             f"[Gosp] {econ_ref[:55]} | [Pol] {pol_ref[:55]} | [Hist] {hist_ref[:55]}."
         ),
         "image_url": img_url,
         "image_concept": img_concept,
         "image_prompt": img_prompt,
         "lead": (
-            f"Kiedy połączymy kropki między dzisiejszymi sygnałami z rynku technologii, finansów i geopolityki ({date_pl}), "
+            f"Kiedy spojrzymy łącznie na najważniejsze procesy w technologii, finansów i geopolityki ({date_pl}), "
             f"zamiast pojedynczych newsów wyłania się spójny mechanizm wielkiego przetasowania kapitału i potęgi."
         ),
         "thesis": (
@@ -782,7 +778,7 @@ Zderzenie wątku międzynarodowego (*„{pol_ref}”*) z lekcją historii (*„{
             "Kto analizuje je osobno, widzi jedynie szum informacyjny; kto łączy je w jeden model, rozumie kierunek zmiany."
         ),
         "points": [
-            f"Wektor technologiczny: Wnioski strukturalne wokół impulsu „{tech_ref[:70]}”.",
+            f"Wymiar technologiczny: Wnioski wokół tematu „{tech_ref[:70]}”.",
             f"Wektor kapitałowy: Presja makroekonomiczna i koszt pieniądza na tle „{econ_ref[:70]}”.",
             f"Wektor geopolityczny i historyczny: Zderzenie „{pol_ref[:60]}” z lekcją „{hist_ref[:60]}”.",
             "Pytanie dociekliwego laika: Dlaczego wciąż analizujemy technologię, budżet państwa i bezpieczeństwo w osobnych szufladach, skoro w realnym świecie stanowią one jeden i ten sam rachunek suwerenności?"

@@ -15,13 +15,13 @@ Publikacja na łamach Magazyn Kontakt („Serbscy studenci zwyciężyli! Czy fak
 
 > **Teza przewodnia:** Odporność poznawcza w XXI wieku polega na umiejętności odróżniania szumu informacyjnego od procesów o długim okresie półtrwania.
 
-## 1. Sygnał spod powierzchni codziennych nagłówków
+## 1. Co kryje się pod powierzchnią codziennych nagłówków
 
-Kiedy w strumieniu wiadomości pojawia się wątek opisywany przez **Magazyn Kontakt** (*„Serbscy studenci zwyciężyli! Czy faktycznie odmienią kraj?”*), większość komentarzy zatrzymuje się na bieżącej sensacji (25 października w Serbii stała się rzecz bezprecedensowa. Opozycyjna „lista studentów” pokonała Zjednoczoną Serbię pod przewodnictwem niedawnego prezydenta Aleksandra Vučića, który w praktyce od 2014 …). Tymczasem z perspektywy dociekliwego laika najciekawsze jest pytanie o **mechanizm przyczynowo-skutkowy**: jakie ograniczenia fizyczne, finansowe lub instytucjonalne sprawiły, że ten problem wybuchł właśnie teraz?
+Kiedy w debacie publicznej pojawia się temat opisywany przez **Magazyn Kontakt** (*„Serbscy studenci zwyciężyli! Czy faktycznie odmienią kraj?”*), większość komentarzy zatrzymuje się na bieżącej sensacji (25 października w Serbii stała się rzecz bezprecedensowa. Opozycyjna „lista studentów” pokonała Zjednoczoną Serbię pod przewodnictwem niedawnego prezydenta Aleksandra Vučića, który w praktyce od 2014 …). Tymczasem z perspektywy dociekliwego laika najciekawsze jest pytanie o **mechanizm przyczynowo-skutkowy**: jakie ograniczenia fizyczne, finansowe lub instytucjonalne sprawiły, że ten problem wybuchł właśnie teraz?
 
 ## 2. Trzy warstwy zjawiska: bodźce, wąskie gardła i koszty ukryte
 
-Rozkładając temat na czynniki pierwsze (First Principles Thinking), dostrzegamy trzy siły napędowe:
+Rozkładając temat na czynniki pierwsze, dostrzegamy trzy siły napędowe:
 
 - **Struktura bodźców:** Kto ponosi ryzyko nietrafionej decyzji, a kto inkasuje premię w krótkim terminie? Asymetria odpowiedzialności niemal zawsze tłumaczy pozornie nieracjonalne ruchy dużych graczy.
 - **Fizyczne i kapitałowe wąskie gardła:** Żadna narracja PR-owa nie przeskoczy ograniczeń mocy przyłączeniowej, demografii, czasu szkolenia kadr czy kosztu obsługi długu.

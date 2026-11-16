@@ -9,7 +9,7 @@ cover_image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=for
 featured: 0
 ---
 
-Ekonomia w wydaniu medialnym często przypomina relację sportową: indeksy wzrosły o pół procenta, bank centralny zmienił ton komunikatu, a analitycy skorygowali prognozę kwartalną. Jednak bieżący impuls rynkowy ([Bankier.pl / 8000: *„Złoto po przecenie, półprzewodniki, „krótko” na WIG20... Oto typy na listopad”*](https://www.bankier.pl/wiadomosc/Zloto-po-przecenie-polprzewodniki-krotko-na-WIG20-Oto-typy-na-listopad-9221893.html)) dotyka znacznie głębszej warstwy — strukturalnej równowagi między światem papierowych zobowiązań a realną zdolnością gospodarki do wytwarzania dóbr i usług.
+Ekonomia w wydaniu medialnym często przypomina relację sportową: indeksy wzrosły o pół procenta, bank centralny zmienił ton komunikatu, a analitycy skorygowali prognozę kwartalną. Jednak bieżąca debata rynkowa ([Bankier.pl / 8000: *„Złoto po przecenie, półprzewodniki, „krótko” na WIG20... Oto typy na listopad”*](https://www.bankier.pl/wiadomosc/Zloto-po-przecenie-polprzewodniki-krotko-na-WIG20-Oto-typy-na-listopad-9221893.html)) dotyka znacznie głębszej warstwy — strukturalnej równowagi między światem papierowych zobowiązań a realną zdolnością gospodarki do wytwarzania dóbr i usług.
 
 ### Efekt drugiego rzędu, czyli czego nie widać w nagłówkach
 
@@ -29,7 +29,7 @@ Gdy słyszymy o kolejnym pakiecie stymulacyjnym lub nowej barierze handlowej maj
 
 ## Źródła
 
-### 1. Impuls rynkowy i analizy
+### 1. Bieżące analizy rynkowe
 - **Bankier.pl / 8000 (Osiem tysięcy):** [Złoto po przecenie, półprzewodniki, „krótko” na WIG20... Oto typy na listopad](https://www.bankier.pl/wiadomosc/Zloto-po-przecenie-polprzewodniki-krotko-na-WIG20-Oto-typy-na-listopad-9221893.html)
 - **Serwis analityczny 8000:** [osiemtysiecy.pl](https://osiemtysiecy.pl)
 

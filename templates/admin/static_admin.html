@@ -2621,10 +2621,25 @@
     let out = String(md);
     out = out.replace(/\s*\((?:Wersja|Redakcja)\s+Bielik\s+AI[^)]*\)/gi, '');
     out = out.replace(/^[ \t]*>[ \t]*(?:🦅[ \t]*)?\*\*Wersja Bielik AI:?\*\*:?[^\n]*\n?/gim, '');
+    out = out.replace(/^[ \t]*>[ \t]*(?:📡|🛡️|⚡|🦅|📚)?[ \t]*\*\*(?:Impuls źródłowy(?:\s*\([^)]*\))?|Źródło impulsu(?:\s+i inspiracji(?:\s+rynkowej)?)?|Źródło inspiracji(?:\s+z Banku Wiedzy(?:\s+Bloga Laika)?)?|Model Samokreacji(?:\s+Bloga Laika)?|KONDENSAT REDAKCYJNY(?:\s*\([^)]*\))?|Źródła syntezy):?\*\*:?[^\n]*\n?/gim, '');
+    out = out.replace(/^[ \t]*\*?(?:Data skanowania z palca|Data syntezy na żywo|Data wyszukania i analizy tematu|Autorski wpis Bloga Laika\.\s*100%\s*Samokreacja)[^\n]*\*?[ \t]*\n?/gim, '');
     out = out.replace(/^[ \t]*>?[ \t]*[^\n]*Zredagowan[aey] przez (?:polski )?model językowy[^\n]*\n?/gim, '');
     out = out.replace(/^(#{1,6})[ \t]*(?:🦅[ \t]*)?Kąt widzenia Bielik AI:?[ \t]*/gim, '$1 ');
     out = out.replace(/(?:\n[ \t]*---[ \t]*\n+)?[ \t]*\*?Redakcja i kondensacja:[^\n]*(?:Bielik|model językowy)[^\n]*\*?[ \t]*\n?/gi, '\n');
     out = out.replace(/Alternatywny szkic Bielik AI/gi, 'Alternatywny szkic');
+    out = out.replace(/\s*\(kondensacja redakcyjna\)/gi, '');
+    out = out.replace(/\s*\(First Principles Thinking\)/gi, '');
+    out = out.replace(/\s*\(RSS Live\)/gi, '');
+    out = out.replace(/^(#{1,6}[ \t]*(?:\d+\.[ \t]*)?)Źródła z monitoringu RSS[ \t]*$/gim, '$1Analizy i źródła prasowe');
+    out = out.replace(/^(#{1,6}[ \t]*(?:\d+\.[ \t]*)?)Impuls rynkowy i analizy[ \t]*$/gim, '$1Bieżące analizy rynkowe');
+    out = out.replace(/^(#{1,6}[ \t]*(?:\d+\.[ \t]*)?)Sygnał spod powierzchni codziennych nagłówków[ \t]*$/gim, '$1Co kryje się pod powierzchnią codziennych nagłówków');
+    out = out.replace(/\bJednak bieżący impuls rynkowy\b/gi, 'Jednak bieżąca debata rynkowa');
+    out = out.replace(/\bKiedy w strumieniu wiadomości pojawia się wątek\b/gi, 'Kiedy w debacie publicznej pojawia się temat');
+    out = out.replace(/\bImpuls płynący z bieżących analiz\b/gi, 'Wątek podjęty w bieżących analizach');
+    out = out.replace(/\bImpuls intelektualny z bieżącej lektury\b/gi, 'Wątek z bieżącej lektury');
+    out = out.replace(/\bNajnowszy sygnał z obszaru\b/gi, 'Najnowsze doniesienia z obszaru');
+    out = out.replace(/\bŚwieży sygnał ze źródła\b/gi, 'Publikacja ze źródła');
+    out = out.replace(/\bLekcja płynąca z tej obserwacji\b/gi, 'Lekcja płynąca z tej analizy');
     out = out.replace(/\n{3,}/g, '\n\n');
     return out;
   }
@@ -3970,13 +3985,6 @@ ${body}`;
 
     if (!body || body.trim().length === 0) {
       body = `# ${cleanPropTitle}\n\n`;
-      body += `> 🛡️ **Model Samokreacji Bloga Laika:** 100% autorska synteza faktów i trendów rynkowych z perspektywy dociekliwego laika. Zero kopiowania cudzych tekstów.\n\n`;
-      if (prop.source_name) {
-        body += `> 📡 **Źródło impulsu i inspiracji rynkowej:** ${prop.source_flag || '🇵🇱'} ${prop.source_name}${prop.source_note ? ' — ' + prop.source_note : ''}\n\n`;
-      }
-      if (prop.search_date || pkgDate) {
-        body += `*Data wyszukania i analizy tematu: ${prop.search_date || pkgDate}*\n\n`;
-      }
       if (prop.lead) {
         body += `${prop.lead}\n\n---\n\n`;
       }
@@ -4050,7 +4058,6 @@ ${body}`;
     const thesis = src.takeaway || `Zjawiska opisywane przez ${src.name} odsłaniają głębsze mechanizmy alokacji zasobów, długu i zaufania instytucjonalnego.`;
 
     const draftMarkdown = `# ${naturalTitle}\n\n` +
-      `> 📡 **Impuls źródłowy:** ${src.flag || '🇵🇱'} [${src.name} — „${src.best_essay || naturalTitle}”](${src.url || '#'})\n` +
       `> 💡 **Autorska teza Laika:** ${thesis}\n\n` +
       `### Wprowadzenie: Co ujawnia perspektywa ${src.name}?\n` +
       `${lead}\n\n` +
@@ -4061,7 +4068,7 @@ ${body}`;
       `* **Ukryte koszty alternatywne:** Każda decyzja o zamrożeniu cen, subsydiowaniu nierentownych branż czy unikaniu trudnych reform odkłada rachunek w czasie z wysokim procentem składanym.\n` +
       `* **Granice odporności systemowej:** Złożone łańcuchy powiązań pękają w najmniej spodziewanych miejscach, gdy rezerwy buforowe zostają wyeksploatowane w pogoni za krótkoterminową efektywnością.\n\n` +
       `### Wnioski dla dociekliwego laika\n` +
-      `Zamiast szukać prostych recept, dociekliwy laik buduje własne modele pojęciowe. Lekcja płynąca z tego impulsu to wezwanie do krytycznego audytu założeń: suwerenność i bezpieczeństwo buduje się na twardych fundamentach fizycznych i instytucjonalnych, a nie na wirtualnych obietnicach.\n`;
+      `Zamiast szukać prostych recept, dociekliwy laik buduje własne modele pojęciowe. Lekcja płynąca z tej obserwacji to wezwanie do krytycznego audytu założeń: suwerenność i bezpieczeństwo buduje się na twardych fundamentach fizycznych i instytucjonalnych, a nie na wirtualnych obietnicach.\n`;
 
     const bielikDraft = synthesizeBielikDraftInBrowser({
       title: naturalTitle,
@@ -4311,8 +4318,6 @@ ${parseMarkdownPreview(ra.bielik_title || (ra.title + ''), ra.bielik_draft)}
 
     // Build substantive structured essay outline from First Principles
     let body = `# ${title}\n\n`;
-    body += `> 📚 **Źródło inspiracji z Banku Wiedzy Bloga Laika:** ${source} ([Oryginalna publikacja](${url}))\n`;
-    body += `> 🛡️ **Model Samokreacji:** 100% autorska rekonstrukcja zagadnienia z perspektywy dociekliwego laika. Zero bezmyślnego powielania cudzych tez — badanie pierwszych zasad (First Principles Thinking).\n\n`;
     body += `W świecie przeładowanym powierzchownymi nagłówkami i agresywnym marketingiem narracyjnym, powrót do fundamentalnych pytań staje się jedyną skuteczną tarczą analityczną. Analiza problemu postawionego przez ${source} pozwala spojrzeć głębiej na strukturę zjawiska, które w debacie publicznej bywa sprowadzane do pustych haseł.\n\n`;
     body += `### Kluczowa teza i punkt wyjścia\n\n`;
     body += `To, co opinia publiczna uważa za przypadkowe wahanie rynkowe lub nagły kryzys, jest w rzeczywistości logiczną konsekwencją długoterminowych bodźców ekonomicznych, praw fizyki i struktury zależności instytucjonalnych.\n\n`;
@@ -5235,6 +5240,7 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
     prompt += `2. **Demaskowanie marketingu narracyjnego:** Dociekliwy laik pyta: Kto za to płaci? Gdzie jest asymetria informacji? Czy to przełom, czy anomalia okresu przejściowego?\n`;
     prompt += `3. **Polska typografia i precyzja:** Stosuj wyłącznie polskie cudzysłowy drukarskie („cytat”), myślniki pauzowe (—) i precyzyjną polszczyznę fleksyjną.\n`;
     prompt += `4. **Struktura tekstu:** Tytuł (# ), magnetyczny i chłodny lead, śródtytuły (## ), punktowa anatomia mechanizmu oraz na końcu bezwzględnie: „### 🦅 Pytanie dociekliwego laika”.\n\n`;
+    prompt += `5. **Czystość tekstu:** Nigdy nie umieszczaj w treści ani tytule etykiet wewnętrznych algorytmu (takich jak „impuls źródłowy”, „impuls rynkowy”, „sygnał z RSS”, „model samokreacji”, „kondensacja redakcyjna” ani angielskich wtrąceń typu „First Principles Thinking”). Pisz czystą, naturalną polszczyzną.\n\n`;
 
     if (ragEnabled) {
       prompt += `### WZORCE STYLISTYCZNE Z OPUBLIKOWANYCH ESEJÓW AUTORA (Naśladuj ten rytm, ton i metaforykę):\n`;
@@ -6594,10 +6600,9 @@ ${rawA}`;
     const angle = catAngles[category] || catAngles.eseje;
 
     return `# ${bielikTitle}\n\n` +
-      `> 📡 **Impuls źródłowy:** ${flag} [${srcName} — „${cleanRaw}”](${link || '#'})\n\n` +
       `Analiza tematu podjętego przez ${flag} **${srcName}** (*„${cleanRaw}”*) z perspektywy polskich uwarunkowań rynkowych i suwerenności regulacyjnej. Eliminujemy watę słowną i skupiamy się na twardym rachunku zysków i kosztów dla polskiego obywatela i przedsiębiorcy.\n\n` +
       `---\n\n` +
-      `### 1. Twardy bilans faktów (kondensacja redakcyjna)\n\n` +
+      `### 1. Twardy bilans faktów\n\n` +
       `${summClean || 'Wokół tematu narosło wiele narracji, ale kluczowe fakty dają się sprowadzić do mierzalnych wskaźników.'}\n` +
       `Sprawa sprowadza się do prostej zależności: kto kontroluje technologię i reguły gry, ten dyktuje warunki marżowe. Kto jedynie korzysta z gotowych rozwiązań, płaci premię za zależność.\n\n` +
       `### 2. Odniesienie do realiów Polski i Europy Środkowej\n\n` +
@@ -6616,7 +6621,7 @@ ${rawA}`;
     const framings = {
       technologia: {
         prefix: "Pod maską cyfrowego przełomu",
-        leadTpl: `Świeży sygnał ze źródła ${item.source} („${shortRaw}”) odsłania strukturalne napięcie we współczesnej inżynierii i architekturze cyfrowej. Przyglądamy się z perspektywy pierwszych zasad, gdzie kończy się marketingowy entuzjazm, a zaczynają twarde koszty infrastruktury, energii i bezpieczeństwa.`,
+        leadTpl: `Publikacja ze źródła ${item.source} („${shortRaw}”) odsłania strukturalne napięcie we współczesnej inżynierii i architekturze cyfrowej. Przyglądamy się z perspektywy pierwszych zasad, gdzie kończy się marketingowy entuzjazm, a zaczynają twarde koszty infrastruktury, energii i bezpieczeństwa.`,
         thesis: "Prawdziwa przewaga technologiczna nie rodzi się w prezentacjach produktowych, lecz na styku fizycznych wąskich gardeł, kosztów utrzymania i kontroli nad infrastrukturą.",
         concept: "Minimalistyczna ilustracja redakcyjna: przekrój serwerowni, światłowodów i układów krzemowych oświetlony chłodnym błękitem."
       },
@@ -6654,15 +6659,12 @@ ${rawA}`;
     const imgUrl = pool[Math.abs(plTitle.length + item.title.length) % pool.length];
 
     const fullDraft = `# ${plTitle}\n\n` +
-      `> 🛡️ **Model Samokreacji Bloga Laika:** 100% autorska analiza z pierwszych zasad. Zero kopiowania cudzych zdań.\n` +
-      `> 📡 **Impuls źródłowy (RSS Live):** ${item.flag} [${item.source} — „${item.title}”](${item.link})\n\n` +
-      `*Data skanowania z palca: ${dateStrPl}*\n\n` +
       `${cfg.leadTpl}\n\n` +
       `> **Teza przewodnia:** ${cfg.thesis}\n\n` +
-      `## 1. Sygnał spod powierzchni codziennych nagłówków\n\n` +
-      `Kiedy w strumieniu wiadomości pojawia się wątek opisywany przez **${item.source}** (*„${item.title}”*), większość komentarzy zatrzymuje się na bieżącej sensacji${item.summary ? ' (' + item.summary.slice(0, 200) + '…)' : ''}. Tymczasem z perspektywy dociekliwego laika najciekawsze jest pytanie o **mechanizm przyczynowo-skutkowy**: jakie ograniczenia fizyczne, finansowe lub instytucjonalne sprawiły, że ten problem wybuchł właśnie teraz?\n\n` +
+      `## 1. Co kryje się pod powierzchnią codziennych nagłówków\n\n` +
+      `Kiedy w debacie publicznej pojawia się temat opisany przez **${item.source}** (*„${item.title}”*), większość komentarzy zatrzymuje się na bieżącej sensacji${item.summary ? ' (' + item.summary.slice(0, 200) + '…)' : ''}. Tymczasem z perspektywy dociekliwego laika najciekawsze jest pytanie o **mechanizm przyczynowo-skutkowy**: jakie ograniczenia fizyczne, finansowe lub instytucjonalne sprawiły, że ten problem wybuchł właśnie teraz?\n\n` +
       `## 2. Trzy warstwy zjawiska: bodźce, wąskie gardła i koszty ukryte\n\n` +
-      `Rozkładając temat na czynniki pierwsze (First Principles Thinking), dostrzegamy trzy siły napędowe:\n\n` +
+      `Rozkładając temat na czynniki pierwsze, dostrzegamy trzy siły napędowe:\n\n` +
       `- **Struktura bodźców:** Kto ponosi ryzyko nietrafionej decyzji, a kto inkasuje premię w krótkim terminie? Asymetria odpowiedzialności niemal zawsze tłumaczy pozornie nieracjonalne ruchy dużych graczy.\n` +
       `- **Fizyczne i kapitałowe wąskie gardła:** Żadna narracja PR-owa nie przeskoczy ograniczeń mocy przyłączeniowej, demografii, czasu szkolenia kadr czy kosztu obsługi długu.\n` +
       `- **Efekty drugiego rzędu:** Decyzja rozwiązująca dzisiejszy problem w jednym sektorze bardzo często przesuwa napięcie do sąsiedniego ogniwa łańcucha.\n\n` +
@@ -6697,19 +6699,17 @@ ${rawA}`;
     const picks = proposals.slice(0, 4);
     const sourcesLabel = picks.map(p => p.source_name).join(' + ');
     const title = `Wielki Kondensat Dnia (${dateStrPl}): Jak technologia, kapitał i geopolityka splatają się w jeden układ naczyń połączonych`;
-    const lead = `Autorska supersynteza łącząca 4 świeżo zeskanowane impulsy ze świata i Polski (${sourcesLabel}). Pokazujemy, dlaczego zjawiska opisywane osobno w rubrykach technologicznych, ekonomicznych i międzynarodowych są w istocie różnymi obliczami tego samego przesunięcia tektonicznego.`;
+    const lead = `Przekrojowe spojrzenie na cztery powiązane wątki ze świata i Polski (${sourcesLabel}). Pokazujemy, dlaczego zjawiska opisywane osobno w rubrykach technologicznych, ekonomicznych i międzynarodowych są w istocie różnymi obliczami tego samego przesunięcia tektonicznego.`;
     const thesis = "Zrozumienie współczesności wymaga wyjścia z informacyjnych silosów: koszt obliczeń AI, ceny energii, napięcia na szlakach handlowych i lekcje historii tworzą dziś jeden wspólny rachunek.";
 
     const nodesMd = picks.map((p, i) => (
-      `### Węzeł ${i + 1} (${p.category.toUpperCase()} — sygnał z ${p.source_flag} ${p.source_name})\n\n` +
-      `Punktem wyjścia w tym segmencie jest impuls: *${p.source_note || p.title}*. ${p.lead} Kluczowy wniosek cząstkowy brzmi: **${p.thesis}**\n`
+      `### Część ${i + 1}. ${p.title}\n\n` +
+      `${p.lead} Kluczowy wniosek brzmi: **${p.thesis}**\n`
     )).join('\n');
 
     const fullDraft = `# ${title}\n\n` +
-      `> ⚡ **KONDENSAT REDAKCYJNY (Konglomerat Wielowątkowy — 100% Samokreacja):** Przekrojowy esej łączący najważniejsze świeże sygnały RSS w spójną mapę przyczynowo-skutkową (publikowany na stronie w dziale *Inne eseje*).\n\n` +
-      `*Data syntezy na żywo: ${dateStrPl}*\n\n` +
       `${lead}\n\n` +
-      `> **Teza spajająca konglomerat:** ${thesis}\n\n` +
+      `> **Teza przewodnia:** ${thesis}\n\n` +
       `## Dlaczego pojedyncze wiadomości nie wystarczają?\n\n` +
       `Czytając osobno wiadomości o nowych układach półprzewodnikowych, stopach procentowych, przesunięciach geopolitycznych i sporach kulturowych, łatwo odnieść wrażenie chaosu. Dopiero nałożenie tych warstw na siebie ujawnia wspólną logikę: walkę o rzadkie zasoby, przepustowość infrastruktury oraz zaufanie instytucjonalne.\n\n` +
       `${nodesMd}\n` +

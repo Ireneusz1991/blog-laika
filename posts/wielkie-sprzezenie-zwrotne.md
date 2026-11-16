@@ -112,7 +112,7 @@ Jeżeli w co najmniej trzech punktach odpowiedź brzmi „rynek jakoś to rozwi�
 4. **IEA Critical Minerals** — [*Critical Minerals Data & Market Outlook*](https://www.iea.org/topics/critical-minerals) (oraz szacunki *Trafigura Research / GlobalData* dot. zapotrzebowania centrów danych na miedź)
 5. **James M. Boughton (International Monetary Fund)** — [*Northwest of Suez: The 1956 Crisis and the IMF*](https://www.imf.org/en/Publications/WP/Issues/2016/12/30/Northwest-of-Suez-The-1956-Crisis-and-the-IMF-3949)
 
-### 2. Źródła z monitoringu RSS
+### 2. Analizy i źródła prasowe
 
 - **The Financial Times:** [AI mania can’t survive higher interest rates](https://www.ft.com/content/6e99dc59-8bd0-4c5c-8186-f6ceed04233a)
 - **Understanding AI (Timothy Lee):** [Anthropic’s financials are surprisingly strong](https://www.understandingai.org/p/anthropics-financials-are-surprisingly) • [OpenAI’s ironic credibility problem](https://www.understandingai.org/p/openais-ironic-credibility-problem)

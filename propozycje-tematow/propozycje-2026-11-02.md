@@ -16,7 +16,7 @@
 * **Proponowana grafika:** https://images.unsplash.com/photo-1504639725590-34d0984388bd?auto=format&fit=crop&w=1200&q=80
 * **Koncepcja wizualna:** Stacja robocza inżyniera z otwartą architekturą kodu i schematami algorytmów.
 * **Prompt AI dla grafiki:** `Moody editorial photo of software engineer desk with algorithmic data structures on ultra-wide screens, 8k.`
-* **Lead:** Najnowszy sygnał z obszaru inżynierii i rynków cyfrowych (Ars Technica: „Seabirds racing home over the ocean can get jet-lagged”) zmusza do postawienia pytania, które rzadko pada w komunikatach prasowych korporacji: ile w tym trwałej zmiany produktywności, a ile przesuwania kosztów na użytkowników i infrastrukturę?
+* **Lead:** Najnowsze doniesienia z obszaru inżynierii i rynków cyfrowych (Ars Technica: „Seabirds racing home over the ocean can get jet-lagged”) zmusza do postawienia pytania, które rzadko pada w komunikatach prasowych korporacji: ile w tym trwałej zmiany produktywności, a ile przesuwania kosztów na użytkowników i infrastrukturę?
 * **Kluczowa teza wpisu:**  
   *Każda fala przyspieszenia technologicznego rozstrzyga się nie na slajdach prezentacji, lecz na poziomie fizycznych ograniczeń energii, kosztu krańcowego obliczeń oraz tego, kto zachowuje kontrolę nad warstwą danych i standardem technicznym.*
 * **Kluczowe wątki i konspekt wpisu:**
@@ -27,7 +27,7 @@
 
 ### 📝 Gotowy szkic wpisu do weryfikacji i publikacji:
 
-W świecie technologii przyzwyczailiśmy się do nieustannego stanu wyjątkowego. Niemal każdy tydzień przynosi doniesienia o przełomie, który ma unieważnić dotychczasowe reguły gry. Impuls płynący z bieżących analiz (Ars Technica: *„Seabirds racing home over the ocean can get jet-lagged”*) warto jednak potraktować nie jako okazję do powtarzania branżowego entuzjazmu, lecz jako punkt wyjścia do chłodnego audytu z perspektywy dociekliwego laika.
+W świecie technologii przyzwyczailiśmy się do nieustannego stanu wyjątkowego. Niemal każdy tydzień przynosi doniesienia o przełomie, który ma unieważnić dotychczasowe reguły gry. Wątek podjęty w bieżących analizach (Ars Technica: *„Seabirds racing home over the ocean can get jet-lagged”*) warto jednak potraktować nie jako okazję do powtarzania branżowego entuzjazmu, lecz jako punkt wyjścia do chłodnego audytu z perspektywy dociekliwego laika.
 
 ### Fakty inżynieryjne kontra ekonomia obietnic
 
@@ -66,7 +66,7 @@ Zanim podpiszemy kolejny abonament na „rewolucyjne” rozwiązanie, warto zada
 
 ### 📝 Gotowy szkic wpisu do weryfikacji i publikacji:
 
-Ekonomia w wydaniu medialnym często przypomina relację sportową: indeksy wzrosły o pół procenta, bank centralny zmienił ton komunikatu, a analitycy skorygowali prognozę kwartalną. Jednak bieżący impuls rynkowy (8000 (Osiem tysięcy / osiemtysiecy.pl): *„Złoto po przecenie, półprzewodniki, „krótko” na WIG20... Oto typy na listopad”*) dotyka znacznie głębszej warstwy — strukturalnej równowagi między światem papierowych zobowiązań a realną zdolnością gospodarki do wytwarzania dóbr i usług.
+Ekonomia w wydaniu medialnym często przypomina relację sportową: indeksy wzrosły o pół procenta, bank centralny zmienił ton komunikatu, a analitycy skorygowali prognozę kwartalną. Jednak bieżąca debata rynkowa (8000 (Osiem tysięcy / osiemtysiecy.pl): *„Złoto po przecenie, półprzewodniki, „krótko” na WIG20... Oto typy na listopad”*) dotyka znacznie głębszej warstwy — strukturalnej równowagi między światem papierowych zobowiązań a realną zdolnością gospodarki do wytwarzania dóbr i usług.
 
 ### Efekt drugiego rzędu, czyli czego nie widać w nagłówkach
 
@@ -172,7 +172,7 @@ Dlaczego w naszej debacie publicznej poświęcamy 90% energii na personalne poty
 * **Proponowana grafika:** https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80
 * **Koncepcja wizualna:** Otwarta książka z widoczną typografią i grą cieni na zadrukowanych stronach.
 * **Prompt AI dla grafiki:** `Extreme close up of open book pages with classic serif typography, tactile paper texture, 8k.`
-* **Lead:** Impuls intelektualny z bieżącej lektury (Astral Codex Ten (Scott Alexander): „Open Thread 458”) skłania do zatrzymania się w codziennym pośpiechu i przyjrzenia się temu, jak współczesna kultura informacyjna zmienia nasz sposób myślenia, wartościowania i rozmowy.
+* **Lead:** Wątek z bieżącej lektury (Astral Codex Ten (Scott Alexander): „Open Thread 458”) skłania do zatrzymania się w codziennym pośpiechu i przyjrzenia się temu, jak współczesna kultura informacyjna zmienia nasz sposób myślenia, wartościowania i rozmowy.
 * **Kluczowa teza wpisu:**  
   *W epoce nadpodaży opinii i gotowych tożsamościowych szablonów największym luksusem — a zarazem aktem intelektualnej odwagi — staje się samodzielny osąd oparty na cierpliwej weryfikacji źródeł i gotowości do powiedzenia „nie wiem, sprawdźmy”.*
 * **Kluczowe wątki i konspekt wpisu:**
@@ -222,17 +222,17 @@ Gdybyśmy przez najbliższy miesiąc całkowicie zrezygnowali z komentowania spr
 
 ### 📝 Gotowy szkic wpisu do weryfikacji i publikacji:
 
-Tradycyjne media dzielą rzeczywistość na szczelne przegródki: osobno czytamy dział technologiczny, osobno tabelki giełdowe, osobno depesze dyplomatyczne, a w weekendowy wieczór sięgamy po dodatek historyczny. Problem polega na tym, że realny świat nie zna podziału na redakcyjne działy. Dzisiejszy splot impulsów analitycznych z **2 listopada 2026 r.** pokazuje jak na dłoni, że te cztery wektory tworzą jeden nierozerwalny układ naczyń połączonych.
+Tradycyjne media dzielą rzeczywistość na szczelne przegródki: osobno czytamy dział technologiczny, osobno tabelki giełdowe, osobno depesze dyplomatyczne, a w weekendowy wieczór sięgamy po dodatek historyczny. Problem polega na tym, że realny świat nie zna podziału na redakcyjne działy. Zestawienie najważniejszych tematów z **2 listopada 2026 r.** pokazuje jak na dłoni, że te cztery wektory tworzą jeden nierozerwalny układ naczyń połączonych.
 
-### Węzeł 1: Technologia i fizyczny rachunek mocy
+### 1. Technologia i fizyczny rachunek mocy
 
 W warstwie technologicznej dzisiejszą uwagę przykuwa wątek *„Seabirds racing home over the ocean can get jet-lagged”*. Jeszcze niedawno postęp cyfrowy wydawał się zawieszony w próżni czystego oprogramowania. Dziś widzimy wyraźnie, że każda innowacja obliczeniowa natychmiast zderza się z twardym bilansem energetycznym, dostępnością komponentów i walką o kontrolę nad infrastrukturą krytyczną. Kod bez suwerennego zaplecza sprzętowego przestaje być gwarancją przewagi.
 
-### Węzeł 2: Makroekonomia i dyscyplina kosztu pieniądza
+### 2. Makroekonomia i dyscyplina kosztu pieniądza
 
-To prowadzi nas bezpośrednio do drugiego ogniwa dzisiejszego konglomeratu — sfery gospodarczej (*„Złoto po przecenie, półprzewodniki, „krótko” na WIG20... Oto typy na listopad”*). Kapitał przestał być darmowy, a inwestorzy oraz budżety państw muszą wybierać między obsługą narosłych zobowiązań a finansowaniem modernizacji przemysłowej. Przedsiębiorstwa i rządy, które przespały dekadę niskich stóp, płacą dziś podwójną premię za ryzyko.
+To prowadzi nas bezpośrednio do drugiego wymiaru obecnej sytuacji — sfery gospodarczej (*„Złoto po przecenie, półprzewodniki, „krótko” na WIG20... Oto typy na listopad”*). Kapitał przestał być darmowy, a inwestorzy oraz budżety państw muszą wybierać między obsługą narosłych zobowiązań a finansowaniem modernizacji przemysłowej. Przedsiębiorstwa i rządy, które przespały dekadę niskich stóp, płacą dziś podwójną premię za ryzyko.
 
-### Węzeł 3: Geopolityka i analogia historyczna
+### 3. Geopolityka i analogia historyczna
 
 Kiedy nałożymy na to dzisiejszy wymiar polityczno-strategiczny (*„Wojna wchodzi do łóżka. Jak zmienia się seks, ciało i bliskość w Ukrainie”*) oraz perspektywę historyczną (*„90 lat temu BBC rozpoczęła nadawanie regularnego programu telewizyjnego”*), wyłania się pełny obraz epoki przejściowej. Dokładnie tak jak w przełomowych dekadach minionych stuleci, o pozycji państwa nie decydują uroczyste deklaracje, lecz zdolność do zintegrowania trzech elementów: własnej myśli inżynieryjnej, zdrowych finansów publicznych oraz sprawnej logistyki państwowej.
 

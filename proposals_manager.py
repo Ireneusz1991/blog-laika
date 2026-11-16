@@ -16,13 +16,11 @@ except Exception:
         )
         return f"""# {bielik_title}
 
-> 📡 **Impuls źródłowy:** {src_flag} [{src_name} — „{clean_raw}”]({link if link else '#'})
-
 {lead}
 
 ---
 
-### 1. Twardy bilans faktów (kondensacja redakcyjna)
+### 1. Twardy bilans faktów
 
 {summary if summary else 'Wokół tematu narosło wiele narracji, ale kluczowe fakty dają się sprowadzić do mierzalnych wskaźników.'}
 Sprawa sprowadza się do prostej zależności: kto kontroluje technologię i reguły gry, ten dyktuje warunki marżowe i prawne.
@@ -191,14 +189,12 @@ def parse_proposals_file(filepath: str) -> list:
             if lead:
                 draft_parts.append(f"{lead}\n")
             draft_parts.append("---\n")
-            if source_name:
-                draft_parts.append(f"> 📡 **Źródło impulsu i inspiracji:** {source_flag} **{source_name}**" + (f" — *{source_note}*" if source_note else "") + "\n")
             if thesis:
                 draft_parts.append(f"> 💡 **Kluczowa teza wpisu:** *{thesis}*\n")
             if body_lines:
-                draft_parts.append("## Węzłowe punkty argumentacji i analiza faktów\n")
+                draft_parts.append("## Kluczowe wątki i analiza faktów\n")
                 draft_parts.append("\n".join(body_lines).strip())
-            draft_parts.append("\n\n---\n\n*Autorski wpis Bloga Laika. 100% Samokreacja — synteza faktów z perspektywy dociekliwego laika.*")
+
             full_draft = "\n".join(draft_parts)
 
         # Build Bielik AI alternative draft (Wersja B - Polski kontekst & kondensacja)

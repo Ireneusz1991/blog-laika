@@ -19,7 +19,6 @@ READY_SOURCE_ARTICLES = {
         "tags": ["AI", "Modele Językowe", "Transformery", "Technologia", "Architektura Uwagi"],
         "draft_markdown": """# Architektura transformera bez tajemnic: Dlaczego modele językowe przewidują, a nie myślą
 
-> 📡 **Impuls źródłowy:** 🇺🇸 [Understanding AI (Timothy Lee) — „Large Language Models Explained with Plain English and Zero Hype”](https://www.understandingai.org)
 > 💡 **Autorska teza Laika:** Halucynacja nie jest „usterką do naprawienia”, lecz fundamentalną cechą architektury transformera. Model nie posiada wbudowanego rejestru faktów – oblicza jedynie geometrię prawdopodobieństwa kolejnego słowa w wielowymiarowej przestrzeni wektorowej.
 
 ### Wprowadzenie: Mgła marketingowa wokół sztucznej inteligencji
@@ -76,7 +75,6 @@ Nie kupuj „sztucznej inteligencji” jako modnego hasła. Zidentyfikuj procesy
         "tags": ["Kryptografia", "Komputery Kwantowe", "Bezpieczeństwo Cyfrowe", "Bankowość", "Fizyka"],
         "draft_markdown": """# Kryptografia postkwantowa: Dlaczego algorytm Shora zmusi banki do wymiany fundamentów
 
-> 📡 **Impuls źródłowy:** 🇵🇱 [Kwantowo.pl — „Kryptografia postkwantowa: Dlaczego algorytm Shora zmusi banki do wymiany fundamentów”](https://kwantowo.pl)
 > 💡 **Autorska teza Laika:** Zagrożenie ze strony komputerów kwantowych nie jest problemem przyszłości, lecz teraźniejszości. Wrogie służby i grupy wywiadowcze już dziś magazynują zaszyfrowany ruch sieciowy państw i korporacji, czekając na pierwsze stabilne kubity logiczne.
 
 ### Fundament: Na czym stoi współczesny internet?
@@ -135,7 +133,6 @@ Audyt kryptograficzny infrastruktury to nie fanaberia akademicka, lecz podstawow
         "tags": ["Gospodarka", "Stopy Procentowe", "Inflacja", "Finanse", "Rynek Długu"],
         "draft_markdown": """# Złudzenie taniego kapitału: Dlaczego zerowe stopy procentowe wypaczyły wycenę ryzyka
 
-> 📡 **Impuls źródłowy:** 🇵🇱 [8000 (osiemtysiecy.pl) — „Złudzenie taniego kapitału: Dlaczego zerowe stopy procentowe wypaczyły wycenę ryzyka”](https://osiemtysiecy.pl)
 > 💡 **Autorska teza Laika:** Kapitał nie jest abstrakcyjnym zapisem księgowym – jest reprezentacją rzadkich zasobów w świecie fizycznym. Sztuczne zerowanie jego ceny przez banki centralne wywołuje iluzję bogactwa, za którą społeczeństwa płacą inflacją i kryzysem mieszkaniowym.
 
 ### Geneza anomalii: Półtorej dekady darmowych pieniędzy
@@ -181,7 +178,6 @@ Dla polskiego przedsiębiorcy i inwestora wniosek jest bezlitosny: czas taniego 
         "tags": ["Obligacje", "Dług Publiczny", "Makroekonomia", "Rynki Finansowe", "Budżet"],
         "draft_markdown": """# Koniec ery darmowego długu: Dlaczego rządy wpadają w pułapkę rentowności obligacji
 
-> 📡 **Impuls źródłowy:** 🇬🇧 [The Financial Times (FT) — „The Era of Free Money is Over: Sovereign Debt Traps in the 2020s”](https://www.ft.com)
 > 💡 **Autorska teza Laika:** Przez dekadę politycy wierzyli w dogmat Nowoczesnej Teorii Monetarnej (MMT), że suwerenny rząd może zadłużać się w nieskończoność. Dziś rynki długu wystawiają rachunek, a pierwsi na celowniku 'strażników obligacji' (bond vigilantes) stają rządy żyjące z deficytów.
 
 ### Od zera do pięciu procent: Szok w bilansach państw
@@ -229,7 +225,6 @@ Kiedy politycy obiecują kolejne transfery socjalne lub ulgi podatkowe, sprawdza
         "tags": ["Historia Polski", "Powstania", "Geopolityka", "Obronność", "Pragmatyzm"],
         "draft_markdown": """# Anatomia polskich powstań: Rachunek zysków i strat z perspektywy chłodnego pragmatyzmu
 
-> 📡 **Impuls źródłowy:** 🇵🇱 [Dzieje.pl (PAP & Muzeum Historii Polski) — „Anatomia polskich powstań narodowych: Rachunek zysków i strat”](https://dzieje.pl)
 > 💡 **Autorska teza Laika:** Heroizm jednostek nie zastąpi logistyki dywizji. Tragedia polskich zrywów XIX wieku polegała na podejmowaniu walki w momentach, gdy rachunek sił przemysłowych i dyplomatycznych był bezwzględnie ujemny.
 
 ### Odwieczny polski spór: Romantyzm kontra realizm
@@ -276,7 +271,6 @@ Chłodny pragmatyzm i twarde zbrojenia to najlepsza gwarancja, że następne pok
         "tags": ["Transformacja 1989", "Historia Najnowsza", "Gospodarka", "Balcerowicz", "Polska B"],
         "draft_markdown": """# Kulisy polskiej transformacji: Dlaczego reformy Balcerowicza podzieliły społeczeństwo na dekady
 
-> 📡 **Impuls źródłowy:** 🇵🇱 [Dudek o Historii (prof. Antoni Dudek) — „Kulisy transformacji ustrojowej: Kto naprawdę rządził Polską w latach 90.”](https://youtube.com)
 > 💡 **Autorska teza Laika:** Sukces polskiej transformacji leży w przedsiębiorczości milionów zwykłych Polaków, którzy otworzyli łóżka polowe i budki z warzywami, a nie w dogmatyzmie neoliberalnych doradców z Waszyngtonu.
 
 ### Jesień 1989: Kraj na krawędzi katastrofy
@@ -329,7 +323,6 @@ Nie dajmy się uwięzić w starych sporach z lat 90. Pytanie na dziś brzmi: jak
         "tags": ["Państwo", "Administracja Publiczna", "Instytucje", "mObywatel", "Myśl Państwowa"],
         "draft_markdown": """# Państwo z kartonu a cyfrowy lewiatan: Dlaczego polskie instytucje zawodzą w kluczowych próbach
 
-> 📡 **Impuls źródłowy:** 🇵🇱 [Klub Jagielloński — „Państwo z kartonu: Anatomia instytucjonalnej bezsilności i drogi wyjścia”](https://klubjagiellonski.pl)
 > 💡 **Autorska teza Laika:** Polskie państwo cierpi na schizofrenię rozwojową: posiada fasadę nowoczesnego, cyfrowego mocarstwa na smartfonie, za którą kryje się XIX-wieczny, skłócony aparat urzędniczy bojący się podjęcia jakiejkolwiek decyzji.
 
 ### Paradoks nowoczesności: Sukces mObywatela i klęska planowania
@@ -371,7 +364,6 @@ Oceniaj rządzących nie po obietnicach wyborczych, lecz po tym, jak funkcjonuje
         "tags": ["Geopolityka", "Koncert Mocarstw", "Bezpieczeństwo Narodowe", "NATO", "Realizm Polityczny"],
         "draft_markdown": """# Nowy koncert mocarstw: Równowaga sił na wschodzie i granice polskiego realizmu
 
-> 📡 **Impuls źródłowy:** 🇵🇱 [Nowa Konfederacja — „Nowy koncert mocarstw: Równowaga sił na wschodzie i granice polskiego realizmu”](https://nowakonfederacja.pl)
 > 💡 **Autorska teza Laika:** Prawo międzynarodowe obowiązuje tylko dopóty, dopóki stoi za nim mocarstwo gotowe użyć siły w jego obronie. Gdy globalny policjant skupia się na Pacyfiku, Europa Wschodnia wraca do reguł gry o sumie zerowej.
 
 ### Koniec 'dywidendy pokoju': Przebudzenie po 1989 roku
@@ -416,7 +408,6 @@ Bezpieczeństwa nie buduje się rezolucjami dyplomatycznymi, lecz siłą własny
         "tags": ["Społeczeństwo", "Ekonomia Uwagi", "Samotność", "Zdrowie Psychiczne", "Filozofia"],
         "draft_markdown": """# Samotność w epoce algorytmów: Dlaczego zatomizowane społeczeństwo traci zdolność do wspólnoty
 
-> 📡 **Impuls źródłowy:** 🇵🇱 [Magazyn Kontakt — „Samotność w epoce algorytmów: Dlaczego zatomizowane społeczeństwo traci zdolność do wspólnego działania”](https://magazynkontakt.pl)
 > 💡 **Autorska teza Laika:** Samotność nie jest indywidualną słabością charakteru, lecz produktem ubocznym architektury cyfrowego kapitalizmu. Nasz czas wolny został sprywatyzowany i zamknięty w ekranach smartfonów, uniemożliwiając powstawanie realnych więzi.
 
 ### Epidemia XXI wieku: Tłum w sieci, pustka w pokoju
@@ -460,7 +451,6 @@ Ogranicz czas przed ekranem, zainwestuj w relację z żywym człowiekiem za ści
         "tags": ["Postęp Cywilizacyjny", "Infrastruktura", "Inżynieria", "Bity vs Atomy", "CPK"],
         "draft_markdown": """# Zastój w świecie atomów: Dlaczego łatwiej napisać aplikację niż postawić most czy elektrownię
 
-> 📡 **Impuls źródłowy:** 🇬🇧 [Works in Progress Magazine — „Why We Stopped Making Things: The Stagnation of Physical Progress”](https://worksinprogress.co)
 > 💡 **Autorska teza Laika:** Cyfrowy świat stał się dla cywilizacji zachodniej bezpieczną ucieczką przed trudnościami świata fizycznego. Jeśli postawienie turbiny wiatrowej wymaga siedmiu lat procedur środowiskowych, inżynierowie wolą pisać algorytmy klikalności reklam.
 
 ### Rozłam z lat 70.: Dokąd poszedł postęp?
@@ -507,7 +497,6 @@ Popieraj i monitoruj inwestycje w infrastrukturę fizyczną. Dobry most, bezpiec
         "tags": ["Konglomerat", "Makroekonomia", "Energetyka", "Zbrojenia", "Kondensat"],
         "draft_markdown": """# Wielkie sprzężenie zwrotne: Jak deficyt energii, drogi kapitał i zbrojenia zamykają dekadę beztroski
 
-> 📡 **Impuls źródłowy:** ⚡ [Węzeł Makroanalityczny Bloga Laika — Konglomerat Czterech Zjawisk Makro](https://blog-laika.com)
 > 💡 **Autorska teza Laika:** Żyjemy w epoce potrójnego Capexu: państwa muszą jednocześnie sfinansować odbudowę armii, transformację sieci energetycznych i reindustrializację, mając do dyspozycji najdroższy kapitał od dwóch dekad i starzejące się społeczeństwa.
 
 ### Anatomia sprzężenia: Cztery wektory uderzające jednocześnie
@@ -552,7 +541,6 @@ Analizuj politykę państwa jak bilans wielkiego przedsiębiorstwa: sprawdzaj pr
         "tags": ["AI", "Energetyka", "Centra Danych", "Krzem", "Kondensat"],
         "draft_markdown": """# Paradoks Energetyczny AI: Kiedy wirtualne modele zderzają się ze ścianą gigawatów i miedzi
 
-> 📡 **Impuls źródłowy:** ⚡ [Węzeł Technologiczno-Surowcowy Bloga Laika — Konglomerat Krzem & Gigawaty](https://blog-laika.com)
 > 💡 **Autorska teza Laika:** Najbardziej zaawansowana technologia XXI wieku (sztuczna inteligencja) uzależniona jest od XIX-wiecznych fundamentów: generatorów pary, turbin energetycznych i miedzianych przewodów. Bit nie istnieje bez dżula energii.
 
 ### Od zapytania w przeglądarce do terawatogodzin
