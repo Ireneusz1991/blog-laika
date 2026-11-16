@@ -2448,7 +2448,7 @@
           <textarea id="bielik-raw-a" class="custom-scrollbar" placeholder="Wklej tutaj swój surowy tekst..." style="display: none; flex: 1 1 0; min-height: 0; width: 100%; border: none; padding: 1rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.55; resize: none; background: transparent; color: var(--text-primary); outline: none; overflow-y: scroll;" oninput="onBielikAManualEdit();"></textarea>
         </div>
 
-        <!-- RIGHT COLUMN: VERSION B (REDAKCJA BIELIK AI — SFORMATOWANY) -->
+        <!-- RIGHT COLUMN: VERSION B -->
         <div id="bielik-col-b" style="display: flex; flex-direction: column; background: var(--bg-card); height: 100%; min-height: 0; overflow: hidden;">
           <div style="padding: 0.55rem 1rem; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem;">
             <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -2608,7 +2608,36 @@
     }
   }
 
+  // =========================================================================
+  // CZYSTA TREŚĆ: usuwanie dopisków sugerujących użycie AI (Bielik, model językowy)
+  // Oznaczenia wersji A/B zostają wyłącznie jako metadane panelu admina.
+  // =========================================================================
+  function stripAiTitleSuffix(title) {
+    return String(title || '').replace(/\s*\((?:Wersja|Redakcja)\s+Bielik\s+AI[^)]*\)/gi, '').trim();
+  }
+
+  function stripAiAttribution(md) {
+    if (!md) return md;
+    let out = String(md);
+    out = out.replace(/\s*\((?:Wersja|Redakcja)\s+Bielik\s+AI[^)]*\)/gi, '');
+    out = out.replace(/^[ \t]*>[ \t]*(?:🦅[ \t]*)?\*\*Wersja Bielik AI:?\*\*:?[^\n]*\n?/gim, '');
+    out = out.replace(/^[ \t]*>?[ \t]*[^\n]*Zredagowan[aey] przez (?:polski )?model językowy[^\n]*\n?/gim, '');
+    out = out.replace(/^(#{1,6})[ \t]*(?:🦅[ \t]*)?Kąt widzenia Bielik AI:?[ \t]*/gim, '$1 ');
+    out = out.replace(/(?:\n[ \t]*---[ \t]*\n+)?[ \t]*\*?Redakcja i kondensacja:[^\n]*(?:Bielik|model językowy)[^\n]*\*?[ \t]*\n?/gi, '\n');
+    out = out.replace(/Alternatywny szkic Bielik AI/gi, 'Alternatywny szkic');
+    out = out.replace(/\n{3,}/g, '\n\n');
+    return out;
+  }
+
+  function sanitizeEditorFieldsFromAiAttribution() {
+    const t = document.getElementById('scratch-title');
+    const b = document.getElementById('scratch-body');
+    if (t) { const c = stripAiTitleSuffix(t.value); if (c !== t.value) t.value = c; }
+    if (b) { const c = stripAiAttribution(b.value); if (c !== b.value) b.value = c; }
+  }
+
   function updateLivePreview() {
+    sanitizeEditorFieldsFromAiAttribution();
     const title = document.getElementById('scratch-title').value;
     const text = document.getElementById('scratch-body').value;
     const imgUrl = document.getElementById('scratch-image')?.value?.trim();
@@ -3747,7 +3776,7 @@ ${body}`;
     if (!wireItem) return;
 
     const isVersionB = (String(version).toUpperCase() === 'B');
-    const chosenTitle = isVersionB ? (wireItem.bielik_title || `${wireItem.title} (Wersja Bielik AI — Polski kontekst)`) : wireItem.title;
+    const chosenTitle = isVersionB ? (wireItem.bielik_title || `${wireItem.title}`) : wireItem.title;
     const body = isVersionB ? (wireItem.bielik_draft || wireItem.full_draft || "") : (wireItem.full_draft || wireItem.bielik_draft || "");
 
     currentEditingSlug = null;
@@ -3818,7 +3847,7 @@ ${body}`;
     if (rawA) rawA.value = draftA;
     if (outB) outB.value = draftB;
 
-    bielikCurrentResultB.title = wireItem.bielik_title || (wireItem.title + ' (Wersja Bielik AI)');
+    bielikCurrentResultB.title = wireItem.bielik_title || (wireItem.title + '');
     bielikCurrentResultB.fullMarkdown = draftB;
 
     if (prevA) prevA.innerHTML = wireItem.full_draft_html || parseMarkdownPreview(wireItem.title, draftA);
@@ -3904,7 +3933,7 @@ ${body}`;
     currentEditingSlug = null;
     
     const isVersionB = (String(version).toUpperCase() === 'B');
-    const chosenRawTitle = isVersionB ? (prop.bielik_title || `${prop.title} (Wersja Bielik AI — Polski kontekst)`) : prop.title;
+    const chosenRawTitle = isVersionB ? (prop.bielik_title || `${prop.title}`) : prop.title;
     const cleanPropTitle = prop.category === 'kondensat' ? stripKondensatTitlePrefix(chosenRawTitle) : chosenRawTitle;
 
     const titleEl = document.getElementById('scratch-title');
@@ -4044,7 +4073,7 @@ ${body}`;
 
     const readyArticle = {
       title: naturalTitle,
-      bielik_title: `${naturalTitle} (Wersja Bielik AI — Polski kontekst)`,
+      bielik_title: `${naturalTitle}`,
       lead: lead,
       thesis: thesis,
       category: src.blog_category || 'eseje',
@@ -4070,7 +4099,7 @@ ${body}`;
     if (!ra) return;
 
     currentEditingSlug = null;
-    const chosenTitle = isVersionB ? (ra.bielik_title || `${ra.title} (Wersja Bielik AI — Polski kontekst)`) : ra.title;
+    const chosenTitle = isVersionB ? (ra.bielik_title || `${ra.title}`) : ra.title;
 
     const titleEl = document.getElementById('scratch-title');
     const slugEl = document.getElementById('scratch-slug');
@@ -4148,7 +4177,7 @@ ${body}`;
     if (rawA) rawA.value = ra.draft_markdown || '';
     if (outB) outB.value = ra.bielik_draft || '';
 
-    bielikCurrentResultB.title = ra.bielik_title || (ra.title + ' (Wersja Bielik AI — Polski kontekst)');
+    bielikCurrentResultB.title = ra.bielik_title || (ra.title + '');
     bielikCurrentResultB.fullMarkdown = ra.bielik_draft || '';
 
     if (prevA) prevA.innerHTML = parseMarkdownPreview(ra.title, ra.draft_markdown);
@@ -4214,7 +4243,7 @@ ${body}`;
 ${parseMarkdownPreview(ra.title, ra.draft_markdown)}
       </div>
       <div id="content-src-${sourceId}-B" class="article-body source-content-pane custom-scrollbar" style="display: none; max-height: 420px; overflow-y: scroll; background: var(--bg-surface); border: 1.5px solid #059669; border-radius: 4px; padding: 0.85rem 1rem; font-size: 0.82rem; line-height: 1.65; color: var(--text-primary); margin-bottom: 0.65rem; font-family: var(--font-serif); -webkit-overflow-scrolling: touch; touch-action: pan-y;">
-${parseMarkdownPreview(ra.bielik_title || (ra.title + ' (Wersja Bielik AI)'), ra.bielik_draft)}
+${parseMarkdownPreview(ra.bielik_title || (ra.title + ''), ra.bielik_draft)}
       </div>
       <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
         <button type="button" class="btn btn-primary" onclick="loadSourceArticleIntoEditor('${sourceId}', 'A');" style="font-size: 0.71rem; padding: 0.3rem 0.6rem;">
@@ -5278,7 +5307,7 @@ Nie pisze tego bloga jako akademicki ekspert z tytulami. Pisze jako ktos, kto ma
       if (rawA && rawA.value.trim()) {
         const localRedacted = polishTextWithBielikRules(rawA.value, 'publicistic');
         bielikCurrentResultB.fullMarkdown = localRedacted.fullMarkdown;
-        bielikCurrentResultB.title = localRedacted.title || (editorTitle + ' (Redakcja Bielik AI)');
+        bielikCurrentResultB.title = localRedacted.title || (editorTitle + '');
         if (outB) outB.value = localRedacted.fullMarkdown;
       }
     }
@@ -6125,7 +6154,7 @@ ${rawA}`;
     }
 
     let endingMatch = mdB.match(/(### 🦅[\s\S]+)$/);
-    let ending = endingMatch ? endingMatch[1] : '';
+    let ending = endingMatch ? stripAiAttribution(endingMatch[1]) : '';
 
     let merged = rawA;
     if (ending && !merged.includes('### 🦅')) {
@@ -6552,7 +6581,7 @@ ${rawA}`;
 
   function synthesizeBielikDraftInBrowser(title, rawTitle, srcName, flag, category, summary, link) {
     const cleanRaw = (rawTitle || title || '').replace(/[„”"'\s«»]+/g, ' ').trim();
-    const bielikTitle = `${title} (Wersja Bielik AI — Polski kontekst)`;
+    const bielikTitle = `${title}`;
     const summClean = (summary || '').trim();
 
     const catAngles = {
@@ -6565,7 +6594,6 @@ ${rawA}`;
     const angle = catAngles[category] || catAngles.eseje;
 
     return `# ${bielikTitle}\n\n` +
-      `> 🦅 **Wersja Bielik AI:** Zredagowana przez polski model językowy — nacisk na polski kontekst gospodarczy, suwerenność cyfrową i kondensację treści.\n` +
       `> 📡 **Impuls źródłowy:** ${flag} [${srcName} — „${cleanRaw}”](${link || '#'})\n\n` +
       `Analiza tematu podjętego przez ${flag} **${srcName}** (*„${cleanRaw}”*) z perspektywy polskich uwarunkowań rynkowych i suwerenności regulacyjnej. Eliminujemy watę słowną i skupiamy się na twardym rachunku zysków i kosztów dla polskiego obywatela i przedsiębiorcy.\n\n` +
       `---\n\n` +
@@ -6574,11 +6602,10 @@ ${rawA}`;
       `Sprawa sprowadza się do prostej zależności: kto kontroluje technologię i reguły gry, ten dyktuje warunki marżowe. Kto jedynie korzysta z gotowych rozwiązań, płaci premię za zależność.\n\n` +
       `### 2. Odniesienie do realiów Polski i Europy Środkowej\n\n` +
       `${angle}\n\n` +
-      `### 🦅 Kąt widzenia Bielik AI: Co z tego wynika dla Polski?\n\n` +
+      `### Co z tego wynika dla Polski?\n\n` +
       `1. **Pragmatyzm zamiast kalki językowej:** Weryfikujmy zewnętrzne mody w lokalnych warunkach prawno-podatkowych.\n` +
       `2. **Ochrona suwerenności i kapitału:** Zachowujmy własne kompetencje i plany awaryjne w kluczowych sektorach.\n` +
-      `3. **Mierzalny pożytek:** Weryfikujmy reformy kryterium realnego obniżenia kosztów życia i wzrostu bezpieczeństwa.\n\n` +
-      `---\n\n*Redakcja i kondensacja: Polski model językowy Bielik AI & Blog Laika*\n`;
+      `3. **Mierzalny pożytek:** Weryfikujmy reformy kryterium realnego obniżenia kosztów życia i wzrostu bezpieczeństwa.\n`;
   }
 
   function synthesizeSamokreacjaFromFeedItem(item, dateStrPl) {
@@ -6621,7 +6648,7 @@ ${rawA}`;
 
     const cfg = framings[cat] || framings.eseje;
     const plTitle = craftNaturalPolishTitle(item.title, item.source, cat, isPl, item.summary);
-    const bielikTitle = `${plTitle} (Wersja Bielik AI — Polski kontekst)`;
+    const bielikTitle = `${plTitle}`;
 
     const pool = CAT_COVER_POOL[cat] || CAT_COVER_POOL.eseje;
     const imgUrl = pool[Math.abs(plTitle.length + item.title.length) % pool.length];
@@ -6822,7 +6849,7 @@ ${rawA}`;
       md += `* **Lead:** ${p.lead}\n`;
       md += `* **Kluczowa teza wpisu:** ${p.thesis}\n\n`;
       md += `### 📝 Gotowy szkic wpisu do weryfikacji i publikacji (Wersja A — Autorska):\n\n${p.full_draft}\n\n`;
-      md += `### 🦅 Alternatywny szkic Bielik AI (Wersja B — Polski kontekst & Kondensacja):\n\n${p.bielik_draft || p.full_draft}\n\n---\n\n`;
+      md += `### Alternatywny szkic (Wersja B — Polski kontekst i kondensacja):\n\n${p.bielik_draft || p.full_draft}\n\n---\n\n`;
     });
     return md;
   }
@@ -7546,6 +7573,7 @@ ${rawA}`;
       statusBox.innerHTML = html;
     };
 
+    sanitizeEditorFieldsFromAiAttribution();
     const { doc, title, slug } = buildFullMarkdownDocument();
     const category = document.getElementById('scratch-category')?.value || 'eseje';
     const summary = document.getElementById('scratch-summary')?.value || '';

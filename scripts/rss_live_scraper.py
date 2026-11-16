@@ -395,7 +395,7 @@ def synthesize_bielik_draft(
     """Tworzy zredagowaną wersję Bielik AI (Wersja B — Polski kontekst, rodzimy rynek, suwerenność i kondensacja)."""
     clean_raw = clean_raw_title(raw_title)
     summary_clean = (summary or "").strip()
-    bielik_title = f"{title} (Wersja Bielik AI — Polski kontekst)"
+    bielik_title = f"{title}"
 
     lead = (
         f"Analiza tematu podjętego przez {src_flag} **{src_name}** (*„{clean_raw}”*) z perspektywy polskich uwarunkowań rynkowych i suwerenności regulacyjnej. "
@@ -430,7 +430,6 @@ def synthesize_bielik_draft(
 
     return f"""# {bielik_title}
 
-> 🦅 **Wersja Bielik AI:** Zredagowana przez polski model językowy — nacisk na polski kontekst gospodarczy, suwerenność cyfrową i kondensację treści.  
 > 📡 **Impuls źródłowy:** {src_flag} [{src_name} — „{clean_raw}”]({link if link else '#'})
 
 {lead}
@@ -446,14 +445,12 @@ Sprawa sprowadza się do prostej zależności: kto kontroluje reguły gry i tech
 
 {polish_specific}
 
-### 🦅 Kąt widzenia Bielik AI: Co z tego wynika dla Polski?
+### Co z tego wynika dla Polski?
 
 1. **Pragmatyzm zamiast kalki językowej:** Nie przyjmujmy obcych diagnoz bez weryfikacji w lokalnych warunkach podatkowych i prawnych.
 2. **Ochrona kapitału i danych:** Każda decyzja o przejściu na zewnętrzne platformy powinna uwzględniać scenariusz awaryjny (exit strategy).
 3. **Konkretny zysk dla obywatela:** Weryfikujmy innowacje i reformy jednym kryterium — czy trwale obniżają koszty życia i zwiększają bezpieczeństwo kraju.
-
----
-*Redakcja i kondensacja: Polski model językowy Bielik AI & Blog Laika*"""
+"""
 
 
 def _craft_polish_angle(item: Dict[str, Any], category: str) -> Dict[str, Any]:
@@ -471,7 +468,7 @@ def _craft_polish_angle(item: Dict[str, Any], category: str) -> Dict[str, Any]:
 
     # Tytuł autorski w języku polskim — naturalny, publicystyczny
     laika_title = craft_natural_polish_title(raw_title, src_name, category, is_pl, raw_summary)
-    bielik_title = f"{laika_title} (Wersja Bielik AI — Polski kontekst)"
+    bielik_title = f"{laika_title}"
     bielik_draft = synthesize_bielik_draft(laika_title, raw_title, src_name, flag, category, raw_summary, link)
 
     source_display = f"{flag} {src_name} — [Impuls źródłowy]({link})" if link else f"{flag} {src_name}"
@@ -677,7 +674,7 @@ def synthesize_live_proposal(item: Dict[str, Any], category: str, visual_seed: i
         "thesis": crafted["thesis"],
         "points": crafted["points"],
         "draft": crafted["draft"],
-        "bielik_title": crafted.get("bielik_title", f"{crafted['title']} (Wersja Bielik AI — Polski kontekst)"),
+        "bielik_title": crafted.get("bielik_title", f"{crafted['title']}"),
         "bielik_draft": crafted.get("bielik_draft", ""),
         "rss_url": item.get("link", ""),
         "rss_raw_title": item.get("title", ""),
@@ -711,7 +708,7 @@ def synthesize_live_kondensat(selected_topics: List[Dict[str, Any]], date_pl: st
         f"wielowątkowa synteza trendów dnia"
     )
     bielik_kondensat_title = (
-        f"Kondensat ({date_pl}): Krzem, kapitał i bezpieczeństwo — bilans polski (Wersja Bielik AI)"
+        f"Kondensat ({date_pl}): Krzem, kapitał i bezpieczeństwo — bilans polski"
     )
 
     sources_joined = " + ".join(
@@ -742,7 +739,6 @@ Patrząc na te cztery zjawiska jednocześnie, trudno oprzeć się wrażeniu, że
 
     bielik_draft = f"""# {bielik_kondensat_title}
 
-> 🦅 **Wersja Bielik AI:** Zredagowana przez polski model językowy — nacisk na polski kontekst gospodarczy, suwerenność cyfrową i kondensację treści.  
 > ⚡ **Źródła syntezy:** {sources_joined}
 
 Autorska synteza 4 węzłowych impulsów dnia ({date_pl}) pod kątem interesu polskiego państwa, przedsiębiorstw i konsumentów: od infrastruktury obliczeniowej po stabilność makroekonomiczną.
@@ -758,13 +754,11 @@ Z perspektywy gospodarczej (*„{econ_ref}”*) utrzymujący się wysoki koszt k
 ### 3. Geopolityka i odporność strategiczna kraju
 Zderzenie wątku międzynarodowego (*„{pol_ref}”*) z lekcją historii (*„{hist_ref}”*) prowadzi do jednego wniosku: w Europie Środkowej bezpieczeństwo jest niepodzielne. Zdolność obronna to nie tylko zakupy sprzętu, ale wydolność polskiego przemysłu, odporność sieci energetycznych i szczelność instytucji.
 
-### 🦅 Kąt widzenia Bielik AI: Co z tego wynika dla Polski?
+### Co z tego wynika dla Polski?
 1. **Suwerenność w łańcuchu wartości:** Unikanie jednostronnych zależności technologicznych (vendor lock-in) w administracji i kluczowych sektorach.
 2. **Kondensacja priorytetów państwa:** Skupienie zasobów publicznych na energetyce, łączności i kształceniu kadr zamiast rozpraszania środków na cele wizerunkowe.
 3. **Pragmatyzm regulacyjny:** Elastyczne wdrażanie dyrektyw unijnych z uwzględnieniem konkurencyjności rodzimego biznesu.
-
----
-*Redakcja i kondensacja: Polski model językowy Bielik AI & Blog Laika*"""
+"""
 
     return {
         "category": "eseje",

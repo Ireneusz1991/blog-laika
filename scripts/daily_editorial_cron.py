@@ -132,7 +132,7 @@ def build_daily_proposals_md(date_str, date_pl, day_name, topics):
 
 {t['draft']}
 
-### 🦅 Alternatywny szkic Bielik AI (Wersja B — Polski kontekst & Kondensacja):
+### 🦅 Alternatywny szkic (Wersja B — Polski kontekst & Kondensacja):
 
 {t.get('bielik_draft') or t['draft']}
 """
@@ -170,7 +170,7 @@ def save_live_pulse_metadata(now_dt, trigger_label, live_rss_result, chosen_topi
                 "thesis": prop.get("thesis", ""),
                 "full_draft": draft_a,
                 "full_draft_html": draft_a_html,
-                "bielik_title": prop.get("bielik_title", f"{prop.get('title', item.get('title', ''))} (Wersja Bielik AI — Polski kontekst)"),
+                "bielik_title": prop.get("bielik_title", f"{prop.get('title', item.get('title', ''))}"),
                 "bielik_draft": draft_b,
                 "bielik_draft_html": draft_b_html,
             })

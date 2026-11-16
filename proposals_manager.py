@@ -9,14 +9,13 @@ try:
 except Exception:
     def synthesize_bielik_draft(title, raw_title, src_name, src_flag, category, summary="", link=""):
         clean_raw = raw_title or title
-        bielik_title = f"{title} (Wersja Bielik AI — Polski kontekst)"
+        bielik_title = f"{title}"
         lead = (
             f"Analiza tematu podjętego przez {src_flag} **{src_name}** (*„{clean_raw}”*) z perspektywy polskich uwarunkowań rynkowych i suwerenności regulacyjnej. "
             f"Odrzucamy korporacyjny żargon i zachodnie kalki — skupiamy się na twardym rachunku zysków, kosztów i ryzyk dla polskiego przedsiębiorcy i obywatela."
         )
         return f"""# {bielik_title}
 
-> 🦅 **Wersja Bielik AI:** Zredagowana przez polski model językowy — nacisk na polski kontekst gospodarczy, suwerenność cyfrową i kondensację treści.  
 > 📡 **Impuls źródłowy:** {src_flag} [{src_name} — „{clean_raw}”]({link if link else '#'})
 
 {lead}
@@ -32,14 +31,12 @@ Sprawa sprowadza się do prostej zależności: kto kontroluje technologię i reg
 
 Dla polskiego rynku kluczowe jest zachowanie elastyczności decyzyjnej, ochrona rodzimego kapitału oraz unikanie jednostronnych uzależnień technologicznych i surowcowych.
 
-### 🦅 Kąt widzenia Bielik AI: Co z tego wynika dla Polski?
+### Co z tego wynika dla Polski?
 
 1. **Pragmatyzm zamiast kalki językowej:** Weryfikujmy zewnętrzne trendy w lokalnych warunkach gospodarczych.
 2. **Ochrona suwerenności i danych:** Zachowujmy własne kompetencje i scenariusze awaryjne w kluczowych sektorach.
 3. **Konkretny zysk dla obywatela:** Sprawdzajmy, czy proponowane zmiany trwale obniżają koszty i podnoszą bezpieczeństwo.
-
----
-*Redakcja i kondensacja: Polski model językowy Bielik AI & Blog Laika*"""
+"""
 
 POLISH_MONTHS = [
     "", "stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca",
@@ -205,7 +202,7 @@ def parse_proposals_file(filepath: str) -> list:
             full_draft = "\n".join(draft_parts)
 
         # Build Bielik AI alternative draft (Wersja B - Polski kontekst & kondensacja)
-        bielik_title = f"{title} (Wersja Bielik AI — Polski kontekst)"
+        bielik_title = f"{title}"
         if bielik_lines:
             bielik_draft = "\n".join(bielik_lines).strip()
         else:
