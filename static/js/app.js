@@ -147,6 +147,7 @@ function togglePostExpand(containerId, btn) {
   if (isExpanded) {
     full.style.display = 'none';
     if (excerpt) excerpt.style.display = 'block';
+    container.classList.remove('is-expanded');
     if (btn) btn.setAttribute('aria-expanded', 'false');
     if (expandLabel) expandLabel.style.display = 'inline';
     if (collapseLabel) collapseLabel.style.display = 'none';
@@ -154,6 +155,14 @@ function togglePostExpand(containerId, btn) {
   } else {
     full.style.display = 'block';
     if (excerpt) excerpt.style.display = 'none';
+    container.classList.add('is-expanded');
+    // karta mogła przeskoczyć na pełną szerokość — pokaż jej początek
+    requestAnimationFrame(() => {
+      const top = container.getBoundingClientRect().top;
+      if (top < 80 || top > window.innerHeight * 0.6) {
+        window.scrollTo({ top: window.scrollY + top - 140, behavior: 'smooth' });
+      }
+    });
     if (btn) btn.setAttribute('aria-expanded', 'true');
     if (expandLabel) expandLabel.style.display = 'none';
     if (collapseLabel) collapseLabel.style.display = 'inline';

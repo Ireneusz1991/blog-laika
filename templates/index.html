@@ -12,7 +12,8 @@
     <div class="editorial-main-col">
       
       {% set lead_post = featured_post if featured_post else (posts[0] if posts else None) %}
-      {% set sub_posts = posts[1:3] if (not featured_post and posts|length > 1) else posts[:2] %}
+      {# Więcej zajawek od razu na stronie głównej: do 6 kart pod artykułem czołowym #}
+      {% set sub_posts = posts[1:7] if (not featured_post and posts|length > 1) else posts[:6] %}
 
       {% if lead_post %}
       <!-- Category Meta Bar -->
@@ -91,7 +92,12 @@
       {% if sub_posts and sub_posts|length >= 1 %}
       <div class="editorial-subgrid-2col">
         {% for post in sub_posts %}
-        <article class="editorial-sub-card {% if loop.first %}sub-card-left{% else %}sub-card-right{% endif %}" id="post-sub-{{ post.slug }}">
+        <article class="editorial-sub-card" id="post-sub-{{ post.slug }}">
+          {% if post.cover_image %}
+          <a href="{{ base_url }}/post/{{ post.slug }}" class="editorial-sub-thumb">
+            <img src="{{ post.cover_image }}" alt="{{ post.title }}" loading="lazy">
+          </a>
+          {% endif %}
           <div class="editorial-sub-meta">
             <a href="{{ base_url }}/kategoria/{{ post.category }}" class="editorial-cat-tag">
               {{ post.category_name }}
@@ -144,18 +150,16 @@
       {% endif %}
 
       <!-- Kolejne wpisy w strumieniu głównym (rozwijane płynnie w miejscu bez przeskakiwania strony) -->
-      {% set stream_posts = posts[2:] if featured_post else (posts[3:] if posts|length > 3 else []) %}
+      {% set stream_posts = posts[6:] if featured_post else (posts[7:] if posts|length > 7 else []) %}
       {% if stream_posts and stream_posts|length > 0 %}
       <div id="extra-articles-stream" class="extra-articles-stream" style="display: none; margin-top: 1.5rem;">
         <div class="editorial-subgrid-2col">
           {% for post in stream_posts %}
           <article class="editorial-sub-card" id="post-extra-{{ post.slug }}">
             {% if post.cover_image %}
-            <div style="position: relative; height: 160px; margin: -1.25rem -1.25rem 0.85rem -1.25rem; overflow: hidden; border-radius: 4px 4px 0 0;">
-              <a href="{{ base_url }}/post/{{ post.slug }}">
-                <img src="{{ post.cover_image }}" alt="{{ post.title }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
-              </a>
-            </div>
+            <a href="{{ base_url }}/post/{{ post.slug }}" class="editorial-sub-thumb">
+              <img src="{{ post.cover_image }}" alt="{{ post.title }}" loading="lazy">
+            </a>
             {% endif %}
 
             <div class="editorial-sub-meta">

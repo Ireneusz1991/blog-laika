@@ -2109,3 +2109,64 @@ footer.site-footer {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
+/* === Strona główna: więcej zajawek, rozwijanie bez pustych pól === */
+.editorial-subgrid-2col {
+  align-items: start;          /* sąsiednia karta nie rozciąga się do wysokości rozwiniętej */
+  grid-auto-flow: row dense;   /* luka po rozwiniętej karcie jest od razu wypełniana kolejną zajawką */
+  row-gap: 1.75rem;
+}
+.editorial-subgrid-2col > .editorial-sub-card {
+  padding: 1.25rem 0 0 0;
+  border-right: none;
+  border-top: 1px solid var(--border-color);
+  min-width: 0;
+}
+.editorial-subgrid-2col > .editorial-sub-card:nth-child(-n+2) {
+  border-top: none;
+  padding-top: 0;
+}
+#extra-articles-stream .editorial-subgrid-2col > .editorial-sub-card:nth-child(-n+2) {
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.25rem;
+}
+/* Rozwinięta zajawka zajmuje całą szerokość kolumny — koniec z pustym polem obok */
+.editorial-subgrid-2col > .editorial-sub-card.is-expanded {
+  grid-column: 1 / -1;
+}
+.editorial-sub-thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+}
+.editorial-sub-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+.editorial-sub-thumb:hover img { transform: scale(1.03); }
+.editorial-sub-card.is-expanded .editorial-sub-thumb { max-height: 340px; }
+
+@media (max-width: 640px) {
+  .editorial-subgrid-2col > .editorial-sub-card:nth-child(2) {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.25rem;
+  }
+}
+
+/* Panel „Najnowsze” podąża za czytelnikiem, gdy lewa kolumna się wydłuża */
+@media (min-width: 993px) {
+  .editorial-sidebar-col {
+    position: sticky;
+    top: 130px;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+}
