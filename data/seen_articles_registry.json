@@ -715,6 +715,42 @@
       "category": "kondensat",
       "title": "Kondensat (15 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
       "url": ""
+    },
+    {
+      "date": "2026-11-19",
+      "category": "technologia",
+      "title": "Ekonomia i granice sztucznej inteligencji: Kto kontroluje wąskie gardła nowej rewolucji",
+      "url": "https://arstechnica.com/science/2026/11/watching-mouse-fight-club-teaches-the-critters-how-to-fight/"
+    },
+    {
+      "date": "2026-11-19",
+      "category": "gospodarka",
+      "title": "Nvidia bez Huanga. Zarządzający mTFI: Wall Street gra koniec cyklu w półprzewodnikach",
+      "url": "https://www.bankier.pl/wiadomosc/Nvidia-bez-Huanga-Zarzadzajacy-mTFI-Wall-Street-gra-koniec-cyklu-w-polprzewodnikach-9231410.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci"
+    },
+    {
+      "date": "2026-11-19",
+      "category": "historia",
+      "title": "Jak Ludwik Pobożny bratanka oślepił i pokutę odbyć musiał: Przełom w świetle dawnych doświadczeń",
+      "url": "https://ciekawostkihistoryczne.pl/2026/11/19/jak-ludwik-pobozny-bratanka-oslepil-i-pokute-odbyc-musial/"
+    },
+    {
+      "date": "2026-11-19",
+      "category": "polityka",
+      "title": "Dąbrowszczacy nie powinni być upamiętniani. Polska to nie Hiszpania",
+      "url": "https://klubjagiellonski.pl/2026/11/19/dabrowszczacy-nie-powinni-byc-upamietniani-polska-to-nie-hiszpania/"
+    },
+    {
+      "date": "2026-11-19",
+      "category": "eseje",
+      "title": "Szczęśniak, Nowak. Jaka będzie przyszłość mediów: Entuzjazm przełomu w zderzeniu z rzeczywistością",
+      "url": "https://magazynkontakt.pl/szczesniak-nowak-jaka-bedzie-przyszlosc-mediow/"
+    },
+    {
+      "date": "2026-11-19",
+      "category": "kondensat",
+      "title": "Kondensat (19 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
+      "url": ""
     }
   ],
   "seen_rss_urls": {
@@ -817,7 +853,32 @@
       "title": "Lalka i Kościół: Dlaczego oczywiste odpowiedzi zawodzą",
       "seen_date": "2026-11-15",
       "category": "eseje"
+    },
+    "https://arstechnica.com/science/2026/11/watching-mouse-fight-club-teaches-the-critters-how-to-fight/": {
+      "title": "Ekonomia i granice sztucznej inteligencji: Kto kontroluje wąskie gardła nowej rewolucji",
+      "seen_date": "2026-11-19",
+      "category": "technologia"
+    },
+    "https://www.bankier.pl/wiadomosc/Nvidia-bez-Huanga-Zarzadzajacy-mTFI-Wall-Street-gra-koniec-cyklu-w-polprzewodnikach-9231410.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci": {
+      "title": "Nvidia bez Huanga. Zarządzający mTFI: Wall Street gra koniec cyklu w półprzewodnikach",
+      "seen_date": "2026-11-19",
+      "category": "gospodarka"
+    },
+    "https://ciekawostkihistoryczne.pl/2026/11/19/jak-ludwik-pobozny-bratanka-oslepil-i-pokute-odbyc-musial/": {
+      "title": "Jak Ludwik Pobożny bratanka oślepił i pokutę odbyć musiał: Przełom w świetle dawnych doświadczeń",
+      "seen_date": "2026-11-19",
+      "category": "historia"
+    },
+    "https://klubjagiellonski.pl/2026/11/19/dabrowszczacy-nie-powinni-byc-upamietniani-polska-to-nie-hiszpania/": {
+      "title": "Dąbrowszczacy nie powinni być upamiętniani. Polska to nie Hiszpania",
+      "seen_date": "2026-11-19",
+      "category": "polityka"
+    },
+    "https://magazynkontakt.pl/szczesniak-nowak-jaka-bedzie-przyszlosc-mediow/": {
+      "title": "Szczęśniak, Nowak. Jaka będzie przyszłość mediów: Entuzjazm przełomu w zderzeniu z rzeczywistością",
+      "seen_date": "2026-11-19",
+      "category": "eseje"
     }
   },
-  "last_updated": "2026-11-16T20:52:05.234311"
+  "last_updated": "2026-11-19T15:52:35.565958"
 }
