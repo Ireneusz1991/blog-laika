@@ -1,0 +1,35 @@
+{
+  "status": "success",
+  "categories": [
+    {
+      "slug": "technologia",
+      "name": "Technologia",
+      "icon": "cpu",
+      "count": 1
+    },
+    {
+      "slug": "gospodarka",
+      "name": "Gospodarka",
+      "icon": "trending-up",
+      "count": 2
+    },
+    {
+      "slug": "historia",
+      "name": "Historia",
+      "icon": "landmark",
+      "count": 1
+    },
+    {
+      "slug": "polityka",
+      "name": "Polityka",
+      "icon": "shield",
+      "count": 1
+    },
+    {
+      "slug": "eseje",
+      "name": "Inne eseje",
+      "icon": "book-open",
+      "count": 4
+    }
+  ]
+}
