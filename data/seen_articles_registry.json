@@ -751,6 +751,42 @@
       "category": "kondensat",
       "title": "Kondensat (19 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
       "url": ""
+    },
+    {
+      "date": "2026-11-20",
+      "category": "technologia",
+      "title": "Bunt przeciwko abonamentom: Dlaczego firmy uciekają z chmury do własnej infrastruktury",
+      "url": "https://arstechnica.com/tech-policy/2026/11/amazon-takes-its-fight-against-nyc-delivery-bill-to-shoppers-with-in-app-pop-up/"
+    },
+    {
+      "date": "2026-11-20",
+      "category": "gospodarka",
+      "title": "Po czterdziestce przychodzi czas na mniejsze mieszkanie. Zaskakujące dane mBanku",
+      "url": "https://www.bankier.pl/wiadomosc/Po-czterdziestce-przychodzi-czas-na-mniejsze-mieszkanie-Zaskakujace-dane-mBanku-9231752.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci"
+    },
+    {
+      "date": "2026-11-20",
+      "category": "historia",
+      "title": "150 lat temu urodził się Marian Lalewicz, „architekt petersbursko",
+      "url": "https://dzieje.pl/wiadomosci/150-lat-temu-urodzil-sie-marian-lalewicz-architekt-petersbursko-warszawski"
+    },
+    {
+      "date": "2026-11-20",
+      "category": "polityka",
+      "title": "Nobel dla Polaków. To z Ukrainy powinna wyjść nominacja",
+      "url": "https://klubjagiellonski.pl/2026/11/19/nobel-dla-polakow-to-z-ukrainy-powinna-wyjsc-nominacja/"
+    },
+    {
+      "date": "2026-11-20",
+      "category": "eseje",
+      "title": "Przeciw utartym kliszom: Pangram Isn’t Racist",
+      "url": "https://www.persuasion.community/p/is-pangram-racist-the-data-says-probably"
+    },
+    {
+      "date": "2026-11-20",
+      "category": "kondensat",
+      "title": "Kondensat (20 listopada 2026 r.): Sprzężenie krzemu, kapitału i siły państwa — wielowątkowa synteza trendów dnia",
+      "url": ""
     }
   ],
   "seen_rss_urls": {
@@ -878,7 +914,32 @@
       "title": "Szczęśniak, Nowak. Jaka będzie przyszłość mediów: Entuzjazm przełomu w zderzeniu z rzeczywistością",
       "seen_date": "2026-11-19",
       "category": "eseje"
+    },
+    "https://arstechnica.com/tech-policy/2026/11/amazon-takes-its-fight-against-nyc-delivery-bill-to-shoppers-with-in-app-pop-up/": {
+      "title": "Bunt przeciwko abonamentom: Dlaczego firmy uciekają z chmury do własnej infrastruktury",
+      "seen_date": "2026-11-20",
+      "category": "technologia"
+    },
+    "https://www.bankier.pl/wiadomosc/Po-czterdziestce-przychodzi-czas-na-mniejsze-mieszkanie-Zaskakujace-dane-mBanku-9231752.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci": {
+      "title": "Po czterdziestce przychodzi czas na mniejsze mieszkanie. Zaskakujące dane mBanku",
+      "seen_date": "2026-11-20",
+      "category": "gospodarka"
+    },
+    "https://dzieje.pl/wiadomosci/150-lat-temu-urodzil-sie-marian-lalewicz-architekt-petersbursko-warszawski": {
+      "title": "150 lat temu urodził się Marian Lalewicz, „architekt petersbursko",
+      "seen_date": "2026-11-20",
+      "category": "historia"
+    },
+    "https://klubjagiellonski.pl/2026/11/19/nobel-dla-polakow-to-z-ukrainy-powinna-wyjsc-nominacja/": {
+      "title": "Nobel dla Polaków. To z Ukrainy powinna wyjść nominacja",
+      "seen_date": "2026-11-20",
+      "category": "polityka"
+    },
+    "https://www.persuasion.community/p/is-pangram-racist-the-data-says-probably": {
+      "title": "Przeciw utartym kliszom: Pangram Isn’t Racist",
+      "seen_date": "2026-11-20",
+      "category": "eseje"
     }
   },
-  "last_updated": "2026-11-19T15:52:35.565958"
+  "last_updated": "2026-11-20T08:19:17.303617"
 }
